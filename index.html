@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KI im Schulalltag – Ressource für Lehrpersonen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Dominikanerinnen School Colors */
+            --primary: #1a5a96;          /* Deep blue from school logo/nav */
+            --primary-dark: #134a7a;     /* Darker blue for hover states */
+            --secondary: #9b2d8e;        /* Purple/magenta (Gymnasium color) */
+            --accent: #e8a54b;           /* Gold accent */
+            --bg-light: #f5f7fa;
+            --bg-white: #ffffff;
+            --text-dark: #1a3a52;
+            --text-muted: #5a6a7a;
+            --border: #d0d8e0;
+            --sidebar-width: 280px;
+            --success: #2e8b57;          /* For materials box */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--primary);
+            color: white;
+            overflow-y: auto;
+            z-index: 1000;
+            padding-bottom: 2rem;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-header .subtitle {
+            font-size: 0.75rem;
+            opacity: 0.85;
+        }
+
+        .sidebar-logo {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 0.75rem;
+            opacity: 0.95;
+        }
+
+        .nav-section {
+            padding: 1rem 0;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(255,255,255,0.15);
+            border-left-color: var(--accent);
+            color: white;
+        }
+
+        .nav-item .nav-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-size: 0.75rem;
+            margin-right: 0.75rem;
+        }
+
+        .nav-item.placeholder {
+            opacity: 0.5;
+            font-style: italic;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            padding: 2rem 3rem;
+            max-width: 1000px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography */
+        h1.section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        h4 {
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin: 1rem 0 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        /* Collapsible Sections */
+        .collapsible {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .collapsible-header {
+            padding: 1rem 1.25rem;
+            background: var(--bg-white);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .collapsible-header:hover {
+            background: var(--bg-light);
+        }
+
+        .collapsible-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .collapsible-header .toggle-icon {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            transition: transform 0.3s;
+        }
+
+        .collapsible.open .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapsible.open .collapsible-content {
+            max-height: none;
+        }
+
+        .collapsible-inner {
+            padding: 1.25rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Sub-collapsible (for materials) */
+        .sub-collapsible {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .sub-collapsible-header {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .sub-collapsible-header:hover {
+            background: rgba(0,0,0,0.03);
+        }
+
+        .sub-collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .sub-collapsible.open .sub-collapsible-content {
+            max-height: none;
+        }
+
+        .sub-collapsible-inner {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Prompt Box */
+        .prompt-box {
+            background: #1e1e1e;
+            border-radius: 6px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .prompt-header {
+            background: #2d2d2d;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .prompt-header span {
+            color: #9cdcfe;
+            font-size: 0.85rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .prompt-header .toggle-prompt {
+            color: #808080;
+            font-size: 0.8rem;
+        }
+
+        .prompt-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .prompt-box.open .prompt-content {
+            max-height: none;
+        }
+
+        .prompt-inner {
+            position: relative;
+        }
+
+        .prompt-inner pre {
+            margin: 0;
+            padding: 1rem;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #3c3c3c;
+            color: #d4d4d4;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #4c4c4c;
+        }
+
+        .copy-btn.copied {
+            background: #4caf50;
+            color: white;
+        }
+
+        /* Inline Code */
+        code {
+            background: #f1f3f4;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(52, 152, 219, 0.05);
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 0.5rem 0 1rem 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, #fef8e8 0%, #fff9f0 100%);
+            border-left: 4px solid var(--accent);
+            padding: 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box h4 {
+            color: #a67c00;
+            margin-top: 0;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            border-radius: 0 6px 6px 0;
+            margin: 1rem 0;
+        }
+
+        
+        /* Expand/Collapse All Controls */
+        .section-controls {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .control-btn .icon {
+            font-size: 1rem;
+        }
+
+        /* Materials Placeholder */
+        .materials-placeholder {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--text-muted);
+            margin: 1rem 0;
+        }
+
+        .materials-placeholder .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Materials Links Box */
+        .materials-box {
+            background: linear-gradient(135deg, #e8f0f7 0%, #f0f5fa 100%);
+            border: 1px solid #c5d5e5;
+            border-left: 4px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+        }
+
+        .materials-box h4 {
+            color: var(--primary);
+            margin: 0 0 0.75rem 0;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .materials-box ul {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+
+        .materials-box li {
+            margin-bottom: 0.4rem;
+        }
+
+        .materials-box a {
+            color: #1565c0;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .materials-box a:hover {
+            text-decoration: underline;
+        }
+
+        .file-icon {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            font-size: 0.85rem;
+            margin-right: 0.25rem;
+        }
+
+        /* Template Box - same style as prompts but with different header color */
+        .template-box {
+            background: #1e1e1e;
+            border-radius: 6px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .template-header {
+            background: linear-gradient(135deg, #5a1a50 0%, #7a2a70 100%);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .template-header span {
+            color: #f0d0f0;
+            font-size: 0.85rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .template-header .toggle-template {
+            color: #808080;
+            font-size: 0.8rem;
+        }
+
+        .template-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .template-box.open .template-content {
+            max-height: none;
+        }
+
+        .template-inner {
+            position: relative;
+        }
+
+        .template-description {
+            background: #252526;
+            padding: 0.75rem 1rem;
+            color: #b0b0b0;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #3c3c3c;
+            font-style: italic;
+        }
+
+        .template-inner pre {
+            margin: 0;
+            padding: 1rem;
+            color: #7fdbff;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .template-inner .placeholder {
+            color: #ffc66d;
+            font-weight: bold;
+        }
+
+        /* Coming Soon */
+        .coming-soon {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .coming-soon .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .coming-soon h2 {
+            color: var(--text-muted);
+        }
+
+        /* Category Badge */
+        .category-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--secondary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-badge.english {
+            background: var(--primary);
+        }
+
+        .category-badge.pup {
+            background: var(--secondary);
+        }
+
+        /* Grade Level */
+        .grade-level {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-left: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .collapsible.open .collapsible-content {
+                max-height: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <svg class="sidebar-logo" viewBox="0 0 100 100" fill="white">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="3"/>
+                <path d="M50 15 L50 85 M15 50 L85 50" stroke="white" stroke-width="4"/>
+                <circle cx="50" cy="30" r="8" fill="white"/>
+                <circle cx="50" cy="70" r="8" fill="white"/>
+                <circle cx="30" cy="50" r="8" fill="white"/>
+                <circle cx="70" cy="50" r="8" fill="white"/>
+            </svg>
+            <h1>KI im Schulalltag</h1>
+            <div class="subtitle">Gymnasium der Dominikanerinnen</div>
+        </div>
+        <div class="nav-section">
+            <a href="#" class="nav-item active" data-section="grundlagen">
+                <span class="nav-number">1</span>Grundlagen
+            </a>
+            <a href="#" class="nav-item" data-section="vorbereitung">
+                <span class="nav-number">2</span>Vorbereitung & Anwendung
+            </a>
+            <a href="#" class="nav-item" data-section="materialien">
+                <span class="nav-number">3</span>Unterrichtsmaterialien
+            </a>
+            <a href="#" class="nav-item placeholder" data-section="beurteilung">
+                <span class="nav-number">4</span>Beurteilung & Notenvergabe
+            </a>
+            <a href="#" class="nav-item placeholder" data-section="qualitaet">
+                <span class="nav-number">5</span>Qualitätssicherung
+            </a>
+            <a href="#" class="nav-item placeholder" data-section="curriculum">
+                <span class="nav-number">6</span>Curriculumentwicklung
+            </a>
+            <a href="#" class="nav-item placeholder" data-section="admin">
+                <span class="nav-number">7</span>Administration
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- SECTION 1: GRUNDLAGEN -->
+        <section id="grundlagen" class="section active">
+            <h1 class="section-title">Grundlagen</h1>
+            <p class="section-subtitle">LLM-Funktionsweise, Reasoning-Modelle, aktuelle Modelllandschaft</p>
+
+            <!-- 1.1 Wie dieses Dokument entstanden ist -->
+            <div class="collapsible open">
+                <div class="collapsible-header">
+                    <h3>1.1 Wie dieses Dokument entstanden ist</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <p>Ich arbeite seit April 2023 intensiv mit KI-Sprachmodellen – mittlerweile fast drei Jahre. Damals habe ich mir zum Ziel gesetzt, jede Aufgabe, die ich manuell erledige, parallel auch von der KI erledigen zu lassen, um systematisch zu testen, was dabei herauskommt.</p>
+                        
+                        <p>Die Anfangszeit war ernüchternd: ChatGPT 3.5, die ersten GPT-4-Versionen, Claude 2, Bard (bevor es Gemini hieß) – die Diskrepanz zwischen meiner manuellen Arbeit und dem, was die KI liefern konnte, war enorm. Viele Outputs waren unbrauchbar, halluziniert oder am Thema vorbei. Man könnte sagen, ich habe in dieser Zeit regelrechte "Vertrauensprobleme" mit KI entwickelt – ich habe nie einem Output blind vertraut, weil die Fehlerquote schlicht zu hoch war.</p>
+                        
+                        <p>Mit jedem neuen Modell hat sich diese Lücke verringert. Die Modelle wurden zuverlässiger, das Training besser, die Kontextfenster größer. Besonders die Extended-Thinking-Modelle waren ein Wendepunkt. Wir sind jetzt an einem Punkt, wo meine Erfahrung zeigt:</p>
+
+                        <div class="highlight-box">
+                            <h4>Die 80%-Regel</h4>
+                            <p style="margin-bottom:0">Unter genauer Instruktion liefern aktuelle KI-Modelle einen Output, der zu etwa 80% direkt verwendbar ist. Die letzten 20% – der Feinschliff, die fachliche Überprüfung, die Anpassung an den konkreten Kontext – obliegen der Fachperson.</p>
+                        </div>
+
+                        <h4>Was bedeutet das praktisch?</h4>
+                        <p>Nicht unbedingt Zeitersparnis. Ich habe deutlich mehr Zeit investiert, um all das zu testen, zu bewerten und zu systematisieren. Ich überprüfe nach wie vor alles doppelt.</p>
+                        
+                        <p>Was KI aber ermöglicht, sind Dinge, die vorher nicht möglich waren: eine Tiefe der Materialaufbereitung, eine Individualisierung, eine Analysequalität, die im normalen Schulalltag schlicht nicht leistbar wäre.</p>
+                        
+                        <p><strong>Mein Job ist durch KI nicht einfacher geworden.</strong> Aber es haben sich neue Möglichkeiten eröffnet – Dinge zu erschaffen, die vorher an den schieren Zeitlimitierungen gescheitert wären. Das ist für mich der eigentliche Beitrag dieser Technologie.</p>
+                        
+                        <p>Dieses Dokument fasst zusammen, was funktioniert hat – praxiserprobt über 150+ Anwendungsfälle für den Schulalltag.</p>
+
+                        <div class="warning-box">
+                            <strong>Hinweis:</strong> Diese Ressource fokussiert zu 90–95% auf Anwendungsfälle für Lehrpersonen. Anwendungen für Schüler:innen werden in einer späteren Iteration ergänzt.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.2 Wie LLMs funktionieren -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>1.2 Wie Large Language Models funktionieren</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <p>Large Language Models (LLMs) wie ChatGPT, Claude oder Gemini sind im Kern statistische Vorhersagemaschinen. Sie wurden mit Milliarden von Texten trainiert und haben dabei Muster gelernt: Welches Wort folgt typischerweise auf welches?</p>
+
+                        <h4>Next-Token-Prediction: Das Grundprinzip</h4>
+                        <p>Wenn eine Anfrage an ein LLM gestellt wird, durchläuft das System einen iterativen Vorhersageprozess:</p>
+                        
+                        <p><strong>Schritt 1 – Tokenisierung:</strong> Die Eingabe wird in kleinere Einheiten zerlegt – sogenannte Tokens. Ein Token entspricht etwa 4 Zeichen oder ¾ eines deutschen Wortes. Das Wort "Unterrichtsmaterial" wird beispielsweise in mehrere Tokens aufgeteilt ("Unter", "richts", "material"). Das gesamte Vokabular eines Modells umfasst typischerweise 50.000–100.000 solcher Tokens.</p>
+                        
+                        <p><strong>Schritt 2 – Kontextverarbeitung:</strong> Das Modell betrachtet die gesamte bisherige Eingabe (den "Kontext") und erstellt eine interne Repräsentation – eine mathematische Abbildung der Bedeutung in einem hochdimensionalen Vektorraum.</p>
+                        
+                        <p><strong>Schritt 3 – Wahrscheinlichkeitsberechnung:</strong> Für jedes mögliche nächste Token im Vokabular berechnet das Modell eine Wahrscheinlichkeit. Auf "Der Schüler hat die" folgt "Hausübung" mit höherer Wahrscheinlichkeit als "Wolke".</p>
+                        
+                        <p><strong>Schritt 4 – Auswahl:</strong> Ein Token wird ausgewählt, zur Ausgabe hinzugefügt, und der Prozess beginnt von vorne.</p>
+                        
+                        <p>Dieser Prozess wiederholt sich Token für Token. Eine Antwort von 500 Wörtern bedeutet etwa 375 einzelne Vorhersage-Zyklen.</p>
+
+                        <h4>Temperatur: Steuerung der Variabilität</h4>
+                        <table>
+                            <tr>
+                                <th>Temperatur</th>
+                                <th>Mathematischer Effekt</th>
+                                <th>Praktisches Verhalten</th>
+                            </tr>
+                            <tr>
+                                <td>Niedrig (0–0.3)</td>
+                                <td>Softmax wird "schärfer"</td>
+                                <td>Fast deterministisch, reproduzierbare Outputs</td>
+                            </tr>
+                            <tr>
+                                <td>Mittel (0.5–0.7)</td>
+                                <td>Ausgewogene Verteilung</td>
+                                <td>Balance zwischen Fokus und Variation (Standard)</td>
+                            </tr>
+                            <tr>
+                                <td>Hoch (0.8–1.2+)</td>
+                                <td>Softmax wird "flacher"</td>
+                                <td>Kreativere, variablere Outputs</td>
+                            </tr>
+                        </table>
+                        
+                        <p>Die Temperatur lässt sich durch Formulierungen im Prompt beeinflussen: "Sei kreativ und unkonventionell" → variablere Outputs. "Sei präzise und faktisch" → fokussiertere Outputs.</p>
+
+                        <h4>Das Momentum-Problem</h4>
+                        <p>Weil LLMs Token für Token generieren und dabei ihre eigene bisherige Ausgabe als Teil des Kontexts verwenden, entsteht ein Momentum-Effekt: Einmal eingeschlagene Richtungen werden beibehalten und verstärkt.</p>
+                        <ul>
+                            <li>Wenn die Antwort gut startet, bleibt sie meist gut</li>
+                            <li>Wenn die Antwort schlecht startet, wird sie oft progressiv schlechter</li>
+                        </ul>
+                        <p><strong>"Regenerate Response"</strong> liefert manchmal dramatisch bessere Ergebnisse – ein neuer Anfang bedeutet einen komplett anderen Pfad.</p>
+
+                        <h4>Das Halluzinationsproblem</h4>
+                        <p>LLMs sind darauf optimiert, statistisch plausibel klingende Texte zu generieren – nicht faktisch korrekte. Das Modell "weiß" nichts im menschlichen Sinne.</p>
+                        <p><strong>Halluzination</strong> bedeutet: Das Modell generiert selbstbewusst Informationen, die falsch sind – erfundene Zitate, nicht existierende Studien, falsche Fakten.</p>
+                        <p>Die Situation hat sich seit 2024 durch bessere Modelle und Tool-Integration (Web-Suche, Deep Research) deutlich verbessert.</p>
+                        <p><strong>Anbieter-Unterschiede:</strong> ChatGPT priorisiert Plausibilität über Faktizität – Halluzinationen kommen hier am häufigsten vor. Claude und Gemini sagen häufiger: "Da habe ich keine konkrete Antwort".</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.3 Klassische LLMs vs. Reasoning-Modelle -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>1.3 Klassische LLMs vs. Reasoning-Modelle</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <p>Klassische LLMs generieren ihre Antwort in einem Durchgang. Bei komplexen Problemen führt das aufgrund des Momentum-Effekts zu systematischen Fehlern.</p>
+
+                        <h4>Was Reasoning-Modelle anders machen</h4>
+                        <p>Reasoning-Modelle (auch: "Thinking Models", "Extended Thinking", "Deep Think") verwenden <strong>Test-Time Compute</strong>:</p>
+                        <ol>
+                            <li><strong>Denkphase:</strong> Das Modell generiert intern eine Gedankenkette – probiert Ansätze, verwirft sie, strukturiert das Problem.</li>
+                            <li><strong>Selbstüberprüfung:</strong> Das Modell betrachtet seine eigenen Überlegungen, identifiziert Fehler, korrigiert Annahmen.</li>
+                            <li><strong>Antwortphase:</strong> Erst dann wird die eigentliche Antwort formuliert.</li>
+                        </ol>
+
+                        <h4>Wann klassisch, wann Reasoning?</h4>
+                        <table>
+                            <tr>
+                                <th>Aufgabentyp</th>
+                                <th>Empfehlung</th>
+                                <th>Begründung</th>
+                            </tr>
+                            <tr>
+                                <td>Schnelle Fragen, einfache Erklärungen</td>
+                                <td>Klassisch</td>
+                                <td>Schneller, Reasoning wäre Overkill</td>
+                            </tr>
+                            <tr>
+                                <td>Kreatives Schreiben, Brainstorming</td>
+                                <td>Klassisch</td>
+                                <td>Reasoning kann kreative Texte "überdenken"</td>
+                            </tr>
+                            <tr>
+                                <td>Mathematik, logische Probleme</td>
+                                <td>Reasoning</td>
+                                <td>Dramatisch bessere Ergebnisse</td>
+                            </tr>
+                            <tr>
+                                <td>Komplexe Analysen, mehrstufige Aufgaben</td>
+                                <td>Reasoning</td>
+                                <td>Selbstüberprüfung reduziert Fehler</td>
+                            </tr>
+                            <tr>
+                                <td>Code-Debugging, Architekturentscheidungen</td>
+                                <td>Reasoning</td>
+                                <td>Findet Fehler, die klassische Modelle übersehen</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.4 Aktuelle Modelllandschaft -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>1.4 Aktuelle Modelllandschaft (Jänner 2026)</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <h4>Claude (Anthropic) – Die Claude 4.5 Familie</h4>
+                        <table>
+                            <tr><th>Modell</th><th>Charakteristik</th><th>Kontextfenster</th><th>Extended Thinking</th></tr>
+                            <tr><td>Haiku 4.5</td><td>Schnellstes Modell</td><td>200K Tokens</td><td>Ja</td></tr>
+                            <tr><td>Sonnet 4.5</td><td>Bestes Coding-Modell</td><td>200K (1M Beta)</td><td>Ja</td></tr>
+                            <tr><td>Opus 4.5</td><td>Intelligentestes Modell</td><td>200K Tokens</td><td>Ja</td></tr>
+                        </table>
+
+                        <h4>ChatGPT (OpenAI) – GPT-5.2</h4>
+                        <table>
+                            <tr><th>Modus</th><th>Was passiert</th><th>Kontextfenster</th></tr>
+                            <tr><td>Auto</td><td>Router wählt automatisch</td><td>–</td></tr>
+                            <tr><td>GPT-5.2 Instant</td><td>Schnelle Antworten</td><td>bis 400K Tokens</td></tr>
+                            <tr><td>GPT-5.2 Thinking</td><td>Extended Reasoning</td><td>bis 400K Tokens</td></tr>
+                            <tr><td>GPT-5.2 Pro</td><td>Maximale Rechenleistung</td><td>bis 400K Tokens</td></tr>
+                        </table>
+
+                        <h4>Gemini (Google) – Die Gemini 3 Familie</h4>
+                        <table>
+                            <tr><th>Modus/Modell</th><th>Charakteristik</th><th>Kontextfenster</th></tr>
+                            <tr><td>Gemini 3 Flash</td><td>Extrem schnell</td><td>200K–1M Tokens</td></tr>
+                            <tr><td>Gemini 3 Deep Think</td><td>Extended Reasoning</td><td>1M Tokens</td></tr>
+                            <tr><td>Gemini 3 Pro</td><td>Maximale Intelligenz</td><td>1M–2M Tokens</td></tr>
+                        </table>
+
+                        <h4>Was ist ein Kontextfenster?</h4>
+                        <p>Das Kontextfenster ist die maximale Textmenge, die ein Modell gleichzeitig "sehen" kann:</p>
+                        <ul>
+                            <li><strong>200K Tokens</strong> = ca. 150.000 Wörter = 300–500 Seiten Text</li>
+                            <li><strong>1M Tokens</strong> = ca. 750.000 Wörter = 1.500+ Seiten Text</li>
+                            <li><strong>2M Tokens</strong> = ca. 1,5 Millionen Wörter = mehrere vollständige Bücher</li>
+                        </ul>
+
+                        <h4>Bildgenerierungsmodelle</h4>
+                        <p><strong>ChatGPT (GPT Image):</strong> Sehr ausgereift – erzeugt ca. 90% von dem, was man sich vorstellt.</p>
+                        <p><strong>Nano Banana Pro (Google):</strong> Das derzeit realistischste Bildmodell. Kann Text in Bildern korrekt darstellen und sogar Graphen/Diagramme fehlerfrei generieren.</p>
+                        <p><strong>Alternative – HTML-generierte Visualisierungen:</strong> Für Diagramme, Graphen, strukturierte Darstellungen ist es oft effektiver, HTML-Code generieren zu lassen.</p>
+
+                        <h4>NotebookLM (Google)</h4>
+                        <p>Speziell für die Arbeit mit eigenen Dokumenten konzipiert. Interessant für Schüler:innen (Zusammenfassen, Prüfungsvorbereitung). Wird in einer zukünftigen Iteration behandelt.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.5 Kosten und Zugang -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>1.5 Kosten und Zugang</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <h4>Kostenlose Nutzung</h4>
+                        <p>Alle Anbieter bieten kostenlose Versionen mit Einschränkungen: Begrenzte Nachrichten, eingeschränkter Zugang zu Reasoning-Modi, kürzere Kontextfenster.</p>
+                        <p>Für gelegentliche Nutzung ausreichend. Bei intensiverer Arbeit stößt man schnell an Limits.</p>
+
+                        <h4>Bezahlte Abos</h4>
+                        <table>
+                            <tr><th>Anbieter</th><th>Abo</th><th>Preis</th><th>Was man bekommt</th></tr>
+                            <tr><td>Claude</td><td>Pro</td><td>~20 €/Monat</td><td>Höhere Limits, Priority Access</td></tr>
+                            <tr><td>Claude</td><td>Max</td><td>~100 €/Monat</td><td>Fast unbegrenzt, alle Features</td></tr>
+                            <tr><td>ChatGPT</td><td>Plus</td><td>~20 €/Monat</td><td>Höhere Limits, GPT-5.2 Thinking</td></tr>
+                            <tr><td>ChatGPT</td><td>Pro</td><td>~200 €/Monat</td><td>Unbegrenzter Zugang</td></tr>
+                            <tr><td>Gemini</td><td>Advanced</td><td>~20 €/Monat</td><td>Gemini 3 Pro, Deep Think, 2TB</td></tr>
+                        </table>
+
+                        <h4>Multi-Modell-Plattformen</h4>
+                        <p>Plattformen wie <strong>Monica.ai</strong>, <strong>Poe</strong> oder <strong>OpenRouter</strong> bieten Zugang zu mehreren Anbietern.</p>
+                        <p>Meine Erfahrung mit Monica.ai: ~200 €/Jahr für Zugang zu allen Text-Modellen plus Bildgenerierung.</p>
+
+                        <h4>Mein aktuelles Setup</h4>
+                        <ul>
+                            <li><strong>Hauptarbeit:</strong> Claude Max (100 €/Monat)</li>
+                            <li><strong>Vergleich & Test:</strong> Monica.ai (200 €/Jahr)</li>
+                            <li><strong>In Planung:</strong> Gemini Advanced (wegen Kontextfenster)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.6 Datenschutz und Sicherheit -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>1.6 Datenschutz und Sicherheit</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <h4>Werden meine Chats für das Training verwendet?</h4>
+                        <p>Bei allen Anbietern gibt es eine Einstellung, die erlaubt, dass Konversationen zur Modellverbesserung verwendet werden. <strong>Diese sollte deaktiviert werden:</strong></p>
+                        <ul>
+                            <li><strong>ChatGPT:</strong> Settings → Data Controls → "Improve the model for everyone" deaktivieren</li>
+                            <li><strong>Claude:</strong> Einstellungen → entsprechende Option deaktivieren</li>
+                            <li><strong>Gemini:</strong> Google-Kontoeinstellungen → Datenschutz</li>
+                        </ul>
+
+                        <h4>Wie funktioniert das technisch?</h4>
+                        <p>Das LLM selbst ist "eingefroren" – seine Parameter ändern sich nicht durch einzelne Gespräche. Der Inhalt eines Chats wird nicht direkt in das Modell eingespeist.</p>
+                        <p>Was Anbieter tun können: Konversationen für Reinforcement Learning verwenden – um zu lernen, welche Antworten als hilfreich bewertet werden.</p>
+
+                        <h4>Praktische Empfehlung</h4>
+                        <p>Für schulische Zwecke: Trainings-Option deaktivieren und bei sensiblen Daten (Schülernamen, Noten) vorsichtig sein. Im Zweifelsfall: Daten anonymisieren.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.7 Spracheingabe -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>1.7 Spracheingabe: Ein unterschätztes Werkzeug</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <p>Ein Prinzip, das sich durch meine gesamte Arbeit zieht: Je mehr Kontext man der KI gibt, je besser man erklärt, warum etwas wichtig ist, je strukturierter man seine Gedanken präsentiert – desto besser wird das Ergebnis.</p>
+                        
+                        <p>Das lässt sich natürlich alles tippen. Aber manchmal will man einfach reden – seine Gedanken laut entwickeln, eine Idee "durchsprechen".</p>
+                        
+                        <p>Moderne KI-Modelle sind mittlerweile sehr gut darin, auch unstrukturierte Spracheingaben zu verstehen. Sie können aus einem fünfminütigen "Gedankenstream" die Kernidee extrahieren.</p>
+                        
+                        <p><strong>Dieses Dokument selbst ist größtenteils durch Spracheingabe entstanden.</strong></p>
+
+                        <div class="highlight-box">
+                            <h4>Praktischer Tipp</h4>
+                            <p style="margin-bottom:0">Alle großen Plattformen unterstützen Spracheingabe direkt im Chat. Einfach das Mikrofon-Symbol nutzen und lossprechen. Besonders nützlich für: Erste Ideenentwicklung, Kontexterklärungen, Feedback und Korrekturwünsche.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: VORBEREITUNG -->
+        <section id="vorbereitung" class="section">
+            <h1 class="section-title">Vorbereitung & Anwendung</h1>
+            <p class="section-subtitle">Prompt-Prinzipien, Transkription, Claude Projects, Voice Input</p>
+
+            <p>Vor der Erstellung von Materialien sollte Zeit in eine sorgfältige Vorbereitung investiert werden. Diese Vorarbeit verbessert alle nachfolgenden KI-Interaktionen erheblich.</p>
+
+            <!-- 2.1 Grundprinzipien -->
+            <div class="collapsible open">
+                <div class="collapsible-header">
+                    <h3>2.1 Die Grundprinzipien effektiver Prompts</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <p>Ein guter Prompt ist wie eine gute Arbeitsanweisung: Je präziser und kontextreicher, desto besser das Ergebnis.</p>
+
+                        <h4>Die fünf Kernelemente eines effektiven Prompts</h4>
+                        <ol>
+                            <li><strong>Rolle definieren:</strong> Wer soll die KI sein? Ein Experte, ein Lehrer, ein Korrektor?</li>
+                            <li><strong>Kontext liefern:</strong> Was ist die Ausgangssituation? Für welche Zielgruppe? Welches Niveau?</li>
+                            <li><strong>Erwartetes Ergebnis spezifizieren:</strong> Format, Länge, Struktur, Stil.</li>
+                            <li><strong>Das WARUM erklären (entscheidend!):</strong> Wofür wird das gebraucht? Was ist der Endzweck?</li>
+                            <li><strong>Best-Practice-Beispiele vorgeben</strong> (falls vorhanden).</li>
+                        </ol>
+
+                        <div class="highlight-box">
+                            <h4>Warum das WARUM so wichtig ist</h4>
+                            <p style="margin-bottom:0">Wenn die KI den Endzweck kennt – was erreicht werden soll und warum das wichtig ist – kann sie Lücken im Prompt intelligent schließen. Die KI ist intelligent genug, die entsprechenden Schritte zu setzen, wenn sie das Ziel vor Augen hat.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.2 Voice Input -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>2.2 Voice Input: Der unterschätzte Produktivitäts-Hack</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <h4>ChatGPT als zuverlässigste Lösung</h4>
+                        <p>Nach ausgiebigem Testen hat sich ChatGPT als die zuverlässigste Plattform für Spracheingabe herauskristallisiert.</p>
+                        <p><strong>Das Besondere:</strong> Die KI ist bereits in der Transkription selbst aktiv. Selbst wenn wild und unstrukturiert gesprochen wird, transkribiert ChatGPT das in kohärente, grammatikalisch korrekte Sätze – behält aber den Originalinhalt 1:1 bei.</p>
+
+                        <h4>Praktische Anwendung</h4>
+                        <ul>
+                            <li>Spracheingabe starten (Mikrofon-Icon in ChatGPT)</li>
+                            <li>Einfach losreden – auch längere, komplexe Instruktionen</li>
+                            <li><strong>Zeitlimit:</strong> 10 Minuten pro Aufnahme</li>
+                            <li><strong>Nach 10 Minuten:</strong> Auf das Viereck drücken (transkribieren lassen), dann wieder auf Aufnahme</li>
+                            <li>Theoretisch unbegrenzt lange Eingaben möglich</li>
+                        </ul>
+
+                        <h4>Video- und Audio-Transkription</h4>
+                        <p><strong>Szenario:</strong> Ein YouTube-Video soll transkribiert werden, aber es gibt kein Transkript.</p>
+                        <p><strong>Lösung:</strong> Video auf dem Laptop abspielen, gleichzeitig auf einem anderen Gerät die ChatGPT-Sprachaufnahme starten. Die KI nimmt den Ton auf und transkribiert ihn zuverlässig.</p>
+                        <p>Das funktioniert auch bei: Listening-Übungen, Podcasts, Videos mit mehreren Sprechern.</p>
+
+                        <h4>Nachbearbeitung</h4>
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt: Transkript bereinigen</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Bitte bereinige dieses Transkript auf Grammatik und Satzstellung, behalte aber den Inhalt WORTWÖRTLICH bei.</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.3 Schulbuch-Transkription -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>2.3 Schulbuch-Transkription: Die wichtigste Vorarbeit</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <h4>Warum reine Texttranskripte?</h4>
+                        <p><strong>Das Problem mit PDFs und Screenshots:</strong> Wenn der KI ein PDF oder Screenshot gegeben wird, muss sie zuerst das Bild in Text umwandeln (OCR). Diese zusätzliche Aufgabe kostet Kapazität.</p>
+                        <p><strong>Die Lösung:</strong> Schulbücher vorab transkribieren und als reine Textdateien speichern. Dadurch:</p>
+                        <ul>
+                            <li>Erhält die KI den Inhalt in ihrer "nativen Sprache"</li>
+                            <li>Kann sie ihre volle Kapazität für die eigentliche Aufgabe nutzen</li>
+                            <li>Werden Outputs schneller und genauer</li>
+                        </ul>
+
+                        <p>Ich habe das für folgende Materialien gemacht: MORE! 1–4 (alle Units), way2go! Oberstufe, PuP Maturamaterial, Englisch mündliche Matura Unterlagen.</p>
+
+                        <h4>Master-Transkriptions-Prompt (Deutsch)</h4>
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt: Einfache Transkription</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Transkribiere diese Seite WORTWÖRTLICH - jedes Wort, jeden Buchstaben, jedes Satzzeichen exakt wie es erscheint.
+
+ANFORDERUNGEN:
+1. Den GESAMTEN Text exakt wie geschrieben reproduzieren
+2. Für BILDER: So beschreiben, als wäre es für eine sehbeeinträchtigte Person
+3. Für TABELLEN: Die exakte Struktur mit Markdown reproduzieren
+4. Unklaren Text mit [unklar] markieren
+5. NICHT zusammenfassen - nur reine Transkription</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>Advanced Transcription Prompt (English – Recommended)</h4>
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt: Detaillierte Transkription (Englisch)</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre># Role: Accessibility Specialist & Verbatim Transcriber
+
+**Objective:** Transcribe textbook pages into digital format. Output must 
+provide a 1:1 verbatim text record and highly detailed, accessible 
+descriptions of all visual elements for visually impaired readers.
+
+**Input:** A set of images representing sequential pages of a textbook.
+
+## Instructions:
+
+### 1. Page Structure & Order
+* Process images in the order they are attached/numbered
+* Start each new page with: --- Page [X] ---
+* If a sentence cuts off at page bottom, maintain flow but keep separator
+
+### 2. Text Transcription (Verbatim)
+* **Accuracy:** Transcribe text EXACTLY as written. Do NOT correct typos, 
+  grammar, or summarize content.
+* **Formatting:** Replicate visual hierarchy using Markdown:
+  - Use # H1, ## H2, ### H3 for headings
+  - Use **bold** and *italics* where used in text
+  - Use blockquotes (>) for sidebars or callout boxes
+* **Math/Science:** Use LaTeX formatting for formulas
+
+### 3. Visual Descriptions (Accessibility Focus)
+For EVERY image, diagram, graph, or icon, insert [Visual Description]:
+* **Context:** What type of image (photo, line drawing, bar chart)
+* **Details:** Colors, lighting, spatial layout, emotions if people present
+* **Data:** For charts/graphs - transcribe axis labels, legend, ALL data points
+* **Diagrams:** Describe arrow flow, relationships, text labels
+
+### 4. Key Principles
+- pixel by pixel
+- verbatim
+- don't leave anything out
+- don't truncate anything
+- keep everything intact</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>Vokabel-Masterlisten</h4>
+                        <table>
+                            <tr><th>Schulbuch</th><th>Einträge</th><th>Format</th></tr>
+                            <tr><td>MORE! 1</td><td>786</td><td>Wort + Beispielsatz + Deutsch</td></tr>
+                            <tr><td>MORE! 2</td><td>800+</td><td>Wort + Beispielsatz + Deutsch</td></tr>
+                            <tr><td>MORE! 3</td><td>750+</td><td>Wort + Beispielsatz + Deutsch</td></tr>
+                            <tr><td>MORE! 4</td><td>700+</td><td>Wort + Beispielsatz + Deutsch</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.4 Claude Projects -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>2.4 Claude Projects einrichten</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <h4>Was sind Claude Projects?</h4>
+                        <p>Vordefinierte Arbeitsumgebungen mit:</p>
+                        <ul>
+                            <li>Einem Namen und einer Beschreibung</li>
+                            <li>Einem System-Prompt (Instruktionen, die bei JEDER Nachricht aktiv sind)</li>
+                            <li>Hochgeladenen Referenzdokumenten (Richtlinien, Beispiele, Vokabellisten)</li>
+                        </ul>
+                        <p><strong>Der Vorteil:</strong> Man muss nicht jedes Mal den gleichen Prompt eingeben. Man wirft einfach den Input rein, und die KI weiß sofort, was zu tun ist.</p>
+
+                        <h4>Empfohlene Projekt-Setups</h4>
+                        <p><strong>Schreibkorrektur-Assistent:</strong> System-Prompt mit Korrekturanweisungen, Dokumente mit Beurteilungsraster. Anwendung: Schülertext reinwerfen → fertige Korrektur.</p>
+                        <p><strong>Check-up-Generator:</strong> Format- und Strukturvorgaben, Vokabellisten, Unit-Transkripte. Anwendung: "Unit 5 Check-up" → fertiger Test.</p>
+                        <p><strong>Matura-Aufgaben-Generator:</strong> Offizielle Richtlinien, R-T-R-Struktur, Beispielaufgaben. Anwendung: Thema eingeben → kompetenzorientierte Aufgabe.</p>
+                        <p><strong>Schüler-EFL-Tutor:</strong> Niveau-angepasste Erklärungen, Schulbuchinhalte. Anwendung: Schüler:innen können selbständig üben.</p>
+
+                        <div class="warning-box">
+                            <strong>Wichtig:</strong> Der Aufwand für die Einrichtung lohnt sich nur bei wiederkehrenden Aufgaben. Für einmalige Aufgaben ist ein guter Einzel-Prompt effizienter.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.5 Context Management -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>2.5 Context Management: Wenn der Chat zu lang wird</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <h4>Das Problem</h4>
+                        <p>Wenn man längere Zeit in einem Chat arbeitet und das Kontextlimit erreicht, werden die Ergebnisse zunehmend unzuverlässig.</p>
+
+                        <h4>Die Lösung: Übergabe-Prompts</h4>
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt: Übergabe-Prompt erstellen</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Ich möchte einen neuen Chat starten, weil wir das Kontextlimit dieses Chats erreichen. Schreibe mir einen detaillierten Kontext-Prompt und System-Instruktionen, die ich in den nächsten Chat kopieren kann, damit wir genau dort weitermachen können, wo wir aufgehört haben.</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <p>Die KI erstellt dann: Eine Zusammenfassung des bisherigen Kontexts, die relevanten Entscheidungen und Ergebnisse, die aktuellen Arbeitsanweisungen, den Stand des Projekts.</p>
+
+                        <h4>Ausblick</h4>
+                        <p>Das Kontextproblem wird voraussichtlich innerhalb dieses Jahres gelöst sein – die Kontextfenster werden immer größer. Bis dahin ist diese Methode ein zuverlässiger Workaround.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: UNTERRICHTSMATERIALIEN -->
+        <section id="materialien" class="section">
+            <h1 class="section-title">Unterrichtsmaterialien</h1>
+            <p class="section-subtitle">Dokumentierte Anwendungsfälle mit Original-Prompts</p>
+
+            <p>Diese Sektion dokumentiert über 20 konkrete Anwendungsfälle aus dem Schulalltag – jeder mit Kontext, Arbeitsablauf und den exakten Prompts, die verwendet wurden.</p>
+
+            <div class="highlight-box">
+                <h4>Hinweis zur Nutzung</h4>
+                <p style="margin-bottom:0">Die Prompts sind zum direkten Kopieren und Anpassen gedacht. Sie zeigen auch den iterativen Prozess – oft braucht es mehrere Durchgänge, bis das Ergebnis passt.</p>
+            </div>
+
+            <div class="section-controls">
+                <button class="control-btn" onclick="expandAll()">
+                    <span class="icon">▼</span> Alle öffnen
+                </button>
+                <button class="control-btn" onclick="collapseAll()">
+                    <span class="icon">▲</span> Alle schließen
+                </button>
+            </div>
+
+            <h2>ENGLISCH</h2>
+
+            <h3>2. Klasse (A1+/A2-Niveau)</h3>
+
+            <!-- 3.1 School Exercise Handout -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.1 School Exercise als Handout: "Talking about Rules"</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">2. Klasse • A1+/A2</span>
+
+                        <p><strong>Kontext:</strong> Beim Umstieg von Mappe auf Hefte wollte ich eine bereits existierende, handschriftliche School Exercise nicht nochmal abschreiben lassen, sondern als einklebbares Handout gestalten.</p>
+                        
+                        <p><strong>Arbeitsablauf:</strong> Foto der handschriftlichen Notizen hochgeladen → KI erstellt formatiertes Handout mit zwei Kopien pro Seite (zum Ausschneiden).</p>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Here's a photo of my handwritten School Exercise on "Talking about Rules" from last year. Please turn this into a one-page handout for my students.
+
+The handout should include:
+- The rules and explanations for "have to" and "don't have to"
+- The additional modal verbs "must" and "should" with explanations
+- Example sentences for each
+
+Make it visually appealing with boxes so students can glue it into their exercise books. Create two copies on one page (for printing and cutting).</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📄</span> <a href="materials/2A/Talking%20about%20rules%20HAVE%20TO%20and%20DONT%20HAVE%20TO.docx" download>Talking about rules: HAVE TO and DON'T HAVE TO</a></li>
+                                <li><span class="file-icon">📄</span> <a href="materials/2A/Talking%20about%20rules%20Part%202%20MUST%20and%20MUST%20NOT.docx" download>Talking about rules (Part 2): MUST and MUST NOT</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.2 Christmas & New Year -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.2 Christmas & New Year Materials (Unit 7)</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">2. Klasse • A1+/A2</span>
+
+                        <p><strong>Kontext:</strong> Letzte Stunde vor Weihnachten mit Fokus auf "going to" und "might". Zusätzlich: Extraaufgaben für Schüler:innen zwischen zwei Noten (Präsentation über Ferien + Schreibaufgabe zu Neujahrsvorsätzen).</p>
+                        
+                        <p><strong>Arbeitsablauf:</strong> Mehrstufiger Prozess mit iterativer Verfeinerung – von der Grundidee über Grammatik-Sheets bis zu interaktiven Klassenaktivitäten.</p>
+
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Prompt 1 – Initiale Planung</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <div class="prompt-box open">
+                                        <div class="prompt-content" style="max-height:none">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>So I need a bit of help with planning. I have my last lesson with my 2nd grade (A2 level) class. It's the last lesson before Christmas. I'll be quickly discussing the grades with them.
+
+First of all, for all of those who are between two grades, there is an extra task I want to give them. One would be a presentation to do it alone. Basically a presentation of what they did over the holidays. So they have to use past tense and they have to do a PowerPoint with images. And they talk about it for like two minutes. And then I want to do another writing task. But I don't know what yet.
+
+And for the last lesson, it's going to be a Christmas lesson. And the topic of the unit, as you can see, is plans for the weekend. And the focus is on going to. And we have just, literally just started with the first page. Not even the full page, just a couple of activities. And for this lesson, I wanted to do a special Christmas lesson with Christmas vocabulary focus. Where it's about activities that you do over Christmas. Be that family, food related, whatever. And to kind of like develop some tasks around that.
+
+[Uploaded: More_2_SB_Unit_7.docx, More_2_WB_Unit_7.docx]</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Prompt 2 – Verfeinerung der Extraaufgaben</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <div class="prompt-box open">
+                                        <div class="prompt-content" style="max-height:none">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>So, thank you for your suggestions. Here's what I was thinking.
+
+I like the language support you gave for the presentation. Can you write an instruction sheet that has all this? And we don't need the ending after the holidays. Let's just have this focus on past simple, like telling what happened. And we don't need to have a rubric in the instruction sheet.
+
+For the writing task, I was thinking, why not make it future directed, if you will, like going to and might. So the one is like looking back, what did I do? That's the presentation. And the other thing is my New Year's resolution. So what I'm going to do next year and what I might do or what I'm not going to do next year and what I might not do next year. So we need to write a proper prompt instruction for that as well.
+
+And to do all that, we also need to hand them out a grammar sheet with these two. So I'll show you what I had in mind. But I want this to be tied to the Christmas theme lesson. So it explains the grammar on the one hand, the way it can show me here. But it uses only Christmas vocabulary and Christmas activities that are suitable for this. And then it also has some activities that I could do in this class.
+
+So I know it's kind of like asking you a lot. But take your time. Take a deep breath. Go through it step by step and produce the best possible result that you are capable of doing.
+
+[Uploaded: School exercise_ Future possibilities with 'might' and 'might not'.docx, School exercise_ The Future with 'going to'.docx]</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Prompt 3 – Interaktive Aktivitäten</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <div class="prompt-box open">
+                                        <div class="prompt-content" style="max-height:none">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>The task instructions are good for both the presentation and the writing task and the grammar sheets are also good. However, what I need is kind of like some fun pair activities or something to do in class once we've done this grammar, you know. So have a look at the book what it does again, and maybe you can take some from that for a Christmas context or come up with something yourself. We need something basically to give the students an activity in class beyond just the drills and tasks.</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Prompt 4 – Finale Auswahl + eigene Fragen</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <div class="prompt-box open">
+                                        <div class="prompt-content" style="max-height:none">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>I liked these three:
+- Christmas Bingo - Students mingle and find classmates who are going to do certain things
+- Christmas Plans Survey - Walk around and ask classmates, tally results
+- Guess Who - One person describes their Christmas plans, others guess who wrote it
+
+So give me that as well with instructions on both a sheet and on slides that I can project. And also add these to the list:
+
+🎄 Christmas Survey 🎄
+Find someone who...
+... is going to eat fish on Christmas Eve. Name: __________________________
+... is going to visit their grandparents. Name: __________________________
+... is going to go skiing or snowboarding in the holidays. Name: __________________________
+... is going to get a new mobile phone (they hope!). Name: __________________________
+... is NOT going to watch "Home Alone" (Kevin - Allein zu Haus). Name: __________________________
+... is going to sleep until 12:00 p.m. one day. Name: __________________________
+... might travel to another country. Name: __________________________</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📄</span> <a href="materials/2A/School%20exercise%20The%20Future%20with%20going%20to.docx" download>School Exercise: Future with 'going to'</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.3 Voyager Golden Record -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.3 Voyager Golden Record Lesson (Unit 8: UFOs)</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">2. Klasse • A1+/A2</span>
+
+                        <p><strong>Kontext:</strong> Unit über UFOs und Aliens. Zwei Videos gezeigt: eines über die Voyager-1-Mission (1977) mit der goldenen Schallplatte. Kreativprojekt: Schüler:innen erstellen ihre eigene "Class 2A Golden Record" mit Song, Foto, Objekt und Nachricht.</p>
+                        
+                        <p><strong>Arbeitsablauf:</strong> Video-Transkript + Unit-PDF hochgeladen → KI erstellt Vokabel-Einführung, Verständnisfragen und Projektanleitung als PowerPoint im visuellen Stil des Buches.</p>
+
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Prompt 1 – Initiale Anfrage</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <div class="prompt-box open">
+                                        <div class="prompt-content" style="max-height:none">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>Create PowerPoint slides for Unit 8 UFO lesson (Class 2A, A2 level) matching the textbook's visual style from uploaded PDF pages. Lesson structure: Video 1 (What is a UFO?) → Textbook reading (Trent photo) → Listening (Paul/George interview) → Video 2 (Do Aliens Exist?/Golden Record) → Creative project (Class 2A Golden Record).
+
+[Uploaded: Unit 8 textbook PDF pages]</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Prompt 2 – Reduktion + Formatierung</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <div class="prompt-box open">
+                                        <div class="prompt-content" style="max-height:none">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>this is too much input. I only want the link to the videos and the global questions found by the first AI and for the second the task with the golden record stuff. you gotta make the fonts way bigger, it needs to fill the full slide and not just be tiny in the middle and the rest is blank</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p><strong>Finale Folienstruktur:</strong></p>
+                        <ol>
+                            <li>Slide 1: Video 1 "What is a UFO?" mit Vokabeln, Aufgabe, Video-Link</li>
+                            <li>Slide 2: 4 MCQs mit a/b-Optionen und markierten Antworten</li>
+                            <li>Slide 3: Video 2 "The Golden Record" mit Voyager-Kontext und Aufgabe</li>
+                            <li>Slide 4: Creative Project "Class 2A Golden Record" – 4 Items (Song, Photo, Object, Message)</li>
+                        </ol>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📄</span> <a href="materials/2A/Writing%20task%20Unit%208.docx" download>Writing Task Unit 8</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <h3>3. Klasse (A2-Niveau)</h3>
+
+            <!-- 3.4 Year 2 Revision Quiz -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.4 Year 2 Revision Quiz: "Can you remember...?"</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">3. Klasse • A2</span>
+
+                        <p><strong>Kontext:</strong> Wiederholung des gesamten Vorjahresstoffs zu Schuljahresbeginn. Drei Kategorien: Inhalte der Units, Grammatik ("What do you say if...?"), Vokabeln ("5 words for...").</p>
+                        
+                        <p><strong>Arbeitsablauf:</strong> Gesamtes transkribiertes Schulbuch (MORE! 2) hochgeladen → KI erstellt umfassendes Quiz in drei Teilen.</p>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>I'm attaching the entire MORE! 2 Student's Book (all units). I need you to create a comprehensive year-end review quiz that my students can use to revise everything they learned. The quiz should be structured in three parts and cover content, grammar, and vocabulary from all units.
+
+Part 1: "Can you remember...?" (Content Questions)
+Create approximately 10 content questions that test students' memory of key facts, stories, characters, and interesting details from the main reading texts across all units.
+* Questions should start with "Can you remember...?"
+* Focus on memorable moments, character names, plot points, and interesting facts
+* Include a mix of questions from different units throughout the book
+* Provide the answers for each question
+
+Examples of the style I want:
+* "Can you remember...? What is special about the pyramid at Chichen Itza?"
+* "Can you remember...? What were the two embarrassing stories about Alan and Sophia?"
+* "Can you remember...? What was this girl's name and why did Lara and Ron find her mysterious?"
+
+Part 2: "What do you say if...?" (Grammar Questions)
+Create situational prompts where the answer requires using the grammar structures learned throughout the year. Students must answer in full sentences.
+
+Cover all the main grammar points from More 2:
+* Past Simple (asking about holidays)
+* Present Simple (daily routines)
+* Modal verbs for rules (must/mustn't, have to/don't have to)
+* Comparatives and superlatives (comparing things)
+* Asking for and giving directions
+* Going to (definite future plans)
+* Might (uncertain future plans)
+* There is/are with some/any
+* Like + gerund (free time activities)
+* Present Perfect with ever
+* Whose (possession questions)
+* Will/going to for predictions (weather)
+
+Format each as: "What do you say if... [situation]?"
+
+Part 3: "5 words for..." (Vocabulary Questions)
+Create vocabulary challenges where students need to come up with 5 words related to key topics from the units. This should be done as a pair activity.
+
+Include categories like:
+* school subjects
+* buildings in a town
+* Halloween/spooky vocabulary
+* weather descriptions
+* health (aches and pains)
+* describing rooms/furniture
+
+Part 4 (Optional): "Say 5 sentences about..."
+Add a few open speaking prompts where students practice free production:
+* talk about your (ideal) pet
+* describe your room
+* describe your family
+* talk about your favourite sports
+
+Format the output so I can easily turn it into presentation slides, with each question on its own slide.</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📄</span> <a href="materials/3A/ANSWER%20KEY%20-%20Practice%20Pack%20for%20First%20Test.docx" download>Answer Key - Practice Pack for First Test</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.5 My Year of Travelling Adventures -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.5 "My Year of Travelling Adventures" – Diary Entry Writing Task</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">3. Klasse • A2</span>
+
+                        <p><strong>Kontext:</strong> Unit mit vielen Reisetexten (Victorian Lady in Africa, Record Traveler, Celia cycling across America, etc.). Statt der eher oberflächlichen Buchaufgabe wollte ich eine substanziellere Schreibaufgabe entwickeln.</p>
+
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Hauptvision für Schreibaufgabe (Voice Input)</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <div class="prompt-box open">
+                                        <div class="prompt-content" style="max-height:none">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>Here's what I want to do. Basically, I just wanted to get them to... So, I'm reading all these texts, right? I'm reading... We read the two... Victorian Lady in Africa. We read this text. We read the text about the Record Traveler. We read this interview about the Celia cycling across America. We're going to eventually read about sightseeing in Barcelona and a holiday at the lake. And we're going to read another story for Argentina, an Argentinian adventure where it's also cyclists. And we're going to listen to another story about a holiday. So, a lot of inputs.
+
+And here's a task I want them to do. So, obviously, they're like 13-year-olds. And one of those tasks talks about a guy, Will, who finished university and he wasn't sure what to do. He knew he had to get a job one day, but he wanted a bit of adventure before starting his working life. And he decided to cycle through Argentina.
+
+And here's what I want us to do. So, the prompt should be something... It's for a writing task, which I'll hand them out at the end. So, it's for a writing task. So, imagine you have just finished... So, like a time travel scenario, right? So, imagine you have just finished your 8th year in the school. You can take one year off to travel around the world before you go to university, start working, or do anything else, for that matter.
+
+So, basically, what I want them to do is to imagine the scenario where they would like to go. Like, what kind of journey they would like to make themselves. Like, what does it involve? Like, hiking, bike, sightseeing, city trip, laying on the beach. Like, whatever. Like, they have a full year to travel and they can basically make it in any way they want.
+
+So, I want them to write a diary entry from one day in this journey. Like, retelling what has been going on, what has happened. And just, like, writing a diary entry from that kind of, like, vantage point, if you will. And... So, can you, like, write something like that? As a prompt.</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <p style="color: #666; font-size: 0.9em; margin: 0;">Materialien werden noch hinzugefügt...</p>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.6 Pair Reading Activity -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.6 Pair Reading Activity mit Leitfragen (Unit 3)</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">3. Klasse • A2</span>
+
+                        <p><strong>Kontext:</strong> Zwei ähnliche Texte am Anfang der Unit (James Holman, Mary Kingsley). Idee: Jede:r liest einen Text, fasst ihn für den/die Partner:in zusammen, dann macht der/die andere die Aufgabe basierend auf der gehörten Zusammenfassung.</p>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>[Uploaded: More_3_SB_Unit_3.docx]
+
+so i'm starting this new unit here i have it transcribed for you and what i want to do is the following so there are two texts at the beginning of the unit one about like understanding story about famous travelers it's reading one about james hoffman and reading two about so task four about mary kingsley victorian lady in africa
+
+so here's what i wanted to do i wanted the students uh to work in pairs each of them reads one text does the task and summarizes them for their neighbor and to help them summarize it i want them to uh work with like work along some questions that they can ask them so uh who what and so like wh questions uh maybe you can suggest some guiding questions like three or four for the students to help them summarize it for the other student
+
+then they each of them shares the other's uh story they um they uh tell each other and then the other person does the task that they haven't done just now but the summary they've heard from the other story and they read it and then do the task and then they see how well the summary of the other student has helped them
+
+and what i also want them to do is while finishing one story and waiting for the other person i want them to go back to the grammar section or the the um yeah grammar section at the end of the unit and read through the past time markers that they're listed there when before after while during until by the time i want them to read it and then go back to their text and mark all of those in their text just as an extra task
+
+um this is what i want them to do for this lesson so here's what i want you to do uh formulate the questions and also like i want to put all these instructions up on the slide so can you please um uh list out these as like instructions for them keep it on a2 level and these are like efl learners</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <p style="color: #666; font-size: 0.9em; margin: 0;">Materialien werden noch hinzugefügt...</p>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.7 Dangerous Animals -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.7 "The World's Most Dangerous Animals" – Induktive Grammatikeinführung</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">3. Klasse • A2</span>
+
+                        <p><strong>Kontext:</strong> Unit über Vergleiche (comparatives, superlatives). Zusätzlich wollte ich fewer/less/much/many/few/little einführen – induktiv durch einen Text, bei dem die Schüler:innen die Regeln selbst entdecken.</p>
+
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Prompt – Induktiver Ansatz</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <div class="prompt-box open">
+                                        <div class="prompt-content" style="max-height:none">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>I actually wanna go like, kind of off an inductive route with this where I had the following in mind. So wanna have a text, like something related to dangerous animals, and students maybe. Where they read all these forms, all these comparisons with the countable and uncountable nouns, And we read it together, And they kinda notice, okay, why is this being used here, and did that being used there? And then they kinda, like, get the idea or the gist of countable and uncountable nouns through this like through noticing it. And then we go into the details and explain it. So could you write me something like that?</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p><strong>Design-Entscheidungen:</strong></p>
+                        <ul>
+                            <li>Induktiver Lernansatz (Noticing-Aktivität vor expliziter Regel)</li>
+                            <li>Thema "Gefährliche Tiere" für Vokabelintegration</li>
+                            <li>A2/A2+-Sprachniveau</li>
+                            <li>Natürliche Integration der Zielgrammatik (keine erzwungenen Beispiele)</li>
+                            <li>Farbmarkierungs-Aktivität für mündliche Klassendiskussion</li>
+                        </ul>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <p style="color: #666; font-size: 0.9em; margin: 0;">Materialien werden noch hinzugefügt...</p>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.8 Express it Four Ways -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.8 "Express it Four Ways!" – First Conditional Übung</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">3. Klasse • A2</span>
+
+                        <p><strong>Kontext:</strong> Übung zu First Conditional mit if/unless, wobei derselbe Gedanke auf vier verschiedene Arten ausgedrückt wird. Klassenaktivität mit vier Reihen, die rotierend verschiedene Versionen schreiben.</p>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt – Grundidee</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Look at this task. I want to create more of those tasks, but where we explore how the sentence can be expressed in 4 ways: if in the beginning, if in the middle, unless in the beginning, unless in the middle. Create a task where we ask to express an idea needing the first conditional and then expect these four options.
+
+[Uploaded: Screenshot of "Rewrite the sentences using unless" exercise]</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p><strong>Ergebnis:</strong> 10-Folien-Präsentation mit 4 Aufgaben, rotierende Reihenzuweisungen, sodass jede Reihe jeden Satztyp genau einmal schreibt.</p>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📄</span> <a href="materials/3A/School%20exercise%20-%20First%20Conditional%20%28if%20sentences%29.docx" download>School Exercise: First Conditional</a></li>
+                                <li><span class="file-icon">📄</span> <a href="materials/3A/Unit%205%20Grammar%20practice%20First%20Conditional%20sentences%203B.docx" download>Grammar Practice: First Conditional</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.9 Setting Boundaries -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.9 Speaking Activities: Setting Boundaries (Friendship Unit)</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">3. Klasse • A2</span>
+
+                        <p><strong>Kontext:</strong> Testvorbereitung zum Thema Freundschaft. Zwei Aktivitäten: (1) Agree/Disagree-Bewegungsübung mit kontroversen Statements, (2) Szenario-Karten zum Ranking nach Schwierigkeit.</p>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt – Mehr Kontroverse für Bewegung</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Great, now do the following: the activity 7 you generated needs to spark more controversy and movement. Jumble the descriptions and spice them up a bit so the contrast becomes clearer, but stay within the topic. Create the new pptx for it.</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p><strong>Ergebnis:</strong></p>
+                        <ul>
+                            <li>Activity7_Agree_Disagree_Boundaries.pptx – 13 Folien (Titel + 12 kontroverse Statements)</li>
+                            <li>Activity1_Scenario_Cards_Give_Get_Advice.docx – 2-seitiges Handout</li>
+                            <li>Activity1_Scenario_Cards_Instructions.pptx – 4 Folien</li>
+                        </ul>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <p style="color: #666; font-size: 0.9em; margin: 0;">Materialien werden noch hinzugefügt...</p>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <h3>4. Klasse (A2+-Niveau)</h3>
+
+            <!-- 3.10 Year 3 Revision -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.10 Year 3 Revision: "Can you remember...?" Answer Keys</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">4. Klasse • A2+</span>
+
+                        <p><strong>Kontext:</strong> Wiederholungsquiz für Schuljahresbeginn, basierend auf MORE! 3. Erstellung von Antwortschlüsseln zu Content- und Grammar-Fragen.</p>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt – Format spezifizieren</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>the answer should be meant as an answer key to a student quiz:
+in this format:
+* The Titanic Story: In 1898, a novel called Futility described a ship named the Titan sinking after hitting an iceberg. Fourteen years later, the real Titanic sank in a very similar way. Even stranger, in 1935, a ship called the Titanian almost hit an iceberg in the same area. (Unit 2, p. 17)</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📕</span> <a href="materials/3A/More%203%20WB%20Answer%20KEY.pdf" download>MORE 3 Workbook Answer Key</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.11 NYC Video -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.11 NYC Video While-Watching Tasks (Unit 3)</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">4. Klasse • A2+</span>
+
+                        <p><strong>Kontext:</strong> Einführung zur New-York-Unit mit einem 16-minütigen YouTube-Video, das auf 7–8 Minuten gekürzt werden sollte. KI analysiert Transkript und schlägt Schnitte + Aufgaben vor.</p>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>So here's a unit I want to start with my EFL class, 4th grade, A2 plus level. It's about New York as you can see. And so we're going to work through the first page but I wanted to start like somewhat light-hearted with New York and I had this video right here that I wanted to show him but it's way too long with 16 minutes and I need to come up with some like while watching tasks you know.
+
+So like some questions some like questions for like global understanding questions for gist and questions for specific detail. And I also need to like I'm gonna edit this in a video editing tool so I'm gonna shorten the video.
+
+So make sure to first of all suggest how we can shorten this to like seven to eight minutes so only the essential bits and pieces are left over and like give me the timestamps as well how I should cut it because I'm giving you the transcript with timestamps as well. And also then based on that suggest suggest these questions that I told you.
+
+[Uploaded: More_4_SB_Unit_3.docx + video transcript with timestamps]</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📕</span> <a href="materials/4B/NYC%20Quiz.pdf" download>NYC Quiz</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.12 Gen Alpha Slang -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.12 Gen Alpha Slang – End-of-Year Reflection Worksheet</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">4. Klasse • A2+</span>
+
+                        <p><strong>Kontext:</strong> Letzte Schulwoche, Noten bereits vergeben. Reflexionsaktivität über das Schuljahr, verpackt in Gen-Alpha-Slang als Aufhänger.</p>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>I have this transcript about Gen Alpha slang [from the cleaned-up video]. I want to create an end-of-year reflection activity for my English class where students discuss their learning in groups. Can you help me write the discussion questions using Gen Alpha slang in a fun way, but also include a "normal English" translation underneath each question so everyone understands?
+
+The questions should cover:
+* What was their favorite thing in English class this year
+* What was easiest to learn
+* What was most difficult
+* What they want to improve next year
+* What they'd change about the class</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📄</span> <a href="materials/3A/Gen%20Alpha%20Slang.docx" download>Gen Alpha Slang Worksheet</a></li>
+                                <li><span class="file-icon">📄</span> <a href="materials/3A/Gen%20Alpha%20Slang%202.docx" download>Gen Alpha Slang 2</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.13 Test Common Mistakes -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.13 Test Common Mistakes & Great Vocabulary Presentation</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">4. Klasse • A2+</span>
+
+                        <p><strong>Kontext:</strong> Nach der Korrektur von Übungstexten: Häufige Fehler und besonders gelungene Ausdrücke auf Folien zusammenstellen zur Besprechung vor dem Test.</p>
+                        
+                        <p><strong>Arbeitsablauf:</strong> Fehler und gute Ausdrücke per Voice Input diktiert → KI kategorisiert und erstellt Folien im gewohnten visuellen Stil.</p>
+
+                        <p><strong>Besonderheit:</strong> Claude referenzierte vergangene Konversationen, um den etablierten visuellen Stil beizubehalten (pink/magenta Primärfarbe, Teal-Akzente, dekorative Elemente).</p>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📊</span> <a href="materials/5B/5B%20Common%20Writing%20Mistakes%20%28January%202026%29.pptx" download>5B Common Writing Mistakes (PowerPoint)</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.14 Model Texts Analysis -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.14 Model Texts Analysis – How to Get Full Points</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">4. Klasse • A2+</span>
+
+                        <p><strong>Kontext:</strong> Zwei Schülertexte mit voller Punktzahl als Musterbeispiele analysieren. Ein Text: effizient und direkt. Der andere: elaborierter mit fortgeschrittenem Vokabular.</p>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt – Folienstruktur + Farbcodierung</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>So here's what I had in mind. So you know how I've been making slides, right? In which style and how I like them. And basically I was thinking about just showing each of the categories that you laid out, like the task achievement, how you recognize it in the text, like the bullet points, how you recognize it.
+
+Like I wanna color code each and how it matches to the passages in the text. And I like, I wanna show passages slide by slide, go chronologically, but on each slide there's like a paragraph. And on the one side there's like the bullets, which in colors and what corresponds to. And then also I wanna have a different color or categorization for like fancy words and like great descriptions as well.
+
+So for the details in particular as well, right? And like the details in one color and the advanced vocabulary in another color and stuff like that. Like, I hope you understand what I mean and just implement my ideas in the best way possible.</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p><strong>Kernbotschaft der Folien:</strong> "Both approaches earn full points – choose the path that fits your strengths."</p>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📊</span> <a href="materials/4B/model-texts-analysis.pptx" download>Model Texts Analysis (PowerPoint)</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <h3>5. Klasse (B1-Niveau)</h3>
+
+            <!-- 3.15 Food Vlog Project -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.15 Food Vlog Project (Unit 4)</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">5. Klasse • B1</span>
+
+                        <p><strong>Kontext:</strong> Videoprojekt: Schüler:innen erstellen einen 30–60-sekündigen Food-Vlog als Instagram Reel mit Voiceover. Einführung mit sechs TikTok-Videos von Food-Vloggern.</p>
+                        
+                        <p><strong>Arbeitsablauf:</strong> TikTok-Transkripte (via ChatGPT-Spracheingabe erstellt) + Unit-Transkript → KI extrahiert Vokabular, erstellt While-Watching-Tasks und Projektanleitung über 4 Wochen.</p>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt – Projektkonzept</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>So I'm starting a new unit in my 5th grade EFL class B1 level and I've attached the transcribed unit for you so you can have a look and also here's what I want to do like overall.
+
+I want to like start out with these videos and you've just seen like the transcript I also shared of them it's like six videos and basically I want to do a first of all like introduction to like the theme of the unit and I want to like have a while watching while listening uh like task like for example like uh like just just like global questions like um what type of foods were mentioned like write them down where like what type of cuisines like where in the world did they come from which this is like also going into the unit as well which type of uh words were used to describe food like adjective phrases and maybe you can like list like provide the keys for this as well what I'm just telling you right now like based on the transcripts like make a list for me based on that
+
+and then uh with all that like obviously we do the unit but I'm gonna tell them right now already I want them to do a similar video basically where they record like a short 30 to 1 minute reel like the Instagram reel where they basically act as a food blogger vlogger and for that matter and they do a voiceover they don't show their face they don't do any of that but they do a voiceover where they like record any type of food that they either eat at a restaurant and film with the permission of the restaurant or just they film their own food and that's one option
+
+the other option is if they don't want to do that they can just film whatever they are preparing or their parents are preparing and just do the voiceover based on that so this is like the task and this is going to be like I'm telling them right now as we're starting the unit they're not going to be ready for it yet but the idea is then to do that in kind of like a month's time where they upload this this video
+
+and we're going to do it in steps first of all like they choose what type of food it's going to be then they record it then they do a voiceover transcript then they send me the script I give them feedback on the script and then they can go into recording and that can be like throughout the span of like four weeks or something like each week doing one step at a time
+
+[Uploaded: Unit 04 textbook pages + TikTok video transcripts]</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📊</span> <a href="materials/5B/Unit%204%20PROJECT%20Create%20Your%20Own%20Food%20Vlog.pptx" download>Food Vlog Project Instructions</a></li>
+                                <li><span class="file-icon">📊</span> <a href="materials/5B/5B%20Food%20Vlogs.pptx" download>5B Food Vlogs Showcase</a></li>
+                                <li><span class="file-icon">📊</span> <a href="materials/5B/Food%20vocabulary%20for%20food%20reviews.pptx" download>Food Vocabulary for Reviews</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.16 Blog Post Trends -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.16 Blog Post Writing Task: Trends (Unit 6 – way2go!)</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">5. Klasse • B1</span>
+
+                        <p><strong>Kontext:</strong> Schreibaufgabe mit drei Optionen: (1) Trend, der zurückkommen sollte, (2) aktueller Trend, der verschwinden sollte, (3) Trend, den es geben sollte. Mit PEEL-Paragraph-Anforderung.</p>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>📋 Prompt – Hauptaufgabe</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Aight boo, so help me plan out this task. So let me give you some context. Here's the unit in question where we had this intro. And I played it yesterday and it worked perfectly. And now I want to start this unit.
+
+And this is not for the beginning, but throughout this unit I want to give them a writing task where they have to write a blog post on either something that once was trendy but got out of trend. So basically one trend that they would want to bring back. And the other thing is what's one trend that's currently all the rage but that should not be a trend because it's kind of stupid. And what's not a trend right now but that should become a trend. So like three options for their blog post.
+
+And like all three should be fleshed out with like clear instructions and bullet points. And the task should also be to include a PEEL paragraph in their blog post. So what's a PEEL paragraph? As a reminder, a point, then example or evidence, and then the explanation of that, and then the link. So that should be in the instruction.
+
+And then all of them write that. And then as a second step, I will upload them onto our team's channel. And then the task will be each of them comments on one of those blog posts basically. And that's like another task I'm going to give them.
+
+[Uploaded: Unit_06_All_the_rage.docx]</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📄</span> <a href="materials/5B/Writing%20Task%20Blog%20Post.docx" download>Writing Task: Blog Post</a></li>
+                                <li><span class="file-icon">📊</span> <a href="materials/5B/School%20exercise%20PEEL%20Paragraph.pptx" download>PEEL Paragraph School Exercise</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.17 Dead Poets Society -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.17 Dead Poets Society – EFL Film Unit (3 Lektionen)</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">5. Klasse • B1</span>
+
+                        <p><strong>Kontext:</strong> Drei Lektionen vor Weihnachten, nach dem letzten Test. Film "Dead Poets Society" mit integrierten EFL-Aufgaben: Vokabular, Verständnis, Schreiben – im Format der Matura-Aufgaben.</p>
+                        
+                        <p><strong>Arbeitsablauf:</strong> Komplettes Drehbuch hochgeladen → KI erstellt drei Arbeitsblätter (eines pro Lektion) mit unterschiedlichen Aufgabentypen, die im Test vorkommen (Multiple Choice, Banked Cloze, Word Formation, Open Cloze).</p>
+
+                        <div class="highlight-box">
+                            <h4>Das ist die Art von Material, die ohne KI nicht möglich wäre</h4>
+                            <p style="margin-bottom:0">Drei vollständige Arbeitsblätter mit kontextualisierten Vokabelübungen im Matura-Format – basierend auf einem konkreten Film. Der manuelle Aufwand wäre Wochen.</p>
+                        </div>
+
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Prompt 1 – Projektstart</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <div class="prompt-box open">
+                                        <div class="prompt-content" style="max-height:none">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>So, um, I am currently, uh, at the end of the month of December. We go into a holiday break, obviously in school, and I have three more lessons left in my 5B class. And I want to watch the movie Dead Poets Society with them. And in the last three remaining lessons. And I don't just want to watch it. I want to, like, make it EFL-related as possible.
+
+So what do I mean by that? So we work on specific tasks like global understanding, vocabulary, and, like, some reflection in terms of a writing task on this whole topic.
+
+[Uploaded: Vocabulary document, Writing task document, Full screenplay PDF]</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Prompt – Test-Formate einbauen</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <div class="prompt-box open">
+                                        <div class="prompt-content" style="max-height:none">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>here are some of task type formats in our coursebook. I want you to pick some of the vocab task formats and language in use task formats that we haven't used so far and see which one could work here for the remaining part of the transcript. focus especially on the task type formats that is part of our tests which are Multiple Choice (A, B, C, D), Multiple Choice Cloze, Banked Cloze, Open Cloze, Word Formation
+
+[Uploaded: 3 coursebook screenshots showing MC, BGF, WF formats]</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p><strong>Finale Aufgabenstruktur Tag 3:</strong></p>
+                        <ul>
+                            <li>Task 1: Multiple Choice Cloze (8 Items)</li>
+                            <li>Task 2: Banked Cloze with Distractors (12 Lücken, 14 Wörter)</li>
+                            <li>Task 3: Word Formation (10 Items)</li>
+                            <li>Task 4: Open Cloze (10 Items)</li>
+                            <li>Task 5: Writing Task (Blog Post, 2 thematische Optionen)</li>
+                        </ul>
+
+                        <p><strong>Wichtige Lektionen für Replikation:</strong></p>
+                        <ol>
+                            <li>Mit Ausgangsmaterial starten (Drehbuch/Transkript hochladen)</li>
+                            <li>Umfang klar definieren (Zeitsegmente, Sprachniveau, Lernziele)</li>
+                            <li>Erst Aufgabenvielfalt brainstormen, dann auswählen</li>
+                            <li>Explizit auf Überlappungen prüfen</li>
+                            <li>Aufgabenformate präzise unterscheiden</li>
+                        </ol>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <ul>
+                                <li><span class="file-icon">📊</span> <a href="materials/5B/Dead%20Poets%20Society.pptx" download>Dead Poets Society Main Presentation</a></li>
+                                <li><span class="file-icon">📄</span> <a href="materials/5B/DPS%205B%20Day%201.docx" download>DPS Day 1 Worksheet</a></li>
+                                <li><span class="file-icon">📄</span> <a href="materials/5B/DPS%20FRI%20Day%202.docx" download>DPS Day 2 Worksheet</a></li>
+                                <li><span class="file-icon">📄</span> <a href="materials/5B/DPS%205B%20MO%20Day%203.docx" download>DPS Day 3 Worksheet</a></li>
+                                <li><span class="file-icon">📄</span> <a href="materials/5B/Dead%20Poets%20Society%20Vocab.docx" download>Dead Poets Society Vocabulary</a></li>
+                                <li><span class="file-icon">📄</span> <a href="materials/5B/DPS_Day1_Answer_Key_Full.docx" download>Day 1 Answer Key</a></li>
+                                <li><span class="file-icon">📄</span> <a href="materials/5B/DPS_Lesson2_Answer_Key.docx" download>Day 2 Answer Key</a></li>
+                                <li><span class="file-icon">📄</span> <a href="materials/5B/DPS_Lesson3_AnswerKey.docx" download>Day 3 Answer Key</a></li>
+                            </ul>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.18 Matura Generator -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>3.18 Englisch Matura-Aufgaben-Generator (Claude Project)</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <span class="category-badge english">Englisch</span>
+                        <span class="grade-level">Matura • B2+</span>
+
+                        <p><strong>Kontext:</strong> Umfassendes Claude-Projekt zur Generierung von mündlichen Matura-Aufgaben (Standardisierte Reifeprüfung) für Englisch auf B2+-Niveau. Iterativ über längere Zeit entwickelt und verfeinert.</p>
+
+                        <p><strong>Arbeitsablauf:</strong> Claude Project mit System-Prompt, Qualitätsleitfaden und Task Libraries eingerichtet. Bei Eingabe eines Themenblocks generiert die KI sieben vollständige Aufgabensets (3× Bilder, 2× Zitate, 2× Alternative Prompts).</p>
+
+                        <h4>Kern-Features des Projects</h4>
+                        <ul>
+                            <li><strong>18 genehmigte Themenblöcke</strong> (Family & Gender, School & Education, etc.)</li>
+                            <li><strong>Automatische Variabilitätsprüfung</strong> (keine Überlappungen zwischen Aufgaben)</li>
+                            <li><strong>Verifizierungspflicht</strong> für Zitate (Web-Suche) und Statistiken (Quelle, Jahr, URL)</li>
+                            <li><strong>Zwei Ausgabedateien:</strong> Student Tasks + Teacher Resource (mit Erwartungshorizont)</li>
+                            <li><strong>Bildgenerierungs-Prompts</strong> für KI-Bildgeneratoren</li>
+                        </ul>
+
+                        <h4>Aufgabenstruktur pro Set</h4>
+                        <ul>
+                            <li><strong>Part 1:</strong> Individual Long Turn (Prompt + 3 Bullet Points für 5 Min. Monolog)</li>
+                            <li><strong>Part 2:</strong> Paired Activity (Szenario + 5 Optionen für 10 Min. Dialog)</li>
+                            <li><strong>Erwartungshorizont:</strong> Lösungen für beide Teile</li>
+                        </ul>
+
+                        <h4>Kategorie A – Kontrastierende Bilder</h4>
+                        <table>
+                            <tr><th>Kontrastkategorie</th><th>Bild 1</th><th>Bild 2</th></tr>
+                            <tr><td>Temporal</td><td>Historisch/Vergangenheit</td><td>Modern/Gegenwart</td></tr>
+                            <tr><td>Scale</td><td>Individuum</td><td>Gruppe/Masse</td></tr>
+                            <tr><td>Approach</td><td>Aktiv</td><td>Passiv</td></tr>
+                            <tr><td>Setting</td><td>Urban</td><td>Rural</td></tr>
+                            <tr><td>Mood</td><td>Positiv</td><td>Negativ</td></tr>
+                            <tr><td>Impact</td><td>Problem</td><td>Lösung</td></tr>
+                        </table>
+
+                        <h4>Qualitätssicherung</h4>
+                        <ul>
+                            <li>Alle 7 Aufgaben adressieren UNTERSCHIEDLICHE Aspekte des Themas</li>
+                            <li>A1/A2/A3 verwenden UNTERSCHIEDLICHE Kontrastkategorien</li>
+                            <li>B1/B2 verwenden UNTERSCHIEDLICHE Autoren UND thematische Winkel</li>
+                            <li>Plagiatsprüfung gegen bestehende Task Libraries</li>
+                        </ul>
+
+                                                <div class="materials-box">
+                            <h4>📂 Erstellte Materialien</h4>
+                            <p style="color: #666; font-size: 0.9em; margin: 0;">Materialien werden noch hinzugefügt...</p>
+                        </div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: BEURTEILUNG -->
+        <section id="beurteilung" class="section">
+            <div class="coming-soon">
+                <div class="icon">📊</div>
+                <h2>Beurteilung & Notenvergabe</h2>
+                <p>Schreibkorrektur, Excel-Notenblätter, Sprache-zu-Note-Eingaben</p>
+                <p><strong>Folgt in Kürze</strong></p>
+            </div>
+        </section>
+
+        <!-- SECTION 5: QUALITÄTSSICHERUNG -->
+        <section id="qualitaet" class="section">
+            <div class="coming-soon">
+                <div class="icon">✓</div>
+                <h2>Qualitätssicherung</h2>
+                <p>Test-Item-Analyse, Lösungsschlüssel-Erarbeitung, Testmaterial-Überprüfung</p>
+                <p><strong>Folgt in Kürze</strong></p>
+            </div>
+        </section>
+
+        <!-- SECTION 6: CURRICULUM -->
+        <section id="curriculum" class="section">
+            <div class="coming-soon">
+                <div class="icon">📚</div>
+                <h2>Curriculumentwicklung</h2>
+                <p>Matura-Aufgabenentwicklung, vertiefende Übungsmaterialien</p>
+                <p><strong>Folgt in Kürze</strong></p>
+            </div>
+        </section>
+
+        <!-- SECTION 7: ADMINISTRATION -->
+        <section id="admin" class="section">
+            <div class="coming-soon">
+                <div class="icon">📋</div>
+                <h2>Administration</h2>
+                <p>Elternkommunikation, Sprechtagsvorbereitung</p>
+                <p><strong>Folgt in Kürze</strong></p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Update active nav
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding section
+                const sectionId = this.dataset.section;
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            });
+        });
+
+        // Collapsible sections
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const collapsible = this.parentElement;
+                collapsible.classList.toggle('open');
+            });
+        });
+
+        // Sub-collapsible sections
+        function toggleSubCollapsible(header) {
+            const subCollapsible = header.parentElement;
+            subCollapsible.classList.toggle('open');
+        }
+
+        // Prompt boxes
+        function togglePrompt(header) {
+            const promptBox = header.parentElement;
+            promptBox.classList.toggle('open');
+            const toggleText = header.querySelector('.toggle-prompt');
+            if (promptBox.classList.contains('open')) {
+                toggleText.textContent = '▲ verbergen';
+            } else {
+                toggleText.textContent = '▼ anzeigen';
+            }
+        }
+
+        // Copy prompt
+        function copyPrompt(btn) {
+            const pre = btn.parentElement.querySelector('pre');
+            const text = pre.textContent;
+
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'Kopiert!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Kopieren';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Template boxes
+        function toggleTemplate(header) {
+            const templateBox = header.parentElement;
+            templateBox.classList.toggle('open');
+            const toggleText = header.querySelector('.toggle-template');
+            if (templateBox.classList.contains('open')) {
+                toggleText.textContent = '▲ verbergen';
+            } else {
+                toggleText.textContent = '▼ anzeigen';
+            }
+        }
+
+        // Expand all collapsible sections
+        function expandAll() {
+            document.querySelectorAll('.collapsible').forEach(el => {
+                el.classList.add('open');
+            });
+            document.querySelectorAll('.sub-collapsible').forEach(el => {
+                el.classList.add('open');
+            });
+            document.querySelectorAll('.prompt-box').forEach(el => {
+                el.classList.add('open');
+                const toggleText = el.querySelector('.toggle-prompt');
+                if (toggleText) toggleText.textContent = '▲ verbergen';
+            });
+            document.querySelectorAll('.template-box').forEach(el => {
+                el.classList.add('open');
+                const toggleText = el.querySelector('.toggle-template');
+                if (toggleText) toggleText.textContent = '▲ verbergen';
+            });
+        }
+
+        // Collapse all collapsible sections
+        function collapseAll() {
+            document.querySelectorAll('.collapsible').forEach(el => {
+                el.classList.remove('open');
+            });
+            document.querySelectorAll('.sub-collapsible').forEach(el => {
+                el.classList.remove('open');
+            });
+            document.querySelectorAll('.prompt-box').forEach(el => {
+                el.classList.remove('open');
+                const toggleText = el.querySelector('.toggle-prompt');
+                if (toggleText) toggleText.textContent = '▼ anzeigen';
+            });
+            document.querySelectorAll('.template-box').forEach(el => {
+                el.classList.remove('open');
+                const toggleText = el.querySelector('.toggle-template');
+                if (toggleText) toggleText.textContent = '▼ anzeigen';
+            });
+        }
+    </script>
+</body>
+</html>
