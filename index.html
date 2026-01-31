@@ -12,41 +12,60 @@
         }
 
         :root {
-            /* Frutiger Aero Color Palette */
-            --primary: #3a9fd5;          /* Sky blue */
-            --primary-dark: #2980b9;     /* Deeper sky blue */
-            --secondary: #27ae96;        /* Teal green */
-            --accent: #8bc34a;           /* Fresh grass green */
-            --bg-light: #e3f2fd;         /* Light sky wash */
+            /* Frutiger Aero + Windows XP Color Palette */
+            --xp-blue: #0078d4;          /* Classic XP blue */
+            --xp-blue-light: #1e90ff;    /* Lighter XP blue */
+            --xp-blue-dark: #003c74;     /* Dark XP blue */
+            --xp-green: #3c8a2e;         /* XP Start button green */
+            --xp-green-light: #5cb85c;   /* Light green */
+            --primary: #0078d4;
+            --primary-dark: #005a9e;
+            --secondary: #2e7d32;
+            --accent: #7cb342;           /* Fresh grass green */
+            --bg-light: #d6eaf8;
             --bg-white: #ffffff;
-            --text-dark: #2c3e50;
-            --text-muted: #607d8b;
-            --border: #b3d9f2;
+            --text-dark: #1a3a52;
+            --text-muted: #546e7a;
+            --border: #7eb8da;
             --sidebar-width: 280px;
-            --success: #4caf50;          /* For materials box */
+            --success: #4caf50;
+            /* XP-style 3D borders */
+            --border-light: #ffffff;
+            --border-dark: #7193a8;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text-dark);
-            background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 50%, #e1f5fe 100%);
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.8) 0%, transparent 50%),
+                linear-gradient(180deg, #87ceeb 0%, #b0e0e6 25%, #add8e6 50%, #c9e4c5 75%, #90c695 100%);
             background-attachment: fixed;
+            min-height: 100vh;
         }
 
-        /* Sidebar - Frutiger Aero Glossy */
+        /* Sidebar - Windows XP Luna Blue Style */
         .sidebar {
             position: fixed;
             left: 0;
             top: 0;
             width: var(--sidebar-width);
             height: 100vh;
-            background: linear-gradient(180deg, #4fc3f7 0%, #29b6f6 15%, #039be5 50%, #0288d1 100%);
+            background: linear-gradient(180deg,
+                #245edb 0%,
+                #2968e0 2%,
+                #1c4fba 4%,
+                #1542a6 50%,
+                #0f3380 100%);
             color: white;
             overflow-y: auto;
             z-index: 1000;
             padding-bottom: 2rem;
-            box-shadow: 2px 0 15px rgba(2, 136, 209, 0.3);
+            box-shadow:
+                2px 0 8px rgba(0, 30, 80, 0.5),
+                inset -1px 0 0 rgba(255,255,255,0.1);
+            border-right: 1px solid #0a2560;
         }
 
         .sidebar::before {
@@ -55,15 +74,22 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 40%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 100%);
+            height: 60%;
+            background: linear-gradient(180deg,
+                rgba(255,255,255,0.15) 0%,
+                rgba(255,255,255,0.08) 30%,
+                rgba(255,255,255,0) 100%);
             pointer-events: none;
         }
 
         .sidebar-header {
             padding: 1.5rem;
-            background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%);
-            border-bottom: 2px solid rgba(255,255,255,0.3);
+            background: linear-gradient(180deg,
+                rgba(100,149,237,0.3) 0%,
+                rgba(70,130,220,0.1) 50%,
+                transparent 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.2);
         }
 
         .sidebar-header h1 {
@@ -91,34 +117,44 @@
         .nav-item {
             display: block;
             padding: 0.75rem 1.5rem;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255,255,255,0.9);
             text-decoration: none;
             font-size: 0.9rem;
-            transition: all 0.2s;
+            transition: all 0.15s;
             border-left: 3px solid transparent;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
         }
 
         .nav-item:hover {
-            background: rgba(255,255,255,0.1);
+            background: linear-gradient(90deg,
+                rgba(100,180,255,0.3) 0%,
+                rgba(100,180,255,0.1) 100%);
             color: white;
         }
 
         .nav-item.active {
-            background: rgba(255,255,255,0.15);
-            border-left-color: var(--accent);
+            background: linear-gradient(90deg,
+                rgba(100,200,255,0.4) 0%,
+                rgba(100,180,255,0.15) 100%);
+            border-left-color: #7cb342;
             color: white;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
         }
 
         .nav-item .nav-number {
             display: inline-block;
             width: 24px;
             height: 24px;
-            background: rgba(255,255,255,0.2);
+            background: linear-gradient(180deg,
+                rgba(255,255,255,0.3) 0%,
+                rgba(255,255,255,0.1) 100%);
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: 50%;
             text-align: center;
-            line-height: 24px;
+            line-height: 22px;
             font-size: 0.75rem;
             margin-right: 0.75rem;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
         }
 
         .nav-item.placeholder {
@@ -185,28 +221,40 @@
             margin-bottom: 1rem;
         }
 
-        /* Collapsible Sections - Frutiger Aero Glass */
+        /* Collapsible Sections - XP Style Panels */
         .collapsible {
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 10px;
+            background: linear-gradient(180deg, #ffffff 0%, #f0f6fc 50%, #e4eff8 100%);
+            border: 1px solid #7eb8da;
+            border-top: 1px solid #ffffff;
+            border-left: 1px solid #ffffff;
+            border-radius: 8px;
             margin-bottom: 1rem;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(41, 182, 246, 0.1), inset 0 1px 0 rgba(255,255,255,0.6);
+            box-shadow:
+                0 2px 4px rgba(0, 60, 116, 0.15),
+                0 4px 12px rgba(0, 60, 116, 0.1),
+                inset 0 1px 0 #ffffff;
         }
 
         .collapsible-header {
             padding: 1rem 1.25rem;
-            background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 100%);
+            background: linear-gradient(180deg,
+                #f8fbff 0%,
+                #e8f4fc 50%,
+                #d8ecf8 100%);
+            border-bottom: 1px solid #c4dff0;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
 
         .collapsible-header:hover {
-            background: linear-gradient(180deg, rgba(79, 195, 247, 0.15) 0%, rgba(79, 195, 247, 0.05) 100%);
+            background: linear-gradient(180deg,
+                #eef7ff 0%,
+                #d4ebfc 50%,
+                #c0e0f8 100%);
         }
 
         .collapsible-header h3 {
@@ -239,12 +287,15 @@
             border-top: 1px solid var(--border);
         }
 
-        /* Sub-collapsible - Nested Glass */
+        /* Sub-collapsible - XP Nested Panel */
         .sub-collapsible {
-            background: rgba(227, 242, 253, 0.7);
-            border: 1px solid rgba(179, 217, 242, 0.5);
-            border-radius: 8px;
+            background: linear-gradient(180deg, #f8fbff 0%, #f0f6fc 50%, #e8f0f8 100%);
+            border: 1px solid #a8c8e0;
+            border-top-color: #ffffff;
+            border-left-color: #ffffff;
+            border-radius: 6px;
             margin: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0, 60, 116, 0.1);
         }
 
         .sub-collapsible-header {
@@ -255,11 +306,16 @@
             align-items: center;
             font-weight: 500;
             font-size: 0.95rem;
-            background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 100%);
+            background: linear-gradient(180deg,
+                rgba(255,255,255,0.8) 0%,
+                rgba(232,244,252,0.5) 100%);
+            border-radius: 5px 5px 0 0;
         }
 
         .sub-collapsible-header:hover {
-            background: linear-gradient(180deg, rgba(79, 195, 247, 0.1) 0%, transparent 100%);
+            background: linear-gradient(180deg,
+                rgba(200,230,255,0.6) 0%,
+                rgba(180,220,255,0.3) 100%);
         }
 
         .sub-collapsible-content {
@@ -395,28 +451,38 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Highlight Box - Green Accent */
+        /* Highlight Box - XP Green Style */
         .highlight-box {
-            background: linear-gradient(135deg, rgba(139, 195, 74, 0.15) 0%, rgba(174, 213, 129, 0.1) 100%);
-            border-left: 4px solid var(--accent);
+            background: linear-gradient(180deg, #f0fff0 0%, #e0f5e0 50%, #d0eed0 100%);
+            border: 1px solid #90c695;
+            border-top-color: #ffffff;
+            border-left: 4px solid #3c8a2e;
             padding: 1.25rem;
-            border-radius: 0 10px 10px 0;
+            border-radius: 0 6px 6px 0;
             margin: 1.5rem 0;
-            box-shadow: 0 2px 10px rgba(139, 195, 74, 0.1);
+            box-shadow:
+                0 2px 6px rgba(60, 138, 46, 0.12),
+                inset 0 1px 0 rgba(255,255,255,0.8);
         }
 
         .highlight-box h4 {
-            color: #558b2f;
+            color: #2e7d32;
             margin-top: 0;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.7);
         }
 
-        /* Warning Box */
+        /* Warning Box - XP Yellow Style */
         .warning-box {
-            background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 224, 130, 0.1) 100%);
-            border-left: 4px solid #ffc107;
+            background: linear-gradient(180deg, #fffef0 0%, #fff8d0 50%, #fff0b0 100%);
+            border: 1px solid #e0c060;
+            border-top-color: #ffffff;
+            border-left: 4px solid #f0a000;
             padding: 1rem;
-            border-radius: 0 8px 8px 0;
+            border-radius: 0 6px 6px 0;
             margin: 1rem 0;
+            box-shadow:
+                0 2px 6px rgba(200, 150, 0, 0.12),
+                inset 0 1px 0 rgba(255,255,255,0.8);
         }
 
         
@@ -445,23 +511,47 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: linear-gradient(180deg, #ffffff 0%, #e3f2fd 100%);
-            border: 1px solid rgba(41, 182, 246, 0.3);
-            border-radius: 20px;
-            color: var(--primary);
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(180deg,
+                #ffffff 0%,
+                #f0f8ff 15%,
+                #e0f0ff 50%,
+                #c8e4fc 85%,
+                #b0d4f1 100%);
+            border: 1px solid #7eb8da;
+            border-top-color: #ffffff;
+            border-left-color: #ffffff;
+            border-radius: 6px;
+            color: #003c74;
             font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.25s;
-            box-shadow: 0 2px 8px rgba(41, 182, 246, 0.15), inset 0 1px 0 rgba(255,255,255,0.8);
+            transition: all 0.15s;
+            box-shadow:
+                0 1px 2px rgba(0, 60, 116, 0.2),
+                inset 0 1px 0 rgba(255,255,255,0.9),
+                inset 0 -1px 0 rgba(0,60,116,0.1);
+            text-shadow: 0 1px 0 rgba(255,255,255,0.7);
         }
 
         .control-btn:hover {
-            background: linear-gradient(180deg, #4fc3f7 0%, #29b6f6 100%);
-            color: white;
-            border-color: #29b6f6;
-            box-shadow: 0 4px 12px rgba(41, 182, 246, 0.3);
+            background: linear-gradient(180deg,
+                #e6f3ff 0%,
+                #cce7ff 15%,
+                #99d1ff 50%,
+                #66bbff 85%,
+                #4db8ff 100%);
+            color: #00264d;
+            border-color: #3399ff;
+        }
+
+        .control-btn:active {
+            background: linear-gradient(180deg,
+                #99ccff 0%,
+                #80bfff 50%,
+                #99ccff 100%);
+            box-shadow:
+                inset 0 2px 4px rgba(0, 60, 116, 0.3);
         }
 
         .control-btn .icon {
@@ -484,15 +574,18 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Materials Links Box - Frutiger Aero */
+        /* Materials Links Box - XP Style */
         .materials-box {
-            background: linear-gradient(135deg, rgba(79, 195, 247, 0.1) 0%, rgba(41, 182, 246, 0.05) 100%);
-            border: 1px solid rgba(41, 182, 246, 0.2);
-            border-left: 4px solid var(--primary);
-            border-radius: 0 10px 10px 0;
+            background: linear-gradient(180deg, #f0f8ff 0%, #e0f0ff 50%, #d0e8ff 100%);
+            border: 1px solid #7eb8da;
+            border-top-color: #ffffff;
+            border-left: 4px solid #0078d4;
+            border-radius: 0 6px 6px 0;
             padding: 1rem 1.25rem;
             margin: 1rem 0;
-            box-shadow: 0 2px 8px rgba(41, 182, 246, 0.08);
+            box-shadow:
+                0 2px 6px rgba(0, 60, 116, 0.12),
+                inset 0 1px 0 rgba(255,255,255,0.8);
         }
 
         .materials-box h4 {
@@ -650,11 +743,16 @@
 
         /* Filter System */
         .filter-container {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 12px;
+            background: linear-gradient(180deg, #f8fbff 0%, #e8f4fc 50%, #d8ecf8 100%);
+            border: 1px solid #7eb8da;
+            border-top-color: #ffffff;
+            border-left-color: #ffffff;
+            border-radius: 8px;
             padding: 1rem 1.25rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 2px 10px rgba(41, 182, 246, 0.1);
+            box-shadow:
+                0 2px 6px rgba(0, 60, 116, 0.15),
+                inset 0 1px 0 rgba(255,255,255,0.9);
         }
 
         .filter-row {
@@ -678,25 +776,45 @@
 
         .filter-btn {
             padding: 0.4rem 0.9rem;
-            border: 1px solid rgba(41, 182, 246, 0.3);
-            border-radius: 20px;
-            background: linear-gradient(180deg, #ffffff 0%, #f5f9fc 100%);
-            color: var(--text-dark);
+            border: 1px solid #7eb8da;
+            border-top-color: #ffffff;
+            border-left-color: #ffffff;
+            border-radius: 4px;
+            background: linear-gradient(180deg,
+                #ffffff 0%,
+                #f0f8ff 20%,
+                #e8f4fc 80%,
+                #d8ecf8 100%);
+            color: #003c74;
             font-size: 0.8rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
+            box-shadow:
+                0 1px 2px rgba(0, 60, 116, 0.15),
+                inset 0 1px 0 rgba(255,255,255,0.9);
+            text-shadow: 0 1px 0 rgba(255,255,255,0.7);
         }
 
         .filter-btn:hover {
-            background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 100%);
-            border-color: #29b6f6;
+            background: linear-gradient(180deg,
+                #e8f4ff 0%,
+                #d0e8ff 50%,
+                #b8dcff 100%);
+            border-color: #5090c0;
         }
 
         .filter-btn.active {
-            background: linear-gradient(180deg, #4fc3f7 0%, #29b6f6 100%);
+            background: linear-gradient(180deg,
+                #3399ff 0%,
+                #0078d4 30%,
+                #0066b8 70%,
+                #005299 100%);
             color: white;
-            border-color: #29b6f6;
-            box-shadow: 0 2px 8px rgba(41, 182, 246, 0.3);
+            border-color: #004080;
+            box-shadow:
+                0 1px 3px rgba(0, 60, 116, 0.4),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
         }
 
         .material-item {
