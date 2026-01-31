@@ -5059,6 +5059,126 @@ Create a SINGLE SLIDE with instructions for students. The slide should:
                 <li>Plagiatsprüfung gegen bestehende Task Libraries</li>
             </ul>
 
+            <!-- PROMPT SECTION -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>💬 Claude Project Setup</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><strong>Projekttyp:</strong> Claude Project mit umfangreichem System-Prompt (~3000 Wörter)</p>
+
+                        <h4>Project Knowledge (hochgeladene Dateien)</h4>
+                        <ul>
+                            <li><strong>Austrian_Oral_Matura_Task_Quality_Guide.docx</strong> – Qualitätsstandards, Checklisten, Bewertungskriterien</li>
+                            <li><strong>Task Libraries 1 & 2</strong> – Bereits erstellte Aufgaben zur Plagiatsprüfung</li>
+                            <li><strong>Alle 18 Themenblock-Dateien</strong> – Für Referenz und Konsistenzprüfung</li>
+                        </ul>
+
+                        <h4>System-Prompt Kernelemente</h4>
+                        <ul>
+                            <li><strong>18 genehmigte Themenblöcke</strong> mit offiziellen Namen</li>
+                            <li><strong>7 Task Sets pro Themenblock:</strong> A1/A2/A3 (Bilder), B1/B2 (Zitate), C1/C2 (Alternative)</li>
+                            <li><strong>Variabilitätsprüfung:</strong> Jede Aufgabe muss unterschiedliche Aspekte adressieren</li>
+                            <li><strong>Verifizierungspflicht:</strong> Web-Suche für alle Zitate und Statistiken</li>
+                            <li><strong>Kontrastkategorien:</strong> Temporal, Scale, Approach, Setting, Mood, Impact</li>
+                            <li><strong>Task Verb Reference:</strong> Describe, Compare, Contrast, Analyze, Discuss, etc.</li>
+                            <li><strong>Photorealistic Image Prompts:</strong> Template für KI-Bildgeneratoren (DSLR, Square 1:1)</li>
+                            <li><strong>Erwartungshorizont-Struktur:</strong> 8-12 Punkte pro Bild, Vergleiche, Kontraste</li>
+                        </ul>
+
+                        <h4>Generation Workflow (10 Schritte)</h4>
+                        <ol>
+                            <li>Search project knowledge für existierende Tasks (Plagiatsprüfung)</li>
+                            <li>Document any overlap found</li>
+                            <li>Confirm topic; suggest 2-3 aspects if not specified</li>
+                            <li>Generate all 7 task sets – each addressing DIFFERENT aspect</li>
+                            <li>Category A: Different contrast category + settings for each</li>
+                            <li>Category B: Different authors + thematic angles; VERIFY all quotes</li>
+                            <li>Category C: Different format + sources; VERIFY all statistics</li>
+                            <li>Part 2: Different scenario types (4-5 types across 7 tasks)</li>
+                            <li>Document all verifications in Erwartungshorizont</li>
+                            <li>Offer Word documents (Student + Teacher versions)</li>
+                        </ol>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Beispiel-Prompt für Themenblock-Generierung</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Generate Themenblock 8 – The Job World</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <p><strong>🤖 Claude:</strong> Durchsucht Project Knowledge nach existierenden Tasks, prüft auf Überlappungen, generiert 7 vollständige Aufgabensets (A1-A3, B1-B2, C1-C2) mit unterschiedlichen Aspekten (Arbeitsmarkt, Work-Life-Balance, Karriereplanung, etc.), verifiziert alle Zitate und Statistiken via Web-Suche, erstellt Erwartungshorizont mit Quellenangaben, bietet Student Tasks + Teacher Resource als Word-Dokumente an.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONE-SHOT PROMPT -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>🎯 One-Shot Prompt (für neues Project)</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><em>Dieser Prompt wurde nachträglich erstellt, um ein ähnliches Claude Project einzurichten:</em></p>
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 System-Prompt für Claude Project</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>You are an Austrian Oral Matura Task Generator for English at CEFR B2+ level.
+
+**Output:** When given a Themenblock name, generate 7 complete examination task sets:
+- Category A (A1, A2, A3): Contrasting Images – each uses DIFFERENT contrast category
+- Category B (B1, B2): Quote-based – each uses DIFFERENT author AND thematic angle
+- Category C (C1, C2): Alternative prompts – each uses DIFFERENT format AND source
+
+**Task Structure:**
+- Part 1: Individual Long Turn (5 min monologue) – Prompt + 3 bullet points
+- Part 2: Paired Activity (10 min dialogue) – Scenario + exactly 5 comparable options
+
+**Contrast Categories for Images:** Temporal, Scale, Approach, Setting, Mood, Impact, Authenticity, Artistic
+
+**Verification Requirements:**
+- ALL quotes must be verified via web search (author + exact wording)
+- ALL statistics must be current (3-5 years), from authoritative sources, with URL documented
+- NEVER use unverified quotes or statistics
+
+**Quality Checks:**
+- All 7 tasks address DIFFERENT aspects of the topic
+- No overlap with existing Task Libraries
+- Part 2 scenarios are NOT roleplay – no "agree to disagree" acceptable
+- Images must enable interpretation, not just description
+
+**Output Format:**
+1. Student Tasks document (prompts only)
+2. Teacher Resource document (with Erwartungshorizont including source verifications)
+3. AI image generation prompts (photorealistic, DSLR style, square 1:1 format)
+
+**File Naming:** Themenblock [NUMBER] – [TOPIC NAME] STUDENT TASKS.docx</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>🔗 Claude Project Link</h4>
+                <p style="margin-bottom:0"><a href="https://claude.ai/project/019b513b-e2d7-740a-87ac-8049cc11e352" target="_blank">English Matura Mündlich – Oral Exam Task Creator</a><br>
+                Claude Project mit vollständigem System-Prompt, Quality Guide und allen 18 Themenblöcken.</p>
+            </div>
+
             <div class="materials-box">
                 <h4>📂 Erstellte Materialien – Student Tasks (18 Themenblöcke)</h4>
                 <ul>
