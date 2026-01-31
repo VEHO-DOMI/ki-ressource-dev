@@ -4631,26 +4631,68 @@ here is the entire unit for reference:
                 </div>
             </div>
 
-            <!-- ONE-SHOT PROMPT -->
-            <div class="template-box">
-                <h4>🎯 One-Shot Prompt</h4>
-                <p>Für ähnliche Task-Instruction-Slides:</p>
-                <div class="prompt-box open">
-                    <div class="prompt-content" style="max-height:none">
-                        <div class="prompt-inner">
-                            <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
-                            <pre>Erstelle eine Folie mit klaren Aufgaben-Instruktionen für eine Klassenzimmer-Aktivität.
+            <!-- GENERALIZED PROMPT TEMPLATE -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>📋 Generalisierte Prompt-Vorlage: Task-Instruction-Slides</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><em>Diese Vorlage eignet sich für Präsentationsfolien mit klaren Aufgaben-Instruktionen für Klassenaktivitäten. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
 
-**Aktivität:** [z.B. Gruppen-Diskussion, Debatte, Rollenspiel]
-**Meine Instruktionen (bitte strukturieren):** [Rambling-Beschreibung der Aktivität]
-**Unit-Kontext:** [Relevante Buchseiten/Übungen als Referenz]
+                        <h4>🔄 Empfohlener Workflow (1-2 Schritte)</h4>
+                        <p>Task-Instruction-Slides sind meist <strong>straightforward</strong> – ein Prompt reicht oft:</p>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Prompt – Task-Instruction-Slide erstellen</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Erstelle eine Folie mit klaren Aufgaben-Instruktionen für eine Klassenzimmer-Aktivität.
+
+**Aktivität:** [z.B. Gruppen-Diskussion, Debatte, Rollenspiel, Pair Work]
+
+**Meine Idee (bitte strukturieren und verbessern):**
+[RAMBLING-BESCHREIBUNG DER AKTIVITÄT – Die KI strukturiert das]
+
+**Materialien aus der Unit:**
+[z.B. Statements von Seite X, Discussion Phrases von Seite Y]
 
 **Anforderungen:**
-- Klare, nummerierte Schritte
+- Klare, nummerierte Schritte (A2-Sprache, kurze Sätze)
 - Visuell ansprechend zum Projizieren
-- Alle relevanten Informationen auf einen Blick (Statements, Phrasen, Zeitangaben)
-- Farbcodierung wenn sinnvoll (z.B. Position A vs. Position B)</pre>
+- Alle relevanten Informationen auf einen Blick:
+  - Statements/Fragen/Prompts für die Aktivität
+  - Hilfreiche Phrasen (wenn vorhanden)
+  - Zeitangaben pro Schritt
+- Farbcodierung wenn sinnvoll (z.B. Position A vs. Position B)
+- Gruppengrößen/Paarungen klar angeben
+
+[Unit-Transkript als Referenz anhängen]</pre>
+                                </div>
+                            </div>
                         </div>
+
+                        <h4>💡 Didaktische Prinzipien</h4>
+                        <ul>
+                            <li><strong>Clear Instructions:</strong> Nummerierte Schritte → kein Rätselraten</li>
+                            <li><strong>All-in-One:</strong> Alles auf einer Folie → kein Hin- und Herblättern</li>
+                            <li><strong>Time Frames:</strong> Klare Zeitangaben → SuS können sich einteilen</li>
+                            <li><strong>Phrase Support:</strong> Hilfreiche Phrasen direkt sichtbar → niedrigere Hemmschwelle</li>
+                            <li><strong>Visual Distinction:</strong> Farbcodierung für Rollen/Positionen</li>
+                        </ul>
+
+                        <h4>🔧 Anpassungsmöglichkeiten</h4>
+                        <ul>
+                            <li><strong>Debate:</strong> Pro/Con-Positionen, strukturierte Redezeit</li>
+                            <li><strong>Discussion:</strong> Offenere Fragen, Meinungsaustausch</li>
+                            <li><strong>Information Gap:</strong> Partner A hat Info X, Partner B hat Info Y</li>
+                            <li><strong>Ranking/Sorting:</strong> Gemeinsam Prioritäten setzen</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -4734,62 +4776,98 @@ here is the entire unit for reference:
                 </div>
             </div>
 
-            <!-- ONE-SHOT PROMPT SECTION -->
-            <div class="template-box">
-                <div class="template-header" onclick="toggleTemplate(this)">
-                    <span>🎯 One-Shot Prompt (für gleiches Ergebnis)</span>
-                    <span class="toggle-template">▼ anzeigen</span>
+            <!-- GENERALIZED PROMPT TEMPLATE -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>📋 Generalisierte Prompt-Vorlage: Pair Reading mit Jigsaw-Methode</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
-                <div class="template-content">
-                    <div class="template-inner">
-                        <div class="template-description">
-                            Dieser Prompt kombiniert alle Anforderungen für eine Pair Reading Aktivität mit zwei parallelen Texten.
-                            <br><strong>Anhänge benötigt:</strong> Unit-Transkript mit beiden Texten
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><em>Diese Vorlage eignet sich für Aktivitäten, bei denen Partner unterschiedliche Texte lesen und sich gegenseitig informieren. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
+
+                        <h4>🔄 Empfohlener Workflow (2 Schritte)</h4>
+                        <ol>
+                            <li><strong>Schritt 1:</strong> Aktivität beschreiben + erste Leitfragen</li>
+                            <li><strong>Schritt 2:</strong> Leitfragen universell formulieren (für beide Texte passend)</li>
+                        </ol>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 1 – Pair Reading Aktivität erstellen</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Ich starte [UNIT-NAME] mit meiner [KLASSENSTUFE] ([CEFR-NIVEAU]).
+
+Die Unit beginnt mit zwei parallelen Texten:
+- Text A: [TITEL/THEMA]
+- Text B: [TITEL/THEMA]
+
+**Meine Idee für Pair Work:**
+[BESCHREIBUNG, z.B.:]
+- Jede:r liest einen Text und macht die dazugehörige Aufgabe
+- Dann fassen sie den Text für den/die Partner:in zusammen
+- Der/die Partner:in macht die Aufgabe des ANDEREN Textes basierend auf dem Gehörten
+- Am Ende vergleichen sie: Wie gut hat die Zusammenfassung geholfen?
+
+**Bitte erstelle:**
+
+1. **Pair Work Instructions** (A2-Sprache, zum Projizieren):
+   - Klare nummerierte Schritte
+   - Zeitangaben pro Schritt
+   - Was tun, wenn einer früher fertig ist (Extra-Task)
+
+2. **Leitfragen für die Zusammenfassung:**
+   - [ANZAHL] WH-Fragen, die den SuS helfen, ihren Text zu strukturieren
+   - Fragen sollten für BEIDE Texte funktionieren (universell)
+
+3. **Optional: Extra-Task** (für schnellere SuS):
+   [z.B. Grammatik-Elemente im Text markieren, Vokabeln herausschreiben, etc.]
+
+[Unit-Transkript anhängen]</pre>
+                                </div>
+                            </div>
                         </div>
-                        <pre>
-# Pair Reading Activity with Guiding Questions
 
-## Context
-I'm starting Unit 3 with my 3rd grade EFL class (A2 level). The unit begins with two parallel reading texts about famous travelers:
-- Reading 1: James Holman (blind traveler)
-- Reading 2: Mary Kingsley (Victorian lady in Africa)
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 2 – Leitfragen universell formulieren</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Die Leitfragen sind noch zu textspezifisch.
 
-## What I Need
+Formuliere sie bitte so, dass sie für BEIDE Texte funktionieren – also keine Namen oder Details, die nur in einem Text vorkommen.
 
-### 1. Pair Work Instructions (A2 level, for projection)
-Create clear step-by-step instructions for students:
+Beispiel für universelle Fragen:
+- Who was this person and when did they live?
+- What challenges or problems did this person face?
+- [etc.]</pre>
+                                </div>
+                            </div>
+                        </div>
 
-**Activity Flow:**
-1. Choose your text (Student A: James Holman, Student B: Mary Kingsley)
-2. Read your text and complete the task for that text
-3. Prepare a summary using the guiding questions
-4. Tell your partner about your text (3-4 minutes each)
-5. Listen to your partner and take notes
-6. Do the OTHER task (the one you didn't read) based ONLY on what you heard
-7. Compare: How well did your partner's summary help you?
+                        <h4>💡 Didaktische Prinzipien (Jigsaw Reading)</h4>
+                        <ul>
+                            <li><strong>Information Gap:</strong> Jede:r hat Info, die der andere braucht → echte Kommunikation</li>
+                            <li><strong>Verantwortung:</strong> Meine Zusammenfassung beeinflusst Partner:ins Erfolg</li>
+                            <li><strong>Active Listening:</strong> Zuhören hat Konsequenz (muss danach Aufgabe machen)</li>
+                            <li><strong>Speaking Practice:</strong> Zusammenfassen = gesteuertes Sprechen</li>
+                            <li><strong>Self-Evaluation:</strong> "Hat meine Erklärung geholfen?" → Reflexion</li>
+                        </ul>
 
-**Extra Task (while waiting):**
-- Go to the grammar section at the end of the unit
-- Read about time linkers: when, before, after, while, during, until, by the time
-- Go back to your text and mark/highlight all these words
-
-### 2. Universal Guiding Questions
-Create 4-5 WH-questions that work for BOTH texts (not text-specific). These help students structure their summary.
-
-Questions should cover:
-- Who the person was and when they lived
-- What challenges/problems they faced
-- Where they traveled (with examples)
-- What interesting/dangerous adventures they had
-- Why this person was special/famous
-
-### 3. Format Requirements
-- Keep language at A2 level (simple, clear instructions)
-- Suitable for EFL learners
-- Ready to project on slides
-
-[Attach: Unit textbook pages with both reading texts]
-                        </pre>
+                        <h4>🔧 Varianten</h4>
+                        <ul>
+                            <li><strong>Jigsaw Groups:</strong> Statt Paare → Gruppen mit je einem "Experten" pro Text</li>
+                            <li><strong>Written Summary First:</strong> Erst schriftlich, dann mündlich</li>
+                            <li><strong>Comprehension Questions:</strong> Partner stellt Verständnisfragen</li>
+                            <li><strong>Graphic Organizer:</strong> Während des Zuhörens ausfüllen</li>
+                        </ul>
                     </div>
                 </div>
             </div>
