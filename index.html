@@ -3447,84 +3447,126 @@ Which two toppings does the speaker want on his hotdog? → ___________________ 
                 </div>
             </div>
 
-            <!-- ONE-SHOT PROMPT SECTION -->
-            <div class="template-box">
-                <div class="template-header" onclick="toggleTemplate(this)">
-                    <span>🎯 One-Shot Prompt (für gleiches Ergebnis)</span>
-                    <span class="toggle-template">▼ anzeigen</span>
+            <!-- GENERALIZED PROMPT TEMPLATE -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>📋 Generalisierte Prompt-Vorlage: Video While-Watching Tasks</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
-                <div class="template-content">
-                    <div class="template-inner">
-                        <div class="template-description">
-                            Dieser Prompt kombiniert alle Anforderungen für Video-basierte While-Watching Tasks.
-                            <br><strong>Anhänge benötigt:</strong> Video-Transkript MIT Timestamps, Unit-Seiten aus Schulbuch
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><em>Diese Vorlage eignet sich für Videos, die gekürzt und mit Timestamp-basierten Tasks versehen werden sollen. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
+
+                        <h4>🔄 Empfohlener Workflow (3-4 Schritte)</h4>
+                        <p>Video-Tasks sind <strong>iterativ</strong> – KI sieht Video nicht, braucht Feedback:</p>
+                        <ol>
+                            <li><strong>Schritt 1:</strong> Editing-Plan + erste Task-Ideen</li>
+                            <li><strong>Schritt 2:</strong> Tasks überarbeiten (oft zu generisch beim ersten Mal)</li>
+                            <li><strong>Schritt 3:</strong> Spezifisches Format vorgeben</li>
+                            <li><strong>Schritt 4:</strong> Answer Key erstellen</li>
+                        </ol>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 1 – Editing-Plan & erste Tasks</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Ich starte eine Unit über [THEMA] mit meiner [KLASSENSTUFE] ([CEFR-NIVEAU]).
+
+Ich habe ein [DAUER]-Minuten YouTube-Video, das zu lang ist. Ich muss es auf [ZIEL-DAUER] Minuten kürzen.
+
+[VIDEO-TRANSKRIPT MIT TIMESTAMPS ANHÄNGEN]
+
+**Bitte:**
+
+1. **Video Editing Plan:**
+   - Analysiere das Transkript
+   - Schlage vor, welche Segmente ich BEHALTEN soll (insgesamt [ZIEL-DAUER] Min)
+   - Gib spezifische Timestamps für jeden Teil
+   - Erkläre, was weggeschnitten werden kann und warum
+
+   **Essentielle Themen:**
+   [LISTE DER THEMEN, DIE UNBEDINGT DRIN SEIN MÜSSEN]
+
+2. **While-Watching Tasks (erster Entwurf):**
+   - Global Understanding Fragen
+   - Detail-Fragen
+   - Matching/True-False wo sinnvoll
+
+[Optional: Unit-Seiten aus Schulbuch für Kontext]</pre>
+                                </div>
+                            </div>
                         </div>
-                        <pre>
-# Video While-Watching Tasks with Editing Plan
 
-## Context
-I'm starting a New York unit with my 4th grade EFL class (A2+ level). I have a 16-minute YouTube video about NYC that I want to use, but it's too long. I need to:
-1. Cut it down to 7-8 minutes (essential content only)
-2. Create while-watching tasks for pair work
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 2 – Tasks im Timestamp-Format</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Der Editing-Plan ist gut, aber die Tasks brauchen ein spezifischeres Format.
 
-## What I Need
+**Format für jede Frage:**
+"[KURZE FRAGE]? ([TIMESTAMP]) → ________________"
 
-### 1. Video Editing Plan
-Analyze the transcript and suggest which segments to KEEP (totaling 7-8 minutes). Provide:
-- Specific timestamps for each segment to keep
-- Brief description of what each segment covers
-- Which segments to CUT and why
+Beispiel: "How many people live in [ORT]? (0:41–1:03) → ________________"
 
-Essential topics to include:
-- Basic NYC facts (population, languages, boroughs)
-- Statue of Liberty
-- Times Square
-- Central Park
-- Empire State Building / skyscrapers
-- NYC food (pizza or hot dogs)
-- One famous cultural element
+**Organisiere in [ANZAHL] Teile nach Thema:**
+- Part 1: [THEMA 1]
+- Part 2: [THEMA 2]
+- [etc.]
 
-### 2. While-Watching Worksheet (Timestamp-Referenced)
-Create tasks in this specific format:
-- Short answer items that students complete AS they watch
-- Each question includes the TIMESTAMP where the answer is found
-- Perfect for pair work (students help each other find answers)
+**Fragetypen:**
+- Zahlen/Statistiken eintragen
+- Teilweise Wörter ergänzen (s________ = suspension)
+- Kurze Antworten (1-3 Wörter)
+- Namen identifizieren
+- Listen vervollständigen
 
-**Format example:**
-"About how many people live in NYC? (0:41–1:03) → ________________"
+Ziel: [ANZAHL] Fragen insgesamt, perfekt für Pair Work.</pre>
+                                </div>
+                            </div>
+                        </div>
 
-**Organize into 7-8 parts by topic:**
-- Part 1: Basic Facts (population, languages, boroughs)
-- Part 2: Statue of Liberty & Transportation
-- Part 3: Times Square & Central Park
-- Part 4: Architecture & Subway
-- Part 5: Skyscrapers
-- Part 6: Food & Culture
-- Part 7: Pop Culture references
-- (Part 8: Sports - optional, may extend video)
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 3 – Answer Key</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Erstelle jetzt den vollständigen Answer Key:
+- Alle Antworten
+- Akzeptable Variationen notieren
+- Teacher Notes wo relevant
 
-**Question types to include:**
-- Fill in numbers/statistics
-- Complete partial words (s________ bridge = suspension)
-- Short answers (1-3 words)
-- Name identification
-- Complete lists (5 boroughs)
+Plus 2-3 Post-Viewing Discussion Questions.</pre>
+                                </div>
+                            </div>
+                        </div>
 
-### 3. Complete Answer Key
-- All answers with acceptable variations noted
-- Teacher notes where relevant
+                        <h4>💡 Didaktische Prinzipien</h4>
+                        <ul>
+                            <li><strong>Timestamps = Scaffolding:</strong> SuS wissen, wo sie hinhören müssen</li>
+                            <li><strong>Pair Work:</strong> Einer notiert, einer schaut – gegenseitige Hilfe</li>
+                            <li><strong>Chunking:</strong> Video in thematische Teile → nicht überwältigend</li>
+                            <li><strong>Variety:</strong> Verschiedene Frageformate halten aufmerksam</li>
+                            <li><strong>Active Watching:</strong> Tasks WÄHREND dem Schauen, nicht nur danach</li>
+                        </ul>
 
-### 4. Post-Viewing Discussion Questions
-2-3 quick discussion questions for after watching
-
-## Technical Requirements
-- A2+ appropriate language
-- 25-30 total questions
-- Clear formatting with timestamps
-- Works for pair work
-
-[Attach: Full video transcript WITH timestamps, Unit textbook pages]
-                        </pre>
+                        <h4>📎 Wichtig: Transkript MIT Timestamps</h4>
+                        <p>Die KI kann Videos nicht anschauen! Du brauchst:</p>
+                        <ul>
+                            <li>YouTube: Auto-Transkript kopieren (... → Transkript anzeigen)</li>
+                            <li>Oder: KI-Tool wie Whisper für eigene Videos</li>
+                            <li>Timestamps müssen im Transkript sein, sonst kann KI keine spezifischen Stellen referenzieren</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -4402,54 +4444,124 @@ Before finalizing, verify:
                 </div>
             </div>
 
-            <!-- ONE-SHOT PROMPT -->
+            <!-- GENERALIZED PROMPT TEMPLATE -->
             <div class="sub-collapsible">
                 <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
-                    <span>🎯 One-Shot Prompt (Reverse Engineered)</span>
+                    <span>📋 Generalisierte Prompt-Vorlage: Listening Comprehension (MC-Format)</span>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="sub-collapsible-content">
                     <div class="sub-collapsible-inner">
-                        <p><em>Dieser Prompt wurde nachträglich erstellt, um das Material in einem Schritt zu reproduzieren:</em></p>
+                        <p><em>Diese Vorlage eignet sich für LC-Tasks im Multiple-Choice-Format basierend auf Videos/Audio. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
+
+                        <h4>🔄 Empfohlener Workflow (3-4 Schritte)</h4>
+                        <p>LC-Tasks profitieren von <strong>Iteration</strong> für Qualität:</p>
+                        <ol>
+                            <li><strong>Schritt 1:</strong> Video recherchieren lassen (oder eigenes vorgeben)</li>
+                            <li><strong>Schritt 2:</strong> Formate aus Schulbuch zeigen → passende auswählen lassen</li>
+                            <li><strong>Schritt 3:</strong> Anzahl Items anpassen + erstellen</li>
+                            <li><strong>Schritt 4:</strong> Antwortverteilung prüfen/ausgleichen</li>
+                        </ol>
+
                         <div class="prompt-box">
                             <div class="prompt-header" onclick="togglePrompt(this)">
-                                <span>👤 Complete One-Shot Prompt</span>
+                                <span>👤 Schritt 1 – Video recherchieren</span>
                                 <span class="toggle-prompt">▼ anzeigen</span>
                             </div>
                             <div class="prompt-content">
                                 <div class="prompt-inner">
                                     <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
-                                    <pre>Create a Listening Comprehension worksheet for B1-level English learners (Austrian 5. Klasse AHS, 9th grade).
+                                    <pre>Schau dir [UNIT-ABSCHNITT] in dieser Unit an. Ich möchte ein Video dazu im Unterricht zeigen.
 
-**Video Source:** Cambridge ELT Blog video "The Boat Race – A Brief History" with historian Helen Carr (https://www.cambridge.org/elt/blog/2023/03/24/the-boat-race-a-brief-history/)
+[Unit-Transkript anhängen]
 
-**Task Requirements:**
-- Format: Multiple Choice with 4 options (A, B, C, D)
-- Number of items: 8 questions + 1 example (Item 0)
-- Answer distribution: Balanced across A, B, C, D (approximately 2-3 each)
-- Style: Austrian Matura format – statements about the video content, students choose the correct completion/answer
-- Include: Answer Key with brief justifications referencing the transcript
+Finde passende Videos zu [THEMA]. Kriterien:
+- Niveau: [CEFR-NIVEAU]
+- Dauer: max. [DAUER] Minuten
+- Klar gesprochenes Englisch
+- Inhaltlich passend zur Unit
 
-**Content to cover:**
-- When the first race took place (1829)
-- Where the first race was held (Henley-on-Thames)
-- Current race course details (6.8km on the Thames)
-- Why the race matters (prestige, national event)
-- Historical context (industrial revolution, sporting culture)
-- Women's race history (started 1927)
-- Record holders information
-
-**Format the worksheet with:**
-- Clear header with task title
-- Instructions for students
-- Example item (Item 0) with answer marked
-- Items 1-8 with balanced answer distribution
-- Separate Answer Key section
-
-The video should be played until the line "The University of Cambridge has some very famous former students..." for this task.</pre>
+Bitte mit Links und kurzer Beschreibung.</pre>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 2 – LC-Formate auswählen</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Ich habe mich für [VIDEO-QUELLE] entschieden.
+
+Hier ist das Transkript: [TRANSKRIPT EINFÜGEN]
+
+Hier sind alle LC-Formate aus unserem Schulbuch:
+[BEISPIELE DER LC-FORMATE AUS DEM BUCH EINFÜGEN]
+
+Bitte:
+1. Wähle die [ANZAHL] passendsten Formate für dieses Video
+2. Erstelle für jedes Format gut durchdachte Items
+3. Answer Key mit Begründungen (Transkript-Referenz)</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 3 – Format finalisieren & Items anpassen</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Ich entscheide mich für [GEWÄHLTES FORMAT, z.B. Multiple Choice A/B/C/D].
+
+Bitte erstelle:
+- [ANZAHL] Items + 1 Beispiel-Item (Item 0)
+- Antwortverteilung: Ausgewogen über alle Optionen (ca. gleich viele A, B, C, D)
+- Stil: [MATURA-FORMAT / SCHULBUCH-FORMAT / etc.]
+- Answer Key mit Begründungen
+
+Das Video wird bis [STELLE IM VIDEO] abgespielt.</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 4 – Antwortverteilung prüfen</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Die Antwortverteilung ist unausgewogen – [BESCHREIBUNG, z.B. "A kommt nie vor, B ist überrepräsentiert"].
+
+Bitte die Optionen innerhalb der Items mischen, sodass die Verteilung ausgeglichen ist (z.B. A=2-3, B=2, C=2, D=2).</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>💡 Didaktische Prinzipien</h4>
+                        <ul>
+                            <li><strong>Schulbuch-Alignment:</strong> Formate aus dem Buch übernehmen → SuS kennen Format</li>
+                            <li><strong>Balanced Distribution:</strong> Keine Muster bei richtigen Antworten (kein "immer B")</li>
+                            <li><strong>Example Item:</strong> Item 0 zeigt, wie die Aufgabe funktioniert</li>
+                            <li><strong>Justifications:</strong> Answer Key mit Transkript-Referenz für transparente Bewertung</li>
+                            <li><strong>Difficulty Curve:</strong> Erste Items einfacher, später komplexer</li>
+                        </ul>
+
+                        <h4>🔧 Alternative Formate</h4>
+                        <ul>
+                            <li>Sentence Completion (Lücken ergänzen)</li>
+                            <li>True/False/Not Given</li>
+                            <li>Matching (Sprecher zu Aussage)</li>
+                            <li>Note Completion</li>
+                            <li>Short Answer Questions</li>
+                        </ul>
                     </div>
                 </div>
             </div>
