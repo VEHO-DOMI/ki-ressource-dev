@@ -12,60 +12,45 @@
         }
 
         :root {
-            /* Frutiger Aero Color Palette */
-            --primary: #4aa3df;          /* Sky blue */
-            --primary-dark: #2b7bb9;     /* Deeper sky blue */
-            --secondary: #3ba99c;        /* Ocean teal */
-            --accent: #7cb342;           /* Fresh grass green */
-            --bg-light: #e8f4fc;         /* Light sky background */
+            /* Dominikanerinnen School Colors */
+            --primary: #1a5a96;          /* Deep blue from school logo/nav */
+            --primary-dark: #134a7a;     /* Darker blue for hover states */
+            --secondary: #9b2d8e;        /* Purple/magenta (Gymnasium color) */
+            --accent: #e8a54b;           /* Gold accent */
+            --bg-light: #f5f7fa;
             --bg-white: #ffffff;
-            --text-dark: #2c4a5e;
-            --text-muted: #5a7a8a;
-            --border: #b8dff5;
+            --text-dark: #1a3a52;
+            --text-muted: #5a6a7a;
+            --border: #d0d8e0;
             --sidebar-width: 280px;
-            --success: #4caf50;
+            --success: #2e8b57;          /* For materials box */
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text-dark);
-            background: linear-gradient(180deg, #e8f4fc 0%, #d4ebf7 50%, #c8e6f5 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
+            background: var(--bg-light);
         }
 
-        /* Sidebar - Frutiger Aero Glossy Style */
+        /* Sidebar */
         .sidebar {
             position: fixed;
             left: 0;
             top: 0;
             width: var(--sidebar-width);
             height: 100vh;
-            background: linear-gradient(180deg, #5bb5e8 0%, #3a9bd9 30%, #2b7bb9 100%);
+            background: var(--primary);
             color: white;
             overflow-y: auto;
             z-index: 1000;
             padding-bottom: 2rem;
-            box-shadow: 4px 0 20px rgba(43, 123, 185, 0.3);
-        }
-
-        .sidebar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
-            pointer-events: none;
         }
 
         .sidebar-header {
             padding: 1.5rem;
-            background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
-            border-bottom: 2px solid rgba(255,255,255,0.3);
-            position: relative;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            border-bottom: 2px solid var(--accent);
         }
 
         .sidebar-header h1 {
@@ -187,31 +172,28 @@
             margin-bottom: 1rem;
         }
 
-        /* Collapsible Sections - Frutiger Aero Glass Cards */
+        /* Collapsible Sections */
         .collapsible {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 12px;
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
             margin-bottom: 1rem;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(74, 163, 223, 0.12),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .collapsible-header {
             padding: 1rem 1.25rem;
-            background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 100%);
+            background: var(--bg-white);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
+            transition: background 0.2s;
         }
 
         .collapsible-header:hover {
-            background: linear-gradient(180deg, rgba(74, 163, 223, 0.1) 0%, rgba(74, 163, 223, 0.05) 100%);
+            background: var(--bg-light);
         }
 
         .collapsible-header h3 {
@@ -244,13 +226,12 @@
             border-top: 1px solid var(--border);
         }
 
-        /* Sub-collapsible - Nested Glass Cards */
+        /* Sub-collapsible (for materials) */
         .sub-collapsible {
-            background: rgba(232, 244, 252, 0.6);
-            border: 1px solid rgba(74, 163, 223, 0.2);
-            border-radius: 10px;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
             margin: 1rem 0;
-            box-shadow: 0 2px 8px rgba(74, 163, 223, 0.08);
         }
 
         .sub-collapsible-header {
@@ -261,12 +242,10 @@
             align-items: center;
             font-weight: 500;
             font-size: 0.95rem;
-            background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
-            border-radius: 10px 10px 0 0;
         }
 
         .sub-collapsible-header:hover {
-            background: linear-gradient(180deg, rgba(74, 163, 223, 0.1) 0%, rgba(74, 163, 223, 0.02) 100%);
+            background: rgba(0,0,0,0.03);
         }
 
         .sub-collapsible-content {
@@ -402,29 +381,27 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Highlight Box - Frutiger Aero Green Accent */
+        /* Highlight Box */
         .highlight-box {
-            background: linear-gradient(135deg, rgba(124, 179, 66, 0.1) 0%, rgba(139, 195, 74, 0.15) 100%);
+            background: linear-gradient(135deg, #fef8e8 0%, #fff9f0 100%);
             border-left: 4px solid var(--accent);
             padding: 1.25rem;
-            border-radius: 0 12px 12px 0;
+            border-radius: 0 8px 8px 0;
             margin: 1.5rem 0;
-            box-shadow: 0 2px 12px rgba(124, 179, 66, 0.1);
         }
 
         .highlight-box h4 {
-            color: #558b2f;
+            color: #a67c00;
             margin-top: 0;
         }
 
-        /* Warning Box - Soft Yellow */
+        /* Warning Box */
         .warning-box {
-            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 213, 79, 0.15) 100%);
+            background: #fff8e1;
             border-left: 4px solid #ffc107;
             padding: 1rem;
-            border-radius: 0 10px 10px 0;
+            border-radius: 0 6px 6px 0;
             margin: 1rem 0;
-            box-shadow: 0 2px 10px rgba(255, 193, 7, 0.1);
         }
 
         
@@ -454,24 +431,20 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem 1rem;
-            background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(232, 244, 252, 0.9) 100%);
-            border: 1px solid rgba(74, 163, 223, 0.3);
-            border-radius: 20px;
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
             color: var(--primary);
             font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(74, 163, 223, 0.15),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            transition: all 0.2s;
         }
 
         .control-btn:hover {
-            background: linear-gradient(180deg, #5bb5e8 0%, #4aa3df 100%);
+            background: var(--primary);
             color: white;
-            border-color: #4aa3df;
-            box-shadow: 0 4px 15px rgba(74, 163, 223, 0.35);
-            transform: translateY(-1px);
+            border-color: var(--primary);
         }
 
         .control-btn .icon {
@@ -494,15 +467,14 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Materials Links Box - Frutiger Aero Style */
+        /* Materials Links Box */
         .materials-box {
-            background: linear-gradient(135deg, rgba(74, 163, 223, 0.08) 0%, rgba(91, 181, 232, 0.12) 100%);
-            border: 1px solid rgba(74, 163, 223, 0.2);
+            background: linear-gradient(135deg, #e8f0f7 0%, #f0f5fa 100%);
+            border: 1px solid #c5d5e5;
             border-left: 4px solid var(--primary);
-            border-radius: 0 12px 12px 0;
+            border-radius: 0 8px 8px 0;
             padding: 1rem 1.25rem;
             margin: 1rem 0;
-            box-shadow: 0 2px 10px rgba(74, 163, 223, 0.08);
         }
 
         .materials-box h4 {
