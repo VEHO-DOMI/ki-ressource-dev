@@ -3270,12 +3270,12 @@ Before finalizing, verify:
 
             <p><strong>Kontext:</strong> Zwei ähnliche Texte am Anfang der Unit (James Holman, Mary Kingsley). Idee: Jede:r liest einen Text, fasst ihn für den/die Partner:in zusammen, dann macht der/die andere die Aufgabe basierend auf der gehörten Zusammenfassung.</p>
 
-            <p><strong>Arbeitsablauf:</strong> Unit-Transkript hochgeladen → KI erstellt Instruktionen für Pair Work + universelle Leitfragen + Grammatik-Zusatzaufgabe (Time Markers).</p>
+            <p><strong>Erstellung:</strong> Unit-Transkript hochgeladen → KI erstellt Instruktionen für Pair Work + universelle Leitfragen + Grammatik-Zusatzaufgabe (Time Markers). Iterative Verfeinerung über 2 Prompts.</p>
 
             <!-- FULL CONVERSATION SECTION -->
             <div class="sub-collapsible">
                 <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
-                    <span>💬 Vollständiger Chat-Verlauf (3 Prompts)</span>
+                    <span>💬 Vollständiger Chat-Verlauf (2 Prompts)</span>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="sub-collapsible-content">
@@ -3321,32 +3321,6 @@ Before finalizing, verify:
                             <li>What interesting or dangerous adventures did they have? Give 2-3 examples.</li>
                             <li>Why was this person special or famous?</li>
                         </ol></p>
-
-                        <!-- PROMPT 3 -->
-                        <div class="prompt-box">
-                            <div class="prompt-header" onclick="togglePrompt(this)">
-                                <span>👤 Prompt 3 – Dokumentation</span>
-                                <span class="toggle-prompt">▼ anzeigen</span>
-                            </div>
-                            <div class="prompt-content">
-                                <div class="prompt-inner">
-                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
-                                    <pre>Please create a documentation of the prompts I used in this conversation, formatted exactly like this:
-Title: "Prompts Used to Create [Name of Material]"
-Then list each significant prompt I gave chronologically with:
-* A descriptive header like "Initial Prompt (Context + Request)" or "Refinement Prompt (Specifying X)"
-* The actual prompt text I wrote (quoted or closely paraphrased)
-* A note in brackets about any files I uploaded, e.g. [Uploaded: filename.docx]
-Focus on the prompts that shaped the final output. Skip small clarifications or off-topic exchanges. Use headers like:
-* Initial Prompt
-* Refinement Prompt
-* Follow-Up Prompt
-* Final Refinement Prompt
-Make it copy-paste ready for a teacher resource document.</pre>
-                                </div>
-                            </div>
-                        </div>
-                        <p><strong>🤖 Claude:</strong> Erstellte formatierte Dokumentation "Prompts Used to Create 'Unit 3 Pair Reading Activity with Guiding Questions'" für Teacher Resource Zwecke.</p>
 
                     </div>
                 </div>
@@ -3415,6 +3389,7 @@ Questions should cover:
             <div class="materials-box">
                 <h4>📂 Erstellte Materialien</h4>
                 <ul>
+                    <li><span class="file-icon">📊</span> <a href="https://github.com/Kokisamkuci/ki-ressource/blob/main/materials/3A/3AW%20Unit%203%20Task%20%28Travellers%29.pptx?raw=true" download>Unit 3 Pair Reading Activity – Instruktionen & Leitfragen</a></li>
                 </ul>
             </div>
 
