@@ -2736,53 +2736,103 @@ Blog posts in a nutshell:
 
             <p><strong>Ergebnis:</strong> Blog Post Writing Task (ca. 200 Wörter) mit klaren Anforderungen, die zum Schulbuch-Format für Blog Posts passen.</p>
 
-            <!-- ONE-SHOT PROMPT SECTION -->
-            <div class="template-box">
-                <div class="template-header" onclick="toggleTemplate(this)">
-                    <span>🎯 One-Shot Prompt (für gleiches Ergebnis)</span>
-                    <span class="toggle-template">▼ anzeigen</span>
+            <!-- GENERALIZED PROMPT TEMPLATE -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>📋 Generalisierte Prompt-Vorlage: Blog Post nach Klassendiskussion</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
-                <div class="template-content">
-                    <div class="template-inner">
-                        <div class="template-description">
-                            Dieser Prompt erstellt eine Blog Post Schreibaufgabe basierend auf einer Klassendiskussion.
-                            <br><strong>Anhänge benötigt:</strong> Unit-Transkript, Schulbuch-Seiten zu Blog Posts
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><em>Diese Vorlage ist für Blog Post Schreibaufgaben, die auf einer vorherigen Klassendiskussion aufbauen. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
+
+                        <h4>🔄 Empfohlener Workflow (2 Schritte)</h4>
+                        <p>Bei diskussionsbasierten Schreibaufgaben funktioniert ein <strong>zweistufiger Ansatz</strong> gut:</p>
+                        <ol>
+                            <li><strong>Schritt 1:</strong> Aufgabenstellung basierend auf Diskussionsthema</li>
+                            <li><strong>Schritt 2:</strong> Anpassung an Schulbuch-Textsortenformat</li>
+                        </ol>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 1 – Grundaufgabe erstellen</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+Ich möchte eine Schreibaufgabe für meine [SCHULSTUFE + NIVEAU] Klasse erstellen.
+
+KONTEXT:
+- Unit: [UNIT-NAME + THEMA: z.B. "Me Time" über Freizeit und Gaming]
+- Vorherige Aktivität: [DISKUSSION/TASK: z.B. "Task 20 – Diskussion über Screen Time, Gaming, elterliche Einschränkungen"]
+- Die SuS haben bereits diskutiert über: [DISKUSSIONSTHEMEN auflisten]
+
+SCHREIBAUFGABE:
+- Textsorte: [TEXTSORTE: z.B. Blog Post, Opinion Essay, Letter to the Editor]
+- Thema/Fragestellung: [KONKRETES THEMA: z.B. "Should parents limit their children's screen time?"]
+- Wortanzahl: ca. [WORTANZAHL] Wörter
+
+Erstelle eine Schreibaufgabe, die auf der Klassendiskussion aufbaut, sodass SuS ihre bereits formulierten Argumente verschriftlichen können.
+
+[Anhang: Unit-Seiten mit der Diskussionsaufgabe]</pre>
+                                </div>
+                            </div>
                         </div>
-                        <pre>
-# Blog Post Writing Task: Screen Time / Gaming
 
-## Context
-I'm teaching Unit 02 "Me Time" about leisure activities and gaming. Students have completed Task 20 which involved discussing:
-- Why people enjoy gaming
-- Gaming vs. in-person socializing
-- Parental restrictions on screen time
-- Making persuasive arguments for/against computer time limits
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 2 – An Schulbuch-Format anpassen</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+Hier sind die Schulbuch-Vorgaben für [TEXTSORTE: z.B. Blog Posts]. Bitte passe die Aufgabe an dieses Format an:
 
-Now I want a blog post writing task connected to this discussion.
+[SCHULBUCH-INFOS ZUR TEXTSORTE EINFÜGEN, z.B.:
+"Blog posts in a nutshell:
+- Start with: Give your blog post a catchy title.
+- Involve your readership.
+- Make your blog post interesting so that other users will comment on it."]
 
-## What I Need
-Create a writing task for a blog post (around 200 words) where students:
+Die Aufgabenanforderungen sollen diese Textsortenmerkmale explizit einfordern:
+- [MERKMAL 1: z.B. Catchy Title]
+- [MERKMAL 2: z.B. Leser:innen einbeziehen (Fragen, "you")]
+- [MERKMAL 3: z.B. Call to Action am Ende]
+- [MERKMAL 4: z.B. Informeller/semi-formeller Stil]
 
-**Topic:** Should parents limit their children's screen time and computer/gaming use?
+Füge auch eine "Remember"-Box hinzu mit:
+- Linking Words (First of all, Furthermore, However, In conclusion...)
+- Relevantes Vokabular aus der Unit
 
-**Requirements based on textbook blog post format:**
-- Give the blog post a catchy title
-- Involve the readership (use questions, address them directly with "you")
-- State opinion clearly
-- Give at least three reasons to support their view
-- Include examples from own experience or gaming knowledge
-- Use informal or semi-formal style (can use "I" and "you")
-- End with a call to action (invite readers to comment, share experiences, etc.)
+[Anhang: Schulbuch-Seiten zur Textsorte]</pre>
+                                </div>
+                            </div>
+                        </div>
 
-**Remember section:**
-- Make the blog post interesting so readers will want to comment
-- Use linking words (First of all, Furthermore, However, On the other hand, In conclusion)
-- Use relevant vocabulary from the unit about leisure activities and gaming
+                        <h4>💡 Didaktische Prinzipien</h4>
+                        <ul>
+                            <li><strong>Mündlich → Schriftlich:</strong> Diskussion bereitet Argumente vor, Schreiben vertieft und strukturiert sie</li>
+                            <li><strong>Textsortenkonformität:</strong> Schulbuch-Vorgaben zur Textsorte explizit in Anforderungen einbauen</li>
+                            <li><strong>Scaffolding:</strong> "Remember"-Box mit Linking Words und Vokabular unterstützt schwächere SuS</li>
+                            <li><strong>Authentizität:</strong> Blog Post als Textsorte ist für SuS relevant und motivierend</li>
+                        </ul>
 
-**Word count:** Around 200 words
+                        <h4>🎯 Anpassungsmöglichkeiten</h4>
+                        <ul>
+                            <li><strong>Andere Textsorten:</strong> Opinion Essay, Letter to the Editor, Comment, Review</li>
+                            <li><strong>Andere Themen:</strong> Jede kontroverse Diskussion eignet sich (Social Media, Umwelt, Schule, etc.)</li>
+                            <li><strong>Mit/ohne PEEL:</strong> Für strukturiertere Argumentation PEEL-Paragraph einbauen (siehe 5.2)</li>
+                        </ul>
 
-[Attach: Unit textbook pages, Blog post format guidelines from textbook]
-                        </pre>
+                        <h4>📎 Empfohlene Anhänge</h4>
+                        <ul>
+                            <li>Unit-Seiten mit der Diskussionsaufgabe</li>
+                            <li>Schulbuch-Seiten zur Textsorte (Writing Guide / Text Types)</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -2909,53 +2959,87 @@ Write around 150–180 words.</pre>
 
             <p><strong>Ergebnis:</strong> Kompakte Schreibaufgabe (150-180 Wörter) mit drei Optionen, formellen Email-Anforderungen und PEEL-Paragraph-Integration.</p>
 
-            <!-- ONE-SHOT PROMPT SECTION -->
-            <div class="template-box">
-                <div class="template-header" onclick="toggleTemplate(this)">
-                    <span>🎯 One-Shot Prompt (für gleiches Ergebnis)</span>
-                    <span class="toggle-template">▼ anzeigen</span>
+            <!-- GENERALIZED PROMPT TEMPLATE -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>📋 Generalisierte Prompt-Vorlage: Formal Email mit Argumentationsstruktur</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
-                <div class="template-content">
-                    <div class="template-inner">
-                        <div class="template-description">
-                            Dieser Prompt erstellt eine Formal Email Schreibaufgabe mit PEEL-Paragraph und mehreren Optionen.
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><em>Diese Vorlage ist für formelle Email-Schreibaufgaben, die eine Argumentationsstruktur (z.B. PEEL) integrieren. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
+
+                        <h4>🔄 Empfohlener Workflow (1-2 Schritte)</h4>
+                        <p>Bei kombinierten Textsortenaufgaben funktioniert oft ein <strong>direkter Ansatz</strong>:</p>
+                        <ol>
+                            <li><strong>Schritt 1:</strong> Aufgabe mit Optionen und klaren Anforderungen</li>
+                            <li><strong>Optional:</strong> Format-Anpassung nach Feedback</li>
+                        </ol>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Haupt-Prompt – Formal Email mit Optionen</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+Ich brauche eine Schreibaufgabe für [SCHULSTUFE + NIVEAU].
+
+VORWISSEN DER SUS:
+- [TEXTSORTE 1: z.B. Formal Email (Anrede, Schluss, formeller Ton)]
+- [ARGUMENTATIONSSTRUKTUR: z.B. PEEL Paragraph (Point, Example, Explanation, Link)]
+
+UNIT-KONTEXT: [UNIT-NAME + THEMEN: z.B. "Eat, Sleep, Repeat" – Ernährung, Schlaf, Lifestyle]
+
+AUFGABE:
+Erstelle eine KOMPAKTE Schreibaufgabe (NUR Instruktionen, keine Erklärungen der Formate) mit:
+
+[ANZAHL] OPTIONEN passend zu den Unit-Themen:
+- Option A: [THEMA 1 + ADRESSAT: z.B. Schulbeginnzeiten → An Direktor:in]
+- Option B: [THEMA 2 + ADRESSAT: z.B. Schulkantine → An Kantinen-Manager:in]
+- Option C: [THEMA 3 + ADRESSAT: z.B. Energy-Drink-Verbot → An Schulleitung]
+
+JEDE OPTION SOLL:
+- An eine passende Autoritätsperson adressiert sein
+- Eine Pro/Contra-Argumentation erfordern
+- Bezug zu Unit-Inhalten haben
+
+ANFORDERUNGEN (als Bullet Points für SuS):
+- [TEXTSORTENMERKMALE: z.B. Subject Line, Formal Greeting/Closing, Introduction]
+- [ARGUMENTATIONSSTRUKTUR: z.B. "Write ONE PEEL paragraph with all four elements"]
+- [ZUSÄTZLICH: z.B. Gegenargument ansprechen, formeller Ton]
+- Spezifische Handlungsaufforderung am Ende
+
+WORTANZAHL: [RANGE: z.B. 150-180 Wörter]
+
+FORMAT: Kompakt, direkt einsetzbar für SuS</pre>
+                                </div>
+                            </div>
                         </div>
-                        <pre>
-# Formal Email Writing Task with PEEL Paragraph
 
-## Context
-I'm teaching Unit 04 "Eat, Sleep, Repeat" about healthy eating, sleep, and lifestyle. Students already know:
-- How to write formal emails (greeting, closing, formal tone)
-- How to write PEEL paragraphs (Point, Example/Evidence, Explanation, Link)
+                        <h4>💡 Didaktische Prinzipien</h4>
+                        <ul>
+                            <li><strong>Wahlmöglichkeit:</strong> Mehrere Optionen erhöhen Motivation und ermöglichen Differenzierung</li>
+                            <li><strong>Kombination von Kompetenzen:</strong> Textsorte + Argumentationsstruktur = authentische Kommunikation</li>
+                            <li><strong>Kompakte Instruktionen:</strong> SuS kennen die Formate bereits → nur Aufgabe, keine Erklärungen</li>
+                            <li><strong>Authentischer Adressat:</strong> An echte Autoritätsperson schreiben macht Aufgabe relevant</li>
+                        </ul>
 
-Now I need a writing task that combines both.
+                        <h4>🎯 Anpassungsmöglichkeiten</h4>
+                        <ul>
+                            <li><strong>Andere Textsorten:</strong> Letter to the Editor, Formal Complaint, Application Letter</li>
+                            <li><strong>Andere Strukturen:</strong> Statt PEEL: Pro-Contra, Fünf-Absatz-Essay, Toulmin-Modell</li>
+                            <li><strong>Andere Adressaten:</strong> Bürgermeister:in, Zeitungsredaktion, Unternehmen</li>
+                            <li><strong>Ohne Wahlmöglichkeit:</strong> Bei knapper Zeit nur eine Option vorgeben</li>
+                        </ul>
 
-## What I Need
-Create a CONCISE writing task (NOT explanations of format - just the task itself) with:
-
-**Three options related to the unit themes:**
-- Option A: School start times (uses sleep research from unit)
-- Option B: School cafeteria/breakfast service (uses nutrition content)
-- Option C: Energy drink/soda ban (uses healthy eating content)
-
-**Each option should:**
-- Be addressed to an appropriate authority figure
-- Require students to argue for/against something
-- Connect to specific unit content
-
-**Task requirements (as bullet points):**
-- Clear subject line
-- Formal greeting and closing (Dear Ms/Mr..., Yours sincerely/Kind regards)
-- Brief introduction (who you are, why you're writing)
-- ONE PEEL paragraph with all four elements clearly shown
-- Acknowledge one counter-argument and respond (optional)
-- Formal tone throughout
-- End with specific request/action
-
-**Word count:** 150-180 words
-
-**Format:** Compact, student-ready task instructions (no lengthy explanations)
-                        </pre>
+                        <h4>📎 Empfohlene Anhänge</h4>
+                        <ul>
+                            <li>Unit-Seiten (für thematischen Bezug)</li>
+                            <li>Bereits eingeführte Schreibgerüste (PEEL-Poster, Formal Email Checklist)</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -3246,48 +3330,82 @@ after having done that, I want them to write a PEEL paragraph about the recently
                             </div>
                         </div>
 
-                        <!-- ONE-SHOT PROMPT -->
-                        <div class="template-box">
-                            <h4>🎯 One-Shot Prompt</h4>
-                            <p>Diesen Prompt kannst du verwenden, um ein ähnliches Ergebnis in einer einzigen Anfrage zu erhalten:</p>
-                            <div class="prompt-box open">
-                                <div class="prompt-content" style="max-height:none">
-                                    <div class="prompt-inner">
-                                        <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
-                                        <pre>Erstelle eine PowerPoint-Präsentation für eine Englisch-Stunde (2. Klasse, A2-Niveau) zum Thema UFOs mit zwei YouTube-Videos.
+                        <!-- GENERALIZED PROMPT TEMPLATE -->
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Generalisierte Prompt-Vorlage: Video-Lesson mit Präsentation</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <p><em>Diese Vorlage ist für Unterrichtseinheiten mit YouTube-Videos, die Comprehension Questions und ein kreatives Projekt kombinieren. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
 
-**Struktur (4 Folien):**
+                                    <h4>🔄 Empfohlener Workflow (2-3 Schritte)</h4>
+                                    <p>Bei video-basierten Lessons funktioniert ein <strong>iterativer Ansatz</strong> oft besser:</p>
+                                    <ol>
+                                        <li><strong>Schritt 1:</strong> Struktur + Tasks skizzieren lassen</li>
+                                        <li><strong>Schritt 2:</strong> Folienentwurf im Unit-Stil</li>
+                                        <li><strong>Schritt 3:</strong> Detaillevel und Design verfeinern</li>
+                                    </ol>
 
-1. **Video 1: "What is a UFO?"**
-   - Vokabelbox: Sighting, Saucer, Hoax (mit einfachen Definitionen)
-   - Task: "Watch the video. What are most UFOs really?"
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Haupt-Prompt – Video-Lesson Präsentation</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Erstelle eine PowerPoint-Präsentation für eine Englisch-Stunde ([SCHULSTUFE + NIVEAU]) zum Thema [THEMA] mit [ANZAHL] YouTube-Videos.
+
+STRUKTUR ([ANZAHL] Folien):
+
+1. **Video 1: "[VIDEO-TITEL]"**
+   - Vokabelbox: [3-4 SCHLÜSSELBEGRIFFE mit einfachen Definitionen]
+   - Task: "[GLOBAL COMPREHENSION QUESTION]"
    - Video-Link Platzhalter
 
 2. **Video 1 Comprehension Questions**
-   - 4 Multiple-Choice Fragen mit a/b Optionen:
-     * When did people start seeing many UFOs? (1840s / 1940s)
-     * What did Kenneth Arnold see? (9 flying saucers / A weather balloon)
-     * What crashed in Roswell? (An alien ship / A military balloon)
-     * Are all UFO photos real? (Yes / No, many are fakes)
-   - Antworten markiert
+   - [ANZAHL] Multiple-Choice Fragen mit a/b Optionen
+   - Fragen testen: [WAS SOLL GETESTET WERDEN: Fakten, Verständnis, Details]
+   - Antworten markiert (für Lehrkraft)
 
-3. **Video 2: "The Golden Record" (ab 2:25)**
-   - Kurzer Kontext: Voyager 1 Mission 1977, Golden Record für Aliens
-   - Task: "What is on the Golden Record? List 3 things."
+3. **Video 2: "[VIDEO-TITEL]" (ab [TIMESTAMP])**
+   - Kurzer Kontext: [1-2 SÄTZE HINTERGRUND]
+   - Task: "[SPEZIFISCHE AUFGABE]"
    - Video-Link Platzhalter
 
-4. **Creative Project: "Class 2A Golden Record"**
-   - Gruppenarbeit (15 Min): Wählt 4 Items für eure eigene Golden Record:
-     * A Song (welcher Song repräsentiert uns?)
-     * A Photo (Schule? Stadt? Pizza?)
-     * An Object (typisch für Teenager 2024)
-     * A Message (ein Satz auf Englisch)
+4. **Creative Project: "[PROJEKT-NAME]"**
+   - [SOZIALFORM: z.B. Gruppenarbeit (15 Min)]
+   - Aufgabe: [KONKRETE ANWEISUNG mit Kategorien/Items]
    - Beispiel-Box mit Ideen
+   - Optional: Timer-Anzeige
 
-**Design:** Große, gut lesbare Schriften. Jede Folie soll voll ausgefüllt sein, nicht nur kleine Textblöcke in der Mitte. Visueller Stil passend zu einem Englisch-Schulbuch (freundlich, orange Töne).
+DESIGN:
+- Große, gut lesbare Schriften
+- Jede Folie voll ausgefüllt (nicht kleine Textblöcke in der Mitte)
+- Visueller Stil passend zur Unit ([FARBSCHEMA/STIL])
 
-[Uploaded: Unit 8 Buchseiten als Referenz für Stil]</pre>
+[Anhang: Unit-Seiten als Stil-Referenz, Video-Transkripte falls vorhanden]</pre>
+                                            </div>
+                                        </div>
                                     </div>
+
+                                    <h4>💡 Didaktische Prinzipien</h4>
+                                    <ul>
+                                        <li><strong>Pre-Teaching Vokabular:</strong> Schlüsselbegriffe VOR dem Video einführen ermöglicht Verständnis</li>
+                                        <li><strong>Global → Detail:</strong> Erst Gist-Frage, dann spezifische Comprehension Questions</li>
+                                        <li><strong>Aktives Schauen:</strong> Tasks während des Videos halten Aufmerksamkeit</li>
+                                        <li><strong>Creative Follow-Up:</strong> Produktive Aufgabe vertieft Inhalte und macht sie persönlich relevant</li>
+                                    </ul>
+
+                                    <h4>🎯 Anpassungsmöglichkeiten</h4>
+                                    <ul>
+                                        <li><strong>Task-Typen variieren:</strong> MC, True/False, Gap Fill, Matching, Note-Taking</li>
+                                        <li><strong>Unterschiedliche Videos:</strong> Dokumentationen, Erklärvideos, Vlogs, Nachrichten</li>
+                                        <li><strong>Projekte:</strong> Poster, Mini-Präsentation, Diskussion, eigenes Video drehen</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -3724,78 +3842,102 @@ Make it copy-paste ready for a teacher resource document.</pre>
                 </div>
             </div>
 
-            <!-- ONE-SHOT PROMPT SECTION -->
-            <div class="template-box">
-                <div class="template-header" onclick="toggleTemplate(this)">
-                    <span>🎯 One-Shot Prompt (für gleiches Ergebnis)</span>
-                    <span class="toggle-template">▼ anzeigen</span>
+            <!-- GENERALIZED PROMPT TEMPLATE -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>📋 Generalisierte Prompt-Vorlage: Video-Produktionsprojekt mit Input-Phase</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
-                <div class="template-content">
-                    <div class="template-inner">
-                        <div class="template-description">
-                            Dieser Prompt kombiniert alle Anforderungen für ein Video-basiertes Sprechprojekt.
-                            <br><strong>Anhänge benötigt:</strong> Unit-Transkript, Transkripte von 4-6 authentischen Videos zum Thema (TikTok, YouTube, etc.)
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><em>Diese Vorlage ist für mehrstufige Video-Projekte, bei denen SuS nach einer Input-Phase (authentische Videos) selbst Videos produzieren. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
+
+                        <h4>🔄 Empfohlener Workflow (3-4 Schritte)</h4>
+                        <p>Bei komplexen Projekten ist ein <strong>iterativer Ansatz</strong> nötig:</p>
+                        <ol>
+                            <li><strong>Schritt 1:</strong> Input-Phase planen (While-Watching Tasks + Vokabelextraktion)</li>
+                            <li><strong>Schritt 2:</strong> Projekt-Instruktionen mit Optionen und Timeline</li>
+                            <li><strong>Schritt 3:</strong> Sprachliche Anforderungen und Bewertungskriterien</li>
+                            <li><strong>Schritt 4:</strong> Formatierung und Feinschliff</li>
+                        </ol>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Haupt-Prompt – Video-Produktionsprojekt</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+Ich starte [UNIT-NAME + THEMA] mit meiner [SCHULSTUFE + NIVEAU] Klasse. Ich möchte mit authentischen Videos einführen und ein SuS-Videoprojekt darauf aufbauen.
+
+TEIL 1: INPUT-PHASE (While-Watching Tasks)
+Ich habe [ANZAHL] authentische Videos zum Thema ([PLATTFORM: z.B. TikTok, YouTube]).
+
+Erstelle ein Worksheet mit globalen Verständnisfragen:
+- Q1: [INHALTSFRAGE: z.B. "What types of [THEMA] were mentioned?"]
+- Q2: [KATEGORISIERUNGSFRAGE: z.B. "Where did they come from?"]
+- Q3: [SPRACHFOKUS: z.B. "What words/phrases were used to describe...?"]
+
+Zusätzlich:
+- Vollständige Answer Keys (nach Video organisiert)
+- Vokabellisten nach Kategorien: [KATEGORIEN: z.B. Taste, Texture, Quality, Expressions]
+
+TEIL 2: STUDENT VIDEO PROJECT
+SuS erstellen ein [LÄNGE: z.B. 30-60 Sekunden] Video im [STIL: z.B. Instagram Reel, TikTok] Stil mit Voiceover (kein Gesicht nötig).
+
+[ANZAHL] OPTIONEN:
+- Option A: [OPTION 1: z.B. Restaurant Food – filmen mit Erlaubnis]
+- Option B: [OPTION 2: z.B. Homemade Food – eigenes Kochen]
+- Option C: [OPTION 3: z.B. Cooking Process – Zubereitung Step-by-Step]
+
+TIMELINE ([WOCHEN]-Wochen-Projekt, ein Schritt pro Woche):
+- Woche 1: [SCHRITT 1: z.B. Planning & Choice]
+- Woche 2: [SCHRITT 2: z.B. Recording Video]
+- Woche 3: [SCHRITT 3: z.B. Writing Script + Feedback]
+- Woche 4: [SCHRITT 4: z.B. Final Recording & Submission]
+
+SPRACHLICHE ANFORDERUNGEN:
+- Mindestens [ANZAHL] [WORTART: z.B. Adjektive] aus der Unit
+- Mindestens [ANZAHL] Phrasen/Ausdrücke zum Thema
+- [ZUSÄTZLICH: z.B. Komparative/Superlative]
+
+BEWERTUNGSKRITERIEN:
+- Content: [%]
+- Language Use: [%]
+- Pronunciation & Fluency: [%]
+- Video Quality: [%]
+
+[Anhang: Unit-Seiten, Transkripte der authentischen Videos]</pre>
+                                </div>
+                            </div>
                         </div>
-                        <pre>
-# Video-Based Speaking Project: Food Vlog (or similar topic)
 
-## Context
-I'm starting Unit 4 "Eat, Sleep, Repeat" with my 5th grade EFL class (B1 level). I want to introduce the unit with authentic video content and build toward a student video project.
+                        <h4>💡 Didaktische Prinzipien</h4>
+                        <ul>
+                            <li><strong>Input vor Output:</strong> Authentische Videos liefern Modelle für Sprache, Format und Stil</li>
+                            <li><strong>Vokabelextraktion:</strong> SuS identifizieren relevante Sprache selbst → nachhaltiger als Vorgabe</li>
+                            <li><strong>Gestaffelte Timeline:</strong> Kleine Schritte mit Checkpoints verhindern Last-Minute-Panik</li>
+                            <li><strong>Wahlmöglichkeiten:</strong> Verschiedene Optionen berücksichtigen unterschiedliche Ressourcen/Interessen</li>
+                            <li><strong>Script-Feedback:</strong> Sprachliche Korrektur VOR der Aufnahme ist effizienter</li>
+                        </ul>
 
-## What I Need
+                        <h4>🎯 Anpassungsmöglichkeiten</h4>
+                        <ul>
+                            <li><strong>Andere Themen:</strong> Book/Movie Reviews, Travel Vlogs, Tutorial Videos, News Reports, Product Ads</li>
+                            <li><strong>Ohne Video-Produktion:</strong> Nur Podcast/Audio, nur Script, Präsentation</li>
+                            <li><strong>Kürzere Timeline:</strong> 2 Wochen statt 4 (weniger Zwischenschritte)</li>
+                            <li><strong>Gruppenprojekt:</strong> Teams statt Einzelarbeit</li>
+                        </ul>
 
-### 1. While-Watching Tasks (for 6 authentic food videos)
-Create a worksheet with these global comprehension questions:
-- Q1: What types of food were mentioned? (List all foods across all videos)
-- Q2: What cuisines were featured? Where in the world did they come from?
-- Q3: What words and phrases were used to describe the food? (Adjectives, phrases, expressions)
-
-**Also provide:**
-- Complete answer keys organized by video
-- Comprehensive vocabulary lists categorized by: Taste & Flavor, Texture, Size & Portion, Quality & Experience, Creative Descriptions, Expressions
-
-### 2. Student Video Project Instructions
-Create a multi-week project where students make a 30-60 second food vlog (Instagram Reel style) with voiceover (no face required).
-
-**Include THREE options:**
-- Option A: Restaurant Food (film at restaurant with permission)
-- Option B: Homemade Food (film home cooking, finished dish)
-- Option C: Food Preparation Process (film cooking step-by-step)
-
-**Timeline (4 weeks, one step per week):**
-- Week 1: Planning & Food Choice (decide option, choose food, submit description)
-- Week 2: Recording Video Footage (film 30-60 seconds, good angles, lighting)
-- Week 3: Writing Voiceover Script (80-120 words, submit for feedback)
-- Week 4: Recording & Submitting Final Video
-
-**Language Requirements section:**
-- Minimum 8-10 food adjectives (taste, texture, appearance, smell)
-- At least 3 phrases for talking about food from the unit
-- At least 2 comparative or superlative forms
-- Tip: Keep a vocabulary list throughout the unit
-
-**Assessment Criteria:**
-- Content: 25%
-- Language Use: 35%
-- Pronunciation & Fluency: 20%
-- Video Quality: 20%
-
-**Tips for Success (DOs and DON'Ts)**
-
-### 3. Formatting Requirements
-- Answer keys in horizontal comma-separated format (not bullet points)
-- Timeline in clear bullet point format
-- Clean, student-friendly layout
-
-[Attach: Unit textbook pages, Transcripts of 6 food review videos (TikTok/YouTube)]
-                        </pre>
+                        <h4>📎 Empfohlene Anhänge</h4>
+                        <ul>
+                            <li>Unit-Seiten (für thematischen und sprachlichen Bezug)</li>
+                            <li>Transkripte der authentischen Videos (für Answer Keys und Vokabellisten)</li>
+                        </ul>
                     </div>
                 </div>
-            </div>
-
-            <div class="highlight-box">
-                <h4>Replicable Template for Other Topics</h4>
-                <p style="margin-bottom:0">Dieses Projekt-Format kann adaptiert werden für: Book/Movie Reviews, Travel Vlogs, Tutorial Videos, News Reports, Product Advertisements. Die Kernstruktur (authentische Video-Inputs → Vokabelextraktion → gestaffeltes Studentenprojekt) bleibt gleich.</p>
             </div>
 
             <div class="materials-box">
@@ -3939,32 +4081,84 @@ Create a multi-week project where students make a 30-60 second food vlog (Instag
                 </div>
             </div>
 
-            <!-- ONE-SHOT PROMPT -->
-            <div class="template-box">
-                <h4>🎯 One-Shot Prompt</h4>
-                <p>Diesen Prompt kannst du verwenden, um ähnliche Feedback-Bögen für andere Projekte zu erstellen:</p>
-                <div class="prompt-box open">
-                    <div class="prompt-content" style="max-height:none">
-                        <div class="prompt-inner">
-                            <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
-                            <pre>Erstelle einen anonymen Peer-Feedback-Bogen für ein Schüler-Video-Screening im Stil einer Social-Media-App.
+            <!-- GENERALIZED PROMPT TEMPLATE -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>📋 Generalisierte Prompt-Vorlage: Anonymer Peer-Feedback-Bogen</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><em>Diese Vorlage ist für Peer-Feedback-Bögen bei Video-Screenings oder Präsentationen. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
 
-**Kontext:** [z.B. Food Vlog Projekt, Buchvorstellung, Travel Vlog, Tutorial Video]
-**Klassenstufe:** [z.B. 5. Klasse / 15-Jährige]
-**Anzahl Videos:** [z.B. 10]
+                        <h4>🔄 Empfohlener Workflow (2-3 Schritte)</h4>
+                        <p>Bei Design-Aufgaben funktioniert ein <strong>iterativer Ansatz</strong>:</p>
+                        <ol>
+                            <li><strong>Schritt 1:</strong> Konzept-Optionen generieren lassen</li>
+                            <li><strong>Schritt 2:</strong> Favoriten fusionieren/verfeinern</li>
+                            <li><strong>Schritt 3:</strong> Druckoptimierung und Export</li>
+                        </ol>
 
-**Design-Anforderungen:**
-1. App-ähnliches Interface (wie Instagram/TikTok)
-2. Sandwich-Feedback-Struktur versteckt als App-Elemente:
-   - "Liked by You" / Heart Icon → Positives Feedback (Was hat gut funktioniert?)
-   - "Creator Tip" / DM Icon → Konstruktives Feedback (Ein Verbesserungsvorschlag)
-   - "Tags" / Hashtag → Sprachlicher Fokus (2 gute Wörter/Phrasen notieren)
-3. Video-Nummer statt Gruppenname (für Anonymität)
-4. Sterne-Bewertung (1-5) für Gesamteindruck
-5. Druckfreundlich: Weißer Hintergrund, minimaler Tintenverbrauch
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Haupt-Prompt – Peer-Feedback-Bogen</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+Erstelle einen anonymen Peer-Feedback-Bogen für ein Schüler-[PROJEKT-TYP: z.B. Video-Screening, Präsentationstag].
 
-Generiere den Bogen als druckfertiges PDF/Bild.</pre>
+KONTEXT:
+- Projekt: [PROJEKTNAME: z.B. Food Vlog, Book Trailer, Travel Vlog, Tutorial Video]
+- Klassenstufe: [STUFE + ALTER: z.B. 5. Klasse / 15-Jährige]
+- Anzahl Beiträge: [ANZAHL: z.B. 10 Videos]
+
+DESIGN-OPTIONEN (wähle einen Stil oder lass mich Optionen vorschlagen):
+- [ ] Social Media Interface (Instagram/TikTok-Look)
+- [ ] Thematisches Design passend zum Projekt ([THEMA]-themed)
+- [ ] Minimalistisch/Professionell
+- [ ] Gamification (Punkte, Badges)
+
+FEEDBACK-STRUKTUR (Sandwich-Methode):
+1. POSITIV: [LABEL: z.B. "Liked by You" / Heart Icon]
+   → Was hat gut funktioniert? (1-2 konkrete Punkte)
+2. KONSTRUKTIV: [LABEL: z.B. "Creator Tip" / Lightbulb Icon]
+   → Ein Verbesserungsvorschlag
+3. SPRACHFOKUS: [LABEL: z.B. "Best Lines" / Quote Icon]
+   → [ANZAHL] gute Wörter/Phrasen notieren
+
+ZUSÄTZLICHE ELEMENTE:
+- Identifikation: [VIDEO-NUMMER statt Name für Anonymität]
+- Bewertung: [z.B. Sterne 1-5, Emoji-Skala, Daumen]
+- Optional: [ZUSÄTZLICHES ELEMENT: z.B. "Would recommend to a friend?"]
+
+DRUCKOPTIMIERUNG:
+- Weißer Hintergrund (Tinte sparen)
+- [ANZAHL] Bögen pro Seite
+- Schnittlinien für einfaches Trennen
+
+OUTPUT: Druckfertiges [FORMAT: PDF/PNG/Bild]</pre>
+                                </div>
+                            </div>
                         </div>
+
+                        <h4>💡 Didaktische Prinzipien</h4>
+                        <ul>
+                            <li><strong>Anonymität:</strong> Ermöglicht ehrliches Feedback ohne soziale Hemmungen</li>
+                            <li><strong>Sandwich-Methode:</strong> Positiv-Konstruktiv-Positiv schützt Selbstwertgefühl</li>
+                            <li><strong>Sprachfokus:</strong> Auch beim Feedback wird auf Sprache geachtet → doppelter Lerneffekt</li>
+                            <li><strong>Gamification:</strong> App-ähnliches Design erhöht Engagement</li>
+                        </ul>
+
+                        <h4>🎯 Anpassungsmöglichkeiten</h4>
+                        <ul>
+                            <li><strong>Andere Projekte:</strong> Präsentationen, Poster, Podcasts, Rollenspiele, Debatten</li>
+                            <li><strong>Andere Designs:</strong> Filmkritiker-Scorecard, Restaurant-Bewertung, Report Card</li>
+                            <li><strong>Digital:</strong> Google Forms statt Papier (aber weniger anonym)</li>
+                            <li><strong>Superlatives:</strong> Am Ende "Best [Kategorie]" wählen lassen</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -4211,119 +4405,134 @@ Prompt 38: Lay out the prompt history in this chat better - especially how it st
                 </div>
             </div>
 
-            <!-- ONE-SHOT PROMPT SECTION -->
-            <div class="template-box">
-                <div class="template-header" onclick="toggleTemplate(this)">
-                    <span>🎯 One-Shot Prompt (für gleiches Ergebnis)</span>
-                    <span class="toggle-template">▼ anzeigen</span>
+            <!-- GENERALIZED PROMPT TEMPLATE -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>📋 Generalisierte Prompt-Vorlage: Film Unit mit Worksheets</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
-                <div class="template-content">
-                    <div class="template-inner">
-                        <div class="template-description">
-                            Dieser Prompt kombiniert alle 38 Iterationen in eine Anfrage. ACHTUNG: Sehr umfangreich.
-                            <br><strong>Anhänge benötigt:</strong> Vollständiges Drehbuch (PDF), Coursebook-Beispiele für MC/BGF/WF/OC Formate
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><em>Diese Vorlage ist für mehrstündige Film-Einheiten mit integrierten EFL-Worksheets. Bei komplexen Projekten empfiehlt sich ein stark iterativer Ansatz. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
+
+                        <h4>🔄 Empfohlener Workflow (Stark iterativ!)</h4>
+                        <p>Film-Units sind komplex und erfordern <strong>viele Iterationen</strong>:</p>
+                        <ol>
+                            <li><strong>Planung:</strong> Film segmentieren, Lernziele pro Lektion definieren</li>
+                            <li><strong>Vokabular:</strong> Schlüsselwörter aus Drehbuch extrahieren lassen</li>
+                            <li><strong>Pro Lektion:</strong> Worksheet erstellen → Tasks brainstormen → auswählen → verfeinern</li>
+                            <li><strong>Qualitätssicherung:</strong> Überlappungen prüfen, Aufgaben validieren</li>
+                        </ol>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Start-Prompt – Film Unit Planung</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+Ich zeige "[FILMTITEL]" meiner [SCHULSTUFE + NIVEAU] Klasse über [ANZAHL] Stunden.
+
+ZIELE:
+- Film-bezogene EFL-Materialien mit Fokus auf [FOKUS: z.B. Vokabular, Test-Formate, Diskussion]
+- Worksheets für jede Lektion
+
+STRUKTUR:
+- Lektion 1: [FILMSEGMENT 1: z.B. Erste 45 Minuten] + Worksheet 1
+- Lektion 2: [FILMSEGMENT 2] + Worksheet 2
+- Lektion 3: [FILMSEGMENT 3] + Worksheet 3 + Schreibaufgabe
+
+PRO WORKSHEET BENÖTIGT:
+1. Global Understanding (Charaktere, Handlung, Schlüsselszenen)
+2. Vocabulary Tasks (verschiedene Formate: Matching, Gap Fill, Word Formation)
+3. Quote/Dialog Analysis (wichtige Zitate verstehen)
+4. Reflection/Discussion Questions
+5. Optional: Test-relevante Formate ([FORMATE: z.B. MC Cloze, Banked Cloze, Word Formation])
+
+KRITISCHE ANFORDERUNGEN:
+- KEINE Vokabel-Überlappungen zwischen Tasks innerhalb eines Worksheets
+- KEINE Überlappungen zwischen den Lektionen
+- Alle Wörter müssen im Drehbuch vorkommen
+- Bei MC: Nur EINE Option grammatisch/semantisch korrekt
+
+[Anhang: Drehbuch/Transkript, ggf. bestehende Materialien, Schulbuch-Aufgabenformate]</pre>
+                                </div>
+                            </div>
                         </div>
-                        <pre>
-# EFL Film Unit: Dead Poets Society (3 Lessons)
 
-## Context
-I'm showing "Dead Poets Society" to my 5B class (B1+ level, ages 16-17) over 3 lessons before Christmas break. I want comprehensive EFL materials that integrate vocabulary work with the film content while practicing test-relevant task types.
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Folge-Prompt – Vokabular-Extraktion</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+Gehe das Drehbuch von Anfang bis Ende durch und erstelle eine vollständige Liste aller wichtigen Vokabeln und Phrasen.
 
-## Overall Structure
-- **Lesson 1:** First 45 minutes of film + Worksheet 1
-- **Lesson 2:** Middle section (cave scene through Keating's "daring vs. caution" lesson) + Worksheet 2
-- **Lesson 3:** Final section (Neil's play through ending) + Worksheet 3 + Writing Task
+KRITERIEN FÜR AUFNAHME:
+- Teil wichtiger Handlungspunkte
+- Bedeutsame Aussagen von [HAUPTCHARAKTER]
+- Thematisch relevante Begriffe ([THEMEN: z.B. Konformität, Rebellion, Träume])
+- Gehobenes Vokabular passend für [NIVEAU]
 
-## What I Need
+ORGANISATION:
+- Nach Filmabschnitt/Lektion gruppieren
+- Thematische Kategorien ([KATEGORIEN: z.B. Academy Life, Poetry & Art, Relationships])
+- Markieren welche Wörter für welche Task-Typen geeignet sind</pre>
+                                </div>
+                            </div>
+                        </div>
 
-### LESSON 1 WORKSHEET
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Qualitätssicherungs-Prompt</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+Führe einen Qualitäts-Check durch:
 
-**Part A: Global Understanding**
-- Character identification (the main boys: Neil, Todd, Knox, Charlie, etc.)
-- Four Pillars of Welton (official AND the boys' satirical version)
-- Key events from Keating's first class
+1. OVERLAP-AUDIT:
+   - Prüfe alle [ANZAHL] Worksheets auf Vokabel-Duplikate
+   - Jedes Wort/jede Wortfamilie darf nur in EINEM Task vorkommen
 
-**Part B: Vocabulary Tasks**
-- Task 1: Vocabulary Matching (8-10 key words to definitions)
-- Task 2: Complete Keating's Quotes (fill-in with word bank)
-- Task 3: Phrase Meanings (explain metaphors like "suck the marrow out of life")
-- Closing reflection question
+2. VALIDIERUNG MC-ITEMS:
+   - Bei jedem MC-Item: Funktioniert wirklich nur EINE Option?
+   - Testen die Items Kollokationen (nicht Plot-Wissen)?
 
-**Requirements:**
-- No vocabulary overlaps between tasks
-- Include: Carpe Diem, seize the day, conform, legacy, tradition, honor, discipline, excellence
-- Include German translations where helpful
+3. DREHBUCH-VERIFIZIERUNG:
+   - Kommen alle getesteten Wörter tatsächlich im entsprechenden Filmabschnitt vor?
 
-### LESSON 2 WORKSHEET
+4. TASK-UNABHÄNGIGKEIT:
+   - Gibt kein Task die Antwort eines anderen Tasks preis?
 
-**Theme: "Passion vs. Caution – Finding the Balance"**
+[Anhang: Alle bisherigen Worksheets zur Prüfung]</pre>
+                                </div>
+                            </div>
+                        </div>
 
-**Vocabulary Tasks:**
-- Task 1: Synonym AND Antonym Matching (combined, 10 items)
-- Task 2: Collocation Matching with word bank (write-in format, German translation column)
-- Task 3: Word Families Table (verb/noun/adjective transformations)
+                        <h4>💡 Didaktische Prinzipien</h4>
+                        <ul>
+                            <li><strong>Segmentierung:</strong> Film in verdauliche Abschnitte teilen, nicht alles auf einmal</li>
+                            <li><strong>Vocabulary in Context:</strong> Wörter aus dem Film, nicht aus abstrakten Listen</li>
+                            <li><strong>Task-Vielfalt:</strong> Verschiedene Formate halten Engagement hoch und trainieren unterschiedliche Skills</li>
+                            <li><strong>Test-Integration:</strong> Prüfungsrelevante Formate üben, ohne dass es wie ein Test wirkt</li>
+                            <li><strong>Overlap-Vermeidung:</strong> Jedes Wort nur einmal testen → fokussiertes Lernen</li>
+                        </ul>
 
-**Quote Analysis:**
-- Task 4: Quote Comparison (Keating's balanced message about daring AND caution)
-- Include "road less traveled" (German: "der weniger begangene Weg" or "der unkonventionelle Weg")
-
-**Reflection:**
-- Task 5: Discussion Question (Daring, Reckless, or Conformist?)
-- Task 6: Personal Reflection (Your Road Less Traveled)
-
-**Requirements:**
-- ALL words must actually appear in this section of the screenplay
-- NO overlap with Lesson 1 vocabulary
-- Words to include: deliberately, daring, reckless, desperate, current (noun), view (noun)
-
-### LESSON 3 WORKSHEET
-
-**Focus: Language in Use (Test-Format Practice)**
-
-This worksheet should use ONLY these official test formats:
-- **Task 1: Multiple Choice Cloze (8 items, A/B/C/D)**
-  - Sentences from the film screenplay
-  - Options test COLLOCATIONS, not plot knowledge
-  - Only ONE answer should work grammatically/semantically
-
-- **Task 2: Banked Cloze (12 gaps, 14-word bank with 2 distractors)**
-  - Continuous text or related sentences
-  - Word bank includes: profane, unauthorized, impressionable, reprimand, scapegoat
-
-- **Task 3: Word Formation (10 items)**
-  - Base word in CAPITALS
-  - Must transform to correct form
-
-- **Task 4: Open Cloze (10 items)**
-  - Focus on prepositions, articles, collocations
-
-- **Task 5: Writing Task (Blog Post)**
-  - Topic: Conformity and Defiance / Seizing the Day / Following Your Purpose
-  - Two options for students who did similar task before
-  - 150-200 words
-
-**Critical Requirements:**
-- NO vocabulary overlaps across Tasks 1-4
-- NO item should "give away" another item
-- Each word family appears in ONLY ONE task
-- MC items must have only ONE correct answer based on collocation rules
-
-### ANSWER KEYS
-- Complete answer keys for all 3 worksheets
-- Day 2 keys should have 3-column format for collocations
-- Include model answers for discussion questions
-- Use green highlighting for answers where appropriate
-
-### QUALITY CHECKS
-Before finalizing, verify:
-1. No vocabulary overlaps between tasks within each worksheet
-2. No vocabulary overlaps between worksheets (each word tested only once across all 3 days)
-3. All words actually appear in the relevant screenplay section
-4. MC items have only ONE grammatically/semantically correct option
-5. Writing task offers genuine choice for returning students
-
-[Attach: Full Dead Poets Society screenplay (PDF), Coursebook examples of MC/BGF/WF/OC formats]
-                        </pre>
+                        <h4>🎯 Anpassungsmöglichkeiten</h4>
+                        <ul>
+                            <li><strong>Andere Filme:</strong> Jeder Film mit verfügbarem Drehbuch/Transkript funktioniert</li>
+                            <li><strong>Kürzere Units:</strong> 1-2 Stunden statt 3 → weniger Worksheets, kompaktere Tasks</li>
+                            <li><strong>Ohne Drehbuch:</strong> Eigenes Transkript erstellen oder auf Global Understanding fokussieren</li>
+                            <li><strong>Serien-Episoden:</strong> Gleicher Ansatz für TV-Serien</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -5063,88 +5272,118 @@ Beispiel für universelle Fragen:
                 </div>
             </div>
 
-            <!-- ONE-SHOT PROMPT SECTION -->
-            <div class="template-box">
-                <div class="template-header" onclick="toggleTemplate(this)">
-                    <span>🎯 One-Shot Prompt (für gleiches Ergebnis)</span>
-                    <span class="toggle-template">▼ anzeigen</span>
+            <!-- GENERALIZED PROMPT TEMPLATE -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>📋 Generalisierte Prompt-Vorlage: Speaking Activities für Themenvorbereitung</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
-                <div class="template-content">
-                    <div class="template-inner">
-                        <div class="template-description">
-                            Dieser Prompt erstellt zwei vollständige Sprechaktivitäten zum Thema "Setting Boundaries".
-                        </div>
-                        <pre>
-# Speaking Activities: Setting Boundaries in Friendships
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><em>Diese Vorlage ist für jedes Thema einsetzbar, bei dem Speaking Activities für Test- oder Themenvorbereitung erstellt werden sollen. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
+
+                        <h4>🔄 Empfohlener Workflow (2 Schritte)</h4>
+                        <ol>
+                            <li><strong>Aktivitäten-Set generieren:</strong> Claude erstellt Paar- und Bewegungsaktivitäten mit allen Materialien</li>
+                            <li><strong>Iterativ verfeinern:</strong> Statements anpassen, Kontroversen verstärken, Design optimieren</li>
+                        </ol>
+
+                        <h4>📝 Schritt 1: Aktivitäten-Set generieren</h4>
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>Prompt kopieren</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+# Speaking Activities: [THEMA]
 
 ## Context
-I'm preparing my 3rd grade EFL class (A2 level) for a test on the topic of friendship. Students have worked on a worksheet about setting boundaries and conflict resolution. I need speaking activities to activate this content before the test.
+I'm preparing my [SCHULSTUFE] [FACH] class ([NIVEAU] level) for a test/review on the topic of [THEMA]. Students have worked on [VORARBEIT: z.B. Worksheet, Text, Video]. I need speaking activities to activate this content.
 
 ## What I Need
 
-### Activity 1: "Give & Get Advice" (Scenario Cards)
+### Activity 1: "[AKTIVITÄTSNAME]" (Scenario/Situation Cards)
 
 Create a structured pair activity:
 
 **Materials needed:**
-- 8 scenario cards about friendship boundary situations
+- [ANZAHL] scenario cards about [THEMA]-situations
 - Cards show only numbers (Card 1, Card 2, etc.) - no "Student A/B" labels
-- 4 cards in orange, 4 cards in blue (for splitting between partners)
-- Color-gradient ranking sheet (green → orange → red)
+- Half in [FARBE 1], half in [FARBE 2] (for splitting between partners)
+- [OPTIONAL: Ranking sheet, Discussion cards, etc.]
 
-**Scenario themes (real situations 13-year-olds face):**
-- Friend copying homework
-- Friend sharing your secrets
-- Friend getting jealous when you hang out with others
-- Friend borrowing things without asking
-- Friend always wanting to be together
-- Friend pressuring you to do something
-- Friend talking behind your back
-- Friend not respecting your time alone
+**Scenario themes (real situations [ALTER]-year-olds face):**
+[LISTE MIT 6-10 KONKRETEN SITUATIONEN ZUM THEMA]
 
 **Activity Structure:**
-- Step 1 - Advice Round (8 min): Each partner has 4 cards. Read scenario to partner, partner gives advice on what to say/do. Swap roles until all 8 discussed.
-- Step 2 - Rank Together (4 min): Lay out all 8 cards, rank from easiest to deal with (1) to hardest to deal with (8).
+- Step 1 - [PHASE 1 NAME] ([ZEIT] min): [BESCHREIBUNG WAS DIE PAARE TUN]
+- Step 2 - [PHASE 2 NAME] ([ZEIT] min): [BESCHREIBUNG DER REFLEXION/RANKING]
 
 **Output:**
-- 2-page handout: Page 1 = Instructions + 8 cut-out cards, Page 2 = Ranking sheet + discussion questions
-- 4-slide PowerPoint with projectable instructions (title + Step 1 + Step 2 + Discussion)
+- 2-page handout: Page 1 = Instructions + cut-out cards, Page 2 = [REFLEXIONSMATERIAL]
+- 4-slide PowerPoint with projectable instructions (title + steps)
 
-### Activity 2: "Agree/Disagree Corners"
+### Activity 2: "Agree/Disagree Corners" (Movement Activity)
 
 Create a movement-based whole-class activity:
 
-**Format:** 13-slide PowerPoint (title + 12 statements)
+**Format:** [ANZAHL+1]-slide PowerPoint (title + [ANZAHL] statements)
 - ONE statement per slide
 - Large font, fills entire slide
-- No page numbers
 - Dark background with accent color
 
 **Statement requirements:**
 - Jumbled order (NOT obviously easy → hard)
 - Mix of generally agreeable and controversial
 - Some statements should deliberately contradict each other to spark debate
-- All appropriate for 13-year-olds but provocative enough to split the room
+- All appropriate for [ALTER]-year-olds but provocative enough to split the room
 
 **Include statements like:**
-- "A good friend always puts your needs before their own"
-- "If a friend talks behind your back once, the friendship is over"
-- "It's okay to check your best friend's phone if you're worried about them"
-- "Real friends don't need rules or boundaries"
-- "You should always forgive your friends, no matter what they did"
-- "If someone is toxic, just cut them off – no explanation needed"
-- "Best friends should share everything – including passwords"
-- "A little jealousy in friendships is actually healthy"
-- "A true friend would never say no when you really need them"
-- "Sometimes you have to hurt a friend's feelings to help them"
-- "You can't have a really close friendship AND strong boundaries"
-- "Sometimes the kindest thing you can do is end the friendship"
+[5-10 BEISPIEL-STATEMENTS DIE KONTROVERS ABER ALTERSGEMÄSS SIND]
 
 ### Design Style
 - Clean, student-friendly formatting
 - Large, readable fonts
 - Visual consistency between materials
-                        </pre>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>📝 Schritt 2: Statements verfeinern (optional)</h4>
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>Prompt kopieren</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+The statements need to spark more controversy and movement. Jumble the descriptions and spice them up a bit so the contrast becomes clearer, but stay within the topic. Create the new pptx for it.
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>💡 Didaktische Prinzipien</h4>
+                        <ul>
+                            <li><strong>Paired + Whole-Class:</strong> Kombination aus sicherer Paar-Interaktion und dynamischer Klassendiskussion</li>
+                            <li><strong>Physical Movement:</strong> Agree/Disagree Corners bringt Bewegung und macht Meinungen sichtbar</li>
+                            <li><strong>Kontroverse Statements:</strong> Deliberately provocative = more discussion, deeper thinking</li>
+                            <li><strong>Real-Life Scenarios:</strong> Authentische Situationen aus dem Alltag der Zielgruppe</li>
+                        </ul>
+
+                        <h4>🎯 Anpassungsmöglichkeiten</h4>
+                        <ul>
+                            <li><strong>Einzelaktivität:</strong> Nur Scenario Cards ODER nur Agree/Disagree verwenden</li>
+                            <li><strong>Mehr Struktur:</strong> Sentence starters oder Useful phrases hinzufügen lassen</li>
+                            <li><strong>Weniger kontrovers:</strong> "Keep it more neutral" für jüngere Klassen</li>
+                            <li><strong>Voting statt Movement:</strong> Hand heben statt physisch bewegen für engere Räume</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -5244,48 +5483,97 @@ So that's kind of what I had in mind. Can you please write this as an instructio
 
             <p><strong>Ergebnis:</strong> Eine Folie mit klarer Anleitung, Beispielformat und 4 Schritten für Gruppenarbeit.</p>
 
-            <!-- ONE-SHOT PROMPT SECTION -->
-            <div class="template-box">
-                <div class="template-header" onclick="toggleTemplate(this)">
-                    <span>🎯 One-Shot Prompt (für gleiches Ergebnis)</span>
-                    <span class="toggle-template">▼ anzeigen</span>
+            <!-- GENERALIZED PROMPT TEMPLATE -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>📋 Generalisierte Prompt-Vorlage: Mini-Play/Skript-Schreiben</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
-                <div class="template-content">
-                    <div class="template-inner">
-                        <div class="template-description">
-                            Dieser Prompt erstellt eine kompakte Folienanleitung für die Mini-Play Aktivität.
-                        </div>
-                        <pre>
-# Mini-Play Writing Activity: "A Journey That Went Wrong"
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><em>Diese Vorlage ist für jedes Thema einsetzbar, bei dem Schüler:innen in Gruppen ein kurzes Skript schreiben und aufführen sollen. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
+
+                        <h4>🔄 Empfohlener Workflow (2 Schritte)</h4>
+                        <ol>
+                            <li><strong>Ausführliche Anleitung generieren:</strong> Claude erstellt detaillierte Instructions mit Beispielformat</li>
+                            <li><strong>Auf Folie komprimieren:</strong> Version für Projektion, positiv formuliert</li>
+                        </ol>
+
+                        <h4>📝 Schritt 1: Ausführliche Anleitung generieren</h4>
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>Prompt kopieren</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+# Mini-Play Writing Activity: "[THEMA/TITEL]"
 
 ## Context
-I'm teaching Unit 3 and want students to do Task 14 ("In groups of four, tell each other about a journey that went wrong") but as a SCRIPT-WRITING and PERFORMANCE activity instead of just telling stories orally.
+I'm teaching [UNIT/KAPITEL] and want students to do [TASK-REFERENZ: z.B. "Task 14 from the textbook"] but as a SCRIPT-WRITING and PERFORMANCE activity instead of just [ORIGINAL-FORMAT: z.B. "telling stories orally", "writing an essay"].
 
 ## What I Need
-Create a SINGLE SLIDE with instructions for students. The slide should:
+Create instructions for a group writing activity where students:
+- Work in groups of [GRUPPENGRÖSSE]
+- Write a mini-script with:
+  - NARRATOR: describes the scene/setting
+  - DIALOGUE: characters speak to each other
+  - [Stage directions]: actions in brackets
+- Perform it for the class
 
-1. Explain that they're writing a mini-script (not a story!) with:
-   - NARRATOR: describes the scene/setting
-   - DIALOGUE: characters speak to each other
-   - [Stage directions]: actions in brackets
-
-2. Show ONE clear example format like:
-   NARRATOR: Last summer, the Johnson family were at the airport waiting for their flight.
-   MUM: [looks at phone, frustrated] The flight is delayed six hours!
-   DAD: What? That's ridiculous!
-   NARRATOR: They sat down in the waiting area...
-
-3. Give 4 simple steps:
+## Include in Instructions
+1. Clear explanation of the script format (narrator vs. dialogue vs. stage directions)
+2. ONE example that shows the format clearly – use a scenario like: [BEISPIEL-SZENARIO]
+3. Step-by-step process:
    - Plan the story together
-   - Write the script (with narrator + dialogue + stage directions)
-   - Assign roles (1 narrator + 2-3 characters)
-   - Practice & perform for the class
+   - Write the script
+   - Assign roles (1 narrator + [ANZAHL] characters)
+   - Practice & perform
 
-## Important
-- Keep it POSITIVE – don't show what NOT to do
-- Keep it CONCISE – must fit on one projected slide
-- Make the example format very clear and easy to follow
-                        </pre>
+## Output Format
+- First: detailed instructions I can use as teacher reference
+- Then: version that fits on ONE slide for projection
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>📝 Schritt 2: Positiv formulieren (optional)</h4>
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>Prompt kopieren</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+Don't make it so explicit as to what NOT to do – formulate it from a positive vantage point. Keep it concise for the slide.
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>💡 Didaktische Prinzipien</h4>
+                        <ul>
+                            <li><strong>Story → Script:</strong> Transformation von Erzählen zu Dialogformat fördert Genre-Awareness</li>
+                            <li><strong>Klares Beispiel:</strong> Ein konkretes Beispiel zeigt das Format besser als abstrakte Erklärungen</li>
+                            <li><strong>Kollaboratives Schreiben:</strong> Gruppenarbeit = mehr Speaking, weniger "einer schreibt"</li>
+                            <li><strong>Performance:</strong> Aufführung als Motivation und Speaking Practice</li>
+                        </ul>
+
+                        <h4>🎯 Anpassungsmöglichkeiten</h4>
+                        <ul>
+                            <li><strong>Andere Themen:</strong> "A Day That Changed Everything", "A Misunderstanding", "An Unexpected Meeting"</li>
+                            <li><strong>Mehr Struktur:</strong> Template-Worksheet mit vorgegebenen Zeilen für Narrator/Dialogue</li>
+                            <li><strong>Kürzere Version:</strong> "Max. 10 lines per group" für schnellere Durchläufe</li>
+                            <li><strong>Video statt Live:</strong> Aufnahme mit Smartphone als Alternative zur Live-Performance</li>
+                        </ul>
+
+                        <h4>📎 Empfohlene Anhänge</h4>
+                        <p>Textbook-Seite oder Task-Beschreibung als Kontext hochladen.</p>
                     </div>
                 </div>
             </div>
