@@ -3837,6 +3837,146 @@ Create a movement-based activity:
     </div>
 </div>
 
+<div class="collapsible material-item" data-category="speaking" data-grade="3">
+    <div class="collapsible-header">
+        <h3>3.10 "A Journey That Went Wrong" – Mini-Play Schreiben & Aufführen</h3>
+        <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content">
+        <div class="collapsible-inner">
+            <span class="category-badge english">Englisch</span>
+            <span class="grade-level">3. Klasse • A2</span>
+
+            <p><strong>Kontext:</strong> Basierend auf Task 14 im Schulbuch (More 3, Unit 3): "In groups of four, tell each other about a journey that went wrong." Statt nur zu erzählen, schreiben die Schüler:innen ein Mini-Skript mit Erzähler:in, Dialogen und Regieanweisungen – und führen es dann in der Klasse auf.</p>
+
+            <p><strong>Die Übung:</strong> Gruppen von 4 Schüler:innen planen gemeinsam eine Geschichte über eine Reise, die schiefging. Sie schreiben ein Skript im Theaterformat: Ein:e Erzähler:in beschreibt die Szene, 2-3 Personen sprechen die Dialoge, Regieanweisungen stehen in [eckigen Klammern]. Am Ende wird das Skript vor der Klasse vorgelesen/aufgeführt.</p>
+
+            <p><strong>Erstellung:</strong> Iterative Verfeinerung über 3 Prompts – von der ausführlichen Anleitung bis zur kompakten Folie.</p>
+
+            <!-- FULL CONVERSATION SECTION -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>💬 Vollständiger Chat-Verlauf (3 Prompts)</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><strong>Thema:</strong> Mini-Play mit Narrator, Dialogue und Stage Directions für Gruppenarbeit</p>
+
+                        <!-- PROMPT 1 -->
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Prompt 1 – Grundidee & Kontext</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>So I want to do a task where the students – so let me explain – we did this Unit 3 and we did basically everything in it already almost and what I wanted to do next is Task number 14: "In groups of four tell each other about a journey that went wrong." And I want them to actually write a little mini kind of play – not a play but a dialogue where they discuss it and then together they write this dialogue and then they read it and perform it in class.
+
+But I want to give them more instruction on how to do it. What I want is like – they should obviously their natural instinct is to write a story but I want them to not write a story but write it in a way with stage directions basically. So like in between telling what is going on and then having the dialogues. One person is the narrator and the two other persons are reading dialogue.
+
+So that's kind of what I had in mind. Can you please write this as an instruction for them and I'll put it on the slides for them basically.
+
+[Uploaded: More 3 SB Unit 3.docx]</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <p><strong>🤖 Claude:</strong> Erstellte ausführliche Anleitung mit DO/DON'T Beispiel, Formatvorgaben (NARRATOR, DIALOGUE, [stage directions]), Schritte 1-6 für Gruppenarbeit, und Tipps.</p>
+
+                        <!-- PROMPT 2 -->
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Prompt 2 – Auf eine Folie komprimieren</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>It should fit on one slide that I can project.</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <p><strong>🤖 Claude:</strong> Komprimierte Version mit ✗/✓ Beispiel und 4 Schritten.</p>
+
+                        <!-- PROMPT 3 -->
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Prompt 3 – Positiv formulieren</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>Don't make it so explicit as to what NOT to do – that's just the context I gave you so you understand the background. You should formulate it from a different vantage point.</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <p><strong>🤖 Claude:</strong> Finale Version ohne DON'T-Beispiel, nur positiv formuliert mit Beispielformat und 4 klaren Schritten.</p>
+
+                    </div>
+                </div>
+            </div>
+
+            <p><strong>Ergebnis:</strong> Eine Folie mit klarer Anleitung, Beispielformat und 4 Schritten für Gruppenarbeit.</p>
+
+            <!-- ONE-SHOT PROMPT SECTION -->
+            <div class="template-box">
+                <div class="template-header" onclick="toggleTemplate(this)">
+                    <span>🎯 One-Shot Prompt (für gleiches Ergebnis)</span>
+                    <span class="toggle-template">▼ anzeigen</span>
+                </div>
+                <div class="template-content">
+                    <div class="template-inner">
+                        <div class="template-description">
+                            Dieser Prompt erstellt eine kompakte Folienanleitung für die Mini-Play Aktivität.
+                        </div>
+                        <pre>
+# Mini-Play Writing Activity: "A Journey That Went Wrong"
+
+## Context
+I'm teaching Unit 3 and want students to do Task 14 ("In groups of four, tell each other about a journey that went wrong") but as a SCRIPT-WRITING and PERFORMANCE activity instead of just telling stories orally.
+
+## What I Need
+Create a SINGLE SLIDE with instructions for students. The slide should:
+
+1. Explain that they're writing a mini-script (not a story!) with:
+   - NARRATOR: describes the scene/setting
+   - DIALOGUE: characters speak to each other
+   - [Stage directions]: actions in brackets
+
+2. Show ONE clear example format like:
+   NARRATOR: Last summer, the Johnson family were at the airport waiting for their flight.
+   MUM: [looks at phone, frustrated] The flight is delayed six hours!
+   DAD: What? That's ridiculous!
+   NARRATOR: They sat down in the waiting area...
+
+3. Give 4 simple steps:
+   - Plan the story together
+   - Write the script (with narrator + dialogue + stage directions)
+   - Assign roles (1 narrator + 2-3 characters)
+   - Practice & perform for the class
+
+## Important
+- Keep it POSITIVE – don't show what NOT to do
+- Keep it CONCISE – must fit on one projected slide
+- Make the example format very clear and easy to follow
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="materials-box">
+                <h4>📂 Erstellte Materialien</h4>
+                <ul>
+                    <li><span class="file-icon">📊</span> <a href="https://github.com/Kokisamkuci/ki-ressource/blob/main/materials/3A/_A%20Journey%20That%20Went%20Wrong_%20Mini-Play.pptx?raw=true" download>"A Journey That Went Wrong" Mini-Play Instructions</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+
             <h3>Test Prep</h3>
 
 <div class="collapsible material-item" data-category="test-prep" data-grade="3">
