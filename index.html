@@ -5639,90 +5639,153 @@ Find someone who...
                 </div>
             </div>
 
-            <!-- ONE-SHOT PROMPT SECTION -->
-            <div class="template-box">
-                <div class="template-header" onclick="toggleTemplate(this)">
-                    <span>🎯 One-Shot Prompt (für gleiches Ergebnis)</span>
-                    <span class="toggle-template">▼ anzeigen</span>
+            <!-- GENERALIZED PROMPT TEMPLATE -->
+            <div class="sub-collapsible">
+                <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                    <span>📋 Generalisierte Prompt-Vorlage: Saisonale/Thematische Unterrichtseinheit</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
-                <div class="template-content">
-                    <div class="template-inner">
-                        <div class="template-description">
-                            Dieser Prompt kombiniert alle Anforderungen aus dem iterativen Prozess in einer einzigen Nachricht.
-                            <br><strong>Anhänge benötigt:</strong> Unit-Transkript (Schulbuch + Workbook), bestehende Grammar Sheets (falls vorhanden)
+                <div class="sub-collapsible-content">
+                    <div class="sub-collapsible-inner">
+                        <p><em>Diese Vorlage ist für saisonale oder thematische Unterrichtseinheiten, die Grammatik mit einem kulturellen/zeitlichen Aufhänger verbinden. Platzhalter in [GROSSBUCHSTABEN] an eigenen Kontext anpassen.</em></p>
+
+                        <h4>🔄 Empfohlener Workflow (3 Schritte)</h4>
+                        <p>Für komplexe Themenpakete ist ein <strong>mehrstufiger Ansatz</strong> empfohlen:</p>
+                        <ol>
+                            <li><strong>Schritt 1:</strong> Kontext + Grammatik-Handout (Theorie mit thematischen Beispielen)</li>
+                            <li><strong>Schritt 2:</strong> Interaktive Aktivitäten (Speaking/Mingle)</li>
+                            <li><strong>Schritt 3:</strong> Extra-Aufgaben oder Schreibaufträge</li>
+                        </ol>
+
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 1 – Kontext & Grammatik-Handout</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+Ich plane eine thematische Unterrichtseinheit für [ANLASS: z.B. Weihnachten, Halloween, Schuljahresende, Projektwochen].
+
+KONTEXT:
+- Klasse: [SCHULSTUFE + NIVEAU: z.B. 2. Klasse, A2]
+- Aktuelle Unit: [UNIT-THEMA aus dem Schulbuch]
+- Grammatik-Fokus: [GRAMMATIKSTRUKTUREN: z.B. "going to" für Pläne, "might" für Möglichkeiten]
+- Vorwissen: [WAS HABEN SIE SCHON GELERNT?]
+
+AUFTRAG – Grammatik-Handout:
+Erstelle ein Grammatik-Referenzblatt, das:
+1. Die Grammatikstrukturen erklärt (positiv/negativ/Fragen)
+2. NUR thematisches Vokabular und Beispiele verwendet (passend zu [ANLASS])
+3. 3-4 Übungen enthält (zum Ausfüllen/Bearbeiten in der Stunde)
+4. Fertig zum Austeilen ist (nicht von der Tafel abschreiben)
+
+Niveau-Hinweis: [NIVEAU]-gerechte Sprache durchgehend.
+
+[Anhang: relevante Schulbuch-Seiten falls vorhanden]</pre>
+                                </div>
+                            </div>
                         </div>
-                        <pre>
-# Christmas Lesson Package for EFL Class
 
-## Context
-I have my last lesson with my 2nd grade (A2 level) class before Christmas. The current unit focuses on "plans for the weekend" with the grammar structures "going to" (for definite plans) and "might/might not" (for possibilities). We've only just started the unit.
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 2 – Interaktive Speaking-Aktivitäten</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+Basierend auf dem Grammatik-Handout brauche ich jetzt interaktive Aktivitäten für [ANZAHL] Minuten.
 
-## What I Need
+AKTIVITÄTS-TYPEN (wähle [2-3] passende):
 
-### 1. Extra Credit Tasks (for students between two grades)
-Create TWO task instruction sheets:
+Option A: "Find Someone Who" / Mingle Bingo
+- SuS gehen herum und finden Klassenkamerad:innen, die bestimmte Dinge vorhaben
+- Fragen verwenden die Zielgrammatik [GRAMMATIK]
+- Grid-Format mit Platz für Namen
 
-**Task A: Holiday Presentation (Past Simple Focus)**
-- 2-minute presentation about what they did over the holidays
-- Must include PowerPoint with images
-- Include language support phrases (useful expressions for past tense narration)
-- Tips for success
-- NO rubric needed
-- Focus: Looking BACK (past simple)
+Option B: Klassenumfrage mit Strichliste
+- Andere Fragen als Aktivität A
+- SuS gehen herum, fragen, notieren Ergebnisse in Tabelle
+- Am Ende: Auswertung im Plenum möglich
 
-**Task B: New Year's Resolutions Writing Task (Going to + Might Focus)**
-- 80-120 words
-- Must include:
-  - One thing they ARE going to do (definite plans)
-  - One thing they are NOT going to do (stopping something)
-  - One thing they MIGHT do (possibilities)
-  - One thing they MIGHT NOT do (probably won't happen)
-- Include ideas organized by category (School, Health, Friends, Hobbies)
-- Include language support
-- Focus: Looking FORWARD (going to + might)
+Option C: Guess Who / Anonymes Raten
+- SuS schreiben [ANZAHL] Sätze über ihre eigenen Pläne
+- Lehrkraft sammelt und liest vor
+- Klasse rät, wer es geschrieben hat
 
-### 2. Christmas Grammar Handout
-Create a grammar reference sheet that:
-- Explains "going to" and "might" structures (positive/negative/questions)
-- Uses ONLY Christmas vocabulary and activities for all examples
-- Includes 3-4 practice exercises suitable for in-class use
-- Format: Ready to hand out (they won't copy from blackboard)
+Option D: Two Truths and a Lie (thematische Version)
+- SuS schreiben 3 Aussagen über [ANLASS], eine ist falsch
+- Partner:in muss die Lüge erraten
 
-### 3. Interactive Christmas Activities
-Create THREE speaking activities for pair/group work:
+SPEZIFISCHE PROMPTS (optional – eigene Ideen einfügen):
+[EIGENE FRAGEN/PROMPTS HIER EINFÜGEN, falls gewünscht]
 
-**Activity 1: Christmas Find Someone Who (Mingle Bingo)**
-Include these specific prompts:
-- is going to eat fish on Christmas Eve
-- is going to visit their grandparents
-- is going to go skiing or snowboarding in the holidays
-- is going to get a new mobile phone (they hope!)
-- is NOT going to watch "Home Alone"
-- is going to sleep until 12:00 p.m. one day
-- might travel to another country
-(Add more similar prompts to fill a grid)
+Erstelle:
+1. Arbeitsblatt mit allen Aktivitäten und klaren Instruktionen
+2. PowerPoint-Folien mit projizierbaren Anweisungen für jede Aktivität</pre>
+                                </div>
+                            </div>
+                        </div>
 
-**Activity 2: Christmas Plans Survey (Tally Version)**
-- Different questions from Activity 1
-- Students walk around, ask classmates, tally results
-- Table format for recording answers
+                        <div class="prompt-box">
+                            <div class="prompt-header" onclick="togglePrompt(this)">
+                                <span>👤 Schritt 3 – Extra-Aufgaben / Schreibaufträge</span>
+                                <span class="toggle-prompt">▼ anzeigen</span>
+                            </div>
+                            <div class="prompt-content">
+                                <div class="prompt-inner">
+                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                    <pre>
+Ich brauche zusätzliche Aufgaben für [ZWECK: z.B. Notenverbesserung, Hausübung, schnelle Finisher]:
 
-**Activity 3: Guess Who?**
-- Students write 4 sentences about their Christmas plans
-- Teacher collects and reads aloud
-- Class guesses who wrote each one
+AUFGABE A – [AUFGABENTYP 1: z.B. Präsentation]
+- Fokus: [GRAMMATIK/SKILL: z.B. Past Simple – über Vergangenes berichten]
+- Format: [FORMAT: z.B. 2-Minuten-Präsentation mit PPT und Bildern]
+- Länge/Umfang: [VORGABEN]
+- Inkludiere: Sprachunterstützung (nützliche Phrasen), Tipps für Erfolg
+- KEINE Rubrik nötig / MIT Rubrik (je nach Bedarf)
 
-### 4. Projectable Instructions
-Create PowerPoint slides with clear instructions for each activity that I can project during class.
+AUFGABE B – [AUFGABENTYP 2: z.B. Schreibaufgabe]
+- Fokus: [GRAMMATIK/SKILL: z.B. "going to" + "might" – Zukunftspläne]
+- Thema: [THEMA: z.B. Neujahrsvorsätze, Ferienpläne]
+- Wortanzahl: [RANGE: z.B. 80-120 Wörter]
+- Muss enthalten: [STRUKTURELLE VORGABEN: z.B. 1x definiter Plan, 1x Möglichkeit, 1x was ich NICHT tun werde]
+- Inkludiere: Ideensammlung nach Kategorien, Sprachunterstützung
 
-## Output Format
-- All documents as separate .docx files
-- Clean, student-friendly formatting
-- A2-appropriate language throughout
-- Christmas theme consistently applied
+Erstelle Aufgabenblätter mit:
+- Klaren Anweisungen
+- Beispielsätzen
+- Sprachgerüsten (Sentence Starters)
+- Checkliste für SuS zur Selbstkontrolle</pre>
+                                </div>
+                            </div>
+                        </div>
 
-[Attach: Unit 7 textbook pages, Unit 7 workbook pages, existing grammar sheets if available]
-                        </pre>
+                        <h4>💡 Didaktische Prinzipien</h4>
+                        <ul>
+                            <li><strong>Thematische Kohärenz:</strong> Alle Beispiele, Übungen und Aktivitäten verwenden konsequent das Thema – so wird Vokabular beiläufig mitgelernt</li>
+                            <li><strong>Authentischer Kontext:</strong> Die Grammatik wird nicht isoliert geübt, sondern in realitätsnahen Situationen angewendet</li>
+                            <li><strong>Skill-Integration:</strong> Kombination aus rezeptiven (Lesen, Hören) und produktiven Skills (Sprechen, Schreiben)</li>
+                            <li><strong>Differenzierung:</strong> Extra-Aufgaben für verschiedene Bedürfnisse (Notenverbesserung, Begabtenförderung, unterschiedliche Lerntempi)</li>
+                            <li><strong>Mingle-Aktivitäten:</strong> Ermöglichen authentic communication + alle SuS sind aktiv + natürliche Wiederholung der Strukturen</li>
+                        </ul>
+
+                        <h4>🎯 Anpassungsmöglichkeiten</h4>
+                        <ul>
+                            <li><strong>Andere Anlässe:</strong> Halloween, Ostern, Schuljahresende, Valentinstag, Earth Day, Sport-Events</li>
+                            <li><strong>Andere Grammatik:</strong> Past Simple, Present Perfect, Conditional, Comparatives – jede Struktur lässt sich thematisch einbetten</li>
+                            <li><strong>Niveau anpassen:</strong> A1 (einfachere Strukturen, mehr Scaffolding) bis B2 (komplexere Aufgaben, weniger Gerüste)</li>
+                            <li><strong>Kulturelle Sensibilität:</strong> Bei religiösen Feiertagen alternative säkulare Optionen anbieten</li>
+                        </ul>
+
+                        <h4>📎 Empfohlene Anhänge</h4>
+                        <ul>
+                            <li>Relevante Schulbuch-/Workbook-Seiten (für Grammatik-Referenz und Aktivitäts-Inspiration)</li>
+                            <li>Bestehende Grammatik-Sheets (falls vorhanden – zum Abgleich des Formats)</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -5752,27 +5815,94 @@ Create PowerPoint slides with clear instructions for each activity that I can pr
 
                         <p><strong>Kontext:</strong> Letzte Schulwoche, Noten bereits vergeben. Reflexionsaktivität über das Schuljahr, verpackt in Gen-Alpha-Slang als Aufhänger.</p>
 
-                        <div class="prompt-box">
-                            <div class="prompt-header" onclick="togglePrompt(this)">
-                                <span>📋 Prompt</span>
-                                <span class="toggle-prompt">▼ anzeigen</span>
-                            </div>
-                            <div class="prompt-content">
-                                <div class="prompt-inner">
-                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
-                                    <pre>I have this transcript about Gen Alpha slang [from the cleaned-up video]. I want to create an end-of-year reflection activity for my English class where students discuss their learning in groups. Can you help me write the discussion questions using Gen Alpha slang in a fun way, but also include a "normal English" translation underneath each question so everyone understands?
+                        <p><strong>Arbeitsablauf:</strong> Ein-Schritt-Prozess – Transkript/Referenzmaterial als Basis für die Erstellung der Aktivität.</p>
 
-The questions should cover:
-* What was their favorite thing in English class this year
-* What was easiest to learn
-* What was most difficult
-* What they want to improve next year
-* What they'd change about the class</pre>
+                        <!-- GENERALIZED PROMPT TEMPLATE -->
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Generalisierte Prompt-Vorlage: Trend-basierte Engagement-Aktivität</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <p><em>Diese Vorlage ist für Aktivitäten, die aktuelle Trends, Slang, Memes oder Pop-Kultur als Aufhänger nutzen, um SuS zu engagieren. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
+
+                                    <h4>🔄 Empfohlener Workflow (1-2 Schritte)</h4>
+                                    <p>Trend-basierte Aktivitäten funktionieren oft gut als <strong>One-Shot</strong>, wenn Referenzmaterial vorhanden ist:</p>
+                                    <ol>
+                                        <li><strong>Schritt 1:</strong> Referenzmaterial + klare Beschreibung der gewünschten Aktivität</li>
+                                        <li><strong>Optional Schritt 2:</strong> Verfeinern/Erweitern basierend auf erstem Output</li>
+                                    </ol>
+
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Haupt-Prompt – Trend-basierte Aktivität</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Ich möchte [TREND/PHÄNOMEN: z.B. Gen Alpha Slang, TikTok-Memes, aktuelle Viral-Sounds] als Aufhänger für eine Unterrichtsaktivität nutzen.
+
+KONTEXT:
+- Klasse: [SCHULSTUFE + NIVEAU]
+- Situation: [KONTEXT: z.B. letzte Schulwoche, Noten bereits vergeben / Einstieg in neues Thema / Auflockerung zwischendurch]
+- Ziel: [LERNZIEL: z.B. Reflexion über das Schuljahr, Vokabeltraining, Diskussionsanregung]
+
+REFERENZMATERIAL:
+[Beschreibe oder füge an: Transkript eines Videos, Liste von Begriffen, Screenshots, etc.]
+
+GEWÜNSCHTE AKTIVITÄT:
+- Format: [FORMAT: z.B. Diskussionsfragen für Gruppenarbeit, Arbeitsblatt, Quiz, Matching-Aktivität]
+- Aufbau: [STRUKTUR: z.B. Trend-Version + "normale" Übersetzung darunter, damit alle verstehen]
+
+INHALTLICHE ABDECKUNG:
+Die Aktivität soll folgende Bereiche/Fragen abdecken:
+- [THEMA/FRAGE 1: z.B. Was war das Highlight des Jahres?]
+- [THEMA/FRAGE 2: z.B. Was fiel am leichtesten?]
+- [THEMA/FRAGE 3: z.B. Was war am schwierigsten?]
+- [THEMA/FRAGE 4: z.B. Was möchte ich nächstes Jahr verbessern?]
+- [THEMA/FRAGE 5: z.B. Was würde ich am Unterricht ändern?]
+
+TON:
+- Humorvoll und authentisch im Trend-Teil
+- Verständlich für alle (auch die, die den Trend nicht kennen)
+- Respektvoll (keine Begriffe, die beleidigend sein könnten)
+
+[Anhang: Transkript/Video-Link/Begriffsliste zum Trend]</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4>💡 Didaktische Prinzipien</h4>
+                                    <ul>
+                                        <li><strong>Lebensweltbezug:</strong> Aktuelle Trends aus der Welt der SuS erhöhen Motivation und Engagement</li>
+                                        <li><strong>Doppelte Kodierung:</strong> Trend-Version + Klartext-Übersetzung = niemand wird ausgeschlossen</li>
+                                        <li><strong>Humor als Eisbrecher:</strong> Besonders bei sensiblen Themen (Selbstreflexion, Feedback) hilft humorvoller Einstieg</li>
+                                        <li><strong>Authentizität:</strong> Slang/Trends müssen aktuell und korrekt verwendet werden – im Zweifel recherchieren oder SuS einbeziehen</li>
+                                        <li><strong>Zeitfenster:</strong> Trends haben kurze Halbwertszeit – Material regelmäßig aktualisieren</li>
+                                    </ul>
+
+                                    <h4>🎯 Anpassungsmöglichkeiten</h4>
+                                    <ul>
+                                        <li><strong>Andere Trends:</strong> Meme-Templates, TikTok-Challenges, Gaming-Sprache, Influencer-Styles</li>
+                                        <li><strong>Andere Kontexte:</strong> Vokabeleinführung (Begriffe als Meme), Grammatik (Trend als Beispielsätze), Literatur (Charaktere mit modernem Slang)</li>
+                                        <li><strong>SuS als Expert:innen:</strong> SuS können selbst Trend-Materialien einbringen und erklären</li>
+                                        <li><strong>Fächerübergreifend:</strong> Funktioniert auch für andere Fächer (Geschichte, Biologie, etc.)</li>
+                                    </ul>
+
+                                    <h4>⚠️ Wichtige Hinweise</h4>
+                                    <ul>
+                                        <li><strong>Recherche:</strong> Vor Verwendung sicherstellen, dass Begriffe keine problematischen Konnotationen haben</li>
+                                        <li><strong>Inklusivität:</strong> Nicht alle SuS kennen jeden Trend – Übersetzung/Erklärung immer mitliefern</li>
+                                        <li><strong>Distanz bewahren:</strong> Als Lehrkraft nicht krampfhaft "cool" wirken wollen – humorvolle Selbstironie funktioniert besser</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
 
-                                                <div class="materials-box">
+                        <div class="materials-box">
                             <h4>📂 Erstellte Materialien</h4>
                             <ul>
                                 <li><span class="file-icon">📄</span> <a href="https://github.com/Kokisamkuci/ki-ressource/blob/main/materials/4B/Gen%20Alpha%20Slang.docx?raw=true" download>Gen Alpha Slang Worksheet</a></li>
@@ -5905,49 +6035,159 @@ The questions should cover:
                             </div>
                         </div>
 
-                        <!-- ONE-SHOT PROMPT -->
-                        <div class="template-box">
-                            <div class="template-header" onclick="toggleTemplate(this)">
-                                <span>🎯 One-Shot Prompt (für gleiches Ergebnis)</span>
-                                <span class="toggle-template">▼ anzeigen</span>
+                        <!-- GENERALIZED PROMPT TEMPLATE -->
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Generalisierte Prompt-Vorlage: Psychologische Theorie mit Anwendung</span>
+                                <span class="toggle-icon">▼</span>
                             </div>
-                            <div class="template-content">
-                                <div class="template-inner">
-                                    <div class="template-description">
-                                        Dieser Prompt kombiniert alle Anforderungen aus dem iterativen Prozess in einer einzigen Nachricht.
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <p><em>Diese Vorlage ist für Psychologie-Unterrichtseinheiten, die Theorie mit kreativen Anwendungsaktivitäten verbinden. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
+
+                                    <h4>🔄 Empfohlener Workflow (3-4 Schritte)</h4>
+                                    <p>Für komplexe Psychologie-Einheiten ist ein <strong>mehrstufiger Ansatz</strong> empfohlen:</p>
+                                    <ol>
+                                        <li><strong>Schritt 1:</strong> Unterrichtsplanung mit Vorwissen-Analyse</li>
+                                        <li><strong>Schritt 2:</strong> Theoretisches Handout mit Primärquellen</li>
+                                        <li><strong>Schritt 3:</strong> Fallstudien oder Anwendungsaufgaben</li>
+                                        <li><strong>Schritt 4:</strong> Kreative Transfer-Aktivität (optional)</li>
+                                    </ol>
+
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 1 – Unterrichtsplanung</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Ich plane eine [DOPPELSTUNDE/SEQUENZ] für [FACH: z.B. Psychologie WPF].
+
+ÜBERGEORDNETES THEMA: [THEMENBEREICH: z.B. Entwicklungspsychologie, Sozialpsychologie, kognitive Psychologie]
+
+VORWISSEN DER SUS:
+- [BEREITS BEHANDELT 1: z.B. Nature vs. Nurture Debatte]
+- [BEREITS BEHANDELT 2: z.B. spezifische Experimente/Theorien]
+- [BEREITS BEHANDELT 3: z.B. vorherige Unterrichtsinhalte]
+
+AKTUELLER FOKUS: [SPEZIFISCHES THEMA: z.B. Bindungstheorie, kognitive Dissonanz, Gedächtnismodelle]
+
+GEPLANTE METHODIK:
+- [VIDEO/EXPERIMENT: z.B. "Ich zeige das Strange Situation Experiment von Ainsworth"]
+- [ANSCHLUSS: z.B. "Danach sollen SuS die Theorie auf Erwachsenenverhalten übertragen"]
+
+Hilf mir, diese Unterrichtseinheit zu strukturieren. Welche Phasen schlägst du vor und wie kann ich die Theorie für SuS zugänglich und anwendbar machen?</pre>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <pre>
-Erstelle eine Unterrichtseinheit zum Thema Bindungstheorie für eine kleine WPF-Gruppe (7 SuS, 7./8. Klasse).
 
-Vorwissen der SuS:
-- Zwillingsforschung (Nature vs. Nurture)
-- Pinkers externe Geburts-Theorie (Verhältnis Tragzeit/Lebenserwartung)
-- Harlows Rhesusaffen-Experiment
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 2 – Theoretisches Handout</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Erstelle ein theoretisches Handout zu [THEMA] auf Deutsch.
 
-Erstelle folgende Materialien auf Deutsch:
+INHALTLICHE ANFORDERUNGEN:
+1. Integriere Verbindungen zum Vorwissen: [VORWISSEN-ANKNÜPFUNGSPUNKTE]
+2. Erkläre die Kerntheorie: [THEORETIKER:INNEN + KONZEPTE: z.B. Ainsworth's Bindungstypen, Bowlbys Internal Working Models]
+3. Füge wissenschaftliche Zitate/Primärquellen hinzu
+4. Optional: Neurobiologische/aktuelle Forschungsperspektive [ZUSÄTZLICHE PERSPEKTIVE: z.B. van der Kolk, moderne Studien]
 
-1. THEORETISCHES HANDOUT:
-- Integriere Pinkers Theorie (warum die ersten 18-24 Monate kritisch sind)
-- Verbinde Harlows Erkenntnis (emotionale Sicherheit > physische Versorgung)
-- Erkläre Ainsworths Strange Situation und die 4 Bindungstypen
-- Füge Bowlbys Internal Working Models hinzu
-- Verwende wissenschaftliche Zitate
+STRUKTUR:
+- Überblick/Einleitung (Warum ist das relevant?)
+- Theoretischer Hintergrund mit Schlüsselbegriffen
+- Zentrale Modelle/Typologien (visuell darstellbar)
+- Implikationen/Anwendungsbezug
 
-2. FALLSTUDIEN (4 Stück):
-- Beschreibe Kinder (Emma, Lukas, Sophia, Tim) im Strange Situation Setting
-- „Show, don't tell" – bildliche Sprache ohne direkte Fachbegriffe
-- SuS sollen Bindungstypen selbst erkennen
+NIVEAU: [OBERSTUFE/WPF] – wissenschaftlich fundiert, aber verständlich</pre>
+                                            </div>
+                                        </div>
+                                    </div>
 
-3. DATING-PROFIL-AKTIVITÄT:
-- 4 Profile (Max/Lisa/Tom/Sarah) mit je:
-  - Foto-Beschreibung
-  - Bio-Text
-  - Beispiel-Chatnachrichten
-- Jedes Profil repräsentiert einen Bindungsstil
-- Theoretische Verbindung: Kindheitsverhalten → Erwachsenenverhalten
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 3 – Fallstudien erstellen</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Erstelle [ANZAHL: z.B. 4] Fallstudien zu [THEMA].
 
-Methodischer Hinweis: Balance zwischen Theorie-Input und eigenständiger Erarbeitung.
-                                    </pre>
+SETTING: [KONTEXT DER FALLSTUDIEN: z.B. Strange Situation Setting, Alltagssituationen, Arbeitskontexte]
+
+FORMAT:
+- Fiktive Personen mit Namen und Alter: [NAMEN: z.B. Emma, Lukas, Sophia, Tim]
+- Jede Fallstudie repräsentiert einen [TYP/STIL/KATEGORIE: z.B. Bindungsstil, Persönlichkeitstyp]
+
+STILISTISCHE VORGABE:
+- "Show, don't tell" – bildliche, konkrete Beschreibungen
+- KEINE direkten Fachbegriffe verwenden
+- SuS sollen die Kategorien selbst erkennen und zuordnen
+
+AUFGABENSTELLUNG für SuS:
+- Leere Tabelle zum Ausfüllen mit: [KATEGORIEN/MERKMALE]
+- Fachbegriffe sollen von SuS selbst eingetragen werden
+
+Ziel: Induktives Lernen – von konkreten Beispielen zur abstrakten Theorie</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 4 – Kreative Transfer-Aktivität</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Ich möchte eine kreative Transfer-Aktivität, die [THEORETISCHES KONZEPT] auf [ALLTAGSKONTEXT] überträgt.
+
+IDEE: [KREATIVES KONZEPT: z.B. "Bindungsstile in Dating-Profilen erkennbar machen"]
+
+Begründung der Verbindung:
+- [THEORETISCHE BRÜCKE: z.B. "Frühe Bindungserfahrungen prägen spätere Beziehungsmuster"]
+- [MANIFESTATION IM ALLTAG: z.B. "Die Art wie Menschen sich präsentieren zeigt ihren Bindungsstil"]
+
+ERSTELLE [ANZAHL] [ARTEFAKTE: z.B. Dating-Profile, Social-Media-Posts, Tagebucheinträge]:
+Jedes Artefakt enthält:
+- [ELEMENT 1: z.B. Profilbild-Beschreibung]
+- [ELEMENT 2: z.B. Bio-Text]
+- [ELEMENT 3: z.B. Beispiel-Nachrichten/Interaktionen]
+
+Jedes Artefakt repräsentiert eindeutig einen [TYP/STIL].
+
+LERNZIEL: SuS erkennen, wie [PSYCHOLOGISCHES KONZEPT] im Alltag sichtbar wird.</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4>💡 Didaktische Prinzipien</h4>
+                                    <ul>
+                                        <li><strong>Induktives Lernen:</strong> Von konkreten Beispielen (Fallstudien) zur abstrakten Theorie – SuS erarbeiten Konzepte selbst</li>
+                                        <li><strong>Show, don't tell:</strong> Verhaltensweise beschreiben, nicht kategorisieren – fördert kritisches Denken</li>
+                                        <li><strong>Transfer auf Lebenswelt:</strong> Kreative Aktivitäten zeigen Relevanz psychologischer Konzepte im Alltag</li>
+                                        <li><strong>Primärquellen:</strong> Wissenschaftliche Zitate vermitteln Authentizität und fördern kritische Quellenarbeit</li>
+                                        <li><strong>Spiralcurriculum:</strong> Vorwissen explizit aktivieren und mit neuen Inhalten verknüpfen</li>
+                                    </ul>
+
+                                    <h4>🎯 Anpassungsmöglichkeiten</h4>
+                                    <ul>
+                                        <li><strong>Andere Psychologie-Themen:</strong> Kognitive Dissonanz, Soziale Rollen, Gedächtnismodelle, Persönlichkeitstheorien, Lerntheorien</li>
+                                        <li><strong>Andere Transfer-Kontexte:</strong> Social Media (für Selbstdarstellung), Werbung (für Manipulation), Filme (für Charakteranalyse)</li>
+                                        <li><strong>Gruppenarbeit:</strong> Jigsaw-Methode – Gruppen erarbeiten je einen Typ/Stil und präsentieren</li>
+                                        <li><strong>Selbstreflexion:</strong> Vorsichtig einsetzen – bei sensiblen Themen optional und freiwillig</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -6019,29 +6259,113 @@ Methodischer Hinweis: Balance zwischen Theorie-Input und eigenständiger Erarbei
                             <li><strong>Loss Aversion:</strong> „Verpassen Sie nicht..."</li>
                         </ol>
 
-                        <!-- ONE-SHOT PROMPT -->
-                        <div class="template-box">
-                            <div class="template-header" onclick="toggleTemplate(this)">
-                                <span>🎯 One-Shot Prompt</span>
-                                <span class="toggle-template">▼ anzeigen</span>
+                        <!-- GENERALIZED PROMPT TEMPLATE -->
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Generalisierte Prompt-Vorlage: Medienpsychologie & Werbeanalyse</span>
+                                <span class="toggle-icon">▼</span>
                             </div>
-                            <div class="template-content">
-                                <div class="template-inner">
-                                    <pre>
-Erstelle eine 90-minütige Unterrichtseinheit zu Werbepsychologie für WPF Psychologie (7./8. Klasse).
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <p><em>Diese Vorlage ist für Unterrichtseinheiten, die psychologische Prinzipien auf Medien/Werbung/Marketing anwenden. Fördert kritische Medienkompetenz. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
 
-Inhalt:
-- AIDA-Modell als strukturierender Rahmen
-- 8 psychologische Werbe-Taktiken: Social Proof, Urgency, Authority Cue, FOMO, Bundling, Scarcity, Information Gap, Loss Aversion
-- 4 echte Werbetexte zur Analyse
+                                    <h4>🔄 Empfohlener Workflow (2 Schritte)</h4>
+                                    <p>Bei Medienanalyse funktioniert ein <strong>zweistufiger Ansatz</strong> gut:</p>
+                                    <ol>
+                                        <li><strong>Schritt 1:</strong> Konzept + strukturierender Rahmen + Methodenvorschläge</li>
+                                        <li><strong>Schritt 2:</strong> Konkrete Materialien mit echten Beispielen</li>
+                                    </ol>
 
-Materialien:
-1. Präsentation mit Theorie-Input
-2. Arbeitsblatt: SuS ordnen Taktiken den Werbetexten zu
-3. Reflexionsfragen zur Medienkompetenz
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 1 – Konzeptentwicklung</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Ich plane eine [ZEITRAHMEN: z.B. 90-minütige] Unterrichtseinheit zu [THEMA: z.B. Werbepsychologie, Social Media Manipulation, Dark Patterns] für [FACH + STUFE].
 
-Methodik: Entdeckendes Lernen, Gruppenarbeit, Plenumsdiskussion
-                                    </pre>
+VORBEREITETES MATERIAL:
+Ich habe bereits [ANZAHL] echte [MEDIENTYPEN: z.B. Werbetexte, Social Media Posts, App-Screenshots] gesammelt/transkribiert.
+
+IDENTIFIZIERTE PSYCHOLOGISCHE PRINZIPIEN:
+[LISTE DER TAKTIKEN/KONZEPTE: z.B.
+- Social Proof ("Über 10.000 zufriedene Kunden")
+- Urgency ("Nur noch heute!")
+- Authority Cue ("Von Expert:innen empfohlen")
+- FOMO ("Sei Teil der Community")
+- Scarcity ("Nur noch 3 auf Lager")
+- Loss Aversion ("Verpassen Sie nicht...")
+]
+
+FRAGEN:
+1. Welches übergeordnete Modell/Framework kann als strukturierender Rahmen dienen?
+2. Wie kann ich das methodisch aufbauen? (Einstieg, Erarbeitung, Sicherung)
+3. Welche Einstiegsmethode empfiehlst du? (Discovery Learning, Provokation, Mini-Analyse, Gamification)</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 2 – Materialien erstellen</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Basierend auf dem [FRAMEWORK: z.B. AIDA-Modell] als Rahmen, erstelle folgende Materialien:
+
+1. PRÄSENTATION mit Theorie-Input:
+- [FRAMEWORK] kurz erklärt
+- Die [ANZAHL] psychologischen Taktiken mit je einem Beispiel
+- Visualisierung wie Taktiken ins Framework eingeordnet werden
+
+2. ARBEITSBLATT – Analyse-Aufgabe:
+- [ANZAHL] echte [MEDIENBEISPIELE] (ich liefere die Transkripte/Screenshots)
+- SuS identifizieren und markieren verwendete Taktiken
+- Zuordnungstabelle: Welche Taktik → Welches Beispiel
+- Begründungsfeld: Warum ist das diese Taktik?
+
+3. REFLEXIONSFRAGEN zur Medienkompetenz:
+- Persönliche Ebene: "Wo bist du selbst schon 'reingefallen'?"
+- Gesellschaftliche Ebene: "Sind solche Taktiken ethisch vertretbar?"
+- Handlungskompetenz: "Wie kannst du dich schützen?"
+
+4. Optional – HANDOUT/Zusammenfassung:
+- Übersicht aller Taktiken mit Kurzdefintionen
+- Erkennungsmerkmale + Beispielphrasen
+
+[Anhang: Transkripte/Screenshots der echten Beispiele]</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4>💡 Didaktische Prinzipien</h4>
+                                    <ul>
+                                        <li><strong>Authentisches Material:</strong> Echte Werbung/Medien analysieren – nicht künstliche Beispiele</li>
+                                        <li><strong>Kritische Medienkompetenz:</strong> Manipulation erkennen → Selbstschutz entwickeln</li>
+                                        <li><strong>Theorie-Praxis-Verbindung:</strong> Psychologische Konzepte werden direkt anwendbar</li>
+                                        <li><strong>Entdeckendes Lernen:</strong> SuS identifizieren Taktiken selbst, bevor Begriffe eingeführt werden</li>
+                                        <li><strong>Persönlicher Bezug:</strong> Reflexion eigener Erfahrungen macht Thema relevant</li>
+                                    </ul>
+
+                                    <h4>🎯 Anpassungsmöglichkeiten</h4>
+                                    <ul>
+                                        <li><strong>Andere Medien:</strong> Social Media Algorithmen, Clickbait, Fake News, Dark Patterns in Apps, Influencer Marketing</li>
+                                        <li><strong>Andere Frameworks:</strong> Elaboration Likelihood Model, Cialdinis 6 Prinzipien, Nudging-Theorie</li>
+                                        <li><strong>Projektarbeit:</strong> SuS erstellen selbst "manipulative" Werbung und präsentieren die verwendeten Taktiken</li>
+                                        <li><strong>Ethik-Diskussion:</strong> Wann ist Überzeugung legitim, wann manipulativ?</li>
+                                    </ul>
+
+                                    <h4>📎 Empfohlene Anhänge</h4>
+                                    <ul>
+                                        <li>Transkripte/Screenshots echter Werbung (selbst gesammelt – Urheberrecht beachten)</li>
+                                        <li>Bei Video: Timestamps der relevanten Stellen</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -6146,37 +6470,143 @@ Methodik: Entdeckendes Lernen, Gruppenarbeit, Plenumsdiskussion
                             </div>
                         </div>
 
-                        <!-- ONE-SHOT PROMPT -->
-                        <div class="template-box">
-                            <div class="template-header" onclick="toggleTemplate(this)">
-                                <span>🎯 One-Shot Prompt</span>
-                                <span class="toggle-template">▼ anzeigen</span>
+                        <!-- GENERALIZED PROMPT TEMPLATE -->
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Generalisierte Prompt-Vorlage: Testtheorie & Test-Entwicklung</span>
+                                <span class="toggle-icon">▼</span>
                             </div>
-                            <div class="template-content">
-                                <div class="template-inner">
-                                    <pre>
-Erstelle ein Materialpaket für Themenblock 5 „Persönlichkeitsdiagnostik" (WPF Psychologie, 7./8. Klasse).
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <p><em>Diese Vorlage ist für Einheiten zu psychologischer Testtheorie, die Theorie mit einer kreativen Test-Entwicklungsaufgabe verbinden. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
 
-Teil A – Authentische Big Five Items:
-- Recherchiere Items aus IPIP-50 (Goldberg, Public Domain) und BFI-10 (Rammstedt &amp; John 2007)
-- Erstelle 2 Folien: deutsche Items mit OCEAN-Zuordnung
+                                    <h4>🔄 Empfohlener Workflow (3 Schritte)</h4>
+                                    <p>Bei Test-Entwicklung ist ein <strong>iterativer Ansatz</strong> sinnvoll:</p>
+                                    <ol>
+                                        <li><strong>Schritt 1:</strong> Bestehende Materialien analysieren + Erweiterungsideen</li>
+                                        <li><strong>Schritt 2:</strong> Authentische Items recherchieren + Folien erstellen</li>
+                                        <li><strong>Schritt 3:</strong> Kreative Reflexionsaufgabe mit Erwartungshorizont</li>
+                                    </ol>
 
-Teil B – Reflexionsaufgabe „Der Schul-Persönlichkeitstest":
-Schüler:innen entwickeln eigenen Mini-Persönlichkeitstest mit schulrelevanten Dimensionen.
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 1 – Materialanalyse & Erweiterung</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Ich plane einen Themenblock zu [THEMA: z.B. Persönlichkeitsdiagnostik, Intelligenzforschung, Einstellungsmessung] für [FACH + STUFE].
 
-3 Phasen:
-1. Dimensionen finden (z.B. Prokrastination, Prüfungsangst)
-2. Items formulieren (+ und – gepolt)
-3. Gütekriterien anwenden (O-R-V)
+VORHANDENE MATERIALIEN:
+Ich habe bereits folgende Materialien erstellt:
+- [MATERIAL 1: z.B. Handout zu Persönlichkeitstheorien]
+- [MATERIAL 2: z.B. Präsentation zu Gütekriterien]
+- [MATERIAL 3: z.B. Übungsblatt]
 
-Materialien:
-- Arbeitsblatt mit Planungsbogen
-- Lehrerhandreichung mit detailliertem Erwartungshorizont
-- Musterbeispiel mit 4 Dimensionen und 20 Items
-- Diskussionsfolien: Jede Folie = Gütekriterium-Definition + Anwendungsfrage
+Bitte analysiere diese Materialien [Anhänge] und identifiziere:
+1. Stärken und gut gelungene Teile
+2. Lücken oder Erweiterungsmöglichkeiten
+3. Mögliche Anknüpfungspunkte für praktische Anwendung
 
-Ton: leicht und spielerisch, da Themenabschluss
-                                    </pre>
+MEINE IDEEN:
+- Authentische Test-Items aus echten Quellen einbauen
+- Kreative Reflexionsaufgabe zum Abschluss
+
+[Anhang: bestehende Materialien]</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 2 – Authentische Items recherchieren</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Ich möchte authentische Items aus wissenschaftlichen Tests auf meinen Folien zeigen, um [TESTKONZEPT: z.B. die Big Five Dimensionen] zu illustrieren.
+
+ANFORDERUNGEN:
+1. Recherchiere Items aus anerkannten Quellen:
+   - [QUELLE 1: z.B. IPIP-50 (Goldberg) – Public Domain]
+   - [QUELLE 2: z.B. BFI-10 (Rammstedt & John 2007)]
+
+2. Erstelle [ANZAHL] Folien:
+   - Zeige [ANZAHL] Items pro [DIMENSION/KONSTRUKT]
+   - Deutsche Übersetzung (falls Original englisch)
+   - Zuordnung zu Dimensionen sichtbar machen
+
+3. Inklusive: + und – gepolte Items (zeigt Testkonstruktion)
+
+Ziel: SuS sehen, wie "echte" psychologische Tests aussehen</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 3 – Kreative Reflexionsaufgabe</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Erstelle eine kreative Reflexionsaufgabe: SuS entwickeln einen eigenen Mini-[TESTTYP: z.B. Persönlichkeitstest, Einstellungstest] mit [KONTEXT: z.B. schulrelevanten, alltagsnahen] Dimensionen.
+
+STRUKTUR DER AUFGABE (3 Phasen):
+1. DIMENSIONEN FINDEN
+   - SuS überlegen [ANZAHL] Dimensionen für ihren Kontext
+   - Beispiele: [BEISPIELDIMENSIONEN: z.B. Prokrastination, Prüfungsangst, Soziale Medienpräsenz]
+
+2. ITEMS FORMULIEREN
+   - [ANZAHL] Items pro Dimension
+   - Positiv UND negativ gepolte Items (zeigt Verständnis)
+   - Antwortskala definieren
+
+3. GÜTEKRITERIEN REFLEKTIEREN
+   - Wie könnte man [GÜTEKRITERIUM 1: z.B. Objektivität] prüfen?
+   - Wie könnte man [GÜTEKRITERIUM 2: z.B. Reliabilität] messen?
+   - Was wäre [GÜTEKRITERIUM 3: z.B. Validität] bei diesem Test?
+
+MATERIALIEN BENÖTIGT:
+1. Arbeitsblatt mit Planungsbogen für SuS
+2. Lehrerhandreichung mit detailliertem Erwartungshorizont
+3. Musterbeispiel (zeigt fertig ausgefüllten Test als Orientierung)
+4. Diskussionsfolien: Je Gütekriterium = Definition + "Wie würdet ihr das bei eurem Test prüfen?"
+
+TON: [TON: z.B. spielerisch und leicht, da Themenabschluss / ernst und wissenschaftlich]</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4>💡 Didaktische Prinzipien</h4>
+                                    <ul>
+                                        <li><strong>Authentizität:</strong> Echte Items aus wissenschaftlichen Tests vermitteln Seriosität der Psychologie</li>
+                                        <li><strong>Learning by Doing:</strong> Eigene Testerstellung vertieft Verständnis der Gütekriterien</li>
+                                        <li><strong>Kritische Reflexion:</strong> SuS erkennen Unterschied zwischen "echten" Tests und Zeitschriften-Quiz</li>
+                                        <li><strong>Transfer:</strong> Lebensweltnahe Dimensionen machen abstrakte Konzepte greifbar</li>
+                                        <li><strong>Erwartungshorizont:</strong> Klare Kriterien ermöglichen Selbst- und Fremdeinschätzung</li>
+                                    </ul>
+
+                                    <h4>🎯 Anpassungsmöglichkeiten</h4>
+                                    <ul>
+                                        <li><strong>Andere Testtypen:</strong> Intelligenztest-Items (Raven), Einstellungsskalen (Likert), Projektive Tests</li>
+                                        <li><strong>Andere Kontexte:</strong> "Gaming-Persönlichkeitstest", "Social-Media-Nutzungstest", "Lerntypen-Test"</li>
+                                        <li><strong>Gruppenarbeit:</strong> Gruppen entwickeln Tests, tauschen und bewerten gegenseitig nach Gütekriterien</li>
+                                        <li><strong>Kritische Analyse:</strong> Populäre Online-Tests analysieren und Mängel identifizieren</li>
+                                    </ul>
+
+                                    <h4>📎 Empfohlene Quellen für authentische Items</h4>
+                                    <ul>
+                                        <li><strong>IPIP (International Personality Item Pool):</strong> Public Domain, viele Skalen</li>
+                                        <li><strong>BFI-10/BFI-44:</strong> Standardisierte Big Five Inventare</li>
+                                        <li><strong>GESIS (Leibniz-Institut):</strong> Deutsche Testdokumentation</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -6277,35 +6707,142 @@ Ton: leicht und spielerisch, da Themenabschluss
                             <li><strong>Ray Kurzweil:</strong> Singularität, Mind Upload, exponentielles Wachstum</li>
                         </ul>
 
-                        <!-- ONE-SHOT PROMPT -->
-                        <div class="template-box">
-                            <div class="template-header" onclick="toggleTemplate(this)">
-                                <span>🎯 One-Shot Prompt</span>
-                                <span class="toggle-template">▼ anzeigen</span>
+                        <!-- GENERALIZED PROMPT TEMPLATE -->
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Generalisierte Prompt-Vorlage: Philosophische Textarbeit mit Argumentationsanalyse</span>
+                                <span class="toggle-icon">▼</span>
                             </div>
-                            <div class="template-content">
-                                <div class="template-inner">
-                                    <pre>
-Erstelle eine Unterrichtssequenz zu Transhumanismus für WPF Philosophie (7./8. Klasse).
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <p><em>Diese Vorlage ist für Philosophie-Sequenzen, die mehrere Denker:innen/Positionen durch Textarbeit erschließen und systematisch analysieren. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
 
-Ausgangspunkt: Arnold Gehlens „Mängelwesen"-Konzept
-Leitunterscheidung: Kompensation vs. Transformation
+                                    <h4>🔄 Empfohlener Workflow (3-4 Schritte)</h4>
+                                    <p>Bei philosophischer Textarbeit ist ein <strong>mehrstufiger Ansatz</strong> sinnvoll:</p>
+                                    <ol>
+                                        <li><strong>Schritt 1:</strong> Sequenzkonzept mit Ausgangspunkt und Leitunterscheidung</li>
+                                        <li><strong>Schritt 2:</strong> Handouts mit Textpassagen und Leitfragen für jede Position</li>
+                                        <li><strong>Schritt 3:</strong> Argumentationsanalyse (z.B. Toulmin-Modell)</li>
+                                        <li><strong>Optional:</strong> Sortierungs-/Kategorisierungsaktivität</li>
+                                    </ol>
 
-4 Handouts mit Leitfragen:
-1. Nick Bostrom – Cognitive Enhancement
-2. Max More – Proactionary Principle
-3. Aubrey de Grey – Lebensverlängerung
-4. Ray Kurzweil – Die Singularität ist nah
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 1 – Sequenzkonzept</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Ich plane eine Unterrichtssequenz zu [THEMA: z.B. Anthropologie & Transhumanismus, Erkenntnistheorie, Staatsphilosophie] für [FACH + STUFE].
 
-Jedes Handout:
-- Ausgewählte Textpassagen (deutsch/englisch)
-- 4-5 Leitfragen zur Texterschließung
-- Bezug zu Gehlens Grundposition
+AUSGANGSPUNKT/GRUNDPOSITION:
+[BASISTHEORIE: z.B. Arnold Gehlens Konzept des "Mängelwesens" – Mensch als biologisch unfertiges Wesen, das durch Kultur/Technik kompensiert]
 
-Zusätzlich:
-- Toulmin-Analyse der Hauptargumente (Claim, Data, Warrant, Backing)
-- Sortierungsaktivität: 12 Technologien einordnen
-                                    </pre>
+LEITUNTERSCHEIDUNG/SPANNUNGSFELD:
+[DICHOTOMIE: z.B. Kompensation vs. Transformation, Rationalismus vs. Empirismus, Freiheit vs. Sicherheit]
+
+POSITIONEN/DENKER:INNEN:
+Ich möchte [ANZAHL] verschiedene Positionen gegenüberstellen:
+1. [DENKER:IN 1 + KERNTHESE: z.B. Nick Bostrom – Cognitive Enhancement]
+2. [DENKER:IN 2 + KERNTHESE: z.B. Max More – Proactionary Principle]
+3. [DENKER:IN 3 + KERNTHESE: z.B. Aubrey de Grey – Lebensverlängerung]
+4. [DENKER:IN 4 + KERNTHESE: z.B. Ray Kurzweil – Singularität]
+
+GEPLANTE METHODIK:
+- [MEDIENEINSTIEG: z.B. Video zu Unsterblichkeit zeigen]
+- [AKTIVITÄT: z.B. Sortierungsaktivität mit Technologie-Beispielen]
+- [TEXTARBEIT: z.B. Jigsaw mit 4 Handouts]
+
+Hilf mir, diese Sequenz didaktisch sinnvoll zu strukturieren.</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 2 – Handouts mit Leitfragen</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Erstelle [ANZAHL] Handouts mit Textpassagen und Leitfragen.
+
+FÜR JEDE:N DENKER:IN:
+1. [DENKER:IN]: [TEXTQUELLE/WERK]
+2. [DENKER:IN]: [TEXTQUELLE/WERK]
+3. usw.
+
+STRUKTUR JEDES HANDOUTS:
+1. Kurzbiografie (2-3 Sätze)
+2. Ausgewählte Textpassagen
+   - Originalsprache + deutsche Übersetzung (falls fremdsprachig)
+   - Zentrale Stellen markiert
+3. [ANZAHL] Leitfragen zur Texterschließung:
+   - Verständnisfragen (Was sagt der Text?)
+   - Analysefragen (Wie argumentiert der/die Autor:in?)
+   - Transferfragen (Bezug zu [GRUNDPOSITION])
+4. Platz für Notizen/Antworten
+
+NIVEAU: [OBERSTUFE/WPF] – anspruchsvolle, aber zugängliche Textauswahl</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 3 – Argumentationsanalyse</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Analysiere die Hauptargumente der [ANZAHL] Texte nach dem [ANALYSEMODELL: z.B. Toulmin-Modell].
+
+FÜR JEDEN TEXT:
+Identifiziere und formuliere:
+- CLAIM (Hauptthese)
+- DATA (Belege/Fakten)
+- WARRANT (Schlussregel – explizit UND implizit!)
+- BACKING (Stützung der Schlussregel)
+- QUALIFIER (Einschränkungen)
+- REBUTTAL (mögliche Einwände)
+
+ZUSÄTZLICH:
+- Gemeinsame Annahmen aller Positionen
+- Zentrale Unterschiede/Konfliktlinien
+- Implizite Werturteile
+
+OUTPUT:
+1. Übersichtstabelle (alle Positionen im Vergleich)
+2. Detailanalyse pro Text
+3. Diskussionsfragen für Plenum
+
+[Anhang: Die Originaltexte oder Textauszüge, falls vorhanden]</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4>💡 Didaktische Prinzipien</h4>
+                                    <ul>
+                                        <li><strong>Multiperspektivität:</strong> Verschiedene Positionen gleichberechtigt darstellen, nicht bewerten</li>
+                                        <li><strong>Argumentationsschulung:</strong> Nicht nur WAS gedacht wird, sondern WIE argumentiert wird</li>
+                                        <li><strong>Implizite Annahmen:</strong> Fokus auf versteckte Prämissen (Warrants) – dort liegt oft der eigentliche Dissens</li>
+                                        <li><strong>Textarbeit als Kernkompetenz:</strong> Primärquellen lesen und interpretieren können</li>
+                                        <li><strong>Bezug zur Gegenwart:</strong> Aktuelle Anwendungsbeispiele machen abstrakte Positionen relevant</li>
+                                    </ul>
+
+                                    <h4>🎯 Anpassungsmöglichkeiten</h4>
+                                    <ul>
+                                        <li><strong>Andere Themen:</strong> Erkenntnistheorie (Descartes vs. Hume vs. Kant), Staatsphilosophie (Hobbes vs. Locke vs. Rousseau), Ethik (siehe PuP.5)</li>
+                                        <li><strong>Andere Analysemodelle:</strong> Pro-Contra-Tabelle, Begriffsnetz, hermeneutischer Zirkel</li>
+                                        <li><strong>Sortierungsaktivitäten:</strong> Konzepte/Beispiele den Positionen zuordnen (fördert aktive Auseinandersetzung)</li>
+                                        <li><strong>Podiumsdiskussion:</strong> SuS vertreten zugewiesene Positionen</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -6423,36 +6960,181 @@ Zusätzlich:
                             <li><strong>Anwendung:</strong> COVID-19 Impfpflicht als aktuelles ethisches Dilemma</li>
                         </ul>
 
-                        <!-- ONE-SHOT PROMPT -->
-                        <div class="template-box">
-                            <div class="template-header" onclick="toggleTemplate(this)">
-                                <span>🎯 One-Shot Prompt</span>
-                                <span class="toggle-template">▼ anzeigen</span>
+                        <!-- GENERALIZED PROMPT TEMPLATE -->
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>📋 Generalisierte Prompt-Vorlage: Ethik mit Dilemma-basiertem Lernen</span>
+                                <span class="toggle-icon">▼</span>
                             </div>
-                            <div class="template-content">
-                                <div class="template-inner">
-                                    <pre>
-Erstelle eine Unterrichtssequenz zu normativer Ethik für WPF Philosophie (7./8. Klasse).
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <p><em>Diese Vorlage ist für Ethik-Sequenzen, die verschiedene normative Theorien durch Dilemmata und Fallbeispiele erschließen und anwenden. Platzhalter in [GROSSBUCHSTABEN] anpassen.</em></p>
 
-Thema: Utilitarismus vs. Pflichtethik (Deontologie)
+                                    <h4>🔄 Empfohlener Workflow (4 Schritte)</h4>
+                                    <p>Bei Ethik mit Dilemma-Methode ist ein <strong>strukturierter Aufbau</strong> wichtig:</p>
+                                    <ol>
+                                        <li><strong>Schritt 1:</strong> Unterrichtskonzept mit Einstiegs-Dilemmata</li>
+                                        <li><strong>Schritt 2:</strong> Fallbeispiele für beide Perspektiven entwickeln</li>
+                                        <li><strong>Schritt 3:</strong> Theoretisches Handout mit Primärquellen</li>
+                                        <li><strong>Schritt 4:</strong> Lehrerhandreichung mit Erwartungshorizont</li>
+                                    </ol>
 
-Struktur:
-1. Einstieg: Trolley-Problem und Chirurgen-Dilemma
-2. Theorie: Bentham/Mill (Konsequenzethik) vs. Kant (kategorischer Imperativ)
-3. Anwendung: COVID-19 Impfpflicht als aktuelles Fallbeispiel
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 1 – Unterrichtskonzept</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Ich plane einen Themenblock zu [ETHIK-BEREICH: z.B. normative Ethik, angewandte Ethik, Metaethik] für [FACH + STUFE].
 
-Materialien:
-1. Präsentation mit Theorie-Input und Dilemmata-Visualisierung
-2. Handout mit systematischer Gegenüberstellung:
-   - Zitate von Bentham („greatest happiness principle")
-   - Mills Qualitätsunterscheidung der Freuden
-   - Kants drei Formulierungen des kategorischen Imperativs
-   - Vergleichstabelle der Kernunterschiede
-3. Fallbeispiele-Sammlung (5 Dilemmata zur Analyse)
-4. Lehrerhandreichung mit Erwartungshorizont
+GEGENÜBERSTELLUNG:
+Ich möchte [ANZAHL] ethische Positionen gegenüberstellen:
+- [POSITION 1: z.B. Utilitarismus (Konsequenzethik) – Bentham, Mill]
+- [POSITION 2: z.B. Deontologie (Pflichtethik) – Kant]
+- Optional: [POSITION 3: z.B. Tugendethik – Aristoteles]
 
-Methodischer Hinweis: SuS sollen beide Perspektiven anwenden können, ohne eine als „richtig" zu werten.
-                                    </pre>
+STRUKTUR:
+1. EINSTIEG: [DILEMMA: z.B. Trolley-Problem, Chirurgen-Dilemma]
+2. THEORIE: Systematische Gegenüberstellung der Positionen
+3. ANWENDUNG: [AKTUELLES FALLBEISPIEL: z.B. Impfpflicht, Klimaethik, KI-Ethik]
+
+BESONDERHEITEN:
+- [VORHANDENES MATERIAL: z.B. "Ich habe bereits eine Schülerpräsentation, die ich integrieren möchte"]
+- [FOKUS: z.B. "SuS sollen beide Perspektiven anwenden können, ohne eine als 'richtig' zu bewerten"]
+
+Hilf mir, diese Sequenz zu strukturieren.</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 2 – Fallbeispiele entwickeln</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Erstelle [ANZAHL] Fallbeispiele/Dilemmata, die SuS aus [POSITION 1] UND [POSITION 2] Perspektive analysieren können.
+
+ANFORDERUNGEN:
+- Die Beispiele sollten zeigen, wie die beiden Ansätze zu UNTERSCHIEDLICHEN Schlussfolgerungen kommen können
+- Mix aus klassischen philosophischen Gedankenexperimenten und aktuellen Fällen
+- Unterschiedliche Lebensbereiche abdecken
+
+MÖGLICHE THEMEN:
+- [BEREICH 1: z.B. Medizinethik – Organspende, Sterbehilfe]
+- [BEREICH 2: z.B. Technikethik – Autonomes Fahren, KI-Entscheidungen]
+- [BEREICH 3: z.B. Alltagsethik – Lügen, Loyalität, Whistleblowing]
+- [BEREICH 4: z.B. Politische Ethik – Impfpflicht, Überwachung]
+
+FÜR JEDES FALLBEISPIEL:
+1. Situationsbeschreibung (konkret, anschaulich)
+2. Analysefragen aus Perspektive [POSITION 1]
+3. Analysefragen aus Perspektive [POSITION 2]
+4. Reflexionsfrage: "Welche Lösung findest DU überzeugender? Warum?"</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 3 – Theoretisches Handout</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Erstelle ein ausführliches Handout, das die ethischen Positionen systematisch gegenüberstellt.
+
+STRUKTUR:
+1. [POSITION 1: z.B. UTILITARISMUS]
+   - Grundprinzip (z.B. "Das größte Glück der größten Zahl")
+   - Hauptvertreter:innen mit Zitaten:
+     * [DENKER 1: z.B. Bentham – hedonistisches Kalkül]
+     * [DENKER 2: z.B. Mill – Qualitätsunterscheidung der Freuden]
+   - Entscheidungsregel/Formel
+   - Stärken und Kritikpunkte
+
+2. [POSITION 2: z.B. DEONTOLOGIE]
+   - Grundprinzip (z.B. Pflicht unabhängig von Konsequenzen)
+   - Hauptvertreter:innen mit Zitaten:
+     * [DENKER: z.B. Kant – kategorischer Imperativ in ALLEN Formulierungen]
+   - Entscheidungsregel/Formel
+   - Stärken und Kritikpunkte
+
+3. VERGLEICHSTABELLE
+   - Kernfrage der jeweiligen Ethik
+   - Bewertungsmaßstab
+   - Typische Kritik
+   - Beispielhafte Anwendung
+
+PRIMÄRQUELLEN:
+Verwende authentische Zitate von [DENKER:INNEN] – Quellenangabe erforderlich.</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="prompt-box">
+                                        <div class="prompt-header" onclick="togglePrompt(this)">
+                                            <span>👤 Schritt 4 – Lehrerhandreichung</span>
+                                            <span class="toggle-prompt">▼ anzeigen</span>
+                                        </div>
+                                        <div class="prompt-content">
+                                            <div class="prompt-inner">
+                                                <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
+                                                <pre>
+Erstelle eine detaillierte Lehrerhandreichung für diese Ethik-Sequenz.
+
+INHALT:
+1. STUNDENPLANUNG
+   - [ANZAHL]-Stunden-Sequenz mit Zeitangaben
+   - Phasen (Einstieg, Erarbeitung, Sicherung, Transfer)
+   - Methodenwechsel und Sozialformen
+
+2. ERWARTETE SCHÜLERANTWORTEN
+   - Typische Argumente für [POSITION 1]
+   - Typische Argumente für [POSITION 2]
+   - Häufige Missverständnisse/Fehlkonzepte
+
+3. MÖGLICHE MISSVERSTÄNDNISSE
+   - [MISSVERSTÄNDNIS 1: z.B. "Utilitarismus = Egoismus"]
+   - [MISSVERSTÄNDNIS 2: z.B. "Kant verbietet jede Lüge unter allen Umständen"]
+   - Strategien zur Klärung
+
+4. DIDAKTISCHE HINWEISE
+   - Wie neutralität wahren?
+   - Umgang mit emotional aufgeladenen Themen
+   - Differenzierungsmöglichkeiten
+
+5. BEWERTUNGSANREGUNGEN
+   - Was kann bewertet werden? (Argumentationsqualität, nicht Meinung!)
+   - Mögliche Produkte (Essay, Diskussion, Portfolio)</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4>💡 Didaktische Prinzipien</h4>
+                                    <ul>
+                                        <li><strong>Neutralität:</strong> Keine Position als "richtig" darstellen – SuS sollen selbst urteilen lernen</li>
+                                        <li><strong>Dilemma-Methode:</strong> Moralische Konflikte ohne einfache Lösung fördern echtes Nachdenken</li>
+                                        <li><strong>Anwendungsbezug:</strong> Aktuelle Fallbeispiele zeigen Relevanz abstrakter Theorien</li>
+                                        <li><strong>Perspektivwechsel:</strong> Dieselbe Situation aus verschiedenen ethischen Blickwinkeln analysieren</li>
+                                        <li><strong>Argumentationsqualität:</strong> Nicht die Meinung, sondern die Begründung bewerten</li>
+                                    </ul>
+
+                                    <h4>🎯 Anpassungsmöglichkeiten</h4>
+                                    <ul>
+                                        <li><strong>Andere Theorien:</strong> Tugendethik (Aristoteles), Care-Ethik, Diskursethik (Habermas)</li>
+                                        <li><strong>Andere Dilemmata:</strong> Heinz-Dilemma (Kohlberg), Ticking-Bomb-Szenario, Lifeboat-Dilemma</li>
+                                        <li><strong>Aktuelle Themen:</strong> Klimagerechtigkeit, Tierethik, Digitale Ethik, Bioethik</li>
+                                        <li><strong>Rollenspiel:</strong> SuS vertreten zugewiesene Positionen in strukturierter Debatte</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
