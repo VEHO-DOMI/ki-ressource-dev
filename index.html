@@ -12,40 +12,44 @@
         }
 
         :root {
-            /* Frutiger Aero + Windows XP Color Palette */
-            --xp-blue: #0078d4;          /* Classic XP blue */
-            --xp-blue-light: #1e90ff;    /* Lighter XP blue */
-            --xp-blue-dark: #003c74;     /* Dark XP blue */
-            --xp-green: #3c8a2e;         /* XP Start button green */
-            --xp-green-light: #5cb85c;   /* Light green */
-            --primary: #0078d4;
-            --primary-dark: #005a9e;
-            --secondary: #2e7d32;
-            --accent: #7cb342;           /* Fresh grass green */
-            --bg-light: #d6eaf8;
-            --bg-white: #ffffff;
-            --text-dark: #1a3a52;
-            --text-muted: #546e7a;
-            --border: #7eb8da;
+            /* Y2K Cybercore Color Palette */
+            --cyber-blue: #00d4ff;       /* Electric cyan */
+            --cyber-pink: #ff00ff;       /* Hot magenta */
+            --cyber-green: #00ff88;      /* Matrix green */
+            --cyber-purple: #8000ff;     /* Neon purple */
+            --cyber-silver: #c0c0c0;     /* Chrome silver */
+            --cyber-dark: #0a0a1a;       /* Deep space black */
+            --primary: #00d4ff;
+            --primary-dark: #0099cc;
+            --secondary: #ff00ff;
+            --accent: #00ff88;
+            --bg-light: #12122a;
+            --bg-white: #1a1a2e;
+            --text-dark: #e0e0ff;
+            --text-muted: #8888aa;
+            --border: #3a3a5a;
             --sidebar-width: 280px;
-            --success: #4caf50;
-            /* XP-style 3D borders */
-            --border-light: #ffffff;
-            --border-dark: #7193a8;
+            --success: #00ff88;
+            /* Cyber glow effects */
+            --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.5);
+            --glow-pink: 0 0 20px rgba(255, 0, 255, 0.5);
+            --glow-green: 0 0 20px rgba(0, 255, 136, 0.5);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Trebuchet MS', Arial, sans-serif;
             line-height: 1.6;
             color: var(--text-dark);
             background:
-                radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.8) 0%, transparent 50%),
-                linear-gradient(180deg, #87ceeb 0%, #b0e0e6 25%, #add8e6 50%, #c9e4c5 75%, #90c695 100%);
+                radial-gradient(ellipse at 20% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+                linear-gradient(180deg, #0a0a1a 0%, #101028 50%, #0a0a1a 100%);
             background-attachment: fixed;
             min-height: 100vh;
         }
 
-        /* Sidebar - Windows XP Luna Blue Style */
+        /* Sidebar - Y2K Chrome Cyber Style */
         .sidebar {
             position: fixed;
             left: 0;
@@ -53,19 +57,19 @@
             width: var(--sidebar-width);
             height: 100vh;
             background: linear-gradient(180deg,
-                #245edb 0%,
-                #2968e0 2%,
-                #1c4fba 4%,
-                #1542a6 50%,
-                #0f3380 100%);
-            color: white;
+                #2a2a4a 0%,
+                #1a1a3a 20%,
+                #0f0f25 50%,
+                #1a1a3a 80%,
+                #2a2a4a 100%);
+            color: #e0e0ff;
             overflow-y: auto;
             z-index: 1000;
             padding-bottom: 2rem;
             box-shadow:
-                2px 0 8px rgba(0, 30, 80, 0.5),
-                inset -1px 0 0 rgba(255,255,255,0.1);
-            border-right: 1px solid #0a2560;
+                2px 0 15px rgba(0, 212, 255, 0.3),
+                inset -1px 0 0 rgba(0, 212, 255, 0.2);
+            border-right: 1px solid #00d4ff;
         }
 
         .sidebar::before {
@@ -74,22 +78,31 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 60%;
-            background: linear-gradient(180deg,
-                rgba(255,255,255,0.15) 0%,
-                rgba(255,255,255,0.08) 30%,
-                rgba(255,255,255,0) 100%);
+            height: 100%;
+            background:
+                linear-gradient(180deg,
+                    rgba(0, 212, 255, 0.1) 0%,
+                    transparent 30%,
+                    transparent 70%,
+                    rgba(255, 0, 255, 0.1) 100%),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 212, 255, 0.03) 2px,
+                    rgba(0, 212, 255, 0.03) 4px
+                );
             pointer-events: none;
         }
 
         .sidebar-header {
             padding: 1.5rem;
             background: linear-gradient(180deg,
-                rgba(100,149,237,0.3) 0%,
-                rgba(70,130,220,0.1) 50%,
+                rgba(0, 212, 255, 0.15) 0%,
+                rgba(0, 212, 255, 0.05) 50%,
                 transparent 100%);
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
         }
 
         .sidebar-header h1 {
@@ -117,44 +130,48 @@
         .nav-item {
             display: block;
             padding: 0.75rem 1.5rem;
-            color: rgba(255,255,255,0.9);
+            color: rgba(224, 224, 255, 0.8);
             text-decoration: none;
             font-size: 0.9rem;
-            transition: all 0.15s;
+            transition: all 0.2s;
             border-left: 3px solid transparent;
-            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .nav-item:hover {
             background: linear-gradient(90deg,
-                rgba(100,180,255,0.3) 0%,
-                rgba(100,180,255,0.1) 100%);
-            color: white;
+                rgba(0, 212, 255, 0.2) 0%,
+                transparent 100%);
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+            border-left-color: rgba(0, 212, 255, 0.5);
         }
 
         .nav-item.active {
             background: linear-gradient(90deg,
-                rgba(100,200,255,0.4) 0%,
-                rgba(100,180,255,0.15) 100%);
-            border-left-color: #7cb342;
-            color: white;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+                rgba(0, 212, 255, 0.25) 0%,
+                rgba(255, 0, 255, 0.1) 100%);
+            border-left-color: #00ff88;
+            color: #00ff88;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.8);
+            box-shadow: inset 0 0 20px rgba(0, 255, 136, 0.1);
         }
 
         .nav-item .nav-number {
             display: inline-block;
             width: 24px;
             height: 24px;
-            background: linear-gradient(180deg,
-                rgba(255,255,255,0.3) 0%,
-                rgba(255,255,255,0.1) 100%);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 50%;
+            background: linear-gradient(135deg,
+                rgba(0, 212, 255, 0.3) 0%,
+                rgba(255, 0, 255, 0.2) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 4px;
             text-align: center;
             line-height: 22px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             margin-right: 0.75rem;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
         }
 
         .nav-item.placeholder {
@@ -184,65 +201,90 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Typography */
+        /* Typography - Cyber Style */
         h1.section-title {
             font-size: 2rem;
-            color: var(--primary);
+            color: #00d4ff;
             margin-bottom: 0.5rem;
             padding-bottom: 1rem;
-            border-bottom: 3px solid var(--accent);
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, #00d4ff, #ff00ff, #00ff88) 1;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .section-subtitle {
             color: var(--text-muted);
             font-size: 1.1rem;
             margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
         }
 
         h2 {
             font-size: 1.5rem;
-            color: var(--primary);
+            color: #ff00ff;
             margin: 2rem 0 1rem;
+            text-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         h3 {
             font-size: 1.2rem;
-            color: var(--primary);
+            color: #00d4ff;
             margin: 1.5rem 0 0.75rem;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
         }
 
         h4 {
             font-size: 1rem;
-            color: var(--text-dark);
+            color: #00ff88;
             margin: 1rem 0 0.5rem;
+            text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
         }
 
         p {
             margin-bottom: 1rem;
         }
 
-        /* Collapsible Sections - XP Style Panels */
+        /* Collapsible Sections - Y2K Cyber Panels */
         .collapsible {
-            background: linear-gradient(180deg, #ffffff 0%, #f0f6fc 50%, #e4eff8 100%);
-            border: 1px solid #7eb8da;
-            border-top: 1px solid #ffffff;
-            border-left: 1px solid #ffffff;
+            background: linear-gradient(180deg,
+                rgba(26, 26, 46, 0.95) 0%,
+                rgba(15, 15, 35, 0.98) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.3);
             border-radius: 8px;
             margin-bottom: 1rem;
             overflow: hidden;
             box-shadow:
-                0 2px 4px rgba(0, 60, 116, 0.15),
-                0 4px 12px rgba(0, 60, 116, 0.1),
-                inset 0 1px 0 #ffffff;
+                0 0 20px rgba(0, 212, 255, 0.15),
+                0 4px 15px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(0, 212, 255, 0.2);
+            position: relative;
+        }
+
+        .collapsible::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(0, 212, 255, 0.8),
+                rgba(255, 0, 255, 0.8),
+                transparent);
         }
 
         .collapsible-header {
             padding: 1rem 1.25rem;
             background: linear-gradient(180deg,
-                #f8fbff 0%,
-                #e8f4fc 50%,
-                #d8ecf8 100%);
-            border-bottom: 1px solid #c4dff0;
+                rgba(0, 212, 255, 0.1) 0%,
+                rgba(0, 212, 255, 0.02) 50%,
+                transparent 100%);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
@@ -252,9 +294,9 @@
 
         .collapsible-header:hover {
             background: linear-gradient(180deg,
-                #eef7ff 0%,
-                #d4ebfc 50%,
-                #c0e0f8 100%);
+                rgba(0, 212, 255, 0.2) 0%,
+                rgba(255, 0, 255, 0.1) 100%);
+            box-shadow: inset 0 0 30px rgba(0, 212, 255, 0.1);
         }
 
         .collapsible-header h3 {
@@ -287,15 +329,15 @@
             border-top: 1px solid var(--border);
         }
 
-        /* Sub-collapsible - XP Nested Panel */
+        /* Sub-collapsible - Cyber Nested Panel */
         .sub-collapsible {
-            background: linear-gradient(180deg, #f8fbff 0%, #f0f6fc 50%, #e8f0f8 100%);
-            border: 1px solid #a8c8e0;
-            border-top-color: #ffffff;
-            border-left-color: #ffffff;
+            background: rgba(20, 20, 40, 0.8);
+            border: 1px solid rgba(255, 0, 255, 0.2);
             border-radius: 6px;
             margin: 1rem 0;
-            box-shadow: 0 1px 3px rgba(0, 60, 116, 0.1);
+            box-shadow:
+                0 0 10px rgba(255, 0, 255, 0.1),
+                inset 0 1px 0 rgba(255, 0, 255, 0.1);
         }
 
         .sub-collapsible-header {
@@ -307,15 +349,16 @@
             font-weight: 500;
             font-size: 0.95rem;
             background: linear-gradient(180deg,
-                rgba(255,255,255,0.8) 0%,
-                rgba(232,244,252,0.5) 100%);
+                rgba(255, 0, 255, 0.1) 0%,
+                transparent 100%);
             border-radius: 5px 5px 0 0;
         }
 
         .sub-collapsible-header:hover {
             background: linear-gradient(180deg,
-                rgba(200,230,255,0.6) 0%,
-                rgba(180,220,255,0.3) 100%);
+                rgba(255, 0, 255, 0.2) 0%,
+                rgba(0, 212, 255, 0.1) 100%);
+            box-shadow: inset 0 0 20px rgba(255, 0, 255, 0.1);
         }
 
         .sub-collapsible-content {
@@ -451,38 +494,40 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Highlight Box - XP Green Style */
+        /* Highlight Box - Cyber Green */
         .highlight-box {
-            background: linear-gradient(180deg, #f0fff0 0%, #e0f5e0 50%, #d0eed0 100%);
-            border: 1px solid #90c695;
-            border-top-color: #ffffff;
-            border-left: 4px solid #3c8a2e;
+            background: linear-gradient(180deg,
+                rgba(0, 255, 136, 0.1) 0%,
+                rgba(0, 255, 136, 0.02) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-left: 3px solid #00ff88;
             padding: 1.25rem;
             border-radius: 0 6px 6px 0;
             margin: 1.5rem 0;
             box-shadow:
-                0 2px 6px rgba(60, 138, 46, 0.12),
-                inset 0 1px 0 rgba(255,255,255,0.8);
+                0 0 20px rgba(0, 255, 136, 0.15),
+                inset 0 0 30px rgba(0, 255, 136, 0.05);
         }
 
         .highlight-box h4 {
-            color: #2e7d32;
+            color: #00ff88;
             margin-top: 0;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
         }
 
-        /* Warning Box - XP Yellow Style */
+        /* Warning Box - Cyber Orange */
         .warning-box {
-            background: linear-gradient(180deg, #fffef0 0%, #fff8d0 50%, #fff0b0 100%);
-            border: 1px solid #e0c060;
-            border-top-color: #ffffff;
-            border-left: 4px solid #f0a000;
+            background: linear-gradient(180deg,
+                rgba(255, 170, 0, 0.1) 0%,
+                rgba(255, 170, 0, 0.02) 100%);
+            border: 1px solid rgba(255, 170, 0, 0.3);
+            border-left: 3px solid #ffaa00;
             padding: 1rem;
             border-radius: 0 6px 6px 0;
             margin: 1rem 0;
             box-shadow:
-                0 2px 6px rgba(200, 150, 0, 0.12),
-                inset 0 1px 0 rgba(255,255,255,0.8);
+                0 0 20px rgba(255, 170, 0, 0.15),
+                inset 0 0 30px rgba(255, 170, 0, 0.05);
         }
 
         
@@ -511,47 +556,43 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.5rem 1.25rem;
+            padding: 0.6rem 1.25rem;
             background: linear-gradient(180deg,
-                #ffffff 0%,
-                #f0f8ff 15%,
-                #e0f0ff 50%,
-                #c8e4fc 85%,
-                #b0d4f1 100%);
-            border: 1px solid #7eb8da;
-            border-top-color: #ffffff;
-            border-left-color: #ffffff;
-            border-radius: 6px;
-            color: #003c74;
+                rgba(0, 212, 255, 0.2) 0%,
+                rgba(0, 212, 255, 0.05) 50%,
+                rgba(0, 212, 255, 0.1) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 4px;
+            color: #00d4ff;
             font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.2s;
             box-shadow:
-                0 1px 2px rgba(0, 60, 116, 0.2),
-                inset 0 1px 0 rgba(255,255,255,0.9),
-                inset 0 -1px 0 rgba(0,60,116,0.1);
-            text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+                0 0 15px rgba(0, 212, 255, 0.2),
+                inset 0 1px 0 rgba(0, 212, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
         }
 
         .control-btn:hover {
             background: linear-gradient(180deg,
-                #e6f3ff 0%,
-                #cce7ff 15%,
-                #99d1ff 50%,
-                #66bbff 85%,
-                #4db8ff 100%);
-            color: #00264d;
-            border-color: #3399ff;
+                rgba(0, 212, 255, 0.4) 0%,
+                rgba(255, 0, 255, 0.2) 100%);
+            border-color: #00d4ff;
+            color: #ffffff;
+            box-shadow:
+                0 0 25px rgba(0, 212, 255, 0.5),
+                0 0 50px rgba(0, 212, 255, 0.2),
+                inset 0 0 20px rgba(0, 212, 255, 0.2);
+            text-shadow: 0 0 15px rgba(0, 212, 255, 1);
         }
 
         .control-btn:active {
-            background: linear-gradient(180deg,
-                #99ccff 0%,
-                #80bfff 50%,
-                #99ccff 100%);
+            background: rgba(0, 212, 255, 0.3);
             box-shadow:
-                inset 0 2px 4px rgba(0, 60, 116, 0.3);
+                inset 0 0 30px rgba(0, 212, 255, 0.4);
         }
 
         .control-btn .icon {
@@ -574,26 +615,28 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Materials Links Box - XP Style */
+        /* Materials Links Box - Cyber Style */
         .materials-box {
-            background: linear-gradient(180deg, #f0f8ff 0%, #e0f0ff 50%, #d0e8ff 100%);
-            border: 1px solid #7eb8da;
-            border-top-color: #ffffff;
-            border-left: 4px solid #0078d4;
+            background: linear-gradient(180deg,
+                rgba(0, 212, 255, 0.1) 0%,
+                rgba(0, 212, 255, 0.02) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-left: 3px solid #00d4ff;
             border-radius: 0 6px 6px 0;
             padding: 1rem 1.25rem;
             margin: 1rem 0;
             box-shadow:
-                0 2px 6px rgba(0, 60, 116, 0.12),
-                inset 0 1px 0 rgba(255,255,255,0.8);
+                0 0 15px rgba(0, 212, 255, 0.15),
+                inset 0 0 20px rgba(0, 212, 255, 0.05);
         }
 
         .materials-box h4 {
-            color: var(--primary);
+            color: #00d4ff;
             margin: 0 0 0.75rem 0;
             font-size: 0.95rem;
             display: flex;
             align-items: center;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
             gap: 0.5rem;
         }
 
@@ -607,13 +650,15 @@
         }
 
         .materials-box a {
-            color: #1565c0;
+            color: #00ff88;
             text-decoration: none;
             font-size: 0.9rem;
+            transition: all 0.2s;
         }
 
         .materials-box a:hover {
-            text-decoration: underline;
+            color: #00ffaa;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
         }
 
         .file-icon {
@@ -743,16 +788,32 @@
 
         /* Filter System */
         .filter-container {
-            background: linear-gradient(180deg, #f8fbff 0%, #e8f4fc 50%, #d8ecf8 100%);
-            border: 1px solid #7eb8da;
-            border-top-color: #ffffff;
-            border-left-color: #ffffff;
+            background: linear-gradient(180deg,
+                rgba(26, 26, 46, 0.9) 0%,
+                rgba(15, 15, 35, 0.95) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.3);
             border-radius: 8px;
             padding: 1rem 1.25rem;
             margin-bottom: 1.5rem;
             box-shadow:
-                0 2px 6px rgba(0, 60, 116, 0.15),
-                inset 0 1px 0 rgba(255,255,255,0.9);
+                0 0 20px rgba(0, 212, 255, 0.1),
+                inset 0 1px 0 rgba(0, 212, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(0, 255, 136, 0.6),
+                rgba(0, 212, 255, 0.6),
+                transparent);
         }
 
         .filter-row {
@@ -770,51 +831,44 @@
         .filter-label {
             font-weight: 600;
             font-size: 0.85rem;
-            color: var(--text-dark);
+            color: #00d4ff;
             min-width: 80px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
         }
 
         .filter-btn {
             padding: 0.4rem 0.9rem;
-            border: 1px solid #7eb8da;
-            border-top-color: #ffffff;
-            border-left-color: #ffffff;
-            border-radius: 4px;
-            background: linear-gradient(180deg,
-                #ffffff 0%,
-                #f0f8ff 20%,
-                #e8f4fc 80%,
-                #d8ecf8 100%);
-            color: #003c74;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 3px;
+            background: rgba(0, 212, 255, 0.05);
+            color: #88aacc;
             font-size: 0.8rem;
             cursor: pointer;
-            transition: all 0.15s;
-            box-shadow:
-                0 1px 2px rgba(0, 60, 116, 0.15),
-                inset 0 1px 0 rgba(255,255,255,0.9);
-            text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .filter-btn:hover {
-            background: linear-gradient(180deg,
-                #e8f4ff 0%,
-                #d0e8ff 50%,
-                #b8dcff 100%);
-            border-color: #5090c0;
+            background: rgba(0, 212, 255, 0.15);
+            border-color: rgba(0, 212, 255, 0.6);
+            color: #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
         }
 
         .filter-btn.active {
             background: linear-gradient(180deg,
-                #3399ff 0%,
-                #0078d4 30%,
-                #0066b8 70%,
-                #005299 100%);
-            color: white;
-            border-color: #004080;
+                rgba(0, 255, 136, 0.3) 0%,
+                rgba(0, 255, 136, 0.1) 100%);
+            color: #00ff88;
+            border-color: #00ff88;
             box-shadow:
-                0 1px 3px rgba(0, 60, 116, 0.4),
-                inset 0 1px 0 rgba(255,255,255,0.2);
-            text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
+                0 0 20px rgba(0, 255, 136, 0.4),
+                inset 0 0 15px rgba(0, 255, 136, 0.1);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
         }
 
         .material-item {
