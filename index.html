@@ -3587,7 +3587,7 @@ Create a multi-week project where students make a 30-60 second food vlog (Instag
             <!-- FULL CONVERSATION SECTION -->
             <div class="sub-collapsible">
                 <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
-                    <span>💬 Vollständiger Chat-Verlauf (8 Prompts)</span>
+                    <span>💬 Vollständiger Chat-Verlauf (6 Prompts)</span>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="sub-collapsible-content">
@@ -3686,36 +3686,6 @@ Create a multi-week project where students make a 30-60 second food vlog (Instag
                         </div>
                         <p><strong>🤖 Claude:</strong> Generierte PNG-Bild mit zwei Feedback-Bögen pro Seite, getrennt durch Schnittlinie, druckfertig.</p>
 
-                        <!-- PROMPT 7 -->
-                        <div class="prompt-box">
-                            <div class="prompt-header" onclick="togglePrompt(this)">
-                                <span>👤 Prompt 7 – Druckberechnung</span>
-                                <span class="toggle-prompt">▼ anzeigen</span>
-                            </div>
-                            <div class="prompt-content">
-                                <div class="prompt-inner">
-                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
-                                    <pre>I put 6 of these on one sheet. I have 10 videos to show and 24 students. how many sheets do I need to print?</pre>
-                                </div>
-                            </div>
-                        </div>
-                        <p><strong>🤖 Claude:</strong> Berechnung: 24 Schüler × 10 Videos = 240 Karten. 240 ÷ 6 pro Blatt = 40 Blätter. Empfehlung: 41-42 drucken als Reserve.</p>
-
-                        <!-- PROMPT 8 -->
-                        <div class="prompt-box">
-                            <div class="prompt-header" onclick="togglePrompt(this)">
-                                <span>👤 Prompt 8 – Gruppengrößen berücksichtigen</span>
-                                <span class="toggle-prompt">▼ anzeigen</span>
-                            </div>
-                            <div class="prompt-content">
-                                <div class="prompt-inner">
-                                    <button class="copy-btn" onclick="copyPrompt(this)">Kopieren</button>
-                                    <pre>we need to account for the fact that they dont have to give feedback to themselves. however, some did it solo, some in pairs and some in groups of three or four – how do we account for that?</pre>
-                                </div>
-                            </div>
-                        </div>
-                        <p><strong>🤖 Claude:</strong> Mathematischer Trick erklärt: Gruppengrößen ändern die Gesamtzahl nicht! Jeder Schüler bewertet 9 Videos (10 minus eigenes). 24 × 9 = 216 Karten. 216 ÷ 6 = 36 Blätter. Empfehlung: 38 drucken.</p>
-
                     </div>
                 </div>
             </div>
@@ -3743,25 +3713,11 @@ Create a multi-week project where students make a 30-60 second food vlog (Instag
 3. Video-Nummer statt Gruppenname (für Anonymität)
 4. Sterne-Bewertung (1-5) für Gesamteindruck
 5. Druckfreundlich: Weißer Hintergrund, minimaler Tintenverbrauch
-6. 6 Bögen pro A4-Seite
-
-**Berechnung benötigt:**
-- [X] Schüler, [Y] Videos
-- Formel: Schüler × (Videos - 1) = Gesamtkarten
-- Gesamtkarten ÷ 6 = Blätter zum Drucken
 
 Generiere den Bogen als druckfertiges PDF/Bild.</pre>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="highlight-box">
-                <h4>📊 Schnelle Druckberechnung</h4>
-                <p style="margin-bottom:0"><strong>Formel:</strong> Jeder Schüler bewertet alle Videos außer sein eigenes.<br>
-                <code>Benötigte Karten = Anzahl Schüler × (Anzahl Videos - 1)</code><br>
-                <code>Benötigte Blätter = Karten ÷ Karten pro Blatt + 2 Reserve</code><br>
-                <em>Beispiel: 24 Schüler, 10 Videos, 6 Karten/Blatt → 24 × 9 = 216 → 216 ÷ 6 = 36 + 2 = 38 Blätter</em></p>
             </div>
 
             <div class="materials-box">
