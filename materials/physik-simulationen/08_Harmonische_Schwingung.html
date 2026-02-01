@@ -30,7 +30,6 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            order: -1; /* Canvas links, Sidebar rechts */
         }
         .simulation-canvas {
             background: rgba(0,0,0,0.3);
@@ -161,6 +160,29 @@
     </div>
 
     <div class="main-layout">
+            <!-- Canvas-Bereich LINKS -->
+            <div class="canvas-area">
+                <div class="simulation-canvas">
+                    <canvas id="springCanvas" width="500" height="280"></canvas>
+                </div>
+
+                <div class="graphs">
+                    <div class="graph-container">
+                        <h4>Auslenkung y(t)</h4>
+                        <canvas id="posGraph" width="200" height="100"></canvas>
+                    </div>
+                    <div class="graph-container">
+                        <h4>Geschwindigkeit v(t)</h4>
+                        <canvas id="velGraph" width="200" height="100"></canvas>
+                    </div>
+                    <div class="graph-container">
+                        <h4>Beschleunigung a(t)</h4>
+                        <canvas id="accGraph" width="200" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls RECHTS -->
             <div class="sidebar">
                 <div class="panel">
                     <h3>⚙️ Parameter</h3>
@@ -221,27 +243,6 @@
 
                 <div class="info-box">
                     <strong>Harmonische Schwingung:</strong> Die Rückstellkraft ist proportional zur Auslenkung: F = -D·y. Je größer die Federkonstante D, desto schneller die Schwingung.
-                </div>
-            </div>
-
-            <div class="canvas-area">
-                <div class="simulation-canvas">
-                    <canvas id="springCanvas" width="700" height="280"></canvas>
-                </div>
-
-                <div class="graphs">
-                    <div class="graph-container">
-                        <h4>Auslenkung y(t)</h4>
-                        <canvas id="posGraph" width="220" height="120"></canvas>
-                    </div>
-                    <div class="graph-container">
-                        <h4>Geschwindigkeit v(t)</h4>
-                        <canvas id="velGraph" width="220" height="120"></canvas>
-                    </div>
-                    <div class="graph-container">
-                        <h4>Beschleunigung a(t)</h4>
-                        <canvas id="accGraph" width="220" height="120"></canvas>
-                    </div>
                 </div>
             </div>
         </div>
