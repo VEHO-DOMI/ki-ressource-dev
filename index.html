@@ -75,61 +75,118 @@
 
         /* Sidebar collapsed state */
         .sidebar.collapsed {
-            transform: translateX(calc(-1 * var(--sidebar-width) + 50px));
-        }
-
-        .sidebar.collapsed .sidebar-header,
-        .sidebar.collapsed .nav-section {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* Sidebar Toggle Button */
-        .sidebar-toggle {
-            position: fixed;
-            left: var(--sidebar-width);
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 1001;
-            width: 28px;
-            height: 60px;
-            background: linear-gradient(180deg, #2a2a4a 0%, #1a1a3a 100%);
-            border: 1px solid rgba(0, 212, 255, 0.5);
-            border-left: none;
-            border-radius: 0 8px 8px 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #00d4ff;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: 2px 0 10px rgba(0, 212, 255, 0.2);
-        }
-
-        .sidebar-toggle:hover {
-            background: linear-gradient(180deg, rgba(0, 212, 255, 0.3) 0%, rgba(255, 0, 255, 0.2) 100%);
-            box-shadow: 2px 0 20px rgba(0, 212, 255, 0.4);
-        }
-
-        .sidebar.collapsed + .sidebar-toggle {
-            left: 50px;
+            width: 0;
+            min-width: 0;
+            padding: 0;
+            overflow: hidden;
+            border-right: none;
         }
 
         .sidebar.collapsed ~ .main-content {
-            margin-left: 50px;
+            margin-left: 0;
+        }
+
+        /* Hamburger Menu Button in Sidebar */
+        .sidebar-hamburger {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(180deg, rgba(255, 0, 255, 0.1) 0%, transparent 100%);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sidebar-hamburger:hover {
+            background: linear-gradient(180deg, rgba(255, 0, 255, 0.2) 0%, rgba(0, 212, 255, 0.1) 100%);
+        }
+
+        .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 24px;
+        }
+
+        .hamburger-icon span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background: #00d4ff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 5px rgba(0, 212, 255, 0.5);
+        }
+
+        .hamburger-label {
+            font-size: 0.75rem;
+            color: rgba(0, 212, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Floating toggle button when sidebar is collapsed */
+        .floating-toggle {
+            position: fixed;
+            left: 1rem;
+            top: 1rem;
+            z-index: 1001;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(180deg, #2a2a4a 0%, #1a1a3a 100%);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            transition: all 0.2s;
+        }
+
+        .floating-toggle:hover {
+            background: linear-gradient(180deg, rgba(0, 212, 255, 0.3) 0%, rgba(255, 0, 255, 0.2) 100%);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .floating-toggle span {
+            display: block;
+            height: 3px;
+            width: 24px;
+            background: #00d4ff;
+            border-radius: 2px;
+        }
+
+        .sidebar.collapsed ~ .floating-toggle {
+            display: flex;
         }
 
         /* Sub-Navigation Items */
         .nav-subitems {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.5s ease;
             background: rgba(0, 0, 0, 0.2);
         }
 
         .nav-item.expanded + .nav-subitems {
-            max-height: 500px;
+            max-height: 2000px;
+            overflow-y: auto;
+        }
+
+        /* Category headers in nav */
+        .nav-category {
+            display: block;
+            padding: 0.4rem 1.5rem 0.2rem 2.5rem;
+            color: #ff00ff;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+            border-left: 2px solid rgba(255, 0, 255, 0.3);
         }
 
         .nav-subitem {
@@ -1120,43 +1177,102 @@
 <body>
     <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
+        <!-- Hamburger Menu Toggle -->
+        <div class="sidebar-hamburger" onclick="toggleSidebar()">
+            <div class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <span class="hamburger-label">Menü</span>
+        </div>
+
         <div class="sidebar-header">
             <h1>KI im Schulalltag</h1>
             <div class="subtitle">Gymnasium und wirtschaftskundliches Realgymnasium der Dominikanerinnen</div>
             <div class="subtitle">Orhan Vehabovic</div>
         </div>
         <div class="nav-section">
+            <!-- Section 1: Grundlagen -->
             <a href="#" class="nav-item" data-section="grundlagen" data-has-subs="true">
                 <span class="nav-number">1</span>Grundlagen<span class="nav-expand">▼</span>
             </a>
             <div class="nav-subitems" data-parent="grundlagen">
-                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.1">1.1 Entstehung</a>
+                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.1">1.1 Entstehung des Dokuments</a>
                 <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.2">1.2 LLM-Funktionsweise</a>
-                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.3">1.3 Reasoning-Modelle</a>
+                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.3">1.3 LLMs vs. Reasoning</a>
                 <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.4">1.4 Modelllandschaft</a>
+                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.5">1.5 Kosten & Zugang</a>
+                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.6">1.6 Datenschutz</a>
+                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.7">1.7 Spracheingabe</a>
             </div>
+
+            <!-- Section 2: Vorbereitung & Anwendung -->
             <a href="#" class="nav-item" data-section="vorbereitung" data-has-subs="true">
                 <span class="nav-number">2</span>Vorbereitung & Anwendung<span class="nav-expand">▼</span>
             </a>
             <div class="nav-subitems" data-parent="vorbereitung">
-                <a href="#" class="nav-subitem" data-section="vorbereitung" data-subsection="2.1">2.1 Eingaben & Prompts</a>
-                <a href="#" class="nav-subitem" data-section="vorbereitung" data-subsection="2.2">2.2 Datenschutz</a>
+                <a href="#" class="nav-subitem" data-section="vorbereitung" data-subsection="2.1">2.1 Effektive Prompts</a>
+                <a href="#" class="nav-subitem" data-section="vorbereitung" data-subsection="2.2">2.2 Voice Input</a>
+                <a href="#" class="nav-subitem" data-section="vorbereitung" data-subsection="2.3">2.3 Schulbuch-Transkription</a>
+                <a href="#" class="nav-subitem" data-section="vorbereitung" data-subsection="2.4">2.4 Claude Projects</a>
+                <a href="#" class="nav-subitem" data-section="vorbereitung" data-subsection="2.5">2.5 Context Management</a>
             </div>
+
+            <!-- Section 3: Unterrichtsmaterialien -->
             <a href="#" class="nav-item" data-section="materialien" data-has-subs="true">
                 <span class="nav-number">3</span>Unterrichtsmaterialien<span class="nav-expand">▼</span>
             </a>
             <div class="nav-subitems" data-parent="materialien">
-                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="3.1">3.1 Arbeitsblätter</a>
-                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="3.2">3.2 Quiz-Generator</a>
+                <span class="nav-category">Grammar</span>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="3.1">3.1 Talking about Rules</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="3.7">3.7 Dangerous Animals</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="3.8">3.8 First Conditional</a>
+                <span class="nav-category">Writing</span>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="3.5">3.5 Diary Entry</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="4.5">4.5 Model Texts</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="5.2">5.2 Blog Post Trends</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="5.3">5.3 Blog Post Screen Time</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="5.4">5.4 Formal Email PEEL</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="5.6">5.6 PEEL Social Media</a>
+                <span class="nav-category">Video & Media</span>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="3.3">3.3 Voyager Golden Record</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="4.2">4.2 NYC Video Tasks</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="5.1">5.1 Food Vlog Project</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="6.1">6.1 Peer-Feedback</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="5.3-dps">5.3 Dead Poets Society</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="5.7">5.7 Boat Race Listening</a>
+                <span class="nav-category">Speaking</span>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="5.5">5.5 Group Discussion</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="3.6">3.6 Pair Reading</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="3.9">3.9 Setting Boundaries</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="3.10">3.10 Mini-Play</a>
+                <span class="nav-category">Test Prep</span>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="8.1">8.1 Matura-Generator</a>
+                <span class="nav-category">Vocab & Culture</span>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="3.2">3.2 Christmas Materials</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="4.3">4.3 Gen Alpha Slang</a>
+                <span class="nav-category">PuP</span>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="PuP.1">PuP.1 Entwicklungspsychologie</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="PuP.2">PuP.2 Werbepsychologie</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="PuP.3">PuP.3 Big Five</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="PuP.4">PuP.4 Transhumanismus</a>
+                <a href="#" class="nav-subitem" data-section="materialien" data-subsection="PuP.5">PuP.5 Utilitarismus</a>
             </div>
+
+            <!-- Section 4: KI Anwendungen für SuS -->
             <a href="#" class="nav-item" data-section="suspraxis" data-has-subs="true">
                 <span class="nav-number">4</span>KI Anwendungen für SuS<span class="nav-expand">▼</span>
             </a>
             <div class="nav-subitems" data-parent="suspraxis">
-                <a href="#" class="nav-subitem" data-section="suspraxis" data-subsection="4.1">4.1 Physik</a>
-                <a href="#" class="nav-subitem" data-section="suspraxis" data-subsection="4.2">4.2 Chemie</a>
-                <a href="#" class="nav-subitem" data-section="suspraxis" data-subsection="4.3">4.3 Biologie</a>
+                <span class="nav-category">Physik</span>
+                <a href="#" class="nav-subitem" data-section="suspraxis" data-subsection="4.1">4.1 Physik-Simulationen</a>
+                <span class="nav-category">Chemie</span>
+                <a href="#" class="nav-subitem" data-section="suspraxis" data-subsection="4.2">4.2 Chemie-Simulationen</a>
+                <span class="nav-category">Biologie</span>
+                <a href="#" class="nav-subitem" data-section="suspraxis" data-subsection="4.3">4.3 Biologie-Simulationen</a>
             </div>
+
             <a href="#" class="nav-item placeholder" data-section="beurteilung">
                 <span class="nav-number">5</span>Beurteilung & Notenvergabe
             </a>
@@ -1172,10 +1288,12 @@
         </div>
     </nav>
 
-    <!-- Sidebar Toggle Button -->
-    <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
-        <span id="toggleIcon">◀</span>
-    </button>
+    <!-- Floating Toggle Button (appears when sidebar is collapsed) -->
+    <div class="floating-toggle" onclick="toggleSidebar()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -8450,9 +8568,7 @@ INHALT:
         // Sidebar Toggle
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            const toggleIcon = document.getElementById('toggleIcon');
             sidebar.classList.toggle('collapsed');
-            toggleIcon.textContent = sidebar.classList.contains('collapsed') ? '▶' : '◀';
         }
 
         // Navigation mit Sub-Navigation
