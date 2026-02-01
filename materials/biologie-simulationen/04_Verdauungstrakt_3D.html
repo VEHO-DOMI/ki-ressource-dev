@@ -522,10 +522,92 @@
         🖱️ Ziehen zum Drehen • Scrollen zum Zoomen • Klick für Organ-Info
     </div>
 
-    <script src="https://unpkg.com/three@0.148.0/build/three.min.js"></script>
-    <script src="https://unpkg.com/three@0.148.0/examples/js/controls/OrbitControls.js"></script>
-
+    <script src="https://unpkg.com/three@0.152.0/build/three.min.js"></script>
     <script>
+        // Inline OrbitControls (vereinfachte Version)
+        class OrbitControls {
+            constructor(camera, domElement) {
+                this.camera = camera;
+                this.domElement = domElement;
+                this.target = new THREE.Vector3();
+                this.enableDamping = true;
+                this.dampingFactor = 0.05;
+                this.rotateSpeed = 0.5;
+                this.zoomSpeed = 1.0;
+                this.minDistance = 5;
+                this.maxDistance = 25;
+
+                this.spherical = new THREE.Spherical();
+                this.sphericalDelta = new THREE.Spherical();
+                this.isMouseDown = false;
+                this.prevMouse = { x: 0, y: 0 };
+
+                this.init();
+            }
+
+            init() {
+                const offset = new THREE.Vector3().copy(this.camera.position).sub(this.target);
+                this.spherical.setFromVector3(offset);
+
+                this.domElement.addEventListener('mousedown', (e) => {
+                    this.isMouseDown = true;
+                    this.prevMouse = { x: e.clientX, y: e.clientY };
+                });
+
+                this.domElement.addEventListener('mousemove', (e) => {
+                    if (!this.isMouseDown) return;
+                    const deltaX = e.clientX - this.prevMouse.x;
+                    const deltaY = e.clientY - this.prevMouse.y;
+                    this.sphericalDelta.theta -= deltaX * 0.005 * this.rotateSpeed;
+                    this.sphericalDelta.phi -= deltaY * 0.005 * this.rotateSpeed;
+                    this.prevMouse = { x: e.clientX, y: e.clientY };
+                });
+
+                this.domElement.addEventListener('mouseup', () => this.isMouseDown = false);
+                this.domElement.addEventListener('mouseleave', () => this.isMouseDown = false);
+
+                this.domElement.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    this.spherical.radius += e.deltaY * 0.01 * this.zoomSpeed;
+                    this.spherical.radius = Math.max(this.minDistance, Math.min(this.maxDistance, this.spherical.radius));
+                }, { passive: false });
+
+                // Touch support
+                this.domElement.addEventListener('touchstart', (e) => {
+                    if (e.touches.length === 1) {
+                        this.isMouseDown = true;
+                        this.prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                    }
+                });
+
+                this.domElement.addEventListener('touchmove', (e) => {
+                    if (!this.isMouseDown || e.touches.length !== 1) return;
+                    const deltaX = e.touches[0].clientX - this.prevMouse.x;
+                    const deltaY = e.touches[0].clientY - this.prevMouse.y;
+                    this.sphericalDelta.theta -= deltaX * 0.005 * this.rotateSpeed;
+                    this.sphericalDelta.phi -= deltaY * 0.005 * this.rotateSpeed;
+                    this.prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                });
+
+                this.domElement.addEventListener('touchend', () => this.isMouseDown = false);
+            }
+
+            update() {
+                this.spherical.theta += this.sphericalDelta.theta;
+                this.spherical.phi += this.sphericalDelta.phi;
+                this.spherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, this.spherical.phi));
+
+                if (this.enableDamping) {
+                    this.sphericalDelta.theta *= (1 - this.dampingFactor);
+                    this.sphericalDelta.phi *= (1 - this.dampingFactor);
+                }
+
+                const offset = new THREE.Vector3().setFromSpherical(this.spherical);
+                this.camera.position.copy(this.target).add(offset);
+                this.camera.lookAt(this.target);
+            }
+        }
+
         // Scene Setup
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
@@ -543,7 +625,7 @@
         container.appendChild(renderer.domElement);
 
         // Controls
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
         controls.minDistance = 5;
