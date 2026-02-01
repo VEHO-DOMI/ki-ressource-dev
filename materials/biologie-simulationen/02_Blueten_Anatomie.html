@@ -10,209 +10,242 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 8px;
             color: #fff;
         }
-        .container { max-width: 100%; margin: 0 auto; padding: 0 10px; }
-        h1 { text-align: center; margin-bottom: 10px; font-size: 1.8em; color: #4fc3f7; }
-        .subtitle { text-align: center; color: #90a4ae; margin-bottom: 20px; }
-        .simulation-area {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .main-grid {
+        .container { max-width: 100%; margin: 0 auto; height: 100vh; }
+        h1 { text-align: center; margin-bottom: 4px; font-size: 1.3em; color: #4fc3f7; }
+        .subtitle { text-align: center; color: #90a4ae; margin-bottom: 6px; font-size: 0.75em; }
+
+        .main-layout {
             display: grid;
-            grid-template-columns: 1fr 280px;
-            gap: 20px;
+            grid-template-columns: 1fr 320px;
+            gap: 12px;
+            height: calc(100vh - 50px);
+            min-height: 400px;
         }
-        @media (max-width: 900px) {
-            .main-grid { grid-template-columns: 1fr; }
+
+        .simulation-area {
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
         }
+
+        .canvas-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         canvas {
             display: block;
-            margin: 0 auto;
             background: radial-gradient(ellipse at center, #1b4a1b 0%, #0d2a0d 100%);
             border-radius: 10px;
             border: 2px solid #4fc3f7;
             max-width: 100%;
-            height: auto;
+            max-height: 100%;
             cursor: pointer;
         }
+
         .info-panel {
             background: rgba(0,0,0,0.3);
             border-radius: 15px;
-            padding: 20px;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
+
         .part-title {
-            font-size: 1.4em;
+            font-size: 1em;
             color: #4fc3f7;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #4fc3f7;
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #4fc3f7;
         }
+
         .part-description {
-            line-height: 1.7;
+            line-height: 1.4;
             color: #b0bec5;
-            margin-bottom: 15px;
+            margin-bottom: 6px;
+            font-size: 0.8em;
         }
+
         .part-function {
             background: rgba(46, 204, 113, 0.1);
-            border-left: 3px solid #2ecc71;
-            padding: 10px 15px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 15px;
+            border-left: 2px solid #2ecc71;
+            padding: 6px 10px;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 6px;
+            font-size: 0.8em;
         }
-        .part-function h4 { color: #2ecc71; margin-bottom: 5px; }
+
+        .part-function h4 { color: #2ecc71; margin-bottom: 3px; font-size: 0.85em; }
+
         .legend {
-            margin-top: 20px;
+            margin-top: 6px;
         }
-        .legend h4 { color: #4fc3f7; margin-bottom: 10px; }
+
+        .legend h4 { color: #4fc3f7; margin-bottom: 4px; font-size: 0.8em; }
+
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px;
-            margin: 5px 0;
+            gap: 6px;
+            padding: 4px;
+            margin: 2px 0;
             background: rgba(255,255,255,0.05);
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
+            font-size: 0.75em;
         }
+
         .legend-item:hover { background: rgba(255,255,255,0.1); }
         .legend-item.active { background: rgba(79, 195, 247, 0.2); border: 1px solid #4fc3f7; }
+
         .legend-dot {
-            width: 20px;
-            height: 20px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
+            flex-shrink: 0;
         }
+
         .legend-name { font-size: 0.9em; }
+
         .mode-toggle {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 6px;
+            margin-bottom: 8px;
         }
+
         .mode-btn {
             flex: 1;
-            padding: 10px;
+            padding: 6px;
             border: 2px solid #4fc3f7;
             background: transparent;
             color: #4fc3f7;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 0.75em;
             transition: all 0.2s;
         }
+
         .mode-btn.active, .mode-btn:hover {
             background: #4fc3f7;
             color: #1a1a2e;
         }
+
         .info-box {
-            background: rgba(79, 195, 247, 0.1);
-            border-left: 4px solid #4fc3f7;
-            padding: 15px 20px;
-            border-radius: 0 10px 10px 0;
-            margin-top: 20px;
-        }
-        .info-box h3 { color: #4fc3f7; margin-bottom: 10px; }
-        .info-box p { line-height: 1.6; color: #b0bec5; }
-        .quiz-section {
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(155, 89, 182, 0.1);
-            border-radius: 10px;
             display: none;
         }
+
+        .quiz-section {
+            padding: 8px;
+            background: rgba(155, 89, 182, 0.1);
+            border-radius: 8px;
+            display: none;
+            font-size: 0.8em;
+        }
+
         .quiz-section.active { display: block; }
-        .quiz-question { margin-bottom: 10px; font-weight: bold; }
+
+        .quiz-question { margin-bottom: 6px; font-weight: bold; font-size: 0.85em; }
+
         .quiz-options button {
             display: block;
             width: 100%;
-            padding: 10px;
-            margin: 5px 0;
+            padding: 6px;
+            margin: 3px 0;
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
             color: white;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             text-align: left;
+            font-size: 0.75em;
         }
+
         .quiz-options button:hover { background: rgba(255,255,255,0.2); }
         .quiz-options button.correct { background: rgba(46, 204, 113, 0.3); border-color: #2ecc71; }
         .quiz-options button.incorrect { background: rgba(231, 76, 60, 0.3); border-color: #e74c3c; }
+
+        #quizScore { font-size: 0.75em; margin-top: 6px; text-align: center; }
+
+        @media (max-width: 900px) {
+            .main-layout { grid-template-columns: 1fr; height: auto; }
+            .info-panel { max-height: 300px; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🌸 Blüten-Anatomie</h1>
-        <p class="subtitle">2. Klasse Biologie – Erkunde den Aufbau einer Blüte</p>
+        <p class="subtitle">Erkunde den Aufbau einer Blüte</p>
 
-        <div class="simulation-area">
-            <div class="main-grid">
+        <div class="main-layout">
+            <div class="simulation-area">
                 <div class="canvas-area">
-                    <canvas id="flowerCanvas" width="550" height="500"></canvas>
-                </div>
-                <div class="info-panel">
-                    <div class="mode-toggle">
-                        <button class="mode-btn active" onclick="setMode('explore')">🔍 Erkunden</button>
-                        <button class="mode-btn" onclick="setMode('quiz')">❓ Quiz</button>
-                    </div>
-
-                    <div id="exploreMode">
-                        <div class="part-title" id="partTitle">Klicke auf einen Blütenteil!</div>
-                        <div class="part-description" id="partDesc">
-                            Bewege die Maus über die Blüte und klicke auf die verschiedenen Teile, um mehr zu erfahren.
-                        </div>
-                        <div class="part-function" id="partFunction" style="display: none;">
-                            <h4>🎯 Funktion</h4>
-                            <p id="functionText"></p>
-                        </div>
-
-                        <div class="legend">
-                            <h4>Blütenteile</h4>
-                            <div class="legend-item" onclick="selectPart('petals')" data-part="petals">
-                                <div class="legend-dot" style="background: #e91e63;"></div>
-                                <span class="legend-name">Kronblätter (Petalen)</span>
-                            </div>
-                            <div class="legend-item" onclick="selectPart('sepals')" data-part="sepals">
-                                <div class="legend-dot" style="background: #4caf50;"></div>
-                                <span class="legend-name">Kelchblätter (Sepalen)</span>
-                            </div>
-                            <div class="legend-item" onclick="selectPart('stamen')" data-part="stamen">
-                                <div class="legend-dot" style="background: #ffc107;"></div>
-                                <span class="legend-name">Staubblätter (Stamen)</span>
-                            </div>
-                            <div class="legend-item" onclick="selectPart('pistil')" data-part="pistil">
-                                <div class="legend-dot" style="background: #9c27b0;"></div>
-                                <span class="legend-name">Stempel (Pistill)</span>
-                            </div>
-                            <div class="legend-item" onclick="selectPart('receptacle')" data-part="receptacle">
-                                <div class="legend-dot" style="background: #8bc34a;"></div>
-                                <span class="legend-name">Blütenboden</span>
-                            </div>
-                            <div class="legend-item" onclick="selectPart('stem')" data-part="stem">
-                                <div class="legend-dot" style="background: #689f38;"></div>
-                                <span class="legend-name">Blütenstiel</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="quiz-section" id="quizMode">
-                        <div class="quiz-question" id="quizQuestion">Frage wird geladen...</div>
-                        <div class="quiz-options" id="quizOptions"></div>
-                        <p id="quizScore" style="margin-top: 15px; text-align: center;"></p>
-                    </div>
+                    <canvas id="flowerCanvas" width="500" height="450"></canvas>
                 </div>
             </div>
-        </div>
 
-        <div class="info-box">
-            <h3>📚 Der Aufbau einer Blüte</h3>
-            <p>Die Blüte ist das Fortpflanzungsorgan der Blütenpflanzen. Sie besteht aus <strong>Kelchblättern</strong> (Schutz),
-            <strong>Kronblättern</strong> (Anlockung von Bestäubern), <strong>Staubblättern</strong> (männlich, produzieren Pollen)
-            und dem <strong>Stempel</strong> (weiblich, enthält die Samenanlage). Bei der Bestäubung gelangt Pollen auf die Narbe
-            des Stempels.</p>
+            <div class="info-panel">
+                <div class="mode-toggle">
+                    <button class="mode-btn active" onclick="setMode('explore')">🔍 Erkunden</button>
+                    <button class="mode-btn" onclick="setMode('quiz')">❓ Quiz</button>
+                </div>
+
+                <div id="exploreMode">
+                    <div class="part-title" id="partTitle">Klicke auf Blütenteil!</div>
+                    <div class="part-description" id="partDesc">
+                        Klicke auf die Blüte oder die Legende.
+                    </div>
+                    <div class="part-function" id="partFunction" style="display: none;">
+                        <h4>Funktion</h4>
+                        <p id="functionText"></p>
+                    </div>
+
+                    <div class="legend">
+                        <h4>Teile</h4>
+                        <div class="legend-item" onclick="selectPart('petals')" data-part="petals">
+                            <div class="legend-dot" style="background: #e91e63;"></div>
+                            <span class="legend-name">Kronblätter</span>
+                        </div>
+                        <div class="legend-item" onclick="selectPart('sepals')" data-part="sepals">
+                            <div class="legend-dot" style="background: #4caf50;"></div>
+                            <span class="legend-name">Kelchblätter</span>
+                        </div>
+                        <div class="legend-item" onclick="selectPart('stamen')" data-part="stamen">
+                            <div class="legend-dot" style="background: #ffc107;"></div>
+                            <span class="legend-name">Staubblätter</span>
+                        </div>
+                        <div class="legend-item" onclick="selectPart('pistil')" data-part="pistil">
+                            <div class="legend-dot" style="background: #9c27b0;"></div>
+                            <span class="legend-name">Stempel</span>
+                        </div>
+                        <div class="legend-item" onclick="selectPart('receptacle')" data-part="receptacle">
+                            <div class="legend-dot" style="background: #8bc34a;"></div>
+                            <span class="legend-name">Blütenboden</span>
+                        </div>
+                        <div class="legend-item" onclick="selectPart('stem')" data-part="stem">
+                            <div class="legend-dot" style="background: #689f38;"></div>
+                            <span class="legend-name">Blütenstiel</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-section" id="quizMode">
+                    <div class="quiz-question" id="quizQuestion">Frage wird geladen...</div>
+                    <div class="quiz-options" id="quizOptions"></div>
+                    <p id="quizScore"></p>
+                </div>
+            </div>
         </div>
     </div>
 

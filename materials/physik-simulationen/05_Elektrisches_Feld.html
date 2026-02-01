@@ -10,37 +10,67 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
             color: #fff;
         }
-        .container { max-width: 1000px; margin: 0 auto; }
-        h1 { text-align: center; margin-bottom: 10px; font-size: 1.8em; color: #ff7043; }
-        .subtitle { text-align: center; color: #90a4ae; margin-bottom: 20px; }
-        .simulation-wrapper { display: grid; grid-template-columns: 1fr 260px; gap: 20px; }
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 12px;
+            height: calc(100vh - 80px);
+            min-height: 500px;
+        }
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+        h1 { font-size: 1.4em; color: #ff7043; margin-bottom: 6px; text-align: center; }
+        .subtitle { font-size: 0.75em; text-align: center; color: #90a4ae; margin-bottom: 10px; }
         .canvas-container {
             background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
         }
-        canvas { display: block; border-radius: 10px; background: #0a0a15; cursor: crosshair; }
-        .sidebar { display: flex; flex-direction: column; gap: 15px; }
+        canvas { display: block; border-radius: 8px; flex: 1; background: #0a0a15; cursor: crosshair; }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 3px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,112,67,0.3);
+            border-radius: 3px;
+        }
         .panel {
             background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 10px;
         }
-        .panel h3 { font-size: 1em; color: #ff7043; margin-bottom: 12px; }
+        .panel h3 { font-size: 0.8em; color: #ff7043; margin-bottom: 8px; }
         .charge-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
         .charge-btn {
-            padding: 15px;
+            padding: 10px;
             border: none;
-            border-radius: 10px;
-            font-size: 1.2em;
+            border-radius: 8px;
+            font-size: 1em;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -53,69 +83,88 @@
             color: white;
         }
         .charge-btn:hover { transform: scale(1.05); }
-        .charge-btn.active { box-shadow: 0 0 15px rgba(255,255,255,0.5); }
+        .charge-btn.active { box-shadow: 0 0 12px rgba(255,255,255,0.5); }
         .btn {
             width: 100%;
-            padding: 12px;
+            padding: 8px;
             border: none;
-            border-radius: 8px;
-            font-size: 0.9em;
+            border-radius: 6px;
+            font-size: 0.75em;
             cursor: pointer;
             transition: all 0.2s;
-            margin-top: 10px;
+            margin-top: 8px;
         }
         .btn-clear { background: rgba(255,255,255,0.1); color: #fff; }
         .btn-clear:hover { background: rgba(255,255,255,0.2); }
         .checkbox-group {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 8px;
         }
         .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             accent-color: #ff7043;
         }
-        .checkbox-group label { font-size: 0.9em; color: #b0bec5; }
-        .control-group { margin-bottom: 15px; }
+        .checkbox-group label { font-size: 0.75em; color: #b0bec5; }
+        .control-group { margin-bottom: 10px; }
         .control-group label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.85em;
-            margin-bottom: 5px;
+            font-size: 0.75em;
+            margin-bottom: 4px;
             color: #b0bec5;
         }
         .control-group input[type="range"] {
             width: 100%;
-            height: 6px;
+            height: 5px;
             -webkit-appearance: none;
             background: rgba(255,255,255,0.2);
-            border-radius: 3px;
+            border-radius: 2px;
         }
         .control-group input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             background: #ff7043;
             border-radius: 50%;
             cursor: pointer;
         }
-        .value-display { color: #ff7043; font-weight: bold; }
+        .control-group input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            background: #ff7043;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        .value-display { color: #ff7043; font-weight: bold; font-size: 0.9em; }
         .charge-list {
-            max-height: 150px;
+            max-height: 120px;
             overflow-y: auto;
-            margin-top: 10px;
+            margin-top: 8px;
+            padding-right: 4px;
+        }
+        .charge-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .charge-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .charge-list::-webkit-scrollbar-thumb {
+            background: rgba(255,112,67,0.3);
+            border-radius: 2px;
         }
         .charge-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px;
+            padding: 6px;
             background: rgba(255,255,255,0.05);
-            border-radius: 6px;
-            margin-bottom: 5px;
-            font-size: 0.85em;
+            border-radius: 5px;
+            margin-bottom: 4px;
+            font-size: 0.7em;
         }
         .charge-item .positive { color: #ef5350; }
         .charge-item .negative { color: #42a5f5; }
@@ -124,52 +173,52 @@
             border: none;
             color: #90a4ae;
             cursor: pointer;
-            font-size: 1.2em;
+            font-size: 1em;
         }
         .charge-item .delete-btn:hover { color: #fff; }
         .info-box {
             background: rgba(255, 112, 67, 0.1);
-            border-left: 4px solid #ff7043;
-            padding: 12px;
-            border-radius: 0 10px 10px 0;
-            font-size: 0.85em;
-            line-height: 1.5;
+            border-left: 3px solid #ff7043;
+            padding: 8px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.7em;
+            line-height: 1.4;
             color: #b0bec5;
         }
         .formula { font-family: 'Times New Roman', serif; font-style: italic; color: #ff7043; }
         .legend {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-            font-size: 0.8em;
+            gap: 12px;
+            margin-top: 8px;
+            font-size: 0.65em;
+            flex-wrap: wrap;
         }
-        .legend span { display: flex; align-items: center; gap: 5px; }
+        .legend span { display: flex; align-items: center; gap: 4px; }
         .instruction {
             text-align: center;
             color: #90a4ae;
-            font-size: 0.85em;
-            margin-top: 10px;
+            font-size: 0.7em;
+            margin-top: 6px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>⚡ Elektrisches Feld</h1>
-        <p class="subtitle">7. Klasse Physik – Visualisiere Feldlinien und Äquipotentialflächen</p>
+    <h1>⚡ Elektrisches Feld</h1>
+    <p class="subtitle">Feldlinien und Äquipotentialflächen</p>
 
-        <div class="simulation-wrapper">
-            <div class="canvas-container">
-                <canvas id="fieldCanvas" width="680" height="500"></canvas>
-                <p class="instruction">🖱️ Klicke auf die Fläche, um Ladungen zu platzieren. Ziehe existierende Ladungen, um sie zu verschieben.</p>
-                <div class="legend">
-                    <span><span style="color:#ef5350;">●</span> Positive Ladung (+)</span>
-                    <span><span style="color:#42a5f5;">●</span> Negative Ladung (−)</span>
-                    <span><span style="color:#ffca28;">→</span> Feldlinien</span>
-                </div>
+    <div class="main-layout">
+        <div class="canvas-container">
+            <canvas id="fieldCanvas" width="1" height="1"></canvas>
+            <p class="instruction">Klick: Ladungen platzieren | Zieh: Verschieben</p>
+            <div class="legend">
+                <span><span style="color:#ef5350;">●</span> +</span>
+                <span><span style="color:#42a5f5;">●</span> −</span>
+                <span><span style="color:#ffca28;">→</span> Feldlinien</span>
             </div>
+        </div>
 
-            <div class="sidebar">
+        <div class="sidebar">
                 <div class="panel">
                     <h3>➕➖ Ladung hinzufügen</h3>
                     <div class="charge-buttons">
@@ -216,11 +265,19 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <script>
         const canvas = document.getElementById('fieldCanvas');
         const ctx = canvas.getContext('2d');
+
+        // Responsive canvas sizing
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth - 20;
+            canvas.height = container.clientHeight - 50;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         const k = 50; // Coulomb constant (scaled)
         let charges = [];

@@ -16,89 +16,117 @@
         .container { max-width: 1000px; margin: 0 auto; }
         h1 { text-align: center; margin-bottom: 10px; font-size: 1.8em; color: #76ff03; }
         .subtitle { text-align: center; color: #90a4ae; margin-bottom: 20px; }
-        .simulation-wrapper { display: grid; grid-template-columns: 1fr 280px; gap: 20px; }
-        .main-area { display: flex; flex-direction: column; gap: 15px; }
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 12px;
+            height: calc(100vh - 80px);
+            min-height: 500px;
+        }
+        @media (max-width: 900px) {
+            .main-layout { grid-template-columns: 1fr; height: auto; }
+        }
+        .main-area {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow: hidden;
+        }
         .canvas-container {
             background: rgba(0,0,0,0.4);
-            border-radius: 15px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 10px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
         }
-        canvas { display: block; border-radius: 10px; }
-        .sidebar { display: flex; flex-direction: column; gap: 15px; }
+        canvas { display: block; border-radius: 8px; width: 100%; height: 100%; }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .sidebar::-webkit-scrollbar { width: 6px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
         .panel {
             background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 8px;
+            padding: 10px;
+            flex-shrink: 0;
         }
-        .panel h3 { font-size: 1em; color: #76ff03; margin-bottom: 12px; }
+        .panel h3 { font-size: 0.9em; color: #76ff03; margin-bottom: 8px; }
         .isotope-select {
             display: grid;
-            gap: 8px;
-            margin-bottom: 15px;
+            gap: 6px;
         }
         .isotope-btn {
-            padding: 10px;
-            border: 2px solid transparent;
-            border-radius: 8px;
+            padding: 7px;
+            border: 1px solid transparent;
+            border-radius: 6px;
             background: rgba(255,255,255,0.1);
             color: #fff;
             cursor: pointer;
-            font-size: 0.85em;
+            font-size: 0.75em;
             transition: all 0.2s;
             text-align: left;
         }
         .isotope-btn:hover { background: rgba(255,255,255,0.2); }
         .isotope-btn.active { border-color: #76ff03; background: rgba(118, 255, 3, 0.2); }
-        .isotope-btn .name { font-weight: bold; }
-        .isotope-btn .halflife { font-size: 0.8em; color: #90a4ae; }
-        .control-group { margin-bottom: 15px; }
+        .isotope-btn .name { font-weight: bold; display: block; }
+        .isotope-btn .halflife { font-size: 0.65em; color: #90a4ae; display: block; }
+        .control-group { margin-bottom: 8px; }
         .control-group label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.85em;
-            margin-bottom: 5px;
+            font-size: 0.75em;
+            margin-bottom: 3px;
             color: #b0bec5;
         }
         .control-group input[type="range"] {
             width: 100%;
-            height: 6px;
+            height: 5px;
             -webkit-appearance: none;
             background: rgba(255,255,255,0.2);
-            border-radius: 3px;
+            border-radius: 2px;
         }
         .control-group input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             background: #76ff03;
             border-radius: 50%;
             cursor: pointer;
         }
-        .value-display { color: #76ff03; font-weight: bold; }
+        .value-display { color: #76ff03; font-weight: bold; font-size: 0.75em; }
         .stats-display {
             background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 0.75em;
         }
         .stats-row {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 4px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.9em;
         }
         .stats-row:last-child { border-bottom: none; }
         .stats-row .label { color: #90a4ae; }
         .stats-row .value { font-family: monospace; font-weight: bold; }
         .stats-row .value.active { color: #76ff03; }
         .stats-row .value.decayed { color: #ff5252; }
-        .btn-group { display: flex; gap: 8px; margin-top: 10px; }
+        .btn-group { display: flex; gap: 6px; margin-top: 8px; }
         .btn {
             flex: 1;
-            padding: 10px;
+            padding: 7px;
             border: none;
-            border-radius: 8px;
-            font-size: 0.85em;
+            border-radius: 6px;
+            font-size: 0.75em;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -108,35 +136,40 @@
         .formula-box {
             background: rgba(118, 255, 3, 0.1);
             border: 1px solid rgba(118, 255, 3, 0.3);
-            border-radius: 8px;
-            padding: 12px;
+            border-radius: 6px;
+            padding: 8px;
             text-align: center;
+            font-size: 0.75em;
         }
         .formula {
             font-family: 'Times New Roman', serif;
-            font-size: 1.1em;
+            font-size: 0.95em;
             color: #76ff03;
         }
         .info-box {
             background: rgba(118, 255, 3, 0.1);
-            border-left: 4px solid #76ff03;
-            padding: 12px;
-            border-radius: 0 10px 10px 0;
-            font-size: 0.85em;
-            line-height: 1.5;
+            border-left: 3px solid #76ff03;
+            padding: 8px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.7em;
+            line-height: 1.3;
             color: #b0bec5;
+            display: none;
+        }
+        @media (max-width: 900px) {
+            .info-box { display: block; }
         }
         .legend {
-            display: flex;
+            display: none;
             justify-content: center;
-            gap: 20px;
-            font-size: 0.85em;
-            margin-top: 10px;
+            gap: 15px;
+            font-size: 0.7em;
+            margin-top: 6px;
         }
-        .legend span { display: flex; align-items: center; gap: 5px; }
+        .legend span { display: flex; align-items: center; gap: 4px; }
         .legend-dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
         }
     </style>
@@ -146,17 +179,13 @@
         <h1>☢️ Radioaktiver Zerfall</h1>
         <p class="subtitle">8. Klasse Physik – Zerfallsgesetz und Halbwertszeit</p>
 
-        <div class="simulation-wrapper">
+        <div class="main-layout">
             <div class="main-area">
                 <div class="canvas-container">
-                    <canvas id="atomCanvas" width="650" height="300"></canvas>
-                    <div class="legend">
-                        <span><div class="legend-dot" style="background: #76ff03;"></div> Aktive Kerne</span>
-                        <span><div class="legend-dot" style="background: #ff5252;"></div> Zerfallene Kerne</span>
-                    </div>
+                    <canvas id="atomCanvas"></canvas>
                 </div>
                 <div class="canvas-container">
-                    <canvas id="graphCanvas" width="650" height="180"></canvas>
+                    <canvas id="graphCanvas"></canvas>
                 </div>
             </div>
 
@@ -240,6 +269,23 @@
     </div>
 
     <script>
+        function resizeCanvases() {
+            const mainLayout = document.querySelector('.main-layout');
+            const mainArea = document.querySelector('.main-area');
+            const atomCanvas = document.getElementById('atomCanvas');
+            const graphCanvas = document.getElementById('graphCanvas');
+
+            if (mainArea && mainLayout.offsetWidth > 900) {
+                const h = mainLayout.offsetHeight;
+                atomCanvas.width = mainArea.offsetWidth;
+                atomCanvas.height = h * 0.6;
+                graphCanvas.width = mainArea.offsetWidth;
+                graphCanvas.height = h * 0.4 - 10;
+            }
+        }
+        window.addEventListener('resize', resizeCanvases);
+        resizeCanvases();
+
         const atomCanvas = document.getElementById('atomCanvas');
         const atomCtx = atomCanvas.getContext('2d');
         const graphCanvas = document.getElementById('graphCanvas');

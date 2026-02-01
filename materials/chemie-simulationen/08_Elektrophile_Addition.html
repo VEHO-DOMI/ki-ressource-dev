@@ -10,56 +10,68 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 8px;
             color: #fff;
         }
-        .container { max-width: 100%; margin: 0 auto; padding: 0 10px; }
-        h1 { text-align: center; margin-bottom: 10px; font-size: 1.8em; color: #4fc3f7; }
-        .subtitle { text-align: center; color: #90a4ae; margin-bottom: 20px; }
+        .container { max-width: 100%; height: calc(100vh - 16px); display: flex; flex-direction: column; }
+        h1 { text-align: center; margin-bottom: 4px; font-size: 1.2em; color: #4fc3f7; }
+        .subtitle { text-align: center; color: #90a4ae; margin-bottom: 8px; font-size: 0.75em; }
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 8px;
+            flex: 1;
+            min-height: 0;
+        }
+        @media (max-width: 900px) {
+            .main-layout { grid-template-columns: 1fr; height: auto; }
+        }
         .simulation-area {
             background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 10px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
         .reaction-equation {
             text-align: center;
-            font-size: 1.5em;
-            padding: 15px;
+            font-size: 0.95em;
+            padding: 8px;
             background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            margin-bottom: 20px;
+            border-radius: 6px;
+            margin-bottom: 8px;
         }
         .alkene { color: #2ecc71; }
         .reagent { color: #e74c3c; }
         .product { color: #3498db; }
         canvas {
+            flex: 1;
             display: block;
-            margin: 0 auto;
+            width: 100%;
+            height: 100%;
             background: radial-gradient(ellipse at center, #1b263b 0%, #0d1b2a 100%);
-            border-radius: 10px;
+            border-radius: 8px;
             border: 2px solid #4fc3f7;
-            max-width: 100%;
-            height: auto;
         }
         .step-indicator {
             display: flex;
             justify-content: center;
-            gap: 5px;
-            margin: 20px 0;
+            gap: 4px;
+            margin: 6px 0;
         }
         .step-dot {
-            width: 50px;
-            height: 50px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 0.7em;
             background: rgba(255,255,255,0.1);
             border: 2px solid rgba(255,255,255,0.2);
             transition: all 0.3s;
-            font-size: 0.9em;
         }
         .step-dot.active {
             background: linear-gradient(135deg, #4fc3f7, #e91e63);
@@ -70,30 +82,31 @@
         .step-dot.completed { background: #2ecc71; border-color: #27ae60; }
         .step-description {
             text-align: center;
-            padding: 15px 20px;
+            padding: 8px;
             background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            margin: 15px 0;
-            min-height: 80px;
+            border-radius: 6px;
+            margin: 6px 0;
+            min-height: auto;
+            font-size: 0.75em;
         }
-        .step-description h4 { color: #4fc3f7; margin-bottom: 8px; }
-        .step-description p { color: #b0bec5; line-height: 1.5; }
+        .step-description h4 { color: #4fc3f7; margin-bottom: 4px; font-size: 0.85em; }
+        .step-description p { color: #b0bec5; line-height: 1.3; }
         .controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin-top: 6px;
         }
         .control-btn {
-            padding: 12px 30px;
-            font-size: 1em;
+            padding: 6px 8px;
+            font-size: 0.7em;
             border: none;
-            border-radius: 25px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s;
         }
-        .control-btn:hover { transform: translateY(-2px); }
+        .control-btn:hover { transform: translateY(-1px); }
         .control-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .control-btn.next { background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; }
         .control-btn.prev { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
@@ -101,83 +114,95 @@
         .control-btn.auto { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; }
         .info-box {
             background: rgba(79, 195, 247, 0.1);
-            border-left: 4px solid #4fc3f7;
-            padding: 15px 20px;
-            border-radius: 0 10px 10px 0;
-            margin-top: 20px;
+            border-left: 3px solid #4fc3f7;
+            padding: 8px;
+            border-radius: 0 6px 6px 0;
+            margin-top: 6px;
+            display: none;
         }
-        .info-box h3 { color: #4fc3f7; margin-bottom: 10px; }
-        .info-box p { line-height: 1.6; color: #b0bec5; }
+        .info-box h3 { color: #4fc3f7; margin-bottom: 4px; font-size: 0.85em; }
+        .info-box p { line-height: 1.4; color: #b0bec5; font-size: 0.75em; }
         .legend {
             display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 15px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 3px;
+            margin-top: 6px;
+            font-size: 0.65em;
         }
-        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.9em; }
-        .legend-dot { width: 18px; height: 18px; border-radius: 50%; }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
         .mechanism-note {
             background: rgba(233, 30, 99, 0.1);
             border: 1px solid #e91e63;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-size: 0.9em;
+            padding: 6px;
+            border-radius: 6px;
+            margin-top: 6px;
+            font-size: 0.7em;
             text-align: center;
+        }
+        .control-panel {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 10px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>⚗️ Elektrophile Addition (AE)</h1>
-        <p class="subtitle">6. Klasse Chemie – Reaktionsmechanismus an der Doppelbindung</p>
+        <h1>Elektrophile Addition</h1>
+        <p class="subtitle">Reaktionsmechanismus der Doppelbindung</p>
 
-        <div class="simulation-area">
-            <div class="reaction-equation">
-                <span class="alkene">CH₂=CH₂</span> + <span class="reagent">Br₂</span>
-                → <span class="product">CH₂Br-CH₂Br</span>
+        <div class="main-layout">
+            <div class="simulation-area">
+                <div class="reaction-equation">
+                    <span class="alkene">CH₂=CH₂</span> + <span class="reagent">Br₂</span> → <span class="product">CH₂Br-CH₂Br</span>
+                </div>
+
+                <canvas id="mechanismCanvas" width="800" height="350"></canvas>
+
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-dot" style="background: #2c3e50;"></div> C</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #ecf0f1;"></div> H</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #c0392b;"></div> Br</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #27ae60;"></div> π-e</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #e74c3c;"></div> Fluss</div>
+                </div>
             </div>
 
-            <canvas id="mechanismCanvas" width="850" height="350"></canvas>
+            <div class="control-panel">
+                <div class="step-indicator">
+                    <div class="step-dot active" id="step1">1</div>
+                    <div class="step-dot" id="step2">2</div>
+                    <div class="step-dot" id="step3">3</div>
+                    <div class="step-dot" id="step4">4</div>
+                </div>
 
-            <div class="step-indicator">
-                <div class="step-dot active" id="step1">1</div>
-                <div class="step-dot" id="step2">2</div>
-                <div class="step-dot" id="step3">3</div>
-                <div class="step-dot" id="step4">4</div>
+                <div class="step-description" id="stepDesc">
+                    <h4>Schritt 1</h4>
+                    <p>Ethen mit π-Bindung und Brom (Elektrophil) nähern sich.</p>
+                </div>
+
+                <div class="controls">
+                    <button class="control-btn prev" onclick="prevStep()" id="prevBtn" disabled>← Zurück</button>
+                    <button class="control-btn next" onclick="nextStep()" id="nextBtn">Weiter →</button>
+                    <button class="control-btn auto" onclick="autoPlay()" id="autoBtn">Auto</button>
+                    <button class="control-btn reset" onclick="resetMechanism()">Reset</button>
+                </div>
+
+                <div class="mechanism-note">
+                    Markovnikov: H bindet an C mit mehr H
+                </div>
+
+                <div class="info-box">
+                    <h3>Elektrophile Addition</h3>
+                    <p>π-Elektronen greifen Elektrophil an. Bromonium-Ion bildet sich. Bromid greift von hinten an (anti-Addition).</p>
+                </div>
             </div>
-
-            <div class="step-description" id="stepDesc">
-                <h4>Schritt 1: Ausgangssituation</h4>
-                <p>Ethen (CH₂=CH₂) mit seiner elektronenreichen π-Bindung und Brom (Br₂) als Elektrophil nähern sich.</p>
-            </div>
-
-            <div class="controls">
-                <button class="control-btn prev" onclick="prevStep()" id="prevBtn" disabled>◀ Zurück</button>
-                <button class="control-btn next" onclick="nextStep()" id="nextBtn">Weiter ▶</button>
-                <button class="control-btn auto" onclick="autoPlay()" id="autoBtn">▶ Automatisch</button>
-                <button class="control-btn reset" onclick="resetMechanism()">↺ Reset</button>
-            </div>
-
-            <div class="legend">
-                <div class="legend-item"><div class="legend-dot" style="background: #2c3e50;"></div> Kohlenstoff</div>
-                <div class="legend-item"><div class="legend-dot" style="background: #ecf0f1;"></div> Wasserstoff</div>
-                <div class="legend-item"><div class="legend-dot" style="background: #c0392b;"></div> Brom</div>
-                <div class="legend-item"><div class="legend-dot" style="background: #27ae60;"></div> π-Elektronen</div>
-                <div class="legend-item"><div class="legend-dot" style="background: #e74c3c;"></div> Elektronenbewegung</div>
-            </div>
-
-            <div class="mechanism-note">
-                🔬 <strong>Markovnikov-Regel:</strong> Bei unsymmetrischen Alkenen bindet das H an das C mit mehr H-Atomen
-            </div>
-        </div>
-
-        <div class="info-box">
-            <h3>📚 Elektrophile Addition</h3>
-            <p>Die elektrophile Addition ist eine typische Reaktion von Alkenen. Die elektronenreiche Doppelbindung (π-Bindung)
-            greift ein Elektrophil (z.B. Br⁺) an. Es bildet sich ein zyklisches Bromonium-Ion als Zwischenprodukt,
-            das dann von Br⁻ von der Rückseite angegriffen wird (anti-Addition).</p>
         </div>
     </div>
 

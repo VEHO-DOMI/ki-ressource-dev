@@ -10,28 +10,42 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
-            padding: 15px;
+            padding: 12px;
             color: #fff;
         }
-        .container { max-width: 100%; margin: 0 auto; padding: 0 10px; }
-        h1 { text-align: center; margin-bottom: 5px; font-size: 1.6em; color: #4fc3f7; }
-        .subtitle { text-align: center; color: #90a4ae; margin-bottom: 15px; font-size: 0.9em; }
+        .header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .header h1 { font-size: 1.4em; color: #4fc3f7; margin-bottom: 4px; }
+        .header p { color: #90a4ae; font-size: 0.8em; }
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 12px;
+            height: calc(100vh - 80px);
+            min-height: 500px;
+        }
+        @media (max-width: 900px) {
+            .main-layout { grid-template-columns: 1fr; height: auto; }
+        }
         .pse-container {
-            background: rgba(255,255,255,0.03);
-            border-radius: 15px;
-            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 12px;
             overflow-x: auto;
+            overflow-y: auto;
         }
         .pse-grid {
             display: grid;
             grid-template-columns: repeat(18, 1fr);
-            gap: 3px;
-            min-width: 900px;
+            gap: 2px;
+            min-width: 700px;
         }
         .element {
             aspect-ratio: 1;
-            min-width: 45px;
-            border-radius: 5px;
+            min-width: 32px;
+            border-radius: 4px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
@@ -42,22 +56,21 @@
             position: relative;
         }
         .element:hover {
-            transform: scale(1.15);
+            transform: scale(1.12);
             z-index: 10;
-            box-shadow: 0 0 20px rgba(79,195,247,0.5);
+            box-shadow: 0 0 12px rgba(79,195,247,0.5);
         }
         .element.selected {
-            transform: scale(1.2);
+            transform: scale(1.15);
             z-index: 11;
-            box-shadow: 0 0 25px rgba(255,255,255,0.8);
+            box-shadow: 0 0 15px rgba(255,255,255,0.8);
         }
-        .element .number { font-size: 0.6em; color: rgba(255,255,255,0.7); }
-        .element .symbol { font-size: 1.1em; font-weight: bold; }
-        .element .name { font-size: 0.45em; color: rgba(255,255,255,0.6); }
+        .element .number { font-size: 0.5em; color: rgba(255,255,255,0.7); }
+        .element .symbol { font-size: 0.8em; font-weight: bold; }
+        .element .name { font-size: 0.35em; color: rgba(255,255,255,0.6); }
         .element.empty { background: transparent; border: none; cursor: default; }
         .element.empty:hover { transform: none; box-shadow: none; }
 
-        /* Element categories */
         .alkali { background: linear-gradient(135deg, #ff6b6b, #ee5a5a); }
         .alkaline { background: linear-gradient(135deg, #ffa502, #ff7f50); }
         .transition { background: linear-gradient(135deg, #70a1ff, #5352ed); }
@@ -66,101 +79,67 @@
         .nonmetal { background: linear-gradient(135deg, #a29bfe, #6c5ce7); }
         .halogen { background: linear-gradient(135deg, #fd79a8, #e84393); }
         .noble { background: linear-gradient(135deg, #74b9ff, #0984e3); }
-        .lanthanide { background: linear-gradient(135deg, #55efc4, #00b894); }
-        .actinide { background: linear-gradient(135deg, #fab1a0, #e17055); }
 
-        .info-panel {
-            margin-top: 15px;
+        .control-panel {
             background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 15px;
-            display: grid;
-            grid-template-columns: 130px 1fr 1fr;
-            gap: 15px;
-        }
-        @media (max-width: 800px) {
-            .info-panel { grid-template-columns: 1fr; }
+            border-radius: 12px;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
         .element-preview {
             text-align: center;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 10px;
+            border-radius: 8px;
             background: linear-gradient(135deg, #2c3e50, #34495e);
         }
         .element-preview .big-symbol {
-            font-size: 4em;
+            font-size: 2.5em;
             font-weight: bold;
             color: #4fc3f7;
         }
         .element-preview .big-number {
-            font-size: 1.2em;
+            font-size: 0.9em;
             color: #90a4ae;
         }
         .element-preview .big-name {
-            font-size: 1.1em;
-            margin-top: 5px;
+            font-size: 0.85em;
+            margin-top: 3px;
         }
-        .properties, .electron-config {
-            padding: 10px;
+        .properties {
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 8px;
         }
-        .properties h3, .electron-config h3 {
+        .properties h3 {
             color: #4fc3f7;
-            margin-bottom: 10px;
-            font-size: 1em;
+            margin-bottom: 6px;
+            font-size: 0.8em;
         }
         .property-row {
             display: flex;
             justify-content: space-between;
-            padding: 5px 0;
+            padding: 3px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.9em;
+            font-size: 0.7em;
         }
+        .property-row:last-child { border-bottom: none; }
         .property-label { color: #90a4ae; }
         .property-value { color: #fff; font-weight: 500; }
-        .shell-diagram {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-        .shell {
-            background: rgba(79,195,247,0.2);
-            border: 1px solid #4fc3f7;
-            border-radius: 20px;
-            padding: 5px 12px;
-            font-size: 0.85em;
-        }
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-            justify-content: center;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.75em;
-        }
-        .legend-color {
-            width: 15px;
-            height: 15px;
-            border-radius: 3px;
-        }
         .trend-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 10px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
         }
         .trend-btn {
-            padding: 8px 15px;
+            padding: 5px 8px;
             border: none;
-            border-radius: 20px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.85em;
+            font-size: 0.7em;
             background: rgba(79,195,247,0.2);
             color: #4fc3f7;
             border: 1px solid #4fc3f7;
@@ -170,75 +149,88 @@
             background: #4fc3f7;
             color: #1a1a2e;
         }
+        .legend {
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65em;
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🧪 Periodensystem der Elemente</h1>
-        <p class="subtitle">4. Klasse Chemie – Klicke auf ein Element für Details</p>
+    <div class="header">
+        <h1>🧪 Periodensystem</h1>
+        <p>4. Klasse Chemie</p>
+    </div>
 
-        <div class="trend-buttons">
-            <button class="trend-btn" onclick="showTrend('none')">Normal</button>
-            <button class="trend-btn" onclick="showTrend('electronegativity')">Elektronegativität</button>
-            <button class="trend-btn" onclick="showTrend('atomicRadius')">Atomradius</button>
-            <button class="trend-btn" onclick="showTrend('ionization')">Ionisierungsenergie</button>
-        </div>
-
+    <div class="main-layout">
         <div class="pse-container">
             <div class="pse-grid" id="pse"></div>
         </div>
 
-        <div class="legend">
-            <div class="legend-item"><div class="legend-color alkali"></div>Alkalimetalle</div>
-            <div class="legend-item"><div class="legend-color alkaline"></div>Erdalkalimetalle</div>
-            <div class="legend-item"><div class="legend-color transition"></div>Übergangsmetalle</div>
-            <div class="legend-item"><div class="legend-color post-transition"></div>Metalle</div>
-            <div class="legend-item"><div class="legend-color metalloid"></div>Halbmetalle</div>
-            <div class="legend-item"><div class="legend-color nonmetal"></div>Nichtmetalle</div>
-            <div class="legend-item"><div class="legend-color halogen"></div>Halogene</div>
-            <div class="legend-item"><div class="legend-color noble"></div>Edelgase</div>
-        </div>
+        <div class="control-panel">
+            <div class="trend-buttons">
+                <button class="trend-btn" onclick="showTrend('none')">Normal</button>
+                <button class="trend-btn" onclick="showTrend('electronegativity')">EN</button>
+                <button class="trend-btn" onclick="showTrend('atomicRadius')">Radius</button>
+                <button class="trend-btn" onclick="showTrend('ionization')">Ionisierung</button>
+            </div>
 
-        <div class="info-panel" id="infoPanel">
             <div class="element-preview">
                 <div class="big-number" id="previewNumber">1</div>
                 <div class="big-symbol" id="previewSymbol">H</div>
                 <div class="big-name" id="previewName">Wasserstoff</div>
             </div>
+
             <div class="properties">
-                <h3>📊 Eigenschaften</h3>
+                <h3>📊 Daten</h3>
                 <div class="property-row">
-                    <span class="property-label">Atommasse:</span>
+                    <span class="property-label">Masse:</span>
                     <span class="property-value" id="propMass">1.008 u</span>
                 </div>
                 <div class="property-row">
-                    <span class="property-label">Elektronegativität:</span>
+                    <span class="property-label">EN:</span>
                     <span class="property-value" id="propEN">2.20</span>
                 </div>
                 <div class="property-row">
-                    <span class="property-label">Schmelzpunkt:</span>
-                    <span class="property-value" id="propMelt">-259 °C</span>
+                    <span class="property-label">Smp:</span>
+                    <span class="property-value" id="propMelt">-259°</span>
                 </div>
                 <div class="property-row">
-                    <span class="property-label">Siedepunkt:</span>
-                    <span class="property-value" id="propBoil">-253 °C</span>
+                    <span class="property-label">Sdp:</span>
+                    <span class="property-value" id="propBoil">-253°</span>
                 </div>
                 <div class="property-row">
                     <span class="property-label">Dichte:</span>
-                    <span class="property-value" id="propDensity">0.09 g/L</span>
+                    <span class="property-value" id="propDensity">0.09</span>
                 </div>
                 <div class="property-row">
-                    <span class="property-label">Kategorie:</span>
-                    <span class="property-value" id="propCategory">Nichtmetall</span>
+                    <span class="property-label">Typ:</span>
+                    <span class="property-value" id="propCategory">NM</span>
                 </div>
             </div>
-            <div class="electron-config">
-                <h3>⚛️ Elektronenkonfiguration</h3>
-                <div id="electronConfig">1s¹</div>
-                <div class="shell-diagram" id="shellDiagram"></div>
-                <div style="margin-top: 15px; font-size: 0.85em; color: #90a4ae;">
-                    <strong>Oxidationsstufen:</strong> <span id="propOxidation">+1, -1</span>
-                </div>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color alkali"></div>Alkali</div>
+                <div class="legend-item"><div class="legend-color alkaline"></div>Erdalkalien</div>
+                <div class="legend-item"><div class="legend-color transition"></div>Übergang</div>
+                <div class="legend-item"><div class="legend-color nonmetal"></div>NM</div>
+                <div class="legend-item"><div class="legend-color halogen"></div>Halogene</div>
+                <div class="legend-item"><div class="legend-color noble"></div>Edelgase</div>
             </div>
         </div>
     </div>
@@ -323,25 +315,18 @@
             document.getElementById('previewNumber').textContent = el.z;
             document.getElementById('previewSymbol').textContent = el.sym;
             document.getElementById('previewName').textContent = el.name;
-            document.getElementById('propMass').textContent = el.mass + ' u';
-            document.getElementById('propEN').textContent = el.en ?? '-';
-            document.getElementById('propMelt').textContent = el.mp + ' °C';
-            document.getElementById('propBoil').textContent = el.bp + ' °C';
-            document.getElementById('propDensity').textContent = el.density;
-            document.getElementById('propOxidation').textContent = el.ox;
+            document.getElementById('propMass').textContent = el.mass.toFixed(2);
+            document.getElementById('propEN').textContent = el.en ? el.en.toFixed(2) : '-';
+            document.getElementById('propMelt').textContent = el.mp + '°';
+            document.getElementById('propBoil').textContent = el.bp + '°';
+            document.getElementById('propDensity').textContent = el.density.split(' ')[0];
 
-            const cats = {
-                alkali: 'Alkalimetall', alkaline: 'Erdalkalimetall', transition: 'Übergangsmetall',
-                'post-transition': 'Metall', metalloid: 'Halbmetall', nonmetal: 'Nichtmetall',
+            const catShort = {
+                alkali: 'Alkali', alkaline: 'Erdalkalien', transition: 'Übergang',
+                'post-transition': 'Metall', metalloid: 'HM', nonmetal: 'NM',
                 halogen: 'Halogen', noble: 'Edelgas'
             };
-            document.getElementById('propCategory').textContent = cats[el.cat] || el.cat;
-            document.getElementById('electronConfig').textContent = el.config;
-
-            const shellDiv = document.getElementById('shellDiagram');
-            shellDiv.innerHTML = el.shells.map((n, i) =>
-                `<span class="shell">Schale ${['K','L','M','N','O'][i]}: ${n}</span>`
-            ).join('');
+            document.getElementById('propCategory').textContent = catShort[el.cat] || 'unbekannt';
         }
 
         function showTrend(trend) {

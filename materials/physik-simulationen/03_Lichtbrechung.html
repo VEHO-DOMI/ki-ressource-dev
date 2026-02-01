@@ -5,158 +5,230 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lichtbrechung - Snellius'sches Brechungsgesetz</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #0a1628 0%, #1a237e 100%);
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #05051a 0%, #0a0a2e 50%, #150530 100%);
             min-height: 100vh;
-            padding: 20px;
             color: #fff;
         }
-        .container { max-width: 1000px; margin: 0 auto; }
-        h1 { text-align: center; margin-bottom: 10px; font-size: 1.8em; color: #64b5f6; }
-        .subtitle { text-align: center; color: #90a4ae; margin-bottom: 20px; }
-        .simulation-wrapper { display: grid; grid-template-columns: 1fr 280px; gap: 20px; }
-        .canvas-container {
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            padding: 15px;
+
+        .container {
+            max-width: 100%;
+            padding: 12px;
         }
-        canvas {
-            display: block;
-            border-radius: 10px;
-            cursor: crosshair;
-        }
-        .sidebar { display: flex; flex-direction: column; gap: 15px; }
-        .panel {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 15px;
-        }
-        .panel h3 {
-            font-size: 1em;
-            color: #64b5f6;
+
+        header {
+            text-align: center;
             margin-bottom: 12px;
         }
+
+        h1 {
+            font-size: 1.6em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #64b5f6, #42a5f5, #2196f3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .subtitle { color: rgba(255,255,255,0.5); font-size: 0.85em; }
+
+        /* MAIN LAYOUT: Side by Side */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 12px;
+            height: calc(100vh - 80px);
+            min-height: 500px;
+        }
+
+        @media (max-width: 900px) {
+            .main-layout { grid-template-columns: 1fr; height: auto; }
+        }
+
+        /* LEFT SIDE: Simulation */
+        .sim-panel {
+            background: rgba(15, 15, 35, 0.9);
+            border-radius: 12px;
+            border: 1px solid rgba(100, 181, 246, 0.2);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        canvas {
+            width: 100%;
+            flex: 1;
+            min-height: 300px;
+            border-radius: 8px;
+            background: radial-gradient(ellipse at 20% 50%, #0a1a2e 0%, #050510 100%);
+            border: 1px solid rgba(100, 181, 246, 0.2);
+            cursor: crosshair;
+        }
+
+        .instruction {
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.75em;
+            margin-top: 6px;
+        }
+
+        /* RIGHT SIDE: Controls */
+        .ctrl-panel {
+            background: rgba(15, 15, 35, 0.9);
+            border-radius: 12px;
+            border: 1px solid rgba(100, 181, 246, 0.15);
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .section-title {
+            font-size: 0.65em;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 4px;
+        }
+
+        /* Material Select - Compact */
         .material-select {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 15px;
+            gap: 6px;
+            margin-bottom: 8px;
         }
+
         .material-btn {
-            padding: 10px 8px;
+            padding: 8px 6px;
             border: 2px solid transparent;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            color: #fff;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.7);
             cursor: pointer;
-            font-size: 0.8em;
+            font-size: 0.7em;
             transition: all 0.2s;
+            text-align: center;
         }
-        .material-btn:hover { background: rgba(255,255,255,0.2); }
+
+        .material-btn:hover { background: rgba(255,255,255,0.08); }
         .material-btn.active {
             border-color: #64b5f6;
-            background: rgba(100, 181, 246, 0.2);
+            background: rgba(100, 181, 246, 0.15);
+            color: #64b5f6;
         }
+
         .material-btn .n-value {
             display: block;
-            font-size: 0.75em;
-            color: #90a4ae;
-            margin-top: 3px;
+            font-size: 0.65em;
+            color: rgba(100, 181, 246, 0.8);
+            margin-top: 2px;
         }
-        .control-group { margin-bottom: 15px; }
-        .control-group label {
-            display: block;
-            font-size: 0.85em;
-            margin-bottom: 5px;
-            color: #b0bec5;
+
+        /* Physics Values - Ultra Compact */
+        .physics-values {
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            padding: 8px;
         }
-        .control-group input[type="range"] {
-            width: 100%;
-            height: 6px;
-            -webkit-appearance: none;
-            background: rgba(255,255,255,0.2);
-            border-radius: 3px;
-        }
-        .control-group input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            background: #64b5f6;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        .value-display {
-            text-align: right;
-            font-size: 0.9em;
-            color: #64b5f6;
-            margin-top: 3px;
-        }
+
         .physics-row {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.9em;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.65em;
         }
+
         .physics-row:last-child { border-bottom: none; }
-        .physics-row .label { color: #90a4ae; }
-        .physics-row .value { color: #fff; font-family: monospace; }
+        .physics-row .label { color: rgba(255,255,255,0.5); }
+        .physics-row .value { color: #64b5f6; font-family: monospace; font-weight: 600; }
+
+        /* Formula Box - Compact */
         .formula-box {
             background: rgba(100, 181, 246, 0.1);
-            border: 1px solid rgba(100, 181, 246, 0.3);
-            border-radius: 8px;
-            padding: 12px;
+            border: 1px solid rgba(100, 181, 246, 0.2);
+            border-radius: 6px;
+            padding: 8px;
             text-align: center;
-            margin-top: 10px;
+            margin: 6px 0;
         }
+
         .formula-box .formula {
-            font-size: 1.2em;
+            font-size: 0.85em;
             font-family: 'Times New Roman', serif;
             font-style: italic;
             color: #64b5f6;
         }
+
+        /* Info Box */
         .info-box {
             background: rgba(100, 181, 246, 0.1);
-            border-left: 4px solid #64b5f6;
-            padding: 12px;
-            border-radius: 0 10px 10px 0;
-            font-size: 0.85em;
-            line-height: 1.5;
-            color: #b0bec5;
+            border-left: 3px solid #64b5f6;
+            padding: 8px 10px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.7em;
+            line-height: 1.4;
         }
+
+        .info-box strong { color: #64b5f6; }
+        .info-box p { color: rgba(255,255,255,0.7); }
+
+        /* Warning Box */
         .total-reflection-warning {
-            background: rgba(255, 152, 0, 0.2);
-            border-left: 4px solid #ff9800;
-            padding: 10px;
-            border-radius: 0 8px 8px 0;
-            margin-top: 10px;
-            font-size: 0.85em;
+            background: rgba(255, 152, 0, 0.15);
+            border-left: 3px solid #ff9800;
+            padding: 8px 10px;
+            border-radius: 0 6px 6px 0;
+            margin: 4px 0;
+            font-size: 0.7em;
             display: none;
         }
-        .instruction {
-            text-align: center;
-            color: #90a4ae;
-            font-size: 0.9em;
-            margin-top: 10px;
+
+        .total-reflection-warning strong { color: #ff9800; }
+
+        /* Panel Container */
+        .panel {
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            padding: 8px;
+        }
+
+        .panel h3 {
+            font-size: 0.7em;
+            color: #64b5f6;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>💡 Lichtbrechung</h1>
-        <p class="subtitle">4. Klasse Physik – Snellius'sches Brechungsgesetz interaktiv erleben</p>
+        <header>
+            <h1>💡 Lichtbrechung</h1>
+            <p class="subtitle">Snellius-Gesetz – Interaktive Brechung</p>
+        </header>
 
-        <div class="simulation-wrapper">
-            <div class="canvas-container">
-                <canvas id="refractionCanvas" width="650" height="500"></canvas>
+        <div class="main-layout">
+            <!-- LEFT: Simulation -->
+            <div class="sim-panel">
+                <canvas id="refractionCanvas"></canvas>
                 <p class="instruction">🖱️ Bewege die Maus, um den Einfallswinkel zu ändern</p>
             </div>
 
-            <div class="sidebar">
+            <!-- RIGHT: Controls -->
+            <div class="ctrl-panel">
+                <div class="section-title">🔬 Medium 1 (oben)</div>
                 <div class="panel">
-                    <h3>🔬 Medium 1 (oben)</h3>
                     <div class="material-select" id="medium1Select">
                         <button class="material-btn active" data-n="1.00" data-name="Luft">Luft<span class="n-value">n = 1.00</span></button>
                         <button class="material-btn" data-n="1.33" data-name="Wasser">Wasser<span class="n-value">n = 1.33</span></button>
@@ -165,8 +237,8 @@
                     </div>
                 </div>
 
+                <div class="section-title">🔬 Medium 2 (unten)</div>
                 <div class="panel">
-                    <h3>🔬 Medium 2 (unten)</h3>
                     <div class="material-select" id="medium2Select">
                         <button class="material-btn" data-n="1.00" data-name="Luft">Luft<span class="n-value">n = 1.00</span></button>
                         <button class="material-btn active" data-n="1.33" data-name="Wasser">Wasser<span class="n-value">n = 1.33</span></button>
@@ -175,41 +247,42 @@
                     </div>
                 </div>
 
+                <div class="section-title">📊 Messwerte</div>
                 <div class="panel">
-                    <h3>📊 Messwerte</h3>
-                    <div class="physics-row">
-                        <span class="label">Einfallswinkel α</span>
-                        <span class="value" id="angle1Value">45.0°</span>
-                    </div>
-                    <div class="physics-row">
-                        <span class="label">Brechungswinkel β</span>
-                        <span class="value" id="angle2Value">32.1°</span>
-                    </div>
-                    <div class="physics-row">
-                        <span class="label">n₁</span>
-                        <span class="value" id="n1Value">1.00</span>
-                    </div>
-                    <div class="physics-row">
-                        <span class="label">n₂</span>
-                        <span class="value" id="n2Value">1.33</span>
-                    </div>
-                    <div class="physics-row">
-                        <span class="label">Grenzwinkel</span>
-                        <span class="value" id="criticalAngle">-</span>
+                    <div class="physics-values">
+                        <div class="physics-row">
+                            <span class="label">α</span>
+                            <span class="value" id="angle1Value">45.0°</span>
+                        </div>
+                        <div class="physics-row">
+                            <span class="label">β</span>
+                            <span class="value" id="angle2Value">32.1°</span>
+                        </div>
+                        <div class="physics-row">
+                            <span class="label">n₁</span>
+                            <span class="value" id="n1Value">1.00</span>
+                        </div>
+                        <div class="physics-row">
+                            <span class="label">n₂</span>
+                            <span class="value" id="n2Value">1.33</span>
+                        </div>
+                        <div class="physics-row">
+                            <span class="label">θ<sub>c</sub></span>
+                            <span class="value" id="criticalAngle">-</span>
+                        </div>
                     </div>
 
                     <div class="formula-box">
-                        <div class="formula">n₁ · sin(α) = n₂ · sin(β)</div>
+                        <div class="formula">n₁ sin(α) = n₂ sin(β)</div>
                     </div>
 
                     <div class="total-reflection-warning" id="totalReflection">
-                        ⚠️ <strong>Totalreflexion!</strong><br>
-                        Der Einfallswinkel ist größer als der Grenzwinkel – das Licht wird vollständig reflektiert.
+                        ⚠️ <strong>Totalreflexion!</strong>
                     </div>
                 </div>
 
                 <div class="info-box">
-                    <strong>Brechungsindex n:</strong> Gibt an, wie stark Licht in einem Medium langsamer wird. Je größer n, desto stärker die Brechung zum Lot hin.
+                    <strong>Brechungsindex:</strong> Beschreibt, wie stark Licht in einem Medium verlangsamt wird.
                 </div>
             </div>
         </div>
@@ -218,6 +291,16 @@
     <script>
         const canvas = document.getElementById('refractionCanvas');
         const ctx = canvas.getContext('2d');
+
+        // Resize canvas to fit container
+        function resizeCanvas() {
+            const simPanel = canvas.parentElement;
+            canvas.width = simPanel.clientWidth - 24;
+            canvas.height = Math.min(400, simPanel.clientHeight - 50);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        setTimeout(resizeCanvas, 100);
 
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
@@ -464,6 +547,7 @@
             });
         });
 
+        resizeCanvas();
         draw();
     </script>
 </body>

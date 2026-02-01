@@ -16,58 +16,86 @@
         .container { max-width: 1000px; margin: 0 auto; }
         h1 { text-align: center; margin-bottom: 10px; font-size: 1.8em; color: #ffab40; }
         .subtitle { text-align: center; color: #90a4ae; margin-bottom: 20px; }
-        .simulation-wrapper { display: grid; grid-template-columns: 1fr 280px; gap: 20px; }
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 12px;
+            height: calc(100vh - 80px);
+            min-height: 500px;
+        }
+        @media (max-width: 900px) {
+            .main-layout { grid-template-columns: 1fr; height: auto; }
+        }
+        .main-area {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
         .canvas-container {
             background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 10px;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
-        canvas { display: block; border-radius: 10px; }
-        .sidebar { display: flex; flex-direction: column; gap: 15px; }
+        canvas { display: block; border-radius: 8px; width: 100%; height: 100%; }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .sidebar::-webkit-scrollbar { width: 6px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
         .panel {
             background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 8px;
+            padding: 10px;
+            flex-shrink: 0;
         }
-        .panel h3 { font-size: 1em; color: #ffab40; margin-bottom: 12px; }
-        .control-group { margin-bottom: 15px; }
+        .panel h3 { font-size: 0.9em; color: #ffab40; margin-bottom: 8px; }
+        .control-group { margin-bottom: 8px; }
         .control-group label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.85em;
-            margin-bottom: 5px;
+            font-size: 0.75em;
+            margin-bottom: 3px;
             color: #b0bec5;
         }
         .control-group input[type="range"] {
             width: 100%;
-            height: 6px;
+            height: 5px;
             -webkit-appearance: none;
             background: rgba(255,255,255,0.2);
-            border-radius: 3px;
+            border-radius: 2px;
         }
         .control-group input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             background: #ffab40;
             border-radius: 50%;
             cursor: pointer;
         }
-        .value-display { color: #ffab40; font-weight: bold; }
+        .value-display { color: #ffab40; font-weight: bold; font-size: 0.75em; }
         .preset-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 15px;
+            gap: 6px;
         }
         .preset-btn {
-            padding: 8px;
-            border: 2px solid transparent;
-            border-radius: 8px;
+            padding: 6px;
+            border: 1px solid transparent;
+            border-radius: 6px;
             background: rgba(255,255,255,0.1);
             color: #fff;
             cursor: pointer;
-            font-size: 0.8em;
+            font-size: 0.7em;
             transition: all 0.2s;
         }
         .preset-btn:hover { background: rgba(255,255,255,0.2); }
@@ -75,20 +103,20 @@
         .physics-row {
             display: flex;
             justify-content: space-between;
-            padding: 6px 0;
+            padding: 4px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.85em;
+            font-size: 0.75em;
         }
         .physics-row:last-child { border-bottom: none; }
         .physics-row .label { color: #90a4ae; }
         .physics-row .value { color: #fff; font-family: monospace; }
-        .btn-group { display: flex; gap: 8px; margin-top: 10px; }
+        .btn-group { display: flex; gap: 6px; margin-top: 8px; }
         .btn {
             flex: 1;
-            padding: 10px;
+            padding: 7px;
             border: none;
-            border-radius: 8px;
-            font-size: 0.85em;
+            border-radius: 6px;
+            font-size: 0.75em;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -98,31 +126,36 @@
         .checkbox-group {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
+            gap: 8px;
+            margin-bottom: 6px;
         }
-        .checkbox-group input { width: 16px; height: 16px; accent-color: #ffab40; }
-        .checkbox-group label { font-size: 0.85em; color: #b0bec5; }
+        .checkbox-group input { width: 14px; height: 14px; accent-color: #ffab40; }
+        .checkbox-group label { font-size: 0.75em; color: #b0bec5; }
         .formula-box {
             background: rgba(255, 171, 64, 0.1);
             border: 1px solid rgba(255, 171, 64, 0.3);
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 0.85em;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 0.7em;
         }
         .formula {
             font-family: 'Times New Roman', serif;
             color: #ffab40;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
+            font-size: 0.9em;
         }
         .info-box {
             background: rgba(255, 171, 64, 0.1);
-            border-left: 4px solid #ffab40;
-            padding: 12px;
-            border-radius: 0 10px 10px 0;
-            font-size: 0.85em;
-            line-height: 1.5;
+            border-left: 3px solid #ffab40;
+            padding: 8px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.7em;
+            line-height: 1.3;
             color: #b0bec5;
+            display: none;
+        }
+        @media (max-width: 900px) {
+            .info-box { display: block; }
         }
     </style>
 </head>
@@ -131,9 +164,11 @@
         <h1>🎯 Wurfbewegung</h1>
         <p class="subtitle">5. Klasse Physik – Schräger Wurf und Überlagerung von Bewegungen</p>
 
-        <div class="simulation-wrapper">
-            <div class="canvas-container">
-                <canvas id="projectileCanvas" width="650" height="450"></canvas>
+        <div class="main-layout">
+            <div class="main-area">
+                <div class="canvas-container">
+                    <canvas id="projectileCanvas"></canvas>
+                </div>
             </div>
 
             <div class="sidebar">
@@ -232,13 +267,36 @@
     </div>
 
     <script>
+        function resizeCanvas() {
+            const canvas = document.getElementById('projectileCanvas');
+            const mainArea = document.querySelector('.main-area');
+            const mainLayout = document.querySelector('.main-layout');
+
+            if (mainArea && mainLayout.offsetWidth > 900) {
+                canvas.width = mainArea.offsetWidth;
+                canvas.height = mainLayout.offsetHeight;
+            } else {
+                canvas.width = 650;
+                canvas.height = 450;
+            }
+            draw();
+        }
+        window.addEventListener('resize', resizeCanvas);
+
         const canvas = document.getElementById('projectileCanvas');
         const ctx = canvas.getContext('2d');
+        resizeCanvas();
 
         const g = 9.81;
-        const scale = 8; // pixels per meter
-        const originX = 50;
-        const groundY = canvas.height - 50;
+        let scale = 8; // pixels per meter
+        let originX = 50;
+        let groundY = canvas.height - 50;
+
+        window.addEventListener('resize', () => {
+            originX = 50;
+            groundY = canvas.height - 50;
+            scale = Math.max(5, Math.floor(canvas.width / 100));
+        });
 
         let v0 = 20;
         let angle = 45;
@@ -594,8 +652,6 @@
             showGrid = e.target.checked;
             draw();
         });
-
-        draw();
     </script>
 </body>
 </html>

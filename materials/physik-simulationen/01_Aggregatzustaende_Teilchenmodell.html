@@ -5,188 +5,258 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aggregatzustände - Teilchenmodell</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #05051a 0%, #0a0a2e 50%, #150530 100%);
             min-height: 100vh;
-            padding: 20px;
             color: #fff;
         }
+
         .container {
-            max-width: 900px;
-            margin: 0 auto;
+            max-width: 100%;
+            padding: 12px;
         }
+
+        header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
         h1 {
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 1.8em;
-            color: #4fc3f7;
+            font-size: 1.6em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4fc3f7, #29b6f6, #0288d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
         }
-        .subtitle {
-            text-align: center;
-            color: #90a4ae;
-            margin-bottom: 20px;
+
+        .subtitle { color: rgba(255,255,255,0.5); font-size: 0.85em; }
+
+        /* MAIN LAYOUT: Side by Side */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 12px;
+            height: calc(100vh - 80px);
+            min-height: 500px;
         }
-        .simulation-area {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+
+        @media (max-width: 900px) {
+            .main-layout { grid-template-columns: 1fr; height: auto; }
         }
+
+        /* LEFT SIDE: Simulation */
+        .sim-panel {
+            background: rgba(15, 15, 35, 0.9);
+            border-radius: 12px;
+            border: 1px solid rgba(79, 195, 247, 0.2);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
         canvas {
-            display: block;
-            margin: 0 auto;
-            background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 100%);
-            border-radius: 10px;
-            border: 2px solid #4fc3f7;
+            width: 100%;
+            flex: 1;
+            min-height: 300px;
+            border-radius: 8px;
+            background: radial-gradient(ellipse at 20% 50%, #0a1a2e 0%, #050510 100%);
+            border: 1px solid rgba(79, 195, 247, 0.2);
         }
+
+        /* Control Buttons - Compact */
         .controls {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 6px;
+            margin: 8px 0;
             flex-wrap: wrap;
         }
+
         .state-btn {
-            padding: 12px 30px;
-            font-size: 1.1em;
-            border: none;
-            border-radius: 25px;
+            flex: 1;
+            min-width: 70px;
+            padding: 8px;
+            font-size: 0.75em;
+            border: 2px solid transparent;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            transition: all 0.2s;
+            font-weight: 600;
         }
+
         .state-btn.solid {
-            background: linear-gradient(135deg, #5c6bc0, #3949ab);
-            color: white;
+            background: rgba(92, 107, 192, 0.2);
+            color: rgba(92, 107, 192, 0.8);
+            border-color: transparent;
         }
+
         .state-btn.liquid {
-            background: linear-gradient(135deg, #26c6da, #00acc1);
-            color: white;
+            background: rgba(38, 198, 218, 0.2);
+            color: rgba(38, 198, 218, 0.8);
+            border-color: transparent;
         }
+
         .state-btn.gas {
-            background: linear-gradient(135deg, #ffca28, #ffa000);
-            color: #333;
+            background: rgba(255, 202, 40, 0.2);
+            color: rgba(255, 202, 40, 0.8);
+            border-color: transparent;
         }
-        .state-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-        .state-btn.active {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(79, 195, 247, 0.5);
-        }
+
+        .state-btn:hover { background: rgba(255,255,255,0.05); }
+        .state-btn.active { border-color: #4fc3f7; color: #4fc3f7; }
+
+        /* Temperature Control - Compact */
         .temperature-control {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
+            gap: 6px;
+            padding: 6px 8px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            font-size: 0.75em;
         }
+
         .temperature-control label {
-            font-size: 1.1em;
+            white-space: nowrap;
+            color: rgba(255,255,255,0.7);
         }
+
         .temperature-slider {
-            width: 300px;
-            height: 8px;
+            flex: 1;
+            height: 4px;
             -webkit-appearance: none;
             background: linear-gradient(90deg, #5c6bc0 0%, #26c6da 50%, #ffca28 100%);
-            border-radius: 4px;
+            border-radius: 2px;
             outline: none;
         }
+
         .temperature-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
+            width: 12px;
+            height: 12px;
             background: white;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
+
         .temp-display {
-            font-size: 1.3em;
-            font-weight: bold;
-            min-width: 80px;
-            text-align: center;
+            font-size: 0.85em;
+            font-weight: 600;
             color: #4fc3f7;
+            min-width: 45px;
+            text-align: right;
         }
-        .info-box {
-            background: rgba(79, 195, 247, 0.1);
-            border-left: 4px solid #4fc3f7;
-            padding: 15px 20px;
-            border-radius: 0 10px 10px 0;
-            margin-top: 20px;
-        }
-        .info-box h3 {
-            color: #4fc3f7;
-            margin-bottom: 10px;
-        }
-        .info-box p {
-            line-height: 1.6;
-            color: #b0bec5;
-        }
+
+        /* Legend - Compact */
         .legend {
             display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 15px;
-            font-size: 0.9em;
+            gap: 12px;
+            margin: 6px 0;
+            font-size: 0.7em;
         }
+
         .legend-item {
             display: flex;
             align-items: center;
+            gap: 4px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* RIGHT SIDE: Controls */
+        .ctrl-panel {
+            background: rgba(15, 15, 35, 0.9);
+            border-radius: 12px;
+            border: 1px solid rgba(79, 195, 247, 0.15);
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
             gap: 8px;
         }
-        .legend-dot {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
+
+        /* Info Box - Compact */
+        .info-box {
+            background: rgba(79, 195, 247, 0.1);
+            border-left: 3px solid #4fc3f7;
+            padding: 8px 10px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.75em;
+            line-height: 1.4;
+        }
+
+        .info-box h3 {
+            color: #4fc3f7;
+            margin-bottom: 4px;
+            font-size: 0.85em;
+        }
+
+        .info-box p {
+            color: rgba(255,255,255,0.7);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔬 Aggregatzustände im Teilchenmodell</h1>
-        <p class="subtitle">2. Klasse Physik – Beobachte, wie sich Teilchen in verschiedenen Zuständen verhalten</p>
+        <header>
+            <h1>🔬 Aggregatzustände</h1>
+            <p class="subtitle">Teilchenmodell – Temperaturabhängiges Verhalten</p>
+        </header>
 
-        <div class="simulation-area">
-            <canvas id="particleCanvas" width="800" height="400"></canvas>
+        <div class="main-layout">
+            <!-- LEFT: Simulation -->
+            <div class="sim-panel">
+                <canvas id="particleCanvas"></canvas>
 
-            <div class="controls">
-                <button class="state-btn solid active" onclick="setState('solid')">❄️ Fest</button>
-                <button class="state-btn liquid" onclick="setState('liquid')">💧 Flüssig</button>
-                <button class="state-btn gas" onclick="setState('gas')">💨 Gasförmig</button>
-            </div>
-
-            <div class="temperature-control">
-                <label>🌡️ Temperatur:</label>
-                <input type="range" class="temperature-slider" id="tempSlider" min="0" max="100" value="20">
-                <span class="temp-display" id="tempDisplay">20°C</span>
-            </div>
-
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #5c6bc0;"></div>
-                    <span>Teilchen</span>
+                <div class="controls">
+                    <button class="state-btn solid active" onclick="setState('solid')">❄️ Fest</button>
+                    <button class="state-btn liquid" onclick="setState('liquid')">💧 Flüssig</button>
+                    <button class="state-btn gas" onclick="setState('gas')">💨 Gas</button>
                 </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: rgba(255,255,255,0.3);"></div>
-                    <span>Bewegungsspur</span>
+
+                <div class="temperature-control">
+                    <label>🌡️</label>
+                    <input type="range" class="temperature-slider" id="tempSlider" min="0" max="100" value="20">
+                    <span class="temp-display" id="tempDisplay">20°C</span>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #5c6bc0;"></div>
+                        <span>Teilchen</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: rgba(255,255,255,0.3);"></div>
+                        <span>Spur</span>
+                    </div>
+                </div>
+
+                <div class="info-box" id="infoBox">
+                    <h3>💎 Fest</h3>
+                    <p>Teilchen in festem Gitter, schwingen um Ruhelage. Bestimmte Form & Volumen.</p>
                 </div>
             </div>
-        </div>
 
-        <div class="info-box" id="infoBox">
-            <h3>💎 Fester Aggregatzustand</h3>
-            <p>Die Teilchen sind in einem festen Gitter angeordnet und schwingen nur leicht um ihre Ruhelage.
-            Sie haben wenig Energie und sind durch starke Anziehungskräfte gebunden.
-            Feste Stoffe haben eine bestimmte Form und ein bestimmtes Volumen.</p>
+            <!-- RIGHT: Controls (empty for this layout) -->
+            <div class="ctrl-panel">
+                <div class="info-box">
+                    <h3>ℹ️ Aggregatzustände</h3>
+                    <p><strong>Fest:</strong> Teilchen gebunden, wenig Energie</p>
+                    <p style="margin-top: 4px;"><strong>Flüssig:</strong> Frei beweglich, mittlere Energie</p>
+                    <p style="margin-top: 4px;"><strong>Gas:</strong> Schnell & frei, hohe Energie</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -196,6 +266,16 @@
         const tempSlider = document.getElementById('tempSlider');
         const tempDisplay = document.getElementById('tempDisplay');
         const infoBox = document.getElementById('infoBox');
+
+        // Resize canvas to fit container
+        function resizeCanvas() {
+            const simPanel = canvas.parentElement;
+            canvas.width = simPanel.clientWidth - 24;
+            canvas.height = Math.min(400, simPanel.clientHeight - 180);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        setTimeout(resizeCanvas, 100);
 
         let currentState = 'solid';
         let temperature = 20;
@@ -400,6 +480,7 @@
         });
 
         initParticles();
+        resizeCanvas();
         animate();
     </script>
 </body>

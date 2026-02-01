@@ -10,82 +10,104 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
             color: #fff;
         }
-        .container { max-width: 100%; margin: 0 auto; padding: 0 10px; }
-        h1 { text-align: center; margin-bottom: 10px; font-size: 1.8em; color: #4fc3f7; }
-        .subtitle { text-align: center; color: #90a4ae; margin-bottom: 20px; }
-        .main-grid {
+        .header {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        h1 { font-size: 1.3em; color: #4fc3f7; margin-bottom: 2px; }
+        .subtitle { color: #90a4ae; font-size: 0.75em; }
+        .main-layout {
             display: grid;
-            grid-template-columns: 1fr 280px;
-            gap: 20px;
+            grid-template-columns: 1fr 320px;
+            gap: 12px;
+            height: calc(100vh - 80px);
+            min-height: 500px;
         }
         @media (max-width: 900px) {
-            .main-grid {
+            .main-layout {
                 grid-template-columns: 1fr;
+                height: auto;
             }
         }
         .simulation-area {
             background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
         canvas {
-            display: block;
-            margin: 0 auto;
+            flex: 1;
             background: radial-gradient(ellipse at center, #0d1b2a 0%, #000 100%);
-            border-radius: 10px;
+            border-radius: 8px;
             border: 2px solid #4fc3f7;
-            max-width: 100%;
-            height: auto;
+            min-height: 300px;
         }
         .control-panel {
             background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         .panel-section {
-            margin-bottom: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 8px;
         }
         .panel-section h4 {
             color: #4fc3f7;
-            margin-bottom: 10px;
-            font-size: 0.95em;
+            font-size: 0.75em;
+            margin-bottom: 6px;
+            font-weight: bold;
         }
         .slider-control {
-            margin: 15px 0;
+            margin: 6px 0;
         }
         .slider-control label {
             display: block;
-            margin-bottom: 5px;
-            font-size: 0.9em;
+            margin-bottom: 3px;
+            font-size: 0.7em;
         }
         .slider-control input {
             width: 100%;
-            height: 8px;
+            height: 6px;
             -webkit-appearance: none;
             background: linear-gradient(90deg, #4fc3f7, #e91e63);
-            border-radius: 4px;
+            border-radius: 3px;
         }
         .slider-control input::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             background: white;
             border-radius: 50%;
             cursor: pointer;
         }
+        .slider-control input::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
         .toggle-btn {
             width: 100%;
-            padding: 10px;
-            margin: 5px 0;
+            padding: 6px;
+            margin: 3px 0;
             border: 1px solid #4fc3f7;
-            border-radius: 8px;
+            border-radius: 6px;
             background: transparent;
             color: #4fc3f7;
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 0.7em;
             transition: all 0.2s;
         }
         .toggle-btn.active, .toggle-btn:hover {
@@ -95,134 +117,131 @@
         .base-pair-legend {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 15px;
+            gap: 6px;
         }
         .base-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px;
+            gap: 6px;
+            padding: 4px;
             background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-            font-size: 0.85em;
+            border-radius: 6px;
+            font-size: 0.65em;
         }
         .base-dot {
-            width: 20px;
-            height: 20px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
+            flex-shrink: 0;
         }
         .structure-info {
             background: rgba(0,0,0,0.2);
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.85em;
-            line-height: 1.5;
+            padding: 6px;
+            border-radius: 6px;
+            font-size: 0.65em;
+            line-height: 1.4;
         }
         .structure-info strong { color: #4fc3f7; }
-        .info-box {
-            background: rgba(79, 195, 247, 0.1);
-            border-left: 4px solid #4fc3f7;
-            padding: 15px 20px;
-            border-radius: 0 10px 10px 0;
-            margin-top: 20px;
-        }
-        .info-box h3 { color: #4fc3f7; margin-bottom: 10px; }
-        .info-box p { line-height: 1.6; color: #b0bec5; font-size: 0.95em; }
         .sequence-display {
             font-family: 'Courier New', monospace;
             background: rgba(0,0,0,0.3);
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-size: 0.8em;
+            padding: 6px;
+            border-radius: 6px;
+            font-size: 0.7em;
             overflow-x: auto;
+            line-height: 1.3;
         }
         .sequence-display .strand1 { color: #3498db; }
         .sequence-display .strand2 { color: #e74c3c; }
         .pairing-rules {
-            margin-top: 10px;
-            padding: 10px;
+            padding: 6px;
             background: rgba(46, 204, 113, 0.1);
-            border-radius: 8px;
-            font-size: 0.85em;
+            border-radius: 6px;
+            font-size: 0.65em;
         }
         .pairing-rules strong { color: #2ecc71; }
+        .info-box {
+            background: rgba(79, 195, 247, 0.1);
+            border-left: 4px solid #4fc3f7;
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 8px;
+            font-size: 0.8em;
+            line-height: 1.5;
+        }
+        .info-box h3 { color: #4fc3f7; margin-bottom: 6px; font-size: 0.9em; }
+        .info-box p { color: #b0bec5; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="header">
         <h1>🧬 DNA-Doppelhelix</h1>
-        <p class="subtitle">8. Klasse Chemie – Die Struktur der Erbinformation</p>
+        <p class="subtitle">8. Klasse Chemie – Erbinformation</p>
+    </div>
 
-        <div class="main-grid">
-            <div class="simulation-area">
-                <canvas id="dnaCanvas" width="600" height="550"></canvas>
+    <div class="main-layout">
+        <div class="simulation-area">
+            <canvas id="dnaCanvas" width="600" height="500"></canvas>
 
-                <div class="sequence-display">
-                    <div><span class="strand1">5'-</span><span id="seq1">ATGCGATCGA</span><span class="strand1">-3'</span></div>
-                    <div style="color: #90a4ae;">   ││││││││││</div>
-                    <div><span class="strand2">3'-</span><span id="seq2">TACGCTAGCT</span><span class="strand2">-5'</span></div>
-                </div>
-            </div>
-
-            <div class="control-panel">
-                <div class="panel-section">
-                    <h4>🎮 Steuerung</h4>
-                    <div class="slider-control">
-                        <label>Rotation: <span id="rotValue">Auto</span></label>
-                        <input type="range" id="rotSpeed" min="0" max="100" value="50">
-                    </div>
-                    <div class="slider-control">
-                        <label>Zoom: <span id="zoomValue">100%</span></label>
-                        <input type="range" id="zoom" min="50" max="150" value="100">
-                    </div>
-                    <div class="slider-control">
-                        <label>Neigung: <span id="tiltValue">30°</span></label>
-                        <input type="range" id="tilt" min="0" max="60" value="30">
-                    </div>
-                </div>
-
-                <div class="panel-section">
-                    <h4>👁️ Ansicht</h4>
-                    <button class="toggle-btn active" id="showBackbone" onclick="toggleView('backbone')">Zucker-Phosphat-Rückgrat</button>
-                    <button class="toggle-btn active" id="showBases" onclick="toggleView('bases')">Basenpaare</button>
-                    <button class="toggle-btn" id="showLabels" onclick="toggleView('labels')">Beschriftungen</button>
-                </div>
-
-                <div class="panel-section">
-                    <h4>🔬 Basenpaare</h4>
-                    <div class="base-pair-legend">
-                        <div class="base-item"><div class="base-dot" style="background: #e74c3c;"></div>Adenin (A)</div>
-                        <div class="base-item"><div class="base-dot" style="background: #2ecc71;"></div>Thymin (T)</div>
-                        <div class="base-item"><div class="base-dot" style="background: #3498db;"></div>Guanin (G)</div>
-                        <div class="base-item"><div class="base-dot" style="background: #f39c12;"></div>Cytosin (C)</div>
-                    </div>
-                    <div class="pairing-rules">
-                        <strong>Basenpaarung:</strong><br>
-                        A ═══ T (2 H-Brücken)<br>
-                        G ≡≡≡ C (3 H-Brücken)
-                    </div>
-                </div>
-
-                <div class="panel-section">
-                    <h4>📊 Strukturdaten</h4>
-                    <div class="structure-info">
-                        <strong>Durchmesser:</strong> 2 nm<br>
-                        <strong>Windung:</strong> 3.4 nm (10 bp)<br>
-                        <strong>Steigung:</strong> 0.34 nm/bp<br>
-                        <strong>Drehsinn:</strong> rechtsgängig
-                    </div>
-                </div>
+            <div class="sequence-display">
+                <div><span class="strand1">5'-</span><span id="seq1">ATGCGATCGA</span><span class="strand1">-3'</span></div>
+                <div style="color: #90a4ae; font-size: 0.65em;">   ││││││││││</div>
+                <div><span class="strand2">3'-</span><span id="seq2">TACGCTAGCT</span><span class="strand2">-5'</span></div>
             </div>
         </div>
 
-        <div class="info-box">
-            <h3>📚 Die DNA-Struktur</h3>
-            <p>Die DNA (Desoxyribonukleinsäure) besteht aus zwei antiparallel verlaufenden Strängen, die eine
-            <strong>Doppelhelix</strong> bilden. Das <strong>Zucker-Phosphat-Rückgrat</strong> bildet die Außenseite,
-            während die <strong>Basen</strong> (Adenin, Thymin, Guanin, Cytosin) nach innen zeigen und über
-            <strong>Wasserstoffbrückenbindungen</strong> gepaart sind. Diese Struktur wurde 1953 von Watson & Crick entdeckt.</p>
+        <div class="control-panel">
+            <div class="panel-section">
+                <h4>Steuerung</h4>
+                <div class="slider-control">
+                    <label>Rotation: <span id="rotValue">Auto</span></label>
+                    <input type="range" id="rotSpeed" min="0" max="100" value="50">
+                </div>
+                <div class="slider-control">
+                    <label>Zoom: <span id="zoomValue">100%</span></label>
+                    <input type="range" id="zoom" min="50" max="150" value="100">
+                </div>
+                <div class="slider-control">
+                    <label>Neigung: <span id="tiltValue">30°</span></label>
+                    <input type="range" id="tilt" min="0" max="60" value="30">
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h4>Ansicht</h4>
+                <button class="toggle-btn active" id="showBackbone" onclick="toggleView('backbone')">Rückgrat</button>
+                <button class="toggle-btn active" id="showBases" onclick="toggleView('bases')">Basenpaare</button>
+                <button class="toggle-btn" id="showLabels" onclick="toggleView('labels')">Beschriftungen</button>
+            </div>
+
+            <div class="panel-section">
+                <h4>Basenpaare</h4>
+                <div class="base-pair-legend">
+                    <div class="base-item"><div class="base-dot" style="background: #e74c3c;"></div>A</div>
+                    <div class="base-item"><div class="base-dot" style="background: #2ecc71;"></div>T</div>
+                    <div class="base-item"><div class="base-dot" style="background: #3498db;"></div>G</div>
+                    <div class="base-item"><div class="base-dot" style="background: #f39c12;"></div>C</div>
+                </div>
+                <div class="pairing-rules">
+                    <strong>Paarung:</strong><br>
+                    A ═══ T<br>
+                    G ≡≡≡ C
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h4>Struktur</h4>
+                <div class="structure-info">
+                    <strong>Ø:</strong> 2 nm<br>
+                    <strong>Windung:</strong> 3.4 nm<br>
+                    <strong>Steigung:</strong> 0.34 nm
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: auto;">
+                <h3>Info</h3>
+                <p>Zwei antiparallele Stränge bilden eine Doppelhelix mit Wasserstoffbrückenbindungen.</p>
+            </div>
         </div>
     </div>
 

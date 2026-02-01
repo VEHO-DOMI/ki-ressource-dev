@@ -10,77 +10,115 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
             color: #fff;
         }
-        .container { max-width: 1000px; margin: 0 auto; }
-        h1 { text-align: center; margin-bottom: 10px; font-size: 1.8em; color: #00bcd4; }
-        .subtitle { text-align: center; color: #90a4ae; margin-bottom: 20px; }
-        .simulation-wrapper { display: grid; grid-template-columns: 1fr 260px; gap: 20px; }
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 12px;
+            height: calc(100vh - 80px);
+            min-height: 500px;
+        }
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+        h1 { font-size: 1.4em; color: #00bcd4; margin-bottom: 6px; text-align: center; }
+        .subtitle { font-size: 0.75em; text-align: center; color: #90a4ae; margin-bottom: 10px; }
         .canvas-container {
             background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
         }
-        canvas { display: block; border-radius: 10px; }
-        .sidebar { display: flex; flex-direction: column; gap: 15px; }
+        canvas { display: block; border-radius: 8px; flex: 1; }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 3px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(0,188,212,0.3);
+            border-radius: 3px;
+        }
         .panel {
             background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 10px;
         }
-        .panel h3 { font-size: 1em; color: #00bcd4; margin-bottom: 12px; }
-        .control-group { margin-bottom: 15px; }
+        .panel h3 { font-size: 0.8em; color: #00bcd4; margin-bottom: 8px; }
+        .control-group { margin-bottom: 10px; }
         .control-group label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.85em;
-            margin-bottom: 5px;
+            font-size: 0.75em;
+            margin-bottom: 4px;
             color: #b0bec5;
         }
         .control-group input[type="range"] {
             width: 100%;
-            height: 6px;
+            height: 5px;
             -webkit-appearance: none;
             background: rgba(255,255,255,0.2);
-            border-radius: 3px;
+            border-radius: 2px;
         }
         .control-group input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             background: #00bcd4;
             border-radius: 50%;
             cursor: pointer;
         }
-        .value-display { color: #00bcd4; font-weight: bold; }
+        .control-group input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            background: #00bcd4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        .value-display { color: #00bcd4; font-weight: bold; font-size: 0.9em; }
         .checkbox-group {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 8px;
         }
         .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             accent-color: #00bcd4;
         }
         .checkbox-group label {
-            font-size: 0.9em;
+            font-size: 0.75em;
             color: #b0bec5;
         }
         .color-scheme {
             display: flex;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 6px;
+            margin-top: 8px;
         }
         .color-btn {
             flex: 1;
-            padding: 8px;
+            padding: 6px;
             border: 2px solid transparent;
-            border-radius: 6px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 0.8em;
+            font-size: 0.7em;
             transition: all 0.2s;
         }
         .color-btn.active { border-color: #fff; }
@@ -90,17 +128,17 @@
         .legend {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
-            font-size: 0.75em;
+            margin-top: 8px;
+            font-size: 0.65em;
             color: #90a4ae;
         }
         .info-box {
             background: rgba(0, 188, 212, 0.1);
-            border-left: 4px solid #00bcd4;
-            padding: 12px;
-            border-radius: 0 10px 10px 0;
-            font-size: 0.85em;
-            line-height: 1.5;
+            border-left: 3px solid #00bcd4;
+            padding: 8px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.7em;
+            line-height: 1.4;
             color: #b0bec5;
         }
         .formula {
@@ -111,23 +149,22 @@
         .instruction {
             text-align: center;
             color: #90a4ae;
-            font-size: 0.85em;
-            margin-top: 10px;
+            font-size: 0.7em;
+            margin-top: 6px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🌊 Welleninterferenz</h1>
-        <p class="subtitle">6. Klasse Physik – Beobachte Interferenzmuster zweier Wellenquellen</p>
+    <h1>🌊 Welleninterferenz</h1>
+    <p class="subtitle">Interferenzmuster zweier Wellenquellen</p>
 
-        <div class="simulation-wrapper">
-            <div class="canvas-container">
-                <canvas id="waveCanvas" width="680" height="500"></canvas>
-                <p class="instruction">🖱️ Klicke und ziehe die Quellen (●), um sie zu verschieben</p>
-            </div>
+    <div class="main-layout">
+        <div class="canvas-container">
+            <canvas id="waveCanvas" width="1"></canvas>
+            <p class="instruction">🖱️ Ziehe die Quellen (●) um sie zu verschieben</p>
+        </div>
 
-            <div class="sidebar">
+        <div class="sidebar">
                 <div class="panel">
                     <h3>⚙️ Wellenparameter</h3>
                     <div class="control-group">
@@ -188,11 +225,19 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <script>
         const canvas = document.getElementById('waveCanvas');
         const ctx = canvas.getContext('2d');
+
+        // Responsive canvas sizing
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth - 20;
+            canvas.height = container.clientHeight - 50;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         let wavelength = 40;
         let frequency = 1;

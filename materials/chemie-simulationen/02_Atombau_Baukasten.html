@@ -10,227 +10,235 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 12px;
             color: #fff;
         }
-        .container { max-width: 100%; margin: 0 auto; padding: 0 10px; }
-        h1 { text-align: center; margin-bottom: 10px; font-size: 1.8em; color: #4fc3f7; }
-        .subtitle { text-align: center; color: #90a4ae; margin-bottom: 20px; }
-        .main-area {
+        .header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .header h1 { font-size: 1.4em; color: #4fc3f7; margin-bottom: 4px; }
+        .header p { color: #90a4ae; font-size: 0.8em; }
+        .main-layout {
             display: grid;
-            grid-template-columns: 1fr 260px;
-            gap: 15px;
+            grid-template-columns: 1fr 280px;
+            gap: 12px;
+            height: calc(100vh - 80px);
+            min-height: 500px;
         }
         @media (max-width: 900px) {
-            .main-area { grid-template-columns: 1fr; }
+            .main-layout { grid-template-columns: 1fr; height: auto; }
         }
-        .simulation-area {
+        .canvas-container {
             background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
         }
         canvas {
             display: block;
-            margin: 0 auto;
+            flex: 1;
             background: radial-gradient(circle at center, #1b263b 0%, #0d1b2a 100%);
-            border-radius: 10px;
+            border-radius: 8px;
             border: 2px solid #4fc3f7;
-            max-width: 100%;
-            height: auto;
         }
         .control-panel {
             background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
         .control-section {
-            margin-bottom: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 8px;
         }
         .control-section h3 {
             color: #4fc3f7;
-            margin-bottom: 10px;
-            font-size: 1em;
+            font-size: 0.8em;
+            margin-bottom: 6px;
+        }
+        .element-display {
+            text-align: center;
+            padding: 8px;
+            background: linear-gradient(135deg, rgba(79,195,247,0.2), rgba(233,30,99,0.2));
+            border-radius: 8px;
+        }
+        .element-symbol {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4fc3f7;
+        }
+        .element-name {
+            font-size: 0.9em;
+            color: #fff;
+        }
+        .element-details {
+            font-size: 0.7em;
+            color: #90a4ae;
+            margin-top: 2px;
         }
         .particle-control {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            padding: 10px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
+            gap: 6px;
+            padding: 6px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            margin-bottom: 5px;
         }
         .particle-control label {
-            flex: 1;
+            flex: 0 0 auto;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
+            font-size: 0.75em;
         }
         .particle-dot {
-            width: 16px;
-            height: 16px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
         }
         .proton-dot { background: #e74c3c; }
         .neutron-dot { background: #3498db; }
         .electron-dot { background: #f1c40f; }
         .particle-control input {
-            width: 60px;
-            padding: 5px;
+            width: 45px;
+            padding: 3px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             text-align: center;
-            font-size: 1em;
+            font-size: 0.75em;
         }
         .particle-control button {
-            width: 30px;
-            height: 30px;
+            width: 24px;
+            height: 24px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 1.2em;
+            font-size: 1em;
             font-weight: bold;
+            flex-shrink: 0;
         }
         .btn-minus { background: #e74c3c; color: white; }
         .btn-plus { background: #2ecc71; color: white; }
-        .element-display {
+        .charge-display {
             text-align: center;
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(79,195,247,0.2), rgba(233,30,99,0.2));
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .element-symbol {
-            font-size: 3em;
+            padding: 6px;
+            border-radius: 6px;
             font-weight: bold;
-            color: #4fc3f7;
+            font-size: 0.8em;
+            margin-top: 6px;
         }
-        .element-name {
-            font-size: 1.2em;
-            color: #fff;
-        }
-        .element-details {
-            font-size: 0.9em;
-            color: #90a4ae;
-            margin-top: 5px;
-        }
+        .charge-positive { background: rgba(231,76,60,0.3); color: #e74c3c; }
+        .charge-negative { background: rgba(52,152,219,0.3); color: #3498db; }
+        .charge-neutral { background: rgba(46,204,113,0.3); color: #2ecc71; }
         .preset-buttons {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            margin-bottom: 5px;
         }
         .preset-btn {
-            padding: 8px;
+            padding: 5px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 0.75em;
             transition: all 0.2s;
             background: linear-gradient(135deg, #2c3e50, #34495e);
             color: white;
         }
         .preset-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 10px rgba(79,195,247,0.5);
+            box-shadow: 0 0 8px rgba(79,195,247,0.5);
         }
         .info-box {
             background: rgba(79, 195, 247, 0.1);
-            border-left: 4px solid #4fc3f7;
-            padding: 15px;
-            border-radius: 0 10px 10px 0;
-            margin-top: 20px;
-            font-size: 0.9em;
+            border-left: 3px solid #4fc3f7;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.7em;
+            margin-top: 4px;
         }
-        .info-box h4 { color: #4fc3f7; margin-bottom: 8px; }
-        .info-box p { color: #b0bec5; line-height: 1.5; }
-        .charge-display {
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        .charge-positive { background: rgba(231,76,60,0.3); color: #e74c3c; }
-        .charge-negative { background: rgba(52,152,219,0.3); color: #3498db; }
-        .charge-neutral { background: rgba(46,204,113,0.3); color: #2ecc71; }
+        .info-box p { color: #b0bec5; line-height: 1.3; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>⚛️ Atombau – Interaktiver Baukasten</h1>
-        <p class="subtitle">4. Klasse Chemie – Baue dein eigenes Atom!</p>
+    <div class="header">
+        <h1>⚛️ Atombau – Baukasten</h1>
+        <p>4. Klasse Chemie</p>
+    </div>
 
-        <div class="main-area">
-            <div class="simulation-area">
-                <canvas id="atomCanvas" width="550" height="500"></canvas>
+    <div class="main-layout">
+        <div class="canvas-container">
+            <canvas id="atomCanvas" width="550" height="500"></canvas>
+        </div>
+
+        <div class="control-panel">
+            <div class="element-display">
+                <div class="element-symbol" id="elementSymbol">H</div>
+                <div class="element-name" id="elementName">Wasserstoff</div>
+                <div class="element-details" id="elementDetails">Z: 1 | M: 1</div>
             </div>
 
-            <div class="control-panel">
-                <div class="element-display">
-                    <div class="element-symbol" id="elementSymbol">H</div>
-                    <div class="element-name" id="elementName">Wasserstoff</div>
-                    <div class="element-details" id="elementDetails">Ordnungszahl: 1</div>
+            <div class="control-section">
+                <h3>🔴 Protonen</h3>
+                <div class="particle-control">
+                    <label><div class="particle-dot proton-dot"></div></label>
+                    <button class="btn-minus" onclick="changeParticle('protons', -1)">−</button>
+                    <input type="number" id="protonCount" value="1" min="1" max="20" onchange="updateAtom()">
+                    <button class="btn-plus" onclick="changeParticle('protons', 1)">+</button>
                 </div>
+            </div>
 
-                <div class="control-section">
-                    <h3>🔴 Protonen (p⁺)</h3>
-                    <div class="particle-control">
-                        <label><div class="particle-dot proton-dot"></div> Anzahl:</label>
-                        <button class="btn-minus" onclick="changeParticle('protons', -1)">−</button>
-                        <input type="number" id="protonCount" value="1" min="1" max="20" onchange="updateAtom()">
-                        <button class="btn-plus" onclick="changeParticle('protons', 1)">+</button>
-                    </div>
+            <div class="control-section">
+                <h3>🔵 Neutronen</h3>
+                <div class="particle-control">
+                    <label><div class="particle-dot neutron-dot"></div></label>
+                    <button class="btn-minus" onclick="changeParticle('neutrons', -1)">−</button>
+                    <input type="number" id="neutronCount" value="0" min="0" max="30" onchange="updateAtom()">
+                    <button class="btn-plus" onclick="changeParticle('neutrons', 1)">+</button>
                 </div>
+            </div>
 
-                <div class="control-section">
-                    <h3>🔵 Neutronen (n⁰)</h3>
-                    <div class="particle-control">
-                        <label><div class="particle-dot neutron-dot"></div> Anzahl:</label>
-                        <button class="btn-minus" onclick="changeParticle('neutrons', -1)">−</button>
-                        <input type="number" id="neutronCount" value="0" min="0" max="30" onchange="updateAtom()">
-                        <button class="btn-plus" onclick="changeParticle('neutrons', 1)">+</button>
-                    </div>
+            <div class="control-section">
+                <h3>🟡 Elektronen</h3>
+                <div class="particle-control">
+                    <label><div class="particle-dot electron-dot"></div></label>
+                    <button class="btn-minus" onclick="changeParticle('electrons', -1)">−</button>
+                    <input type="number" id="electronCount" value="1" min="0" max="20" onchange="updateAtom()">
+                    <button class="btn-plus" onclick="changeParticle('electrons', 1)">+</button>
                 </div>
+            </div>
 
-                <div class="control-section">
-                    <h3>🟡 Elektronen (e⁻)</h3>
-                    <div class="particle-control">
-                        <label><div class="particle-dot electron-dot"></div> Anzahl:</label>
-                        <button class="btn-minus" onclick="changeParticle('electrons', -1)">−</button>
-                        <input type="number" id="electronCount" value="1" min="0" max="20" onchange="updateAtom()">
-                        <button class="btn-plus" onclick="changeParticle('electrons', 1)">+</button>
-                    </div>
-                </div>
+            <div id="chargeDisplay" class="charge-display charge-neutral">
+                Ladung: 0
+            </div>
 
-                <div id="chargeDisplay" class="charge-display charge-neutral">
-                    Ladung: neutral
+            <div class="control-section">
+                <h3>⚛️ Elemente</h3>
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="loadElement(1,0,1)">H</button>
+                    <button class="preset-btn" onclick="loadElement(2,2,2)">He</button>
+                    <button class="preset-btn" onclick="loadElement(6,6,6)">C</button>
+                    <button class="preset-btn" onclick="loadElement(8,8,8)">O</button>
+                    <button class="preset-btn" onclick="loadElement(11,12,11)">Na</button>
+                    <button class="preset-btn" onclick="loadElement(17,18,17)">Cl</button>
+                    <button class="preset-btn" onclick="loadElement(26,30,26)">Fe</button>
+                    <button class="preset-btn" onclick="loadElement(29,34,29)">Cu</button>
+                    <button class="preset-btn" onclick="loadElement(79,118,79)">Au</button>
                 </div>
+            </div>
 
-                <div class="control-section" style="margin-top: 20px;">
-                    <h3>🧪 Elemente laden</h3>
-                    <div class="preset-buttons">
-                        <button class="preset-btn" onclick="loadElement(1,0,1)">H</button>
-                        <button class="preset-btn" onclick="loadElement(2,2,2)">He</button>
-                        <button class="preset-btn" onclick="loadElement(3,4,3)">Li</button>
-                        <button class="preset-btn" onclick="loadElement(4,5,4)">Be</button>
-                        <button class="preset-btn" onclick="loadElement(5,6,5)">B</button>
-                        <button class="preset-btn" onclick="loadElement(6,6,6)">C</button>
-                        <button class="preset-btn" onclick="loadElement(7,7,7)">N</button>
-                        <button class="preset-btn" onclick="loadElement(8,8,8)">O</button>
-                        <button class="preset-btn" onclick="loadElement(9,10,9)">F</button>
-                        <button class="preset-btn" onclick="loadElement(10,10,10)">Ne</button>
-                        <button class="preset-btn" onclick="loadElement(11,12,11)">Na</button>
-                        <button class="preset-btn" onclick="loadElement(17,18,17)">Cl</button>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <h4>📚 Merke</h4>
-                    <p>• Protonen bestimmen das Element (Ordnungszahl)<br>
-                    • Neutronen + Protonen = Massenzahl<br>
-                    • Elektronen = Protonen → neutrales Atom<br>
-                    • Schalen: K(2), L(8), M(8), ...</p>
-                </div>
+            <div class="info-box">
+                <p><strong>Ordnungszahl (Z):</strong> Protonenzahl<br>
+                <strong>Massenzahl (M):</strong> p + n<br>
+                <strong>Ladung:</strong> p − e</p>
             </div>
         </div>
     </div>
@@ -372,18 +380,18 @@
             document.getElementById('elementSymbol').textContent = element.symbol;
             document.getElementById('elementName').textContent = element.name;
             document.getElementById('elementDetails').textContent =
-                `Ordnungszahl: ${protons} | Massenzahl: ${protons + neutrons}`;
+                `Z: ${protons} | M: ${protons + neutrons}`;
 
             const charge = protons - electrons;
             const chargeDiv = document.getElementById('chargeDisplay');
             if (charge > 0) {
-                chargeDiv.textContent = `Ladung: ${charge}+ (Kation)`;
+                chargeDiv.textContent = `Ladung: +${charge}`;
                 chargeDiv.className = 'charge-display charge-positive';
             } else if (charge < 0) {
-                chargeDiv.textContent = `Ladung: ${Math.abs(charge)}− (Anion)`;
+                chargeDiv.textContent = `Ladung: −${Math.abs(charge)}`;
                 chargeDiv.className = 'charge-display charge-negative';
             } else {
-                chargeDiv.textContent = 'Ladung: neutral';
+                chargeDiv.textContent = 'Ladung: 0';
                 chargeDiv.className = 'charge-display charge-neutral';
             }
         }

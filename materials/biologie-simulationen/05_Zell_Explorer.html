@@ -47,45 +47,46 @@
         .container {
             position: relative;
             z-index: 1;
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 20px;
+            padding: 0;
         }
 
         header {
             text-align: center;
-            margin-bottom: 25px;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(100,255,218,0.1);
         }
 
         h1 {
-            font-size: 2.5em;
+            font-size: 1.5em;
             font-weight: 700;
             background: linear-gradient(135deg, #64ffda, #00d4aa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
 
         .subtitle {
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.4);
             font-weight: 300;
+            font-size: 0.8em;
         }
 
         .cell-toggle {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 25px;
+            gap: 8px;
+            padding: 10px 20px;
+            border-bottom: 1px solid rgba(100,255,218,0.1);
         }
 
         .toggle-btn {
-            padding: 14px 40px;
+            padding: 8px 20px;
             border: 2px solid rgba(100, 255, 218, 0.3);
             background: rgba(100, 255, 218, 0.05);
             color: rgba(255,255,255,0.6);
-            border-radius: 50px;
-            font-size: 1em;
+            border-radius: 20px;
+            font-size: 0.85em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.4s;
@@ -103,30 +104,41 @@
             box-shadow: 0 0 30px rgba(100,255,218,0.2);
         }
 
-        .main-content {
+        .main-layout {
             display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 25px;
-            align-items: start;
+            grid-template-columns: 1fr 300px;
+            gap: 10px;
+            height: calc(100vh - 100px);
+            min-height: 500px;
+            padding: 10px;
         }
 
-        @media (max-width: 1050px) {
-            .main-content { grid-template-columns: 1fr; }
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+                padding: 10px;
+            }
+        }
+
+        .main-content {
+            display: contents;
         }
 
         .cell-viewport {
             position: relative;
-            border-radius: 24px;
+            border-radius: 16px;
             overflow: hidden;
             background: radial-gradient(ellipse at center, #152238 0%, #0a192f 100%);
             border: 1px solid rgba(100,255,218,0.15);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4), inset 0 0 80px rgba(100,255,218,0.03);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 0 80px rgba(100,255,218,0.03);
+            height: 100%;
         }
 
         canvas {
             display: block;
             width: 100%;
-            height: auto;
+            height: 100%;
         }
 
         .hover-label {
@@ -155,33 +167,38 @@
         .info-panel {
             background: rgba(10, 25, 47, 0.95);
             backdrop-filter: blur(20px);
-            border-radius: 20px;
+            border-radius: 12px;
             border: 1px solid rgba(100,255,218,0.1);
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .panel-header {
-            padding: 18px 22px;
+            padding: 12px 14px;
             background: linear-gradient(135deg, rgba(100,255,218,0.12), rgba(100,255,218,0.03));
             border-bottom: 1px solid rgba(100,255,218,0.1);
+            flex-shrink: 0;
         }
 
         .panel-header h2 {
-            font-size: 1.2em;
+            font-size: 0.95em;
             color: #64ffda;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .panel-header p {
-            font-size: 0.8em;
+            font-size: 0.65em;
             color: rgba(255,255,255,0.4);
         }
 
         .organelle-list {
-            padding: 12px;
-            max-height: 350px;
+            padding: 8px;
             overflow-y: auto;
+            flex: 1;
+            min-height: 0;
         }
 
         .organelle-list::-webkit-scrollbar { width: 5px; }
@@ -191,12 +208,12 @@
         .organelle-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 12px;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.25s;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .organelle-item:hover {
@@ -209,62 +226,64 @@
         }
 
         .organelle-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3em;
+            font-size: 1.1em;
             flex-shrink: 0;
         }
 
         .organelle-info h4 {
-            font-size: 0.9em;
+            font-size: 0.75em;
             color: #fff;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
+            font-weight: 600;
         }
 
         .organelle-info p {
-            font-size: 0.7em;
+            font-size: 0.6em;
             color: rgba(255,255,255,0.4);
         }
 
         .detail-card {
-            margin: 12px;
-            padding: 18px;
+            margin: 8px;
+            padding: 10px;
             background: linear-gradient(135deg, rgba(100,255,218,0.08), rgba(100,255,218,0.02));
-            border-radius: 14px;
+            border-radius: 10px;
             border: 1px solid rgba(100,255,218,0.15);
             display: none;
+            flex-shrink: 0;
         }
 
         .detail-card.visible { display: block; }
 
         .detail-card h3 {
             color: #64ffda;
-            font-size: 1.1em;
-            margin-bottom: 10px;
+            font-size: 0.85em;
+            margin-bottom: 6px;
         }
 
         .detail-card p {
             color: rgba(255,255,255,0.65);
-            line-height: 1.6;
-            font-size: 0.85em;
+            line-height: 1.4;
+            font-size: 0.7em;
         }
 
         .detail-features {
-            margin-top: 12px;
+            margin-top: 6px;
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 4px;
         }
 
         .feature-tag {
-            padding: 5px 12px;
+            padding: 3px 8px;
             background: rgba(100,255,218,0.1);
-            border-radius: 15px;
-            font-size: 0.7em;
+            border-radius: 12px;
+            font-size: 0.6em;
             color: #64ffda;
             border: 1px solid rgba(100,255,218,0.15);
         }
@@ -276,43 +295,39 @@
         }
 
         .comparison-footer {
-            margin-top: 25px;
-            padding: 22px;
-            background: rgba(100,255,218,0.03);
-            border-radius: 18px;
-            border: 1px solid rgba(100,255,218,0.08);
+            display: none;
         }
 
         .comparison-footer h3 {
             color: #64ffda;
-            font-size: 1em;
-            margin-bottom: 15px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
             text-align: center;
         }
 
         .comparison-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 10px;
         }
 
         .comparison-card {
-            padding: 15px;
+            padding: 10px;
             background: rgba(0,0,0,0.2);
-            border-radius: 12px;
+            border-radius: 10px;
             text-align: center;
         }
 
         .comparison-card h4 {
-            font-size: 0.85em;
-            margin-bottom: 10px;
+            font-size: 0.7em;
+            margin-bottom: 6px;
             color: rgba(255,255,255,0.7);
         }
 
         .comparison-list {
-            font-size: 0.75em;
+            font-size: 0.65em;
             color: rgba(255,255,255,0.5);
-            line-height: 1.8;
+            line-height: 1.6;
         }
 
         .has { color: #22c55e; }
@@ -333,7 +348,7 @@
             <button class="toggle-btn" onclick="setCellType('plant')">🌱 Pflanzenzelle</button>
         </div>
 
-        <div class="main-content">
+        <div class="main-layout">
             <div class="cell-viewport">
                 <canvas id="canvas" width="750" height="600"></canvas>
                 <div class="hover-label" id="hoverLabel">Organelle</div>
@@ -342,7 +357,7 @@
             <div class="info-panel">
                 <div class="panel-header">
                     <h2 id="panelTitle">🦠 Tierzelle</h2>
-                    <p>Klicke auf ein Organell für Details</p>
+                    <p>Klicke auf Organell</p>
                 </div>
 
                 <div class="organelle-list" id="organelleList"></div>

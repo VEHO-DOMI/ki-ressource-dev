@@ -10,156 +10,203 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
-            padding: 20px;
             color: #fff;
         }
-        .container { max-width: 100%; margin: 0 auto; padding: 0 10px; }
-        h1 { text-align: center; margin-bottom: 10px; font-size: 1.8em; color: #4fc3f7; }
-        .subtitle { text-align: center; color: #90a4ae; margin-bottom: 20px; }
-        .simulation-area {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+        .container {
+            padding: 12px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            flex-shrink: 0;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        h1 {
+            font-size: 1.4em;
+            margin-bottom: 4px;
+            color: #4fc3f7;
+        }
+        .subtitle {
+            color: #90a4ae;
+            font-size: 0.85em;
+        }
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 12px;
+            flex: 1;
+            overflow: hidden;
+        }
+        .canvas-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow: auto;
         }
         canvas {
-            display: block;
-            margin: 0 auto;
+            width: 100%;
+            height: auto;
             background: radial-gradient(ellipse at center, #1b263b 0%, #0d1b2a 100%);
             border-radius: 10px;
             border: 2px solid #4fc3f7;
-            max-width: 100%;
-            height: auto;
+            flex-shrink: 0;
         }
-        .controls {
+        .formula-display {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            text-align: center;
+            padding: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        .formula-display .na { color: #9b59b6; }
+        .formula-display .cl { color: #27ae60; }
+        .formula-display .arrow { color: #4fc3f7; margin: 0 5px; }
+        .legend {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
+            font-size: 0.8em;
+            flex-shrink: 0;
             flex-wrap: wrap;
         }
-        .control-btn {
-            padding: 12px 25px;
-            font-size: 1em;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .info-box {
+            background: rgba(79, 195, 247, 0.1);
+            border-left: 3px solid #4fc3f7;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            line-height: 1.4;
+            flex-shrink: 0;
+            overflow-y: auto;
+            max-height: 120px;
         }
-        .control-btn.start { background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; }
-        .control-btn.reset { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; }
-        .control-btn.step { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
-        .control-btn:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
-        .control-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .step-indicator {
+        .info-box h3 { color: #4fc3f7; margin-bottom: 5px; font-size: 0.9em; }
+        .info-box p { color: #b0bec5; }
+        .controls-panel {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             gap: 10px;
-            margin-top: 20px;
+            overflow-y: auto;
+            padding: 8px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+        }
+        .step-indicator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            flex-shrink: 0;
         }
         .step-dot {
-            width: 40px;
-            height: 40px;
+            width: 100%;
+            aspect-ratio: 1;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 0.8em;
             background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
             transition: all 0.3s;
         }
         .step-dot.active {
             background: linear-gradient(135deg, #4fc3f7, #e91e63);
             border-color: #4fc3f7;
-            box-shadow: 0 0 15px rgba(79,195,247,0.5);
+            box-shadow: 0 0 10px rgba(79,195,247,0.5);
         }
         .step-dot.completed {
             background: #2ecc71;
             border-color: #27ae60;
         }
-        .info-box {
-            background: rgba(79, 195, 247, 0.1);
-            border-left: 4px solid #4fc3f7;
-            padding: 15px 20px;
-            border-radius: 0 10px 10px 0;
-            margin-top: 20px;
-        }
-        .info-box h3 { color: #4fc3f7; margin-bottom: 10px; }
-        .info-box p { line-height: 1.6; color: #b0bec5; }
         .step-description {
-            text-align: center;
-            margin-top: 15px;
-            padding: 15px;
+            font-size: 0.75em;
+            padding: 8px;
             background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            font-size: 1.1em;
+            border-radius: 6px;
+            line-height: 1.3;
+            flex-shrink: 0;
         }
-        .formula-display {
-            text-align: center;
-            margin-top: 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 1.3em;
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 6px;
+            flex-shrink: 0;
         }
-        .formula-display .na { color: #9b59b6; }
-        .formula-display .cl { color: #27ae60; }
-        .formula-display .arrow { color: #4fc3f7; margin: 0 10px; }
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 15px;
+        .control-btn {
+            padding: 8px 12px;
+            font-size: 0.8em;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            white-space: nowrap;
         }
-        .legend-item { display: flex; align-items: center; gap: 8px; }
-        .legend-dot { width: 20px; height: 20px; border-radius: 50%; }
+        .control-btn.start { background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; }
+        .control-btn.reset { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; }
+        .control-btn.step { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
+        .control-btn:hover { transform: translateY(-2px); box-shadow: 0 3px 10px rgba(0,0,0,0.3); }
+        .control-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        @media (max-width: 900px) {
+            .main-layout { grid-template-columns: 1fr; }
+            .controls-panel { max-height: 200px; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>⚡ Ionenbindung – Entstehung von NaCl</h1>
-        <p class="subtitle">4. Klasse Chemie – Beobachte die Elektronenübertragung</p>
-
-        <div class="simulation-area">
-            <canvas id="ionCanvas" width="850" height="400"></canvas>
-
-            <div class="step-indicator">
-                <div class="step-dot active" id="step1">1</div>
-                <div class="step-dot" id="step2">2</div>
-                <div class="step-dot" id="step3">3</div>
-                <div class="step-dot" id="step4">4</div>
-            </div>
-
-            <div class="step-description" id="stepDesc">
-                <strong>Schritt 1:</strong> Natrium-Atom (Na) und Chlor-Atom (Cl) nähern sich
-            </div>
-
-            <div class="controls">
-                <button class="control-btn step" onclick="nextStep()" id="nextBtn">▶ Nächster Schritt</button>
-                <button class="control-btn start" onclick="autoPlay()" id="autoBtn">⏯ Automatisch</button>
-                <button class="control-btn reset" onclick="resetSimulation()">🔄 Zurücksetzen</button>
-            </div>
-
-            <div class="formula-display">
-                <span class="na">Na</span> + <span class="cl">Cl</span>
-                <span class="arrow">→</span>
-                <span class="na">Na⁺</span> + <span class="cl">Cl⁻</span>
-                <span class="arrow">→</span>
-                <span class="na">Na</span><span class="cl">Cl</span>
-            </div>
-
-            <div class="legend">
-                <div class="legend-item"><div class="legend-dot" style="background: #9b59b6;"></div> Natrium (Na)</div>
-                <div class="legend-item"><div class="legend-dot" style="background: #27ae60;"></div> Chlor (Cl)</div>
-                <div class="legend-item"><div class="legend-dot" style="background: #f1c40f;"></div> Elektron (e⁻)</div>
-            </div>
+        <div class="header">
+            <h1>⚡ Ionenbindung – NaCl</h1>
+            <p class="subtitle">4. Klasse – Elektronenübertragung</p>
         </div>
 
-        <div class="info-box">
-            <h3>📚 Die Ionenbindung</h3>
-            <p>Bei der Ionenbindung überträgt ein Metallatom (Na) sein Valenzelektron auf ein Nichtmetallatom (Cl).
-            Dabei entstehen positiv geladene Kationen (Na⁺) und negativ geladene Anionen (Cl⁻).
-            Die entgegengesetzt geladenen Ionen ziehen sich elektrostatisch an und bilden ein Ionengitter.</p>
+        <div class="main-layout">
+            <div class="canvas-section">
+                <canvas id="ionCanvas" width="600" height="280"></canvas>
+
+                <div class="formula-display">
+                    <span class="na">Na</span> + <span class="cl">Cl</span>
+                    <span class="arrow">→</span>
+                    <span class="na">Na⁺</span> + <span class="cl">Cl⁻</span>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-dot" style="background: #9b59b6;"></div> Na</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #27ae60;"></div> Cl</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #f1c40f;"></div> e⁻</div>
+                </div>
+
+                <div class="info-box">
+                    <h3>📚 Die Ionenbindung</h3>
+                    <p>Metallatom (Na) überträgt Valenzelektron auf Nichtmetallatom (Cl). Dabei entstehen Na⁺ (Kation) und Cl⁻ (Anion). Die entgegengesetzt geladenen Ionen bilden ein Ionengitter.</p>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <div class="step-indicator">
+                    <div class="step-dot active" id="step1">1</div>
+                    <div class="step-dot" id="step2">2</div>
+                    <div class="step-dot" id="step3">3</div>
+                    <div class="step-dot" id="step4">4</div>
+                </div>
+
+                <div class="step-description" id="stepDesc">
+                    <strong>Schritt 1:</strong> Na und Cl nähern sich
+                </div>
+
+                <div class="controls">
+                    <button class="control-btn step" onclick="nextStep()" id="nextBtn">▶ Nächster Schritt</button>
+                    <button class="control-btn start" onclick="autoPlay()" id="autoBtn">⏯ Automatisch</button>
+                    <button class="control-btn reset" onclick="resetSimulation()">🔄 Zurücksetzen</button>
+                </div>
+            </div>
         </div>
     </div>
 
