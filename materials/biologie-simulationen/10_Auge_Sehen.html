@@ -805,20 +805,34 @@
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Focus label
+            // Focus label with background
             if (showLabels) {
-                ctx.font = '10px Inter';
+                ctx.font = 'bold 11px Inter';
                 ctx.textAlign = 'center';
+                let labelText, labelColor;
                 if (visionType === 'myopia' && !showCorrection) {
-                    ctx.fillStyle = '#ef4444';
-                    ctx.fillText('Fokus VOR Netzhaut', focalPointX, focalPointY + 25);
+                    labelText = 'Fokus VOR Netzhaut';
+                    labelColor = '#ef4444';
                 } else if (visionType === 'hyperopia' && !showCorrection) {
-                    ctx.fillStyle = '#ef4444';
-                    ctx.fillText('Fokus HINTER Netzhaut', focalPointX, focalPointY + 25);
+                    labelText = 'Fokus HINTER Netzhaut';
+                    labelColor = '#ef4444';
                 } else {
-                    ctx.fillStyle = '#22c55e';
-                    ctx.fillText('Scharfes Bild', focalPointX, focalPointY + 25);
+                    labelText = 'Scharfes Bild';
+                    labelColor = '#22c55e';
                 }
+                const metrics = ctx.measureText(labelText);
+                const padding = 4;
+                // Background
+                ctx.fillStyle = 'rgba(10, 25, 47, 0.9)';
+                ctx.beginPath();
+                ctx.roundRect(focalPointX - metrics.width/2 - padding, focalPointY + 12, metrics.width + padding*2, 18, 4);
+                ctx.fill();
+                ctx.strokeStyle = labelColor;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                // Text
+                ctx.fillStyle = labelColor;
+                ctx.fillText(labelText, focalPointX, focalPointY + 26);
             }
 
             // Draw inverted image on retina
@@ -898,10 +912,31 @@
             }
 
             if (showLabels) {
-                ctx.font = '9px Inter';
-                ctx.fillStyle = isSharp ? '#22c55e' : '#ef4444';
+                const labelColor = isSharp ? '#22c55e' : '#ef4444';
+                ctx.font = 'bold 10px Inter';
                 ctx.textAlign = 'center';
-                ctx.fillText('Bild', imgX, focusY - imgHeight/2 - 8);
+
+                // "Bild" label with background
+                const bildMetrics = ctx.measureText('Bild');
+                ctx.fillStyle = 'rgba(10, 25, 47, 0.9)';
+                ctx.beginPath();
+                ctx.roundRect(imgX - bildMetrics.width/2 - 4, focusY - imgHeight/2 - 22, bildMetrics.width + 8, 16, 3);
+                ctx.fill();
+                ctx.strokeStyle = labelColor;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.fillStyle = labelColor;
+                ctx.fillText('Bild', imgX, focusY - imgHeight/2 - 10);
+
+                // "(umgekehrt!)" label with background
+                const umgMetrics = ctx.measureText('(umgekehrt!)');
+                ctx.fillStyle = 'rgba(10, 25, 47, 0.9)';
+                ctx.beginPath();
+                ctx.roundRect(imgX - umgMetrics.width/2 - 4, focusY + imgHeight/2 + 6, umgMetrics.width + 8, 16, 3);
+                ctx.fill();
+                ctx.strokeStyle = labelColor;
+                ctx.stroke();
+                ctx.fillStyle = labelColor;
                 ctx.fillText('(umgekehrt!)', imgX, focusY + imgHeight/2 + 18);
             }
         }
