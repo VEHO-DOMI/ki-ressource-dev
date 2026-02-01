@@ -37,11 +37,11 @@
         }
         .pse-grid {
             display: grid;
-            grid-template-columns: repeat(18, minmax(28px, 1fr));
-            grid-template-rows: repeat(7, minmax(28px, 1fr));
+            grid-template-columns: repeat(18, minmax(24px, 1fr));
+            grid-template-rows: repeat(9, minmax(24px, 1fr));
             gap: 2px;
-            min-width: 600px;
-            min-height: 250px;
+            min-width: 550px;
+            min-height: 280px;
         }
         .element {
             aspect-ratio: 1;
@@ -80,6 +80,8 @@
         .nonmetal { background: linear-gradient(135deg, #a29bfe, #6c5ce7); }
         .halogen { background: linear-gradient(135deg, #fd79a8, #e84393); }
         .noble { background: linear-gradient(135deg, #74b9ff, #0984e3); }
+        .lanthanide { background: linear-gradient(135deg, #ff85c0, #ff6b9d); }
+        .actinide { background: linear-gradient(135deg, #b8e994, #78e08f); }
 
         .control-panel {
             background: rgba(255,255,255,0.05);
@@ -227,9 +229,11 @@
 
             <div class="legend">
                 <div class="legend-item"><div class="legend-color alkali"></div>Alkali</div>
-                <div class="legend-item"><div class="legend-color alkaline"></div>Erdalkalien</div>
+                <div class="legend-item"><div class="legend-color alkaline"></div>Erdalkali</div>
                 <div class="legend-item"><div class="legend-color transition"></div>Übergang</div>
-                <div class="legend-item"><div class="legend-color nonmetal"></div>NM</div>
+                <div class="legend-item"><div class="legend-color lanthanide"></div>Lanthan.</div>
+                <div class="legend-item"><div class="legend-color actinide"></div>Actinide</div>
+                <div class="legend-item"><div class="legend-color nonmetal"></div>Nichtmet.</div>
                 <div class="legend-item"><div class="legend-color halogen"></div>Halogene</div>
                 <div class="legend-item"><div class="legend-color noble"></div>Edelgase</div>
             </div>
@@ -316,6 +320,53 @@
             // Row 7
             {z:87,sym:"Fr",name:"Francium",mass:223,cat:"alkali",en:0.7,mp:27,bp:677,density:"1.87 g/cm³",config:"[Rn] 7s¹",shells:[2,8,18,32,18,8,1],ox:"+1",row:7,col:1},
             {z:88,sym:"Ra",name:"Radium",mass:226,cat:"alkaline",en:0.9,mp:700,bp:1737,density:"5.5 g/cm³",config:"[Rn] 7s²",shells:[2,8,18,32,18,8,2],ox:"+2",row:7,col:2},
+            // Row 7 continued (Transactinides)
+            {z:104,sym:"Rf",name:"Rutherford.",mass:267,cat:"transition",en:null,mp:null,bp:null,density:"23 g/cm³",config:"[Rn] 5f¹⁴ 6d² 7s²",shells:[2,8,18,32,32,10,2],ox:"+4",row:7,col:4},
+            {z:105,sym:"Db",name:"Dubnium",mass:268,cat:"transition",en:null,mp:null,bp:null,density:"29 g/cm³",config:"[Rn] 5f¹⁴ 6d³ 7s²",shells:[2,8,18,32,32,11,2],ox:"+5",row:7,col:5},
+            {z:106,sym:"Sg",name:"Seaborgium",mass:271,cat:"transition",en:null,mp:null,bp:null,density:"35 g/cm³",config:"[Rn] 5f¹⁴ 6d⁴ 7s²",shells:[2,8,18,32,32,12,2],ox:"+6",row:7,col:6},
+            {z:107,sym:"Bh",name:"Bohrium",mass:270,cat:"transition",en:null,mp:null,bp:null,density:"37 g/cm³",config:"[Rn] 5f¹⁴ 6d⁵ 7s²",shells:[2,8,18,32,32,13,2],ox:"+7",row:7,col:7},
+            {z:108,sym:"Hs",name:"Hassium",mass:277,cat:"transition",en:null,mp:null,bp:null,density:"41 g/cm³",config:"[Rn] 5f¹⁴ 6d⁶ 7s²",shells:[2,8,18,32,32,14,2],ox:"+8",row:7,col:8},
+            {z:109,sym:"Mt",name:"Meitnerium",mass:276,cat:"transition",en:null,mp:null,bp:null,density:"37 g/cm³",config:"[Rn] 5f¹⁴ 6d⁷ 7s²",shells:[2,8,18,32,32,15,2],ox:"+3",row:7,col:9},
+            {z:110,sym:"Ds",name:"Darmstadt.",mass:281,cat:"transition",en:null,mp:null,bp:null,density:"34 g/cm³",config:"[Rn] 5f¹⁴ 6d⁸ 7s²",shells:[2,8,18,32,32,16,2],ox:"+2",row:7,col:10},
+            {z:111,sym:"Rg",name:"Roentgenium",mass:282,cat:"transition",en:null,mp:null,bp:null,density:"28 g/cm³",config:"[Rn] 5f¹⁴ 6d⁹ 7s²",shells:[2,8,18,32,32,17,2],ox:"+3",row:7,col:11},
+            {z:112,sym:"Cn",name:"Copernicium",mass:285,cat:"transition",en:null,mp:null,bp:null,density:"23 g/cm³",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s²",shells:[2,8,18,32,32,18,2],ox:"+2",row:7,col:12},
+            {z:113,sym:"Nh",name:"Nihonium",mass:286,cat:"post-transition",en:null,mp:null,bp:null,density:"16 g/cm³",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p¹",shells:[2,8,18,32,32,18,3],ox:"+1",row:7,col:13},
+            {z:114,sym:"Fl",name:"Flerovium",mass:289,cat:"post-transition",en:null,mp:null,bp:null,density:"14 g/cm³",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p²",shells:[2,8,18,32,32,18,4],ox:"+2",row:7,col:14},
+            {z:115,sym:"Mc",name:"Moscovium",mass:290,cat:"post-transition",en:null,mp:null,bp:null,density:"13 g/cm³",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p³",shells:[2,8,18,32,32,18,5],ox:"+1, +3",row:7,col:15},
+            {z:116,sym:"Lv",name:"Livermorium",mass:293,cat:"post-transition",en:null,mp:null,bp:null,density:"12 g/cm³",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁴",shells:[2,8,18,32,32,18,6],ox:"+2, +4",row:7,col:16},
+            {z:117,sym:"Ts",name:"Tenness",mass:294,cat:"halogen",en:null,mp:null,bp:null,density:"7.2 g/cm³",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁵",shells:[2,8,18,32,32,18,7],ox:"-1, +1",row:7,col:17},
+            {z:118,sym:"Og",name:"Oganesson",mass:294,cat:"noble",en:null,mp:null,bp:null,density:"5 g/cm³",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶",shells:[2,8,18,32,32,18,8],ox:"0",row:7,col:18},
+            // Lanthanides (Row 8 = separate display)
+            {z:57,sym:"La",name:"Lanthan",mass:138.9,cat:"lanthanide",en:1.1,mp:920,bp:3464,density:"6.15 g/cm³",config:"[Xe] 5d¹ 6s²",shells:[2,8,18,18,9,2],ox:"+3",row:8,col:3},
+            {z:58,sym:"Ce",name:"Cer",mass:140.1,cat:"lanthanide",en:1.12,mp:795,bp:3443,density:"6.77 g/cm³",config:"[Xe] 4f¹ 5d¹ 6s²",shells:[2,8,18,19,9,2],ox:"+3, +4",row:8,col:4},
+            {z:59,sym:"Pr",name:"Praseodym",mass:140.9,cat:"lanthanide",en:1.13,mp:935,bp:3520,density:"6.77 g/cm³",config:"[Xe] 4f³ 6s²",shells:[2,8,18,21,8,2],ox:"+3",row:8,col:5},
+            {z:60,sym:"Nd",name:"Neodym",mass:144.2,cat:"lanthanide",en:1.14,mp:1024,bp:3074,density:"7.01 g/cm³",config:"[Xe] 4f⁴ 6s²",shells:[2,8,18,22,8,2],ox:"+3",row:8,col:6},
+            {z:61,sym:"Pm",name:"Promethium",mass:145,cat:"lanthanide",en:1.13,mp:1042,bp:3000,density:"7.26 g/cm³",config:"[Xe] 4f⁵ 6s²",shells:[2,8,18,23,8,2],ox:"+3",row:8,col:7},
+            {z:62,sym:"Sm",name:"Samarium",mass:150.4,cat:"lanthanide",en:1.17,mp:1072,bp:1900,density:"7.52 g/cm³",config:"[Xe] 4f⁶ 6s²",shells:[2,8,18,24,8,2],ox:"+3",row:8,col:8},
+            {z:63,sym:"Eu",name:"Europium",mass:152.0,cat:"lanthanide",en:1.2,mp:826,bp:1529,density:"5.24 g/cm³",config:"[Xe] 4f⁷ 6s²",shells:[2,8,18,25,8,2],ox:"+2, +3",row:8,col:9},
+            {z:64,sym:"Gd",name:"Gadolinium",mass:157.3,cat:"lanthanide",en:1.2,mp:1312,bp:3273,density:"7.90 g/cm³",config:"[Xe] 4f⁷ 5d¹ 6s²",shells:[2,8,18,25,9,2],ox:"+3",row:8,col:10},
+            {z:65,sym:"Tb",name:"Terbium",mass:158.9,cat:"lanthanide",en:1.2,mp:1356,bp:3230,density:"8.23 g/cm³",config:"[Xe] 4f⁹ 6s²",shells:[2,8,18,27,8,2],ox:"+3",row:8,col:11},
+            {z:66,sym:"Dy",name:"Dysprosium",mass:162.5,cat:"lanthanide",en:1.22,mp:1407,bp:2567,density:"8.55 g/cm³",config:"[Xe] 4f¹⁰ 6s²",shells:[2,8,18,28,8,2],ox:"+3",row:8,col:12},
+            {z:67,sym:"Ho",name:"Holmium",mass:164.9,cat:"lanthanide",en:1.23,mp:1461,bp:2720,density:"8.80 g/cm³",config:"[Xe] 4f¹¹ 6s²",shells:[2,8,18,29,8,2],ox:"+3",row:8,col:13},
+            {z:68,sym:"Er",name:"Erbium",mass:167.3,cat:"lanthanide",en:1.24,mp:1529,bp:2868,density:"9.07 g/cm³",config:"[Xe] 4f¹² 6s²",shells:[2,8,18,30,8,2],ox:"+3",row:8,col:14},
+            {z:69,sym:"Tm",name:"Thulium",mass:168.9,cat:"lanthanide",en:1.25,mp:1545,bp:1950,density:"9.32 g/cm³",config:"[Xe] 4f¹³ 6s²",shells:[2,8,18,31,8,2],ox:"+3",row:8,col:15},
+            {z:70,sym:"Yb",name:"Ytterbium",mass:173.0,cat:"lanthanide",en:1.1,mp:824,bp:1196,density:"6.90 g/cm³",config:"[Xe] 4f¹⁴ 6s²",shells:[2,8,18,32,8,2],ox:"+2, +3",row:8,col:16},
+            // Actinides (Row 9 = separate display)
+            {z:89,sym:"Ac",name:"Actinium",mass:227,cat:"actinide",en:1.1,mp:1050,bp:3200,density:"10.1 g/cm³",config:"[Rn] 6d¹ 7s²",shells:[2,8,18,32,18,9,2],ox:"+3",row:9,col:3},
+            {z:90,sym:"Th",name:"Thorium",mass:232.0,cat:"actinide",en:1.3,mp:1750,bp:4788,density:"11.7 g/cm³",config:"[Rn] 6d² 7s²",shells:[2,8,18,32,18,10,2],ox:"+4",row:9,col:4},
+            {z:91,sym:"Pa",name:"Protactin.",mass:231.0,cat:"actinide",en:1.5,mp:1572,bp:4027,density:"15.4 g/cm³",config:"[Rn] 5f² 6d¹ 7s²",shells:[2,8,18,32,20,9,2],ox:"+5",row:9,col:5},
+            {z:92,sym:"U",name:"Uran",mass:238.0,cat:"actinide",en:1.38,mp:1135,bp:4131,density:"19.1 g/cm³",config:"[Rn] 5f³ 6d¹ 7s²",shells:[2,8,18,32,21,9,2],ox:"+6",row:9,col:6},
+            {z:93,sym:"Np",name:"Neptunium",mass:237,cat:"actinide",en:1.36,mp:644,bp:3902,density:"20.2 g/cm³",config:"[Rn] 5f⁴ 6d¹ 7s²",shells:[2,8,18,32,22,9,2],ox:"+5",row:9,col:7},
+            {z:94,sym:"Pu",name:"Plutonium",mass:244,cat:"actinide",en:1.28,mp:640,bp:3228,density:"19.8 g/cm³",config:"[Rn] 5f⁶ 7s²",shells:[2,8,18,32,24,8,2],ox:"+4",row:9,col:8},
+            {z:95,sym:"Am",name:"Americium",mass:243,cat:"actinide",en:1.3,mp:1176,bp:2011,density:"12.0 g/cm³",config:"[Rn] 5f⁷ 7s²",shells:[2,8,18,32,25,8,2],ox:"+3",row:9,col:9},
+            {z:96,sym:"Cm",name:"Curium",mass:247,cat:"actinide",en:1.3,mp:1345,bp:3110,density:"13.5 g/cm³",config:"[Rn] 5f⁷ 6d¹ 7s²",shells:[2,8,18,32,25,9,2],ox:"+3",row:9,col:10},
+            {z:97,sym:"Bk",name:"Berkelium",mass:247,cat:"actinide",en:1.3,mp:986,bp:2627,density:"14.8 g/cm³",config:"[Rn] 5f⁹ 7s²",shells:[2,8,18,32,27,8,2],ox:"+3",row:9,col:11},
+            {z:98,sym:"Cf",name:"Californ.",mass:251,cat:"actinide",en:1.3,mp:900,bp:1470,density:"15.1 g/cm³",config:"[Rn] 5f¹⁰ 7s²",shells:[2,8,18,32,28,8,2],ox:"+3",row:9,col:12},
+            {z:99,sym:"Es",name:"Einstein.",mass:252,cat:"actinide",en:1.3,mp:860,bp:996,density:"8.84 g/cm³",config:"[Rn] 5f¹¹ 7s²",shells:[2,8,18,32,29,8,2],ox:"+3",row:9,col:13},
+            {z:100,sym:"Fm",name:"Fermium",mass:257,cat:"actinide",en:1.3,mp:1527,bp:null,density:"9.7 g/cm³",config:"[Rn] 5f¹² 7s²",shells:[2,8,18,32,30,8,2],ox:"+3",row:9,col:14},
+            {z:101,sym:"Md",name:"Mendelev.",mass:258,cat:"actinide",en:1.3,mp:827,bp:null,density:"10.3 g/cm³",config:"[Rn] 5f¹³ 7s²",shells:[2,8,18,32,31,8,2],ox:"+3",row:9,col:15},
+            {z:102,sym:"No",name:"Nobelium",mass:259,cat:"actinide",en:1.3,mp:827,bp:null,density:"9.9 g/cm³",config:"[Rn] 5f¹⁴ 7s²",shells:[2,8,18,32,32,8,2],ox:"+2, +3",row:9,col:16},
+            {z:103,sym:"Lr",name:"Lawrence.",mass:266,cat:"actinide",en:1.3,mp:1627,bp:null,density:"15.6 g/cm³",config:"[Rn] 5f¹⁴ 7s² 7p¹",shells:[2,8,18,32,32,8,3],ox:"+3",row:9,col:17},
         ];
 
         let currentTrend = 'none';
@@ -325,8 +376,8 @@
             const grid = document.getElementById('pse');
             grid.innerHTML = '';
 
-            // Create 7 rows x 18 cols
-            for (let row = 1; row <= 7; row++) {
+            // Create 9 rows x 18 cols (7 main + 2 for lanthanides/actinides)
+            for (let row = 1; row <= 9; row++) {
                 for (let col = 1; col <= 18; col++) {
                     const el = elements.find(e => e.row === row && e.col === col);
                     const div = document.createElement('div');
@@ -364,9 +415,9 @@
             document.getElementById('propDensity').textContent = el.density.split(' ')[0];
 
             const catShort = {
-                alkali: 'Alkali', alkaline: 'Erdalkalien', transition: 'Übergang',
-                'post-transition': 'Metall', metalloid: 'HM', nonmetal: 'NM',
-                halogen: 'Halogen', noble: 'Edelgas'
+                alkali: 'Alkali', alkaline: 'Erdalkali', transition: 'Übergang',
+                'post-transition': 'Metall', metalloid: 'Halbmet.', nonmetal: 'Nichtmet.',
+                halogen: 'Halogen', noble: 'Edelgas', lanthanide: 'Lanthanid', actinide: 'Actinid'
             };
             document.getElementById('propCategory').textContent = catShort[el.cat] || 'unbekannt';
         }
