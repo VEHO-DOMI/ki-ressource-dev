@@ -13,13 +13,16 @@
             padding: 20px;
             color: #fff;
         }
-        .container { max-width: 1000px; margin: 0 auto; }
+        .container { max-width: 100%; margin: 0 auto; padding: 0 10px; }
         h1 { text-align: center; margin-bottom: 10px; font-size: 1.8em; color: #4fc3f7; }
         .subtitle { text-align: center; color: #90a4ae; margin-bottom: 20px; }
         .main-area {
             display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 20px;
+            grid-template-columns: 1fr 260px;
+            gap: 15px;
+        }
+        @media (max-width: 900px) {
+            .main-area { grid-template-columns: 1fr; }
         }
         .simulation-area {
             background: rgba(255,255,255,0.05);
@@ -32,6 +35,8 @@
             background: radial-gradient(circle at center, #1b263b 0%, #0d1b2a 100%);
             border-radius: 10px;
             border: 2px solid #4fc3f7;
+            max-width: 100%;
+            height: auto;
         }
         .control-panel {
             background: rgba(255,255,255,0.05);

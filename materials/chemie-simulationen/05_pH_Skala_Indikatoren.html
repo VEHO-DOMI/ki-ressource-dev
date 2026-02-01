@@ -13,7 +13,7 @@
             padding: 20px;
             color: #fff;
         }
-        .container { max-width: 950px; margin: 0 auto; }
+        .container { max-width: 100%; margin: 0 auto; padding: 0 10px; }
         h1 { text-align: center; margin-bottom: 10px; font-size: 1.8em; color: #4fc3f7; }
         .subtitle { text-align: center; color: #90a4ae; margin-bottom: 20px; }
         .simulation-area {
@@ -132,7 +132,7 @@
         }
         .examples-grid {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             gap: 10px;
             margin-top: 20px;
         }
