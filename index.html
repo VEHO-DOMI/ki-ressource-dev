@@ -205,6 +205,27 @@
             border-left-color: rgba(0, 212, 255, 0.5);
         }
 
+        .nav-sub-subitems {
+            display: flex;
+            flex-direction: column;
+            padding-left: 1.5rem;
+            margin: 0.25rem 0;
+        }
+
+        .nav-sub-subitem {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            text-decoration: none;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s;
+        }
+
+        .nav-sub-subitem:hover {
+            color: var(--cyber-cyan);
+            border-left-color: var(--cyber-cyan);
+        }
+
         .nav-item .nav-expand {
             margin-left: auto;
             font-size: 0.7rem;
@@ -1265,12 +1286,48 @@
                 <span class="nav-number">4</span>KI Anwendungen für SuS<span class="nav-expand">▼</span>
             </a>
             <div class="nav-subitems" data-parent="suspraxis">
-                <span class="nav-category">Physik</span>
+                <span class="nav-category">PHYSIK</span>
                 <a href="#" class="nav-subitem" data-section="suspraxis" data-subsection="4.1">4.1 Physik-Simulationen</a>
-                <span class="nav-category">Chemie</span>
+                <div class="nav-sub-subitems">
+                    <a href="#sim-physik-01" class="nav-sub-subitem">Aggregatzustände</a>
+                    <a href="#sim-physik-02" class="nav-sub-subitem">Pendel & Energie</a>
+                    <a href="#sim-physik-03" class="nav-sub-subitem">Lichtbrechung</a>
+                    <a href="#sim-physik-04" class="nav-sub-subitem">Welleninterferenz</a>
+                    <a href="#sim-physik-05" class="nav-sub-subitem">Elektrisches Feld</a>
+                    <a href="#sim-physik-06" class="nav-sub-subitem">Doppelspalt</a>
+                    <a href="#sim-physik-07" class="nav-sub-subitem">Stromkreis</a>
+                    <a href="#sim-physik-08" class="nav-sub-subitem">Harmonische Schwingung</a>
+                    <a href="#sim-physik-09" class="nav-sub-subitem">Radioaktiver Zerfall</a>
+                    <a href="#sim-physik-10" class="nav-sub-subitem">Wurfbewegung</a>
+                </div>
+                <span class="nav-category">CHEMIE</span>
                 <a href="#" class="nav-subitem" data-section="suspraxis" data-subsection="4.2">4.2 Chemie-Simulationen</a>
-                <span class="nav-category">Biologie</span>
+                <div class="nav-sub-subitems">
+                    <a href="#sim-chemie-01" class="nav-sub-subitem">Dichte</a>
+                    <a href="#sim-chemie-02" class="nav-sub-subitem">Atombau</a>
+                    <a href="#sim-chemie-03" class="nav-sub-subitem">Periodensystem</a>
+                    <a href="#sim-chemie-04" class="nav-sub-subitem">Ionenbindung</a>
+                    <a href="#sim-chemie-05" class="nav-sub-subitem">pH-Wert</a>
+                    <a href="#sim-chemie-06" class="nav-sub-subitem">Gleichgewicht</a>
+                    <a href="#sim-chemie-07" class="nav-sub-subitem">Alkan-Molekülbauer</a>
+                    <a href="#sim-chemie-08" class="nav-sub-subitem">Elektrophile Addition</a>
+                    <a href="#sim-chemie-09" class="nav-sub-subitem">Peptidbindung</a>
+                    <a href="#sim-chemie-10" class="nav-sub-subitem">DNA-Doppelhelix</a>
+                </div>
+                <span class="nav-category">BIOLOGIE</span>
                 <a href="#" class="nav-subitem" data-section="suspraxis" data-subsection="4.3">4.3 Biologie-Simulationen</a>
+                <div class="nav-sub-subitems">
+                    <a href="#sim-bio-01" class="nav-sub-subitem">Nahrungskette</a>
+                    <a href="#sim-bio-02" class="nav-sub-subitem">Blüten-Anatomie</a>
+                    <a href="#sim-bio-03" class="nav-sub-subitem">Blutkreislauf</a>
+                    <a href="#sim-bio-04" class="nav-sub-subitem">Verdauungstrakt</a>
+                    <a href="#sim-bio-05" class="nav-sub-subitem">Zell-Explorer</a>
+                    <a href="#sim-bio-06" class="nav-sub-subitem">Mitose</a>
+                    <a href="#sim-bio-07" class="nav-sub-subitem">Synapse</a>
+                    <a href="#sim-bio-08" class="nav-sub-subitem">Meiose</a>
+                    <a href="#sim-bio-09" class="nav-sub-subitem">Epidemie</a>
+                    <a href="#sim-bio-10" class="nav-sub-subitem">Natürliche Selektion</a>
+                </div>
             </div>
 
             <a href="#" class="nav-item placeholder" data-section="beurteilung">
@@ -7854,7 +7911,7 @@ INHALT:
                         </div>
 
                         <!-- Aggregatzustände -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-physik-01">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Aggregatzustände & Teilchenmodell</h4>
                                 <span class="toggle-icon">▼</span>
@@ -7871,7 +7928,7 @@ INHALT:
                         </div>
 
                         <!-- Pendel -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-physik-02">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Pendel & Energieerhaltung</h4>
                                 <span class="toggle-icon">▼</span>
@@ -7888,7 +7945,7 @@ INHALT:
                         </div>
 
                         <!-- Lichtbrechung -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-physik-03">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Lichtbrechung (Snellius-Gesetz)</h4>
                                 <span class="toggle-icon">▼</span>
@@ -7905,7 +7962,7 @@ INHALT:
                         </div>
 
                         <!-- Welleninterferenz -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-physik-04">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Welleninterferenz</h4>
                                 <span class="toggle-icon">▼</span>
@@ -7922,7 +7979,7 @@ INHALT:
                         </div>
 
                         <!-- Elektrisches Feld -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-physik-05">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Elektrisches Feld</h4>
                                 <span class="toggle-icon">▼</span>
@@ -7939,7 +7996,7 @@ INHALT:
                         </div>
 
                         <!-- Doppelspalt -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-physik-06">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Doppelspalt-Experiment</h4>
                                 <span class="toggle-icon">▼</span>
@@ -7956,7 +8013,7 @@ INHALT:
                         </div>
 
                         <!-- Stromkreis -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-physik-07">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Stromkreis-Simulator</h4>
                                 <span class="toggle-icon">▼</span>
@@ -7973,7 +8030,7 @@ INHALT:
                         </div>
 
                         <!-- Harmonische Schwingung -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-physik-08">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Harmonische Schwingung</h4>
                                 <span class="toggle-icon">▼</span>
@@ -7990,7 +8047,7 @@ INHALT:
                         </div>
 
                         <!-- Radioaktiver Zerfall -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-physik-09">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Radioaktiver Zerfall</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8007,7 +8064,7 @@ INHALT:
                         </div>
 
                         <!-- Wurfbewegung -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-physik-10">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Wurfbewegung (Projektilbewegung)</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8082,7 +8139,7 @@ INHALT:
                         </div>
 
                         <!-- 1. Dichte -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-chemie-01">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Dichte – Schwimmen & Sinken</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8099,7 +8156,7 @@ INHALT:
                         </div>
 
                         <!-- 2. Atombau -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-chemie-02">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Atombau – Interaktiver Baukasten</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8116,7 +8173,7 @@ INHALT:
                         </div>
 
                         <!-- 3. Periodensystem -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-chemie-03">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Periodensystem – Explorer</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8133,7 +8190,7 @@ INHALT:
                         </div>
 
                         <!-- 4. Ionenbindung -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-chemie-04">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Ionenbindung – NaCl Entstehung</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8150,7 +8207,7 @@ INHALT:
                         </div>
 
                         <!-- 5. pH-Wert -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-chemie-05">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>pH-Wert & Indikatoren</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8167,7 +8224,7 @@ INHALT:
                         </div>
 
                         <!-- 6. Chemisches Gleichgewicht -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-chemie-06">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Chemisches Gleichgewicht (Le Chatelier)</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8184,7 +8241,7 @@ INHALT:
                         </div>
 
                         <!-- 7. Alkan-Molekülbauer -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-chemie-07">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Alkan-Molekülbauer</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8201,7 +8258,7 @@ INHALT:
                         </div>
 
                         <!-- 8. Elektrophile Addition -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-chemie-08">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Elektrophile Addition</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8218,7 +8275,7 @@ INHALT:
                         </div>
 
                         <!-- 9. Peptidbindung -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-chemie-09">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Peptidbindung – Proteinbildung</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8235,7 +8292,7 @@ INHALT:
                         </div>
 
                         <!-- 10. DNA-Doppelhelix -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-chemie-10">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>DNA-Doppelhelix 3D</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8310,7 +8367,7 @@ INHALT:
                         </div>
 
                         <!-- 1. Nahrungskette -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-bio-01">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Nahrungsketten-Builder</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8327,7 +8384,7 @@ INHALT:
                         </div>
 
                         <!-- 2. Blüten-Anatomie -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-bio-02">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Blüten-Anatomie</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8352,7 +8409,7 @@ INHALT:
                         </div>
 
                         <!-- 3. Blutkreislauf -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-bio-03">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Blutkreislauf-Simulation</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8379,7 +8436,7 @@ INHALT:
                         </div>
 
                         <!-- 4. Verdauungstrakt -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-bio-04">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Verdauungstrakt-Simulation</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8406,7 +8463,7 @@ INHALT:
                         </div>
 
                         <!-- 5. Zell-Explorer -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-bio-05">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Zell-Explorer</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8433,7 +8490,7 @@ INHALT:
                         </div>
 
                         <!-- 6. Mitose -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-bio-06">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Mitose-Animation</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8450,7 +8507,7 @@ INHALT:
                         </div>
 
                         <!-- 7. Synapse -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-bio-07">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Synapse-Simulation</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8467,7 +8524,7 @@ INHALT:
                         </div>
 
                         <!-- 8. Meiose -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-bio-08">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Meiose-Animation</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8484,7 +8541,7 @@ INHALT:
                         </div>
 
                         <!-- 9. Epidemie -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-bio-09">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Epidemie-Simulation (SIR-Modell)</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8501,7 +8558,7 @@ INHALT:
                         </div>
 
                         <!-- 10. Natürliche Selektion -->
-                        <div class="sub-collapsible">
+                        <div class="sub-collapsible" id="sim-bio-10">
                             <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
                                 <h4>Natürliche Selektion</h4>
                                 <span class="toggle-icon">▼</span>
@@ -8836,6 +8893,39 @@ INHALT:
                 }
             });
         }
+
+        // Handle navigation to simulation IDs from sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all nav-sub-subitem links
+            const simLinks = document.querySelectorAll('.nav-sub-subitem');
+
+            simLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1); // Remove #
+                    const targetElement = document.getElementById(targetId);
+
+                    if (targetElement) {
+                        // Scroll to the target element
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                        // Open the collapsible element
+                        if (targetElement.classList.contains('sub-collapsible')) {
+                            targetElement.classList.add('open');
+                        }
+
+                        // Also open parent collapsibles if needed
+                        let parent = targetElement.parentElement;
+                        while (parent) {
+                            if (parent.classList.contains('collapsible')) {
+                                parent.classList.add('open');
+                            }
+                            parent = parent.parentElement;
+                        }
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
