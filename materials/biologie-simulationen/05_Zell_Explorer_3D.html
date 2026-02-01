@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Zell-Explorer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #000;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .ui-overlay {
+            position: fixed;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .ui-overlay > * {
+            pointer-events: auto;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 25px 30px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+            z-index: 100;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #64ffda, #00d4aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        /* Cell Type Toggle */
+        .cell-toggle {
+            position: fixed;
+            top: 25px;
+            right: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .toggle-btn {
+            padding: 12px 25px;
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            color: rgba(255,255,255,0.7);
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn:hover {
+            border-color: rgba(100, 255, 218, 0.6);
+            background: rgba(100, 255, 218, 0.1);
+        }
+
+        .toggle-btn.active {
+            background: rgba(100, 255, 218, 0.2);
+            border-color: #64ffda;
+            color: #64ffda;
+            box-shadow: 0 0 30px rgba(100, 255, 218, 0.3);
+        }
+
+        /* Info Panel */
+        .info-panel {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 350px;
+            max-height: 60vh;
+            background: rgba(10, 20, 40, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(100, 255, 218, 0.15);
+            overflow: hidden;
+            z-index: 100;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .panel-header {
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.15), rgba(100, 255, 218, 0.05));
+            border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .panel-header h2 {
+            font-size: 1.3em;
+            color: #64ffda;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .organelle-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
+
+        .panel-body {
+            padding: 20px;
+        }
+
+        .panel-body p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.7;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            padding: 6px 14px;
+            background: rgba(100, 255, 218, 0.1);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 20px;
+            font-size: 0.75em;
+            color: #64ffda;
+        }
+
+        /* Controls hint */
+        .controls-hint {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8em;
+            color: rgba(255,255,255,0.6);
+            z-index: 100;
+        }
+
+        .controls-hint strong {
+            color: #64ffda;
+        }
+
+        /* Loading screen */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(100, 255, 218, 0.2);
+            border-top-color: #64ffda;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9em;
+        }
+
+        /* Click indicator */
+        .click-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 15px 25px;
+            background: rgba(100, 255, 218, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 30px;
+            color: #64ffda;
+            font-size: 0.9em;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 200;
+        }
+
+        .click-indicator.visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">3D-Zelle wird geladen...</div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div class="header">
+        <h1>🔬 3D Zell-Explorer</h1>
+        <p class="subtitle">Drehe und erkunde eine lebende Zelle in 3D</p>
+    </div>
+
+    <div class="cell-toggle">
+        <button class="toggle-btn active" id="animalBtn" onclick="setCellType('animal')">🦠 Tierzelle</button>
+        <button class="toggle-btn" id="plantBtn" onclick="setCellType('plant')">🌱 Pflanzenzelle</button>
+    </div>
+
+    <div class="info-panel" id="infoPanel">
+        <div class="panel-header">
+            <h2>
+                <span class="organelle-icon" id="orgIcon" style="background: rgba(100,255,218,0.2);">🔬</span>
+                <span id="orgName">Klicke auf ein Organell</span>
+            </h2>
+        </div>
+        <div class="panel-body">
+            <p id="orgDesc">Drehe die Zelle mit der Maus und klicke auf die leuchtenden Organellen, um mehr über sie zu erfahren.</p>
+            <div class="feature-tags" id="orgTags"></div>
+        </div>
+    </div>
+
+    <div class="controls-hint">
+        <strong>🖱️ Linksklick + Ziehen:</strong> Drehen<br>
+        <strong>🔍 Scrollrad:</strong> Zoom<br>
+        <strong>👆 Klick auf Organell:</strong> Info anzeigen
+    </div>
+
+    <div class="click-indicator" id="clickIndicator">Klicke auf ein Organell</div>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Orbit controls inline (simplified version)
+        class OrbitControls {
+            constructor(camera, domElement) {
+                this.camera = camera;
+                this.domElement = domElement;
+                this.target = new THREE.Vector3();
+                this.enableDamping = true;
+                this.dampingFactor = 0.05;
+                this.rotateSpeed = 0.5;
+                this.zoomSpeed = 1.0;
+                this.minDistance = 3;
+                this.maxDistance = 15;
+
+                this.spherical = new THREE.Spherical();
+                this.sphericalDelta = new THREE.Spherical();
+
+                this.isMouseDown = false;
+                this.prevMouse = { x: 0, y: 0 };
+
+                this.init();
+            }
+
+            init() {
+                const offset = new THREE.Vector3().copy(this.camera.position).sub(this.target);
+                this.spherical.setFromVector3(offset);
+
+                this.domElement.addEventListener('mousedown', (e) => {
+                    this.isMouseDown = true;
+                    this.prevMouse = { x: e.clientX, y: e.clientY };
+                });
+
+                this.domElement.addEventListener('mousemove', (e) => {
+                    if (!this.isMouseDown) return;
+                    const deltaX = e.clientX - this.prevMouse.x;
+                    const deltaY = e.clientY - this.prevMouse.y;
+                    this.sphericalDelta.theta -= deltaX * 0.005 * this.rotateSpeed;
+                    this.sphericalDelta.phi -= deltaY * 0.005 * this.rotateSpeed;
+                    this.prevMouse = { x: e.clientX, y: e.clientY };
+                });
+
+                this.domElement.addEventListener('mouseup', () => this.isMouseDown = false);
+                this.domElement.addEventListener('mouseleave', () => this.isMouseDown = false);
+
+                this.domElement.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    this.spherical.radius += e.deltaY * 0.01 * this.zoomSpeed;
+                    this.spherical.radius = Math.max(this.minDistance, Math.min(this.maxDistance, this.spherical.radius));
+                }, { passive: false });
+
+                // Touch support
+                this.domElement.addEventListener('touchstart', (e) => {
+                    if (e.touches.length === 1) {
+                        this.isMouseDown = true;
+                        this.prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                    }
+                });
+
+                this.domElement.addEventListener('touchmove', (e) => {
+                    if (!this.isMouseDown || e.touches.length !== 1) return;
+                    const deltaX = e.touches[0].clientX - this.prevMouse.x;
+                    const deltaY = e.touches[0].clientY - this.prevMouse.y;
+                    this.sphericalDelta.theta -= deltaX * 0.005 * this.rotateSpeed;
+                    this.sphericalDelta.phi -= deltaY * 0.005 * this.rotateSpeed;
+                    this.prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                });
+
+                this.domElement.addEventListener('touchend', () => this.isMouseDown = false);
+            }
+
+            update() {
+                this.spherical.theta += this.sphericalDelta.theta;
+                this.spherical.phi += this.sphericalDelta.phi;
+                this.spherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, this.spherical.phi));
+
+                if (this.enableDamping) {
+                    this.sphericalDelta.theta *= (1 - this.dampingFactor);
+                    this.sphericalDelta.phi *= (1 - this.dampingFactor);
+                }
+
+                const offset = new THREE.Vector3().setFromSpherical(this.spherical);
+                this.camera.position.copy(this.target).add(offset);
+                this.camera.lookAt(this.target);
+            }
+        }
+
+        // Main application
+        let scene, camera, renderer, controls;
+        let cellType = 'animal';
+        let organelles = [];
+        let raycaster, mouse;
+        let hoveredObject = null;
+
+        const organelleData = {
+            nucleus: {
+                name: 'Zellkern (Nucleus)',
+                icon: '🟣',
+                color: 0x9b59b6,
+                desc: 'Das Kontrollzentrum der Zelle! Hier ist die DNA gespeichert, die alle genetischen Informationen enthält. Der Zellkern steuert alle Aktivitäten der Zelle.',
+                tags: ['DNA', 'Genexpression', 'Doppelmembran'],
+                both: true
+            },
+            mitochondria: {
+                name: 'Mitochondrien',
+                icon: '⚡',
+                color: 0xe74c3c,
+                desc: 'Die "Kraftwerke" der Zelle! Hier wird durch Zellatmung ATP produziert – die Energiewährung aller Lebewesen. Mitochondrien haben sogar ihre eigene DNA!',
+                tags: ['ATP-Produktion', 'Zellatmung', 'Eigene DNA'],
+                both: true
+            },
+            er: {
+                name: 'Endoplasmatisches Retikulum',
+                icon: '🌀',
+                color: 0xf39c12,
+                desc: 'Ein riesiges Membransystem, das die Zelle durchzieht. Das raue ER (mit Ribosomen) stellt Proteine her, das glatte ER Lipide.',
+                tags: ['Proteinsynthese', 'Lipidsynthese', 'Transport'],
+                both: true
+            },
+            golgi: {
+                name: 'Golgi-Apparat',
+                icon: '📦',
+                color: 0x1abc9c,
+                desc: 'Die "Versandabteilung" der Zelle! Proteine werden hier modifiziert, sortiert und in Vesikel verpackt für den Transport.',
+                tags: ['Verpackung', 'Modifikation', 'Sekretion'],
+                both: true
+            },
+            lysosome: {
+                name: 'Lysosomen',
+                icon: '🗑️',
+                color: 0xe67e22,
+                desc: 'Die Recycling-Zentren! Enthalten über 50 verschiedene Enzyme, um Zellabfälle, alte Organellen und Fremdkörper abzubauen.',
+                tags: ['Verdauung', 'Recycling', 'Enzyme'],
+                both: false,
+                animalOnly: true
+            },
+            chloroplast: {
+                name: 'Chloroplasten',
+                icon: '🌿',
+                color: 0x27ae60,
+                desc: 'Der Ort der Fotosynthese! Chlorophyll absorbiert Licht und wandelt CO₂ + H₂O in Glukose und O₂ um. Hat eigene DNA – wie Mitochondrien!',
+                tags: ['Fotosynthese', 'Chlorophyll', 'Eigene DNA'],
+                both: false,
+                plantOnly: true
+            },
+            vacuole: {
+                name: 'Vakuole',
+                icon: '💧',
+                color: 0x3498db,
+                desc: 'Ein riesiger Wasserspeicher in Pflanzenzellen! Hält den Zelldruck (Turgor) aufrecht und kann bis zu 90% des Zellvolumens einnehmen.',
+                tags: ['Wasserspeicher', 'Turgor', 'Stoffspeicher'],
+                both: false,
+                plantOnly: true
+            }
+        };
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x050510);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 2, 8);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // Controls
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+
+            // Raycaster for clicking
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2();
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+            scene.add(ambientLight);
+
+            const pointLight1 = new THREE.PointLight(0x64ffda, 1, 20);
+            pointLight1.position.set(5, 5, 5);
+            scene.add(pointLight1);
+
+            const pointLight2 = new THREE.PointLight(0xa78bfa, 0.8, 20);
+            pointLight2.position.set(-5, -3, 3);
+            scene.add(pointLight2);
+
+            // Create cell
+            createCell();
+
+            // Add stars/particles background
+            createBackground();
+
+            // Events
+            window.addEventListener('resize', onResize);
+            renderer.domElement.addEventListener('click', onClick);
+            renderer.domElement.addEventListener('mousemove', onMouseMove);
+
+            // Hide loading
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 500);
+
+            // Start animation
+            animate();
+        }
+
+        function createCell() {
+            // Clear previous organelles
+            organelles.forEach(o => scene.remove(o));
+            organelles = [];
+
+            // Cell membrane (outer sphere)
+            const membraneGeo = new THREE.SphereGeometry(3, 64, 64);
+            const membraneMat = new THREE.MeshPhysicalMaterial({
+                color: 0x64ffda,
+                transparent: true,
+                opacity: 0.15,
+                roughness: 0.1,
+                metalness: 0.1,
+                side: THREE.DoubleSide,
+                wireframe: false
+            });
+            const membrane = new THREE.Mesh(membraneGeo, membraneMat);
+            scene.add(membrane);
+
+            // Cell wall for plant
+            if (cellType === 'plant') {
+                const wallGeo = new THREE.BoxGeometry(6.5, 6.5, 6.5);
+                const wallMat = new THREE.MeshPhysicalMaterial({
+                    color: 0x8d6e63,
+                    transparent: true,
+                    opacity: 0.3,
+                    roughness: 0.8,
+                    side: THREE.DoubleSide,
+                    wireframe: true
+                });
+                const wall = new THREE.Mesh(wallGeo, wallMat);
+                scene.add(wall);
+                organelles.push(wall);
+            }
+
+            // Nucleus (center)
+            createOrganelle('nucleus', 0, 0, 0, 0.8, 'sphere');
+
+            // Mitochondria (multiple)
+            createOrganelle('mitochondria', 1.5, 0.5, 0.8, 0.35, 'capsule');
+            createOrganelle('mitochondria', -1.2, -0.8, 1.2, 0.3, 'capsule');
+            createOrganelle('mitochondria', 0.8, -1.2, -0.5, 0.32, 'capsule');
+            createOrganelle('mitochondria', -0.5, 1.0, -1.5, 0.28, 'capsule');
+
+            // ER (torus around nucleus)
+            createOrganelle('er', 0, 0, 0, 1.3, 'torus');
+
+            // Golgi (stacked discs)
+            createOrganelle('golgi', -1.8, 0.3, -0.5, 0.4, 'golgi');
+
+            // Cell-type specific
+            if (cellType === 'animal') {
+                // Lysosomes
+                createOrganelle('lysosome', 1.0, -0.5, 1.5, 0.25, 'sphere');
+                createOrganelle('lysosome', -0.8, 1.2, 1.0, 0.2, 'sphere');
+            } else {
+                // Chloroplasts
+                createOrganelle('chloroplast', 1.5, 0.8, -1.0, 0.4, 'disc');
+                createOrganelle('chloroplast', -1.0, -1.2, 1.2, 0.35, 'disc');
+                createOrganelle('chloroplast', 0.5, 1.5, 0.8, 0.38, 'disc');
+
+                // Central vacuole
+                createOrganelle('vacuole', 0, 0, 0, 1.8, 'sphere');
+            }
+        }
+
+        function createOrganelle(type, x, y, z, size, shape) {
+            const data = organelleData[type];
+            if (!data) return;
+
+            let geometry, material;
+            const color = data.color;
+
+            // Create glow material
+            material = new THREE.MeshPhysicalMaterial({
+                color: color,
+                emissive: color,
+                emissiveIntensity: 0.3,
+                transparent: true,
+                opacity: type === 'vacuole' ? 0.3 : 0.85,
+                roughness: 0.3,
+                metalness: 0.1
+            });
+
+            switch (shape) {
+                case 'sphere':
+                    geometry = new THREE.SphereGeometry(size, 32, 32);
+                    break;
+                case 'capsule':
+                    geometry = new THREE.CapsuleGeometry(size * 0.4, size * 1.5, 8, 16);
+                    break;
+                case 'torus':
+                    geometry = new THREE.TorusGeometry(size, 0.15, 16, 50);
+                    material.opacity = 0.6;
+                    break;
+                case 'disc':
+                    geometry = new THREE.CylinderGeometry(size, size, size * 0.3, 32);
+                    break;
+                case 'golgi':
+                    // Stack of discs
+                    const group = new THREE.Group();
+                    for (let i = 0; i < 5; i++) {
+                        const discGeo = new THREE.CylinderGeometry(size - i * 0.05, size - i * 0.05, 0.08, 32);
+                        const disc = new THREE.Mesh(discGeo, material.clone());
+                        disc.position.y = i * 0.12 - 0.24;
+                        disc.userData = { type, data };
+                        group.add(disc);
+                    }
+                    group.position.set(x, y, z);
+                    group.rotation.x = Math.random() * 0.5;
+                    group.rotation.z = Math.random() * 0.5;
+                    scene.add(group);
+                    organelles.push(group);
+                    return;
+                default:
+                    geometry = new THREE.SphereGeometry(size, 32, 32);
+            }
+
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(x, y, z);
+
+            // Random rotation for variety
+            if (shape === 'capsule') {
+                mesh.rotation.x = Math.random() * Math.PI;
+                mesh.rotation.z = Math.random() * Math.PI;
+            }
+            if (shape === 'disc') {
+                mesh.rotation.x = Math.random() * 0.5 - 0.25;
+                mesh.rotation.z = Math.random() * 0.5 - 0.25;
+            }
+
+            mesh.userData = { type, data };
+            scene.add(mesh);
+            organelles.push(mesh);
+        }
+
+        function createBackground() {
+            const starsGeo = new THREE.BufferGeometry();
+            const positions = [];
+
+            for (let i = 0; i < 2000; i++) {
+                positions.push(
+                    (Math.random() - 0.5) * 100,
+                    (Math.random() - 0.5) * 100,
+                    (Math.random() - 0.5) * 100
+                );
+            }
+
+            starsGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+            const starsMat = new THREE.PointsMaterial({
+                color: 0x64ffda,
+                size: 0.1,
+                transparent: true,
+                opacity: 0.6
+            });
+
+            const stars = new THREE.Points(starsGeo, starsMat);
+            scene.add(stars);
+        }
+
+        function setCellType(type) {
+            cellType = type;
+            document.getElementById('animalBtn').classList.toggle('active', type === 'animal');
+            document.getElementById('plantBtn').classList.toggle('active', type === 'plant');
+
+            // Recreate cell
+            organelles.forEach(o => {
+                scene.remove(o);
+                if (o.geometry) o.geometry.dispose();
+                if (o.material) o.material.dispose();
+            });
+            createCell();
+
+            // Reset info panel
+            document.getElementById('orgName').textContent = 'Klicke auf ein Organell';
+            document.getElementById('orgIcon').textContent = '🔬';
+            document.getElementById('orgDesc').textContent = 'Drehe die Zelle und klicke auf die leuchtenden Organellen, um mehr zu erfahren.';
+            document.getElementById('orgTags').innerHTML = '';
+        }
+
+        function onClick(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(organelles, true);
+
+            if (intersects.length > 0) {
+                let obj = intersects[0].object;
+                // Check parent for grouped objects (golgi)
+                if (!obj.userData.type && obj.parent && obj.parent.children[0]?.userData.type) {
+                    obj = obj.parent.children[0];
+                }
+
+                if (obj.userData.type && obj.userData.data) {
+                    showOrganelleInfo(obj.userData.type, obj.userData.data);
+                }
+            }
+        }
+
+        function onMouseMove(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(organelles, true);
+
+            if (intersects.length > 0) {
+                renderer.domElement.style.cursor = 'pointer';
+                const indicator = document.getElementById('clickIndicator');
+                indicator.classList.add('visible');
+                setTimeout(() => indicator.classList.remove('visible'), 1500);
+            } else {
+                renderer.domElement.style.cursor = 'grab';
+            }
+        }
+
+        function showOrganelleInfo(type, data) {
+            document.getElementById('orgName').textContent = data.name;
+            document.getElementById('orgIcon').textContent = data.icon;
+            document.getElementById('orgIcon').style.background = `rgba(${(data.color >> 16) & 255}, ${(data.color >> 8) & 255}, ${data.color & 255}, 0.3)`;
+            document.getElementById('orgDesc').textContent = data.desc;
+
+            const tagsContainer = document.getElementById('orgTags');
+            tagsContainer.innerHTML = data.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+        }
+
+        function onResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        let time = 0;
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.01;
+
+            controls.update();
+
+            // Subtle rotation of organelles
+            organelles.forEach((o, i) => {
+                if (o.userData && o.userData.type !== 'vacuole') {
+                    o.rotation.y += 0.002;
+                }
+                // Pulsing effect
+                if (o.material && o.material.emissiveIntensity !== undefined) {
+                    o.material.emissiveIntensity = 0.3 + Math.sin(time * 2 + i) * 0.1;
+                }
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        // Start
+        init();
+    </script>
+</body>
+</html>
