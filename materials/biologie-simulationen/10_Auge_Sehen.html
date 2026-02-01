@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das Auge - Sehen & Optik</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 50%, #0a192f 100%);
+            min-height: 100vh;
+            color: #e6f1ff;
+            padding: 12px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 8px 0 12px;
+        }
+
+        h1 {
+            font-size: 1.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #64ffda, #48cae4, #00b4d8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            color: rgba(230, 241, 255, 0.5);
+            font-size: 0.85em;
+            font-weight: 300;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 12px;
+            height: calc(100vh - 80px);
+            min-height: 550px;
+        }
+
+        @media (max-width: 950px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        .canvas-container {
+            background: rgba(17, 34, 64, 0.6);
+            border-radius: 16px;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        canvas {
+            flex: 1;
+            width: 100%;
+            background: radial-gradient(ellipse at 30% 50%, #1a2f4a 0%, #0a192f 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.15);
+        }
+
+        .control-panel {
+            background: rgba(17, 34, 64, 0.8);
+            border-radius: 16px;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            background: rgba(100, 255, 218, 0.03);
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.05);
+        }
+
+        .panel-title {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #64ffda;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        /* Vision Type Selector */
+        .vision-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .vision-btn {
+            padding: 10px 12px;
+            border: 1.5px solid rgba(100, 255, 218, 0.3);
+            background: transparent;
+            border-radius: 8px;
+            color: #8892b0;
+            font-size: 0.75em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .vision-btn:hover {
+            border-color: rgba(100, 255, 218, 0.5);
+            color: #ccd6f6;
+        }
+
+        .vision-btn.active {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.15), rgba(72, 202, 228, 0.1));
+            border-color: #64ffda;
+            color: #64ffda;
+        }
+
+        .vision-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
+            flex-shrink: 0;
+        }
+
+        .vision-btn.active .vision-icon {
+            background: rgba(100, 255, 218, 0.2);
+        }
+
+        /* Sliders */
+        .slider-group {
+            margin-bottom: 8px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7em;
+            color: #8892b0;
+            margin-bottom: 6px;
+        }
+
+        .slider-value {
+            color: #64ffda;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(100, 255, 218, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #64ffda, #48cae4);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(100, 255, 218, 0.4);
+        }
+
+        /* Toggle Switch */
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .toggle-label {
+            font-size: 0.75em;
+            color: #ccd6f6;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(100, 255, 218, 0.1);
+            transition: 0.3s;
+            border-radius: 24px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 2px;
+            background: #8892b0;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background: rgba(100, 255, 218, 0.3);
+            border-color: #64ffda;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+            background: #64ffda;
+        }
+
+        /* Info Card */
+        .info-card {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.08), rgba(100, 255, 218, 0.02));
+            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .info-card h4 {
+            color: #64ffda;
+            font-size: 0.85em;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .info-card p {
+            color: #8892b0;
+            font-size: 0.75em;
+            line-height: 1.5;
+        }
+
+        .info-highlight {
+            background: rgba(100, 255, 218, 0.1);
+            padding: 8px 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+            border-left: 3px solid #64ffda;
+        }
+
+        .info-highlight strong {
+            color: #64ffda;
+        }
+
+        /* Legend */
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.65em;
+            color: #8892b0;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Anatomy Labels Button */
+        .label-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #64ffda, #48cae4);
+            border: none;
+            border-radius: 8px;
+            color: #0a192f;
+            font-weight: 600;
+            font-size: 0.75em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .label-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
+        }
+
+        .label-btn.active {
+            background: linear-gradient(135deg, #48cae4, #00b4d8);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👁️ Das Auge – Sehen & Optik</h1>
+        <p class="subtitle">Wie entstehen Bilder auf der Netzhaut?</p>
+    </div>
+
+    <div class="main-layout">
+        <div class="canvas-container">
+            <canvas id="eyeCanvas" width="750" height="500"></canvas>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-section">
+                <div class="panel-title">👁️ Sehtyp</div>
+                <div class="vision-selector">
+                    <button class="vision-btn active" onclick="setVisionType('normal')">
+                        <span class="vision-icon">✓</span>
+                        <span>Normalsichtig (Emmetropie)</span>
+                    </button>
+                    <button class="vision-btn" onclick="setVisionType('myopia')">
+                        <span class="vision-icon">−</span>
+                        <span>Kurzsichtig (Myopie)</span>
+                    </button>
+                    <button class="vision-btn" onclick="setVisionType('hyperopia')">
+                        <span class="vision-icon">+</span>
+                        <span>Weitsichtig (Hyperopie)</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-title">🎯 Objektentfernung</div>
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Entfernung</span>
+                        <span class="slider-value" id="distanceValue">5 m</span>
+                    </div>
+                    <input type="range" id="distanceSlider" min="0.25" max="10" step="0.25" value="5" oninput="updateDistance()">
+                </div>
+                <div class="slider-label" style="margin-top: 4px;">
+                    <span style="font-size: 0.65em;">Nah (25cm)</span>
+                    <span style="font-size: 0.65em;">Fern (10m)</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-title">⚙️ Optionen</div>
+                <div class="toggle-row">
+                    <span class="toggle-label">Korrekturlinse zeigen</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="correctionToggle" onchange="toggleCorrection()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-row">
+                    <span class="toggle-label">Lichtstrahlen animieren</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="animateToggle" checked onchange="toggleAnimation()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <button class="label-btn" id="labelBtn" onclick="toggleLabels()">
+                    🏷️ Anatomie-Beschriftung AN
+                </button>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-title">📖 Legende</div>
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-dot" style="background: #64ffda;"></div>Hornhaut</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #48cae4;"></div>Linse</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #ffd700;"></div>Lichtstrahlen</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #ff6b6b;"></div>Netzhaut</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #a78bfa;"></div>Sehnerv</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #f97316;"></div>Korrektur</div>
+                </div>
+            </div>
+
+            <div class="info-card" id="infoCard">
+                <h4>Normales Sehen</h4>
+                <p>Bei einem normalsichtigen Auge werden Lichtstrahlen durch Hornhaut und Linse so gebrochen, dass sie exakt auf der Netzhaut fokussiert werden.</p>
+                <div class="info-highlight">
+                    <strong>Akkommodation:</strong> Die Linse kann ihre Form ändern, um Objekte in verschiedenen Entfernungen scharf zu sehen.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('eyeCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // State
+        let visionType = 'normal';
+        let objectDistance = 5;
+        let showCorrection = false;
+        let showLabels = true;
+        let animateRays = true;
+        let animTime = 0;
+
+        // Eye anatomy dimensions (centered at eyeCenterX, eyeCenterY)
+        const eyeCenterX = 420;
+        const eyeCenterY = 250;
+        const eyeRadius = 120;
+
+        // Info texts
+        const infoTexts = {
+            normal: {
+                title: 'Normales Sehen (Emmetropie)',
+                text: 'Bei einem normalsichtigen Auge werden Lichtstrahlen durch Hornhaut und Linse so gebrochen, dass sie exakt auf der Netzhaut fokussiert werden.',
+                highlight: '<strong>Akkommodation:</strong> Die Linse kann ihre Form ändern (dicker für Nähe, flacher für Ferne), um Objekte in verschiedenen Entfernungen scharf zu sehen.'
+            },
+            myopia: {
+                title: 'Kurzsichtigkeit (Myopie)',
+                text: 'Der Augapfel ist zu lang oder die Brechkraft zu stark. Lichtstrahlen werden VOR der Netzhaut fokussiert – entfernte Objekte erscheinen unscharf.',
+                highlight: '<strong>Korrektur:</strong> Eine Zerstreuungslinse (konkav, Minus-Dioptrien) streut die Lichtstrahlen, bevor sie ins Auge fallen, und verschiebt den Fokus nach hinten auf die Netzhaut.'
+            },
+            hyperopia: {
+                title: 'Weitsichtigkeit (Hyperopie)',
+                text: 'Der Augapfel ist zu kurz oder die Brechkraft zu schwach. Lichtstrahlen würden erst HINTER der Netzhaut fokussiert – nahe Objekte erscheinen unscharf.',
+                highlight: '<strong>Korrektur:</strong> Eine Sammellinse (konvex, Plus-Dioptrien) bündelt die Lichtstrahlen stärker und verschiebt den Fokus nach vorne auf die Netzhaut.'
+            }
+        };
+
+        function setVisionType(type) {
+            visionType = type;
+            document.querySelectorAll('.vision-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.vision-btn').classList.add('active');
+            updateInfo();
+        }
+
+        function updateDistance() {
+            objectDistance = parseFloat(document.getElementById('distanceSlider').value);
+            const display = objectDistance < 1
+                ? `${Math.round(objectDistance * 100)} cm`
+                : `${objectDistance} m`;
+            document.getElementById('distanceValue').textContent = display;
+        }
+
+        function toggleCorrection() {
+            showCorrection = document.getElementById('correctionToggle').checked;
+        }
+
+        function toggleAnimation() {
+            animateRays = document.getElementById('animateToggle').checked;
+        }
+
+        function toggleLabels() {
+            showLabels = !showLabels;
+            const btn = document.getElementById('labelBtn');
+            btn.textContent = showLabels ? '🏷️ Anatomie-Beschriftung AN' : '🏷️ Anatomie-Beschriftung AUS';
+            btn.classList.toggle('active', !showLabels);
+        }
+
+        function updateInfo() {
+            const info = infoTexts[visionType];
+            document.getElementById('infoCard').innerHTML = `
+                <h4>${info.title}</h4>
+                <p>${info.text}</p>
+                <div class="info-highlight">${info.highlight}</div>
+            `;
+        }
+
+        // Drawing functions
+        function drawObject() {
+            // Draw the object (arrow/candle) on the left
+            const objX = 80;
+            const objY = eyeCenterY;
+            const objHeight = 60;
+
+            // Arrow/object
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 3;
+            ctx.fillStyle = '#ffd700';
+
+            // Vertical line
+            ctx.beginPath();
+            ctx.moveTo(objX, objY + objHeight/2);
+            ctx.lineTo(objX, objY - objHeight/2);
+            ctx.stroke();
+
+            // Arrow head
+            ctx.beginPath();
+            ctx.moveTo(objX, objY - objHeight/2);
+            ctx.lineTo(objX - 8, objY - objHeight/2 + 12);
+            ctx.lineTo(objX + 8, objY - objHeight/2 + 12);
+            ctx.closePath();
+            ctx.fill();
+
+            // Label
+            if (showLabels) {
+                ctx.fillStyle = '#ffd700';
+                ctx.font = '12px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText('Objekt', objX, objY + objHeight/2 + 20);
+            }
+        }
+
+        function drawCorrectionLens() {
+            if (!showCorrection || visionType === 'normal') return;
+
+            const lensX = 200;
+            ctx.strokeStyle = '#f97316';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([8, 4]);
+
+            if (visionType === 'myopia') {
+                // Concave lens (diverging) - curves inward
+                ctx.beginPath();
+                ctx.moveTo(lensX, eyeCenterY - 70);
+                ctx.quadraticCurveTo(lensX + 15, eyeCenterY, lensX, eyeCenterY + 70);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(lensX + 8, eyeCenterY - 70);
+                ctx.quadraticCurveTo(lensX + 23, eyeCenterY, lensX + 8, eyeCenterY + 70);
+                ctx.stroke();
+
+                if (showLabels) {
+                    ctx.fillStyle = '#f97316';
+                    ctx.font = 'bold 11px Inter';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Zerstreuungslinse', lensX + 4, eyeCenterY - 80);
+                    ctx.font = '10px Inter';
+                    ctx.fillText('(konkav)', lensX + 4, eyeCenterY - 67);
+                }
+            } else if (visionType === 'hyperopia') {
+                // Convex lens (converging) - curves outward
+                ctx.beginPath();
+                ctx.moveTo(lensX, eyeCenterY - 70);
+                ctx.quadraticCurveTo(lensX - 15, eyeCenterY, lensX, eyeCenterY + 70);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(lensX + 8, eyeCenterY - 70);
+                ctx.quadraticCurveTo(lensX + 23, eyeCenterY, lensX + 8, eyeCenterY + 70);
+                ctx.stroke();
+
+                if (showLabels) {
+                    ctx.fillStyle = '#f97316';
+                    ctx.font = 'bold 11px Inter';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Sammellinse', lensX + 4, eyeCenterY - 80);
+                    ctx.font = '10px Inter';
+                    ctx.fillText('(konvex)', lensX + 4, eyeCenterY - 67);
+                }
+            }
+            ctx.setLineDash([]);
+        }
+
+        function drawEyeStructure() {
+            // Sclera (white of eye) - outer shell
+            ctx.beginPath();
+            ctx.ellipse(eyeCenterX, eyeCenterY, eyeRadius + 10, eyeRadius, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#f8f8f8';
+            ctx.fill();
+            ctx.strokeStyle = '#ccc';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Choroid layer
+            ctx.beginPath();
+            ctx.ellipse(eyeCenterX, eyeCenterY, eyeRadius + 5, eyeRadius - 5, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#8b4513';
+            ctx.fill();
+
+            // Vitreous humor (inside)
+            ctx.beginPath();
+            ctx.ellipse(eyeCenterX, eyeCenterY, eyeRadius - 5, eyeRadius - 15, 0, 0, Math.PI * 2);
+            const vitreousGrad = ctx.createRadialGradient(eyeCenterX - 20, eyeCenterY - 20, 10, eyeCenterX, eyeCenterY, eyeRadius);
+            vitreousGrad.addColorStop(0, 'rgba(200, 230, 255, 0.9)');
+            vitreousGrad.addColorStop(1, 'rgba(150, 200, 255, 0.7)');
+            ctx.fillStyle = vitreousGrad;
+            ctx.fill();
+
+            // Retina (inner lining) - RED
+            ctx.beginPath();
+            ctx.ellipse(eyeCenterX, eyeCenterY, eyeRadius - 2, eyeRadius - 12, 0, 0.3, Math.PI * 1.7);
+            ctx.strokeStyle = '#ff6b6b';
+            ctx.lineWidth = 8;
+            ctx.stroke();
+
+            // Fovea (yellow spot) - point of sharpest vision
+            const foveaX = eyeCenterX + eyeRadius - 15;
+            const foveaY = eyeCenterY;
+            ctx.beginPath();
+            ctx.arc(foveaX, foveaY, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffeb3b';
+            ctx.fill();
+            ctx.strokeStyle = '#ffc107';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Blind spot (where optic nerve exits)
+            const blindSpotX = eyeCenterX + eyeRadius - 25;
+            const blindSpotY = eyeCenterY + 35;
+            ctx.beginPath();
+            ctx.arc(blindSpotX, blindSpotY, 6, 0, Math.PI * 2);
+            ctx.fillStyle = '#333';
+            ctx.fill();
+
+            // Optic nerve
+            ctx.beginPath();
+            ctx.moveTo(blindSpotX + 3, blindSpotY + 3);
+            ctx.quadraticCurveTo(eyeCenterX + eyeRadius + 40, eyeCenterY + 80, eyeCenterX + eyeRadius + 80, eyeCenterY + 120);
+            ctx.strokeStyle = '#a78bfa';
+            ctx.lineWidth = 12;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            // Cornea (front bulge) - CYAN
+            ctx.beginPath();
+            ctx.ellipse(eyeCenterX - eyeRadius + 15, eyeCenterY, 25, eyeRadius - 10, 0, -Math.PI/2, Math.PI/2);
+            const corneaGrad = ctx.createLinearGradient(eyeCenterX - eyeRadius - 20, eyeCenterY, eyeCenterX - eyeRadius + 30, eyeCenterY);
+            corneaGrad.addColorStop(0, 'rgba(100, 255, 218, 0.9)');
+            corneaGrad.addColorStop(1, 'rgba(100, 255, 218, 0.3)');
+            ctx.fillStyle = corneaGrad;
+            ctx.fill();
+            ctx.strokeStyle = '#64ffda';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Iris (colored part)
+            ctx.beginPath();
+            ctx.ellipse(eyeCenterX - eyeRadius + 35, eyeCenterY, 8, 45, 0, 0, Math.PI * 2);
+            const irisGrad = ctx.createLinearGradient(eyeCenterX - eyeRadius + 25, eyeCenterY - 45, eyeCenterX - eyeRadius + 45, eyeCenterY + 45);
+            irisGrad.addColorStop(0, '#1e88e5');
+            irisGrad.addColorStop(0.5, '#42a5f5');
+            irisGrad.addColorStop(1, '#1565c0');
+            ctx.fillStyle = irisGrad;
+            ctx.fill();
+
+            // Pupil (black center)
+            ctx.beginPath();
+            ctx.ellipse(eyeCenterX - eyeRadius + 35, eyeCenterY, 4, 20, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#000';
+            ctx.fill();
+
+            // Lens - shape changes based on accommodation
+            const lensThickness = objectDistance < 1 ? 22 : objectDistance < 3 ? 18 : 14; // Thicker for near
+            const lensX = eyeCenterX - eyeRadius + 55;
+
+            ctx.beginPath();
+            ctx.ellipse(lensX, eyeCenterY, lensThickness, 40, 0, 0, Math.PI * 2);
+            const lensGrad = ctx.createRadialGradient(lensX - 5, eyeCenterY - 10, 5, lensX, eyeCenterY, 40);
+            lensGrad.addColorStop(0, 'rgba(72, 202, 228, 0.8)');
+            lensGrad.addColorStop(1, 'rgba(72, 202, 228, 0.4)');
+            ctx.fillStyle = lensGrad;
+            ctx.fill();
+            ctx.strokeStyle = '#48cae4';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Ciliary muscles (hold the lens)
+            ctx.strokeStyle = '#d4a574';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(lensX, eyeCenterY - 42);
+            ctx.lineTo(lensX - 15, eyeCenterY - 60);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(lensX, eyeCenterY + 42);
+            ctx.lineTo(lensX - 15, eyeCenterY + 60);
+            ctx.stroke();
+        }
+
+        function drawLabels() {
+            if (!showLabels) return;
+
+            ctx.font = '11px Inter';
+            ctx.textAlign = 'left';
+
+            const labels = [
+                { text: 'Hornhaut', x: eyeCenterX - eyeRadius - 60, y: eyeCenterY - 70, color: '#64ffda' },
+                { text: 'Pupille', x: eyeCenterX - eyeRadius + 50, y: eyeCenterY - 55, color: '#fff' },
+                { text: 'Iris', x: eyeCenterX - eyeRadius + 50, y: eyeCenterY + 65, color: '#42a5f5' },
+                { text: 'Linse', x: eyeCenterX - eyeRadius + 80, y: eyeCenterY - 50, color: '#48cae4' },
+                { text: 'Glaskörper', x: eyeCenterX - 20, y: eyeCenterY + 90, color: '#90caf9' },
+                { text: 'Netzhaut', x: eyeCenterX + 70, y: eyeCenterY - 90, color: '#ff6b6b' },
+                { text: 'Fovea', x: eyeCenterX + eyeRadius + 5, y: eyeCenterY - 15, color: '#ffeb3b' },
+                { text: '(Gelber Fleck)', x: eyeCenterX + eyeRadius + 5, y: eyeCenterY, color: '#ffeb3b', size: '9px' },
+                { text: 'Blinder Fleck', x: eyeCenterX + eyeRadius + 5, y: eyeCenterY + 50, color: '#888' },
+                { text: 'Sehnerv', x: eyeCenterX + eyeRadius + 50, y: eyeCenterY + 130, color: '#a78bfa' },
+                { text: 'Ziliarmuskel', x: eyeCenterX - eyeRadius + 10, y: eyeCenterY - 85, color: '#d4a574' }
+            ];
+
+            labels.forEach(label => {
+                ctx.fillStyle = label.color;
+                ctx.font = (label.size || '11px') + ' Inter';
+                ctx.fillText(label.text, label.x, label.y);
+            });
+
+            // Draw connecting lines for some labels
+            ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([2, 2]);
+
+            // Cornea line
+            ctx.beginPath();
+            ctx.moveTo(eyeCenterX - eyeRadius - 10, eyeCenterY - 65);
+            ctx.lineTo(eyeCenterX - eyeRadius + 5, eyeCenterY - 30);
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+        }
+
+        function drawLightRays() {
+            const objX = 80;
+            const objTopY = eyeCenterY - 30;
+            const objBottomY = eyeCenterY + 30;
+
+            // Calculate focus point based on vision type
+            let focusOffset = 0;
+            if (visionType === 'myopia' && !showCorrection) {
+                focusOffset = -25; // Focus in front of retina
+            } else if (visionType === 'hyperopia' && !showCorrection) {
+                focusOffset = 25; // Focus behind retina
+            }
+
+            const focalPointX = eyeCenterX + eyeRadius - 15 + focusOffset;
+            const focalPointY = eyeCenterY;
+
+            // Animation offset
+            const rayOffset = animateRays ? (animTime * 3) % 50 : 0;
+
+            // Draw light rays from object
+            ctx.lineWidth = 2;
+
+            // Ray from top of object
+            drawSingleRay(objX, objTopY, focalPointX, focalPointY + 15, '#ffd700', rayOffset);
+
+            // Ray from middle (along optical axis)
+            drawSingleRay(objX, eyeCenterY, focalPointX, focalPointY, '#ffeb3b', rayOffset + 15);
+
+            // Ray from bottom of object
+            drawSingleRay(objX, objBottomY, focalPointX, focalPointY - 15, '#ffd700', rayOffset + 30);
+
+            // Draw focus point indicator
+            ctx.beginPath();
+            ctx.arc(focalPointX, focalPointY, 6, 0, Math.PI * 2);
+
+            if (visionType === 'normal' || showCorrection) {
+                ctx.fillStyle = '#22c55e'; // Green for correct focus
+                ctx.strokeStyle = '#16a34a';
+            } else {
+                ctx.fillStyle = '#ef4444'; // Red for incorrect focus
+                ctx.strokeStyle = '#dc2626';
+            }
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Focus label
+            if (showLabels) {
+                ctx.font = '10px Inter';
+                ctx.textAlign = 'center';
+                if (visionType === 'myopia' && !showCorrection) {
+                    ctx.fillStyle = '#ef4444';
+                    ctx.fillText('Fokus VOR Netzhaut', focalPointX, focalPointY + 25);
+                } else if (visionType === 'hyperopia' && !showCorrection) {
+                    ctx.fillStyle = '#ef4444';
+                    ctx.fillText('Fokus HINTER Netzhaut', focalPointX, focalPointY + 25);
+                } else {
+                    ctx.fillStyle = '#22c55e';
+                    ctx.fillText('Scharfes Bild', focalPointX, focalPointY + 25);
+                }
+            }
+
+            // Draw inverted image on retina
+            drawRetinalImage(focalPointX, focalPointY, visionType === 'normal' || showCorrection);
+        }
+
+        function drawSingleRay(startX, startY, endX, endY, color, offset) {
+            const lensX = eyeCenterX - eyeRadius + 55;
+            const corneaX = eyeCenterX - eyeRadius + 15;
+
+            // Calculate intermediate points (through cornea and lens)
+            const t1 = (corneaX - startX) / (endX - startX);
+            const corneaY = startY + t1 * (endY - startY);
+
+            const t2 = (lensX - startX) / (endX - startX);
+            const lensY = startY + t2 * (endY - startY);
+
+            // Animated dash offset
+            ctx.setLineDash([8, 4]);
+            ctx.lineDashOffset = -offset;
+
+            // Draw ray segments with gradient
+            const gradient = ctx.createLinearGradient(startX, startY, endX, endY);
+            gradient.addColorStop(0, color);
+            gradient.addColorStop(0.3, 'rgba(255, 215, 0, 0.8)');
+            gradient.addColorStop(1, 'rgba(255, 215, 0, 0.4)');
+
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 2;
+
+            // Before cornea
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(corneaX - 10, corneaY);
+            ctx.stroke();
+
+            // Through eye
+            ctx.beginPath();
+            ctx.moveTo(corneaX - 5, corneaY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+        }
+
+        function drawRetinalImage(focusX, focusY, isSharp) {
+            // Draw small inverted arrow on retina
+            const imgHeight = 20;
+            const imgX = eyeCenterX + eyeRadius - 18;
+
+            ctx.strokeStyle = isSharp ? '#22c55e' : 'rgba(239, 68, 68, 0.5)';
+            ctx.lineWidth = isSharp ? 3 : 2;
+
+            // Inverted arrow (pointing down)
+            ctx.beginPath();
+            ctx.moveTo(imgX, focusY - imgHeight/2);
+            ctx.lineTo(imgX, focusY + imgHeight/2);
+            ctx.stroke();
+
+            // Arrow head (pointing down = inverted)
+            ctx.fillStyle = ctx.strokeStyle;
+            ctx.beginPath();
+            ctx.moveTo(imgX, focusY + imgHeight/2);
+            ctx.lineTo(imgX - 5, focusY + imgHeight/2 - 8);
+            ctx.lineTo(imgX + 5, focusY + imgHeight/2 - 8);
+            ctx.closePath();
+            ctx.fill();
+
+            // Blur effect for unfocused
+            if (!isSharp) {
+                ctx.strokeStyle = 'rgba(239, 68, 68, 0.2)';
+                ctx.lineWidth = 8;
+                ctx.beginPath();
+                ctx.moveTo(imgX, focusY - imgHeight/2 - 5);
+                ctx.lineTo(imgX, focusY + imgHeight/2 + 5);
+                ctx.stroke();
+            }
+
+            if (showLabels) {
+                ctx.font = '9px Inter';
+                ctx.fillStyle = isSharp ? '#22c55e' : '#ef4444';
+                ctx.textAlign = 'center';
+                ctx.fillText('Bild', imgX, focusY - imgHeight/2 - 8);
+                ctx.fillText('(umgekehrt!)', imgX, focusY + imgHeight/2 + 18);
+            }
+        }
+
+        function drawTitle() {
+            // Vision type indicator
+            let statusText = '';
+            let statusColor = '#22c55e';
+
+            if (visionType === 'normal') {
+                statusText = '✓ Normalsichtig';
+            } else if (visionType === 'myopia') {
+                statusText = showCorrection ? '✓ Myopie korrigiert' : '⚠ Kurzsichtig (Myopie)';
+                statusColor = showCorrection ? '#22c55e' : '#ef4444';
+            } else {
+                statusText = showCorrection ? '✓ Hyperopie korrigiert' : '⚠ Weitsichtig (Hyperopie)';
+                statusColor = showCorrection ? '#22c55e' : '#ef4444';
+            }
+
+            ctx.fillStyle = statusColor;
+            ctx.font = 'bold 14px Inter';
+            ctx.textAlign = 'left';
+            ctx.fillText(statusText, 20, 30);
+
+            // Distance info
+            ctx.fillStyle = '#8892b0';
+            ctx.font = '12px Inter';
+            const distText = objectDistance < 1
+                ? `Objektentfernung: ${Math.round(objectDistance * 100)} cm (nah)`
+                : `Objektentfernung: ${objectDistance} m ${objectDistance > 5 ? '(fern)' : ''}`;
+            ctx.fillText(distText, 20, 50);
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Background gradient
+            const bgGrad = ctx.createRadialGradient(eyeCenterX, eyeCenterY, 50, eyeCenterX, eyeCenterY, 400);
+            bgGrad.addColorStop(0, '#1a2f4a');
+            bgGrad.addColorStop(1, '#0a192f');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            drawTitle();
+            drawObject();
+            drawCorrectionLens();
+            drawEyeStructure();
+            drawLightRays();
+            drawLabels();
+
+            animTime += 0.05;
+            requestAnimationFrame(draw);
+        }
+
+        // Start
+        draw();
+    </script>
+</body>
+</html>
