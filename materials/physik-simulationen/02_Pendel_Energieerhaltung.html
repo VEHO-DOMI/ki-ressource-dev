@@ -378,8 +378,11 @@
         setTimeout(resizeCanvas, 100);
 
         const g = 9.81;
-        const pivotX = canvas.width / 2;
         const pivotY = 60;
+
+        function getPivotX() {
+            return canvas.width / 2;
+        }
 
         let length = 200;
         let mass = 5;
@@ -397,7 +400,7 @@
 
         function getBobPosition() {
             return {
-                x: pivotX + length * Math.sin(angle),
+                x: getPivotX() + length * Math.sin(angle),
                 y: pivotY + length * Math.cos(angle)
             };
         }
@@ -457,8 +460,8 @@
             ctx.setLineDash([5, 5]);
             ctx.strokeStyle = 'rgba(255,255,255,0.2)';
             ctx.beginPath();
-            ctx.moveTo(pivotX, pivotY);
-            ctx.lineTo(pivotX, pivotY + length + 30);
+            ctx.moveTo(getPivotX(), pivotY);
+            ctx.lineTo(getPivotX(), pivotY + length + 30);
             ctx.stroke();
             ctx.setLineDash([]);
 
@@ -467,10 +470,10 @@
             const h = getHeight();
             if (h > 0.01) {
                 ctx.fillStyle = 'rgba(66, 165, 245, 0.2)';
-                ctx.fillRect(pivotX + length + 40, bob.y, 30, pivotY + length - bob.y);
+                ctx.fillRect(getPivotX() + length + 40, bob.y, 30, pivotY + length - bob.y);
                 ctx.fillStyle = '#42a5f5';
                 ctx.font = '12px Segoe UI';
-                ctx.fillText('h=' + h.toFixed(2) + 'm', pivotX + length + 45, bob.y - 5);
+                ctx.fillText('h=' + h.toFixed(2) + 'm', getPivotX() + length + 45, bob.y - 5);
             }
 
             // Draw trail
@@ -487,13 +490,13 @@
 
             // Draw pivot
             ctx.beginPath();
-            ctx.arc(pivotX, pivotY, 8, 0, Math.PI * 2);
+            ctx.arc(getPivotX(), pivotY, 8, 0, Math.PI * 2);
             ctx.fillStyle = '#78909c';
             ctx.fill();
 
             // Draw rod
             ctx.beginPath();
-            ctx.moveTo(pivotX, pivotY);
+            ctx.moveTo(getPivotX(), pivotY);
             ctx.lineTo(bob.x, bob.y);
             ctx.strokeStyle = '#b0bec5';
             ctx.lineWidth = 3;
@@ -539,7 +542,7 @@
             // Labels
             ctx.fillStyle = '#90a4ae';
             ctx.font = '13px Segoe UI';
-            ctx.fillText('Aufhängepunkt', pivotX + 15, pivotY - 5);
+            ctx.fillText('Aufhängepunkt', getPivotX() + 15, pivotY - 5);
         }
 
         function animate() {
@@ -579,7 +582,7 @@
             const rect = canvas.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
-            angle = Math.atan2(mouseX - pivotX, mouseY - pivotY);
+            angle = Math.atan2(mouseX - getPivotX(), mouseY - pivotY);
             angularVelocity = 0;
             maxEnergy = getPotentialEnergy();
         });
