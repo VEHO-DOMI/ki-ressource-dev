@@ -246,33 +246,36 @@
 
         /* Info Card */
         .info-card {
-            background: linear-gradient(135deg, rgba(100, 255, 218, 0.08), rgba(100, 255, 218, 0.02));
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.15), rgba(100, 255, 218, 0.08));
             border-radius: 10px;
-            padding: 12px;
-            border: 1px solid rgba(100, 255, 218, 0.1);
+            padding: 14px;
+            border: 2px solid rgba(100, 255, 218, 0.3);
             flex: 1;
             overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .info-card h4 {
             color: #64ffda;
-            font-size: 0.85em;
-            margin-bottom: 6px;
-            font-weight: 600;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+            font-weight: 700;
         }
 
         .info-card p {
-            color: #8892b0;
-            font-size: 0.75em;
-            line-height: 1.5;
+            color: #ccd6f6;
+            font-size: 0.8em;
+            line-height: 1.6;
         }
 
         .info-highlight {
-            background: rgba(100, 255, 218, 0.1);
-            padding: 8px 10px;
+            background: rgba(100, 255, 218, 0.15);
+            padding: 10px 12px;
             border-radius: 6px;
-            margin-top: 8px;
+            margin-top: 10px;
             border-left: 3px solid #64ffda;
+            font-size: 0.8em;
+            color: #ccd6f6;
         }
 
         .info-highlight strong {
@@ -692,38 +695,65 @@
         function drawLabels() {
             if (!showLabels) return;
 
-            ctx.font = '11px Inter';
+            // Helper function to draw label with background
+            function drawLabelWithBg(text, x, y, color, fontSize = '12px') {
+                ctx.font = `bold ${fontSize} Inter`;
+                const metrics = ctx.measureText(text);
+                const padding = 4;
+                const height = parseInt(fontSize) + padding * 2;
+                const width = metrics.width + padding * 2;
+
+                // Background
+                ctx.fillStyle = 'rgba(10, 25, 47, 0.85)';
+                ctx.beginPath();
+                ctx.roundRect(x - padding, y - parseInt(fontSize) - padding + 2, width, height, 4);
+                ctx.fill();
+
+                // Border
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Text
+                ctx.fillStyle = color;
+                ctx.fillText(text, x, y);
+            }
+
             ctx.textAlign = 'left';
 
-            const labels = [
-                { text: 'Hornhaut', x: eyeCenterX - eyeRadius - 60, y: eyeCenterY - 70, color: '#64ffda' },
-                { text: 'Pupille', x: eyeCenterX - eyeRadius + 50, y: eyeCenterY - 55, color: '#fff' },
-                { text: 'Iris', x: eyeCenterX - eyeRadius + 50, y: eyeCenterY + 65, color: '#42a5f5' },
-                { text: 'Linse', x: eyeCenterX - eyeRadius + 80, y: eyeCenterY - 50, color: '#48cae4' },
-                { text: 'Glaskörper', x: eyeCenterX - 20, y: eyeCenterY + 90, color: '#90caf9' },
-                { text: 'Netzhaut', x: eyeCenterX + 70, y: eyeCenterY - 90, color: '#ff6b6b' },
-                { text: 'Fovea', x: eyeCenterX + eyeRadius + 5, y: eyeCenterY - 15, color: '#ffeb3b' },
-                { text: '(Gelber Fleck)', x: eyeCenterX + eyeRadius + 5, y: eyeCenterY, color: '#ffeb3b', size: '9px' },
-                { text: 'Blinder Fleck', x: eyeCenterX + eyeRadius + 5, y: eyeCenterY + 50, color: '#888' },
-                { text: 'Sehnerv', x: eyeCenterX + eyeRadius + 50, y: eyeCenterY + 130, color: '#a78bfa' },
-                { text: 'Ziliarmuskel', x: eyeCenterX - eyeRadius + 10, y: eyeCenterY - 85, color: '#d4a574' }
-            ];
+            // Labels with better positioning (no overlap)
+            drawLabelWithBg('Hornhaut', eyeCenterX - eyeRadius - 85, eyeCenterY - 50, '#64ffda');
+            drawLabelWithBg('Pupille', eyeCenterX - eyeRadius + 45, eyeCenterY - 70, '#ffffff');
+            drawLabelWithBg('Iris', eyeCenterX - eyeRadius + 45, eyeCenterY + 85, '#42a5f5');
+            drawLabelWithBg('Linse', eyeCenterX - eyeRadius + 90, eyeCenterY - 70, '#48cae4');
+            drawLabelWithBg('Glaskörper', eyeCenterX - 30, eyeCenterY + 110, '#90caf9');
+            drawLabelWithBg('Netzhaut', eyeCenterX + 85, eyeCenterY - 110, '#ff6b6b');
+            drawLabelWithBg('Fovea', eyeCenterX + eyeRadius + 15, eyeCenterY - 25, '#ffeb3b');
+            drawLabelWithBg('Blinder Fleck', eyeCenterX + eyeRadius + 15, eyeCenterY + 55, '#aaa');
+            drawLabelWithBg('Sehnerv', eyeCenterX + eyeRadius + 60, eyeCenterY + 145, '#a78bfa');
+            drawLabelWithBg('Ziliarmuskel', eyeCenterX - eyeRadius - 10, eyeCenterY - 100, '#d4a574', '11px');
 
-            labels.forEach(label => {
-                ctx.fillStyle = label.color;
-                ctx.font = (label.size || '11px') + ' Inter';
-                ctx.fillText(label.text, label.x, label.y);
-            });
-
-            // Draw connecting lines for some labels
-            ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+            // Draw connecting lines
+            ctx.strokeStyle = 'rgba(255,255,255,0.4)';
             ctx.lineWidth = 1;
-            ctx.setLineDash([2, 2]);
+            ctx.setLineDash([3, 3]);
 
-            // Cornea line
+            // Hornhaut line
             ctx.beginPath();
-            ctx.moveTo(eyeCenterX - eyeRadius - 10, eyeCenterY - 65);
-            ctx.lineTo(eyeCenterX - eyeRadius + 5, eyeCenterY - 30);
+            ctx.moveTo(eyeCenterX - eyeRadius - 5, eyeCenterY - 45);
+            ctx.lineTo(eyeCenterX - eyeRadius + 10, eyeCenterY - 20);
+            ctx.stroke();
+
+            // Fovea line
+            ctx.beginPath();
+            ctx.moveTo(eyeCenterX + eyeRadius + 10, eyeCenterY - 20);
+            ctx.lineTo(eyeCenterX + eyeRadius - 5, eyeCenterY);
+            ctx.stroke();
+
+            // Blinder Fleck line
+            ctx.beginPath();
+            ctx.moveTo(eyeCenterX + eyeRadius + 10, eyeCenterY + 50);
+            ctx.lineTo(eyeCenterX + eyeRadius - 15, eyeCenterY + 35);
             ctx.stroke();
 
             ctx.setLineDash([]);
