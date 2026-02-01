@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blutkreislauf - 3D Simulation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0a1a;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 25px;
+            background: linear-gradient(180deg, rgba(10,10,26,0.95) 0%, transparent 100%);
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        .control-panel {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            width: 280px;
+            background: rgba(10, 10, 30, 0.92);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .panel-title {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 15px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85em;
+        }
+
+        .stat-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #ff6b6b;
+        }
+
+        .stat-value.blue { color: #5b8def; }
+        .stat-value.green { color: #4ade80; }
+        .stat-value.purple { color: #a78bfa; }
+
+        .slider-control {
+            margin-top: 15px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.8em;
+        }
+
+        .slider-value {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: linear-gradient(90deg, #3b82f6, #ff6b6b, #a855f7);
+            border-radius: 10px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+
+        .view-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .view-btn {
+            flex: 1;
+            min-width: 70px;
+            padding: 10px 8px;
+            border: 1px solid rgba(255,107,107,0.3);
+            background: rgba(255,107,107,0.1);
+            color: #ff8e8e;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.75em;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .view-btn:hover {
+            background: rgba(255,107,107,0.25);
+            transform: translateY(-2px);
+        }
+
+        .view-btn.active {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            border-color: transparent;
+            color: white;
+        }
+
+        .legend {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 0.8em;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            box-shadow: 0 0 12px currentColor;
+        }
+
+        .info-tooltip {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            max-width: 350px;
+            background: rgba(10, 10, 30, 0.92);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            padding: 18px 22px;
+            z-index: 100;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .info-tooltip.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .info-tooltip h3 {
+            color: #ff8e8e;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .info-tooltip p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85em;
+            line-height: 1.6;
+        }
+
+        .instructions {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(10, 10, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 0.75em;
+            color: rgba(255,255,255,0.5);
+            z-index: 100;
+        }
+
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 200;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,107,107,0.2);
+            border-top-color: #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .heartbeat-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            margin-top: 8px;
+        }
+
+        .beat-bar {
+            width: 3px;
+            background: #ff6b6b;
+            border-radius: 2px;
+            animation: pulse-bar 0.8s ease-in-out infinite;
+        }
+
+        .beat-bar:nth-child(1) { height: 12px; animation-delay: 0s; }
+        .beat-bar:nth-child(2) { height: 20px; animation-delay: 0.1s; }
+        .beat-bar:nth-child(3) { height: 16px; animation-delay: 0.2s; }
+        .beat-bar:nth-child(4) { height: 24px; animation-delay: 0.3s; }
+        .beat-bar:nth-child(5) { height: 12px; animation-delay: 0.4s; }
+
+        @keyframes pulse-bar {
+            0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
+            50% { transform: scaleY(1); opacity: 1; }
+        }
+
+        @media (max-width: 700px) {
+            .control-panel {
+                top: auto;
+                bottom: 20px;
+                right: 10px;
+                left: 10px;
+                width: auto;
+            }
+            .info-tooltip { display: none; }
+            .instructions { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <div style="color: rgba(255,255,255,0.7);">3D-Modell wird geladen...</div>
+    </div>
+
+    <div class="header">
+        <h1>❤️ Der Blutkreislauf - 3D</h1>
+        <p class="subtitle">Interaktive 3D-Visualisierung des menschlichen Kreislaufsystems</p>
+    </div>
+
+    <div class="control-panel">
+        <div class="panel-title">💓 Vitalzeichen</div>
+
+        <div class="stat-row">
+            <span class="stat-label">Herzfrequenz</span>
+            <span class="stat-value" id="bpmValue">72 BPM</span>
+        </div>
+        <div class="heartbeat-indicator">
+            <div class="beat-bar"></div>
+            <div class="beat-bar"></div>
+            <div class="beat-bar"></div>
+            <div class="beat-bar"></div>
+            <div class="beat-bar"></div>
+        </div>
+
+        <div class="stat-row">
+            <span class="stat-label">O₂-Sättigung</span>
+            <span class="stat-value blue" id="o2Value">98%</span>
+        </div>
+
+        <div class="stat-row">
+            <span class="stat-label">Blutdruck</span>
+            <span class="stat-value purple" id="pressureValue">120/80</span>
+        </div>
+
+        <div class="slider-control">
+            <div class="slider-label">
+                <span>Herzfrequenz anpassen</span>
+                <span class="slider-value" id="sliderValue">72 BPM</span>
+            </div>
+            <input type="range" id="heartRate" min="40" max="180" value="72">
+        </div>
+
+        <div class="view-buttons">
+            <button class="view-btn active" data-view="full">Übersicht</button>
+            <button class="view-btn" data-view="heart">Herz</button>
+            <button class="view-btn" data-view="lungs">Lunge</button>
+            <button class="view-btn" data-view="body">Körper</button>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #ff4444; color: #ff4444;"></div>
+                <span>Arterien (O₂-reich)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #4477ff; color: #4477ff;"></div>
+                <span>Venen (O₂-arm)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #aa55ff; color: #aa55ff;"></div>
+                <span>Kapillaren</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-tooltip" id="tooltip">
+        <h3 id="tooltipTitle">Organ</h3>
+        <p id="tooltipDesc">Beschreibung</p>
+    </div>
+
+    <div class="instructions">
+        🖱️ Ziehen zum Drehen • Scrollen zum Zoomen • Klick auf Organe für Info
+    </div>
+
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+        // Scene Setup
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0a1a);
+        scene.fog = new THREE.Fog(0x0a0a1a, 15, 35);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 2, 12);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        // Controls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.minDistance = 5;
+        controls.maxDistance = 25;
+        controls.maxPolarAngle = Math.PI * 0.85;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404060, 0.6);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        mainLight.position.set(5, 10, 7);
+        mainLight.castShadow = true;
+        mainLight.shadow.mapSize.width = 2048;
+        mainLight.shadow.mapSize.height = 2048;
+        scene.add(mainLight);
+
+        const rimLight = new THREE.DirectionalLight(0xff6b6b, 0.5);
+        rimLight.position.set(-5, 5, -5);
+        scene.add(rimLight);
+
+        const fillLight = new THREE.DirectionalLight(0x5b8def, 0.3);
+        fillLight.position.set(-3, -2, 4);
+        scene.add(fillLight);
+
+        // State
+        let heartRate = 72;
+        let time = 0;
+        let heartPhase = 0;
+        const bloodParticles = [];
+        const organs = {};
+
+        // Organ Info
+        const organInfo = {
+            heart: {
+                title: '❤️ Das Herz',
+                desc: 'Die zentrale Pumpe des Kreislaufsystems. Es schlägt ca. 100.000 mal pro Tag und pumpt dabei 7.000 Liter Blut. Das linke Herz versorgt den Körper, das rechte die Lunge.'
+            },
+            lungs: {
+                title: '🫁 Die Lunge',
+                desc: 'Hier findet der Gasaustausch statt: CO₂ wird abgegeben, O₂ aufgenommen. Die Lungenoberfläche beträgt ca. 100m² – so groß wie ein Tennisplatz!'
+            },
+            brain: {
+                title: '🧠 Das Gehirn',
+                desc: 'Verbraucht 20% des gesamten Sauerstoffs! Schon 10 Sekunden ohne Blutversorgung führen zur Bewusstlosigkeit.'
+            },
+            body: {
+                title: '💪 Körpergewebe',
+                desc: 'Muskeln und Organe nehmen O₂ auf und geben CO₂ ab. Bei körperlicher Anstrengung steigt der Bedarf auf das 20-fache!'
+            }
+        };
+
+        // Materials
+        const heartMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0xcc2233,
+            roughness: 0.4,
+            metalness: 0.1,
+            clearcoat: 0.3,
+            clearcoatRoughness: 0.2
+        });
+
+        const lungMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0xffb6c1,
+            roughness: 0.6,
+            metalness: 0.0,
+            clearcoat: 0.2
+        });
+
+        const brainMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0xffccd5,
+            roughness: 0.7,
+            metalness: 0.0
+        });
+
+        const bodyMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x88aadd,
+            roughness: 0.5,
+            metalness: 0.1
+        });
+
+        const arteryMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0xdd3344,
+            roughness: 0.3,
+            metalness: 0.2,
+            emissive: 0x330000,
+            emissiveIntensity: 0.2
+        });
+
+        const veinMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x3355aa,
+            roughness: 0.3,
+            metalness: 0.2,
+            emissive: 0x000033,
+            emissiveIntensity: 0.2
+        });
+
+        // Create Heart
+        function createHeart() {
+            const heartGroup = new THREE.Group();
+
+            // Main heart shape using custom geometry
+            const heartShape = new THREE.Shape();
+            const x = 0, y = 0;
+            heartShape.moveTo(x, y - 0.5);
+            heartShape.bezierCurveTo(x - 0.5, y - 0.3, x - 0.7, y + 0.2, x - 0.5, y + 0.4);
+            heartShape.bezierCurveTo(x - 0.3, y + 0.6, x, y + 0.4, x, y + 0.2);
+            heartShape.bezierCurveTo(x, y + 0.4, x + 0.3, y + 0.6, x + 0.5, y + 0.4);
+            heartShape.bezierCurveTo(x + 0.7, y + 0.2, x + 0.5, y - 0.3, x, y - 0.5);
+
+            const extrudeSettings = {
+                depth: 0.6,
+                bevelEnabled: true,
+                bevelSegments: 8,
+                steps: 2,
+                bevelSize: 0.15,
+                bevelThickness: 0.15
+            };
+
+            const heartGeometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+            heartGeometry.center();
+            heartGeometry.scale(2.2, 2.2, 2.2);
+            heartGeometry.rotateX(Math.PI);
+
+            const heartMesh = new THREE.Mesh(heartGeometry, heartMaterial);
+            heartMesh.castShadow = true;
+            heartMesh.receiveShadow = true;
+            heartMesh.userData = { type: 'heart' };
+            heartGroup.add(heartMesh);
+
+            // Heart chambers visualization (subtle lines)
+            const chamberLine = new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints([
+                    new THREE.Vector3(0, 0.8, 0.4),
+                    new THREE.Vector3(0, -0.8, 0.4)
+                ]),
+                new THREE.LineBasicMaterial({ color: 0x880000, linewidth: 2 })
+            );
+            heartGroup.add(chamberLine);
+
+            // Aorta
+            const aortaCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(0, 1.2, 0),
+                new THREE.Vector3(0.3, 1.8, 0),
+                new THREE.Vector3(0.8, 2.2, -0.3),
+                new THREE.Vector3(0.5, 2.5, -0.8),
+                new THREE.Vector3(-0.2, 2.3, -1.2)
+            ]);
+            const aortaGeometry = new THREE.TubeGeometry(aortaCurve, 32, 0.25, 16, false);
+            const aorta = new THREE.Mesh(aortaGeometry, arteryMaterial);
+            aorta.castShadow = true;
+            heartGroup.add(aorta);
+
+            // Pulmonary artery (to lungs)
+            const pulmonaryCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(0.3, 1.0, 0.2),
+                new THREE.Vector3(0.8, 1.4, 0.5),
+                new THREE.Vector3(1.5, 1.6, 0.8),
+                new THREE.Vector3(2.5, 1.2, 1.0)
+            ]);
+            const pulmonaryGeometry = new THREE.TubeGeometry(pulmonaryCurve, 24, 0.18, 12, false);
+            const pulmonaryArtery = new THREE.Mesh(pulmonaryGeometry, veinMaterial); // Blue - carries deoxygenated blood
+            pulmonaryArtery.castShadow = true;
+            heartGroup.add(pulmonaryArtery);
+
+            // Pulmonary vein (from lungs)
+            const pulmonaryVeinCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(2.5, 0.8, 0.8),
+                new THREE.Vector3(1.5, 0.5, 0.4),
+                new THREE.Vector3(0.8, 0.2, 0.2),
+                new THREE.Vector3(-0.2, 0.5, 0.1)
+            ]);
+            const pulmonaryVeinGeometry = new THREE.TubeGeometry(pulmonaryVeinCurve, 24, 0.15, 12, false);
+            const pulmonaryVein = new THREE.Mesh(pulmonaryVeinGeometry, arteryMaterial); // Red - carries oxygenated blood
+            pulmonaryVein.castShadow = true;
+            heartGroup.add(pulmonaryVein);
+
+            // Vena cava (returning from body)
+            const venaCavaCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(-0.3, -3.5, 0),
+                new THREE.Vector3(-0.2, -2.5, 0.1),
+                new THREE.Vector3(-0.1, -1.5, 0.15),
+                new THREE.Vector3(0.2, -0.8, 0.1)
+            ]);
+            const venaCavaGeometry = new THREE.TubeGeometry(venaCavaCurve, 24, 0.22, 12, false);
+            const venaCava = new THREE.Mesh(venaCavaGeometry, veinMaterial);
+            venaCava.castShadow = true;
+            heartGroup.add(venaCava);
+
+            heartGroup.position.set(0, 0, 0);
+            organs.heart = heartGroup;
+            scene.add(heartGroup);
+
+            return heartGroup;
+        }
+
+        // Create Lungs
+        function createLungs() {
+            const lungsGroup = new THREE.Group();
+
+            // Right lung (larger)
+            const rightLungGeometry = new THREE.SphereGeometry(1.2, 32, 32);
+            rightLungGeometry.scale(0.8, 1.2, 0.6);
+            const rightLung = new THREE.Mesh(rightLungGeometry, lungMaterial);
+            rightLung.position.set(2.8, 0.5, 0.8);
+            rightLung.castShadow = true;
+            rightLung.receiveShadow = true;
+            rightLung.userData = { type: 'lungs' };
+            lungsGroup.add(rightLung);
+
+            // Left lung (smaller due to heart)
+            const leftLungGeometry = new THREE.SphereGeometry(1.0, 32, 32);
+            leftLungGeometry.scale(0.7, 1.1, 0.55);
+            const leftLung = new THREE.Mesh(leftLungGeometry, lungMaterial);
+            leftLung.position.set(-2.5, 0.5, 0.8);
+            leftLung.castShadow = true;
+            leftLung.receiveShadow = true;
+            leftLung.userData = { type: 'lungs' };
+            lungsGroup.add(leftLung);
+
+            // Bronchi visualization
+            const bronchiMaterial = new THREE.MeshBasicMaterial({
+                color: 0xffdddd,
+                transparent: true,
+                opacity: 0.6
+            });
+
+            // Right bronchi
+            for (let i = 0; i < 5; i++) {
+                const angle = (i / 5) * Math.PI - Math.PI / 2;
+                const bronchiCurve = new THREE.CatmullRomCurve3([
+                    new THREE.Vector3(2.8, 0.5, 0.8),
+                    new THREE.Vector3(2.8 + Math.cos(angle) * 0.5, 0.5 + Math.sin(angle) * 0.6, 0.9),
+                    new THREE.Vector3(2.8 + Math.cos(angle) * 0.8, 0.5 + Math.sin(angle) * 1.0, 1.0)
+                ]);
+                const bronchiGeometry = new THREE.TubeGeometry(bronchiCurve, 8, 0.05, 6, false);
+                const bronchi = new THREE.Mesh(bronchiGeometry, bronchiMaterial);
+                lungsGroup.add(bronchi);
+            }
+
+            organs.lungs = lungsGroup;
+            scene.add(lungsGroup);
+
+            return lungsGroup;
+        }
+
+        // Create Brain
+        function createBrain() {
+            const brainGroup = new THREE.Group();
+
+            // Brain hemispheres
+            const brainGeometry = new THREE.SphereGeometry(0.8, 32, 32);
+            brainGeometry.scale(1.2, 0.9, 1.0);
+
+            const brain = new THREE.Mesh(brainGeometry, brainMaterial);
+            brain.position.set(0, 4.5, -1);
+            brain.castShadow = true;
+            brain.receiveShadow = true;
+            brain.userData = { type: 'brain' };
+            brainGroup.add(brain);
+
+            // Brain folds (wrinkles)
+            const foldMaterial = new THREE.MeshBasicMaterial({
+                color: 0xddaabb,
+                transparent: true,
+                opacity: 0.5
+            });
+
+            for (let i = 0; i < 8; i++) {
+                const foldGeometry = new THREE.TorusGeometry(0.3 + i * 0.08, 0.02, 8, 16, Math.PI);
+                const fold = new THREE.Mesh(foldGeometry, foldMaterial);
+                fold.position.set(0, 4.5 + (i - 4) * 0.08, -0.3);
+                fold.rotation.x = Math.PI / 2;
+                fold.rotation.z = i * 0.3;
+                brainGroup.add(fold);
+            }
+
+            // Artery to brain
+            const brainArteryCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(-0.2, 2.3, -1.2),
+                new THREE.Vector3(-0.3, 3.0, -1.0),
+                new THREE.Vector3(-0.2, 3.8, -1.0),
+                new THREE.Vector3(0, 4.2, -1.0)
+            ]);
+            const brainArteryGeometry = new THREE.TubeGeometry(brainArteryCurve, 16, 0.1, 8, false);
+            const brainArtery = new THREE.Mesh(brainArteryGeometry, arteryMaterial);
+            brainArtery.castShadow = true;
+            brainGroup.add(brainArtery);
+
+            // Vein from brain
+            const brainVeinCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(0.3, 4.0, -0.8),
+                new THREE.Vector3(0.4, 3.2, -0.5),
+                new THREE.Vector3(0.3, 2.5, -0.2),
+                new THREE.Vector3(0.2, 1.5, 0)
+            ]);
+            const brainVeinGeometry = new THREE.TubeGeometry(brainVeinCurve, 16, 0.08, 8, false);
+            const brainVein = new THREE.Mesh(brainVeinGeometry, veinMaterial);
+            brainVein.castShadow = true;
+            brainGroup.add(brainVein);
+
+            organs.brain = brainGroup;
+            scene.add(brainGroup);
+
+            return brainGroup;
+        }
+
+        // Create Body/Organs representation
+        function createBody() {
+            const bodyGroup = new THREE.Group();
+
+            // Simplified torso representation
+            const torsoGeometry = new THREE.CapsuleGeometry(1.5, 3, 16, 32);
+            const torso = new THREE.Mesh(torsoGeometry, bodyMaterial);
+            torso.position.set(0, -3.5, 0);
+            torso.castShadow = true;
+            torso.receiveShadow = true;
+            torso.userData = { type: 'body' };
+            bodyGroup.add(torso);
+
+            // Major artery going down
+            const bodyArteryCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(-0.2, 2.3, -1.2),
+                new THREE.Vector3(-0.1, 1.0, -0.5),
+                new THREE.Vector3(0, -0.5, -0.2),
+                new THREE.Vector3(0.1, -2.0, 0),
+                new THREE.Vector3(0, -3.5, 0.2)
+            ]);
+            const bodyArteryGeometry = new THREE.TubeGeometry(bodyArteryCurve, 32, 0.18, 12, false);
+            const bodyArtery = new THREE.Mesh(bodyArteryGeometry, arteryMaterial);
+            bodyArtery.castShadow = true;
+            bodyGroup.add(bodyArtery);
+
+            // Capillary network (simplified)
+            const capillaryMaterial = new THREE.MeshBasicMaterial({
+                color: 0xaa55ff,
+                transparent: true,
+                opacity: 0.6
+            });
+
+            for (let i = 0; i < 12; i++) {
+                const angle = (i / 12) * Math.PI * 2;
+                const capillaryCurve = new THREE.CatmullRomCurve3([
+                    new THREE.Vector3(0, -3.5, 0.2),
+                    new THREE.Vector3(Math.cos(angle) * 0.8, -3.5 + Math.sin(angle * 2) * 0.3, 0.5 + Math.sin(angle) * 0.3),
+                    new THREE.Vector3(Math.cos(angle) * 1.2, -3.5 + Math.sin(angle * 3) * 0.4, 0.3 + Math.cos(angle) * 0.4)
+                ]);
+                const capillaryGeometry = new THREE.TubeGeometry(capillaryCurve, 8, 0.03, 6, false);
+                const capillary = new THREE.Mesh(capillaryGeometry, capillaryMaterial);
+                bodyGroup.add(capillary);
+            }
+
+            organs.body = bodyGroup;
+            scene.add(bodyGroup);
+
+            return bodyGroup;
+        }
+
+        // Blood Particle System
+        class BloodParticle {
+            constructor(path, isOxygenated, offset) {
+                this.path = path;
+                this.progress = offset;
+                this.isOxygenated = isOxygenated;
+                this.speed = 0.003 + Math.random() * 0.002;
+
+                const geometry = new THREE.SphereGeometry(0.08, 8, 8);
+                const material = new THREE.MeshBasicMaterial({
+                    color: isOxygenated ? 0xff4444 : 0x4477ff,
+                    transparent: true,
+                    opacity: 0.9
+                });
+
+                this.mesh = new THREE.Mesh(geometry, material);
+                this.mesh.castShadow = true;
+
+                // Glow effect
+                const glowGeometry = new THREE.SphereGeometry(0.15, 8, 8);
+                const glowMaterial = new THREE.MeshBasicMaterial({
+                    color: isOxygenated ? 0xff6666 : 0x6699ff,
+                    transparent: true,
+                    opacity: 0.3
+                });
+                this.glow = new THREE.Mesh(glowGeometry, glowMaterial);
+                this.mesh.add(this.glow);
+
+                scene.add(this.mesh);
+            }
+
+            update(speedMultiplier) {
+                this.progress += this.speed * speedMultiplier;
+                if (this.progress >= 1) {
+                    this.progress -= 1;
+                    // Toggle oxygenation at certain points
+                    if (this.path === 'body' && this.progress < 0.1) {
+                        this.setOxygenated(false);
+                    } else if (this.path === 'lungs' && this.progress > 0.4 && this.progress < 0.6) {
+                        this.setOxygenated(true);
+                    }
+                }
+
+                const pos = this.getPosition();
+                this.mesh.position.copy(pos);
+
+                // Pulse effect
+                const pulse = 1 + Math.sin(time * heartRate / 10) * 0.2;
+                this.mesh.scale.setScalar(pulse);
+            }
+
+            setOxygenated(value) {
+                this.isOxygenated = value;
+                this.mesh.material.color.setHex(value ? 0xff4444 : 0x4477ff);
+                this.glow.material.color.setHex(value ? 0xff6666 : 0x6699ff);
+            }
+
+            getPosition() {
+                const t = this.progress;
+
+                if (this.path === 'body') {
+                    // Body circulation path
+                    const curve = new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(0, 1.2, 0),
+                        new THREE.Vector3(0.3, 1.8, 0),
+                        new THREE.Vector3(0.8, 2.2, -0.3),
+                        new THREE.Vector3(0.5, 2.5, -0.8),
+                        new THREE.Vector3(-0.2, 2.3, -1.2),
+                        new THREE.Vector3(-0.1, 1.0, -0.5),
+                        new THREE.Vector3(0, -1.0, -0.2),
+                        new THREE.Vector3(0.1, -3.0, 0),
+                        new THREE.Vector3(0, -3.5, 0.2),
+                        new THREE.Vector3(-0.3, -3.5, 0),
+                        new THREE.Vector3(-0.2, -2.5, 0.1),
+                        new THREE.Vector3(-0.1, -1.5, 0.15),
+                        new THREE.Vector3(0.2, -0.8, 0.1),
+                        new THREE.Vector3(0.3, 0, 0.05),
+                        new THREE.Vector3(0, 0.8, 0)
+                    ]);
+                    return curve.getPoint(t);
+                } else {
+                    // Lung circulation path
+                    const curve = new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(0.3, 1.0, 0.2),
+                        new THREE.Vector3(0.8, 1.4, 0.5),
+                        new THREE.Vector3(1.5, 1.6, 0.8),
+                        new THREE.Vector3(2.5, 1.2, 1.0),
+                        new THREE.Vector3(2.8, 0.5, 0.8),
+                        new THREE.Vector3(2.5, 0.8, 0.8),
+                        new THREE.Vector3(1.5, 0.5, 0.4),
+                        new THREE.Vector3(0.8, 0.2, 0.2),
+                        new THREE.Vector3(-0.2, 0.5, 0.1),
+                        new THREE.Vector3(0, 0.8, 0.15)
+                    ]);
+                    return curve.getPoint(t);
+                }
+            }
+
+            dispose() {
+                scene.remove(this.mesh);
+                this.mesh.geometry.dispose();
+                this.mesh.material.dispose();
+            }
+        }
+
+        // Initialize blood particles
+        function initBloodParticles() {
+            // Clear existing
+            bloodParticles.forEach(p => p.dispose());
+            bloodParticles.length = 0;
+
+            // Body circulation particles
+            for (let i = 0; i < 40; i++) {
+                const particle = new BloodParticle('body', i < 20, i / 40);
+                bloodParticles.push(particle);
+            }
+
+            // Lung circulation particles
+            for (let i = 0; i < 25; i++) {
+                const particle = new BloodParticle('lungs', i > 12, i / 25);
+                bloodParticles.push(particle);
+            }
+        }
+
+        // Raycaster for interaction
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let hoveredOrgan = null;
+
+        function onMouseMove(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            const allMeshes = [];
+            Object.values(organs).forEach(group => {
+                group.traverse(child => {
+                    if (child.isMesh && child.userData.type) {
+                        allMeshes.push(child);
+                    }
+                });
+            });
+
+            const intersects = raycaster.intersectObjects(allMeshes);
+
+            const tooltip = document.getElementById('tooltip');
+
+            if (intersects.length > 0) {
+                const organ = intersects[0].object.userData.type;
+                if (organ && organInfo[organ]) {
+                    document.getElementById('tooltipTitle').textContent = organInfo[organ].title;
+                    document.getElementById('tooltipDesc').textContent = organInfo[organ].desc;
+                    tooltip.classList.add('visible');
+                    hoveredOrgan = organ;
+                    document.body.style.cursor = 'pointer';
+                }
+            } else {
+                tooltip.classList.remove('visible');
+                hoveredOrgan = null;
+                document.body.style.cursor = 'default';
+            }
+        }
+
+        // View presets
+        const viewPresets = {
+            full: { pos: new THREE.Vector3(0, 2, 12), target: new THREE.Vector3(0, 0, 0) },
+            heart: { pos: new THREE.Vector3(0, 0.5, 5), target: new THREE.Vector3(0, 0, 0) },
+            lungs: { pos: new THREE.Vector3(4, 1, 5), target: new THREE.Vector3(2.8, 0.5, 0.8) },
+            body: { pos: new THREE.Vector3(0, -2, 8), target: new THREE.Vector3(0, -3, 0) }
+        };
+
+        let targetCameraPos = viewPresets.full.pos.clone();
+        let targetControlsTarget = viewPresets.full.target.clone();
+
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const view = btn.dataset.view;
+                targetCameraPos = viewPresets[view].pos.clone();
+                targetControlsTarget = viewPresets[view].target.clone();
+            });
+        });
+
+        // UI Controls
+        document.getElementById('heartRate').addEventListener('input', (e) => {
+            heartRate = parseInt(e.target.value);
+            document.getElementById('bpmValue').textContent = heartRate + ' BPM';
+            document.getElementById('sliderValue').textContent = heartRate + ' BPM';
+
+            // Update beat animation
+            const duration = 60 / heartRate;
+            document.querySelectorAll('.beat-bar').forEach(bar => {
+                bar.style.animationDuration = duration + 's';
+            });
+
+            // Update vitals
+            let o2 = heartRate < 60 ? 95 : heartRate > 150 ? 92 : 98;
+            document.getElementById('o2Value').textContent = o2 + '%';
+
+            let systolic = Math.round(100 + (heartRate - 40) * 0.5);
+            let diastolic = Math.round(70 + (heartRate - 40) * 0.15);
+            document.getElementById('pressureValue').textContent = systolic + '/' + diastolic;
+        });
+
+        // Resize handler
+        function onResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            time += 0.016;
+            heartPhase += (heartRate / 60) * 0.1;
+
+            // Heart pulsing
+            if (organs.heart) {
+                const heartScale = 1 + Math.sin(heartPhase) * 0.06;
+                organs.heart.children[0].scale.setScalar(heartScale);
+            }
+
+            // Smooth camera transition
+            camera.position.lerp(targetCameraPos, 0.02);
+            controls.target.lerp(targetControlsTarget, 0.02);
+
+            // Update blood particles
+            const speedMult = heartRate / 72;
+            bloodParticles.forEach(particle => {
+                particle.update(speedMult);
+            });
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // Initialize
+        function init() {
+            createHeart();
+            createLungs();
+            createBrain();
+            createBody();
+            initBloodParticles();
+
+            window.addEventListener('resize', onResize);
+            window.addEventListener('mousemove', onMouseMove);
+
+            // Hide loading
+            document.getElementById('loading').style.display = 'none';
+
+            animate();
+        }
+
+        init();
+    </script>
+</body>
+</html>
