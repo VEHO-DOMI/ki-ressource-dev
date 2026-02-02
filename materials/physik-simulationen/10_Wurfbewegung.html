@@ -267,36 +267,42 @@
     </div>
 
     <script>
-        function resizeCanvas() {
-            const canvas = document.getElementById('projectileCanvas');
-            const mainArea = document.querySelector('.main-area');
-            const mainLayout = document.querySelector('.main-layout');
-
-            if (mainArea && mainLayout.offsetWidth > 900) {
-                canvas.width = mainArea.offsetWidth;
-                canvas.height = mainLayout.offsetHeight;
-            } else {
-                canvas.width = 650;
-                canvas.height = 450;
-            }
-            draw();
-        }
-        window.addEventListener('resize', resizeCanvas);
-
         const canvas = document.getElementById('projectileCanvas');
         const ctx = canvas.getContext('2d');
-        resizeCanvas();
+
+        // Setze initiale Canvas-Größe explizit
+        canvas.width = 650;
+        canvas.height = 450;
 
         const g = 9.81;
         let scale = 8; // pixels per meter
         let originX = 50;
         let groundY = canvas.height - 50;
 
-        window.addEventListener('resize', () => {
-            originX = 50;
+        function resizeCanvas() {
+            const canvasContainer = document.querySelector('.canvas-container');
+            const mainLayout = document.querySelector('.main-layout');
+
+            if (canvasContainer && mainLayout && mainLayout.offsetWidth > 900) {
+                // Berechne verfügbare Größe im Container
+                const containerWidth = canvasContainer.clientWidth - 20; // minus padding
+                const containerHeight = canvasContainer.clientHeight - 20;
+                canvas.width = Math.max(400, containerWidth);
+                canvas.height = Math.max(300, containerHeight);
+            } else {
+                canvas.width = 650;
+                canvas.height = 450;
+            }
+
+            // Wichtig: Aktualisiere groundY und scale nach Größenänderung
             groundY = canvas.height - 50;
+            originX = 50;
             scale = Math.max(5, Math.floor(canvas.width / 100));
-        });
+
+            draw();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
 
         let v0 = 20;
         let angle = 45;
@@ -652,6 +658,25 @@
             showGrid = e.target.checked;
             draw();
         });
+
+        // Initiale Zeichnung nach DOM-Laden
+        function init() {
+            // Zeichne sofort mit initialen Werten
+            groundY = canvas.height - 50;
+            draw();
+
+            // Resize nach kurzer Verzögerung für iframe-Kontext
+            setTimeout(() => {
+                resizeCanvas();
+            }, 100);
+        }
+
+        // Sicherstellen, dass init nach dem Laden ausgeführt wird
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
     </script>
 </body>
 </html>
