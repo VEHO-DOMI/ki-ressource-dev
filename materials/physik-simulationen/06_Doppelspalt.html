@@ -65,7 +65,7 @@
         canvas#mainCanvas {
             width: 100%;
             flex: 1;
-            min-height: 280px;
+            min-height: 350px;
             border-radius: 8px;
             background: radial-gradient(ellipse at 20% 50%, #0a0a20 0%, #050510 100%);
             border: 1px solid rgba(171, 71, 188, 0.2);
@@ -110,7 +110,7 @@
 
         #intensityCanvas {
             flex: 1;
-            height: 40px;
+            height: 50px;
             border-radius: 4px;
             background: rgba(0,0,0,0.3);
         }
@@ -340,7 +340,7 @@
     <div class="container">
         <header>
             <h1>Doppelspaltexperiment</h1>
-            <p class="subtitle">Entdecke das Geheimnis der Quantenphysik – Welle oder Teilchen?</p>
+            <p class="subtitle">Welle-Teilchen-Dualismus: Interferenz durch Überlagerung von Kugelwellen</p>
         </header>
 
         <div class="main-layout">
@@ -366,26 +366,25 @@
                 </div>
 
                 <div class="detector-alert" id="detectorAlert">
-                    <strong>🔍 Detektor AKTIV:</strong> Interferenzmuster verschwindet – Messung zerstört Wellennatur!
+                    <strong>🔍 Detektor AKTIV:</strong> Interferenzmuster verschwindet – die Messung zerstört die Wellennatur!
                 </div>
 
                 <div class="info-toggle" onclick="this.classList.toggle('open')">
-                    💡 Quantenmechanische Erkenntnis <span style="margin-left:auto">▼</span>
-                </div>
-                <div class="info-content" id="insightText">
-                    Einzelne Photonen erzeugen zufällige Punkte auf dem Schirm.
-                    Aber über viele Teilchen entsteht ein Interferenzmuster – als würde jedes Teilchen
-                    gleichzeitig durch beide Spalte gehen!
-                </div>
-
-                <div class="info-toggle" onclick="this.classList.toggle('open')">
-                    📚 Welle-Teilchen-Dualismus <span style="margin-left:auto">▼</span>
+                    💡 Huygens-Prinzip <span style="margin-left:auto">▼</span>
                 </div>
                 <div class="info-content">
-                    Das Doppelspaltexperiment zeigt: <strong>Quantenobjekte sind weder reine Wellen noch reine Teilchen</strong>.
-                    Ein einzelnes Photon geht "irgendwie" durch beide Spalte gleichzeitig und interferiert mit sich selbst!
-                    Aber sobald wir messen, durch welchen Spalt es geht, verschwindet das Interferenzmuster.
-                    Die <strong>Beobachtung verändert das System</strong>.
+                    Jeder Punkt einer Wellenfront ist Ausgangspunkt einer neuen <strong>Kugelwelle</strong> (Elementarwelle).
+                    Die Überlagerung aller Elementarwellen ergibt die neue Wellenfront.
+                    Bei zwei Spalten entstehen zwei Kugelwellen, die sich überlagern und ein <strong>Interferenzmuster</strong> bilden.
+                </div>
+
+                <div class="info-toggle" onclick="this.classList.toggle('open')">
+                    📚 Konstruktive & Destruktive Interferenz <span style="margin-left:auto">▼</span>
+                </div>
+                <div class="info-content">
+                    <strong>Konstruktiv (Maximum):</strong> Gangunterschied Δs = n·λ → Wellenberge treffen auf Wellenberge → Verstärkung<br><br>
+                    <strong>Destruktiv (Minimum):</strong> Gangunterschied Δs = (n+½)·λ → Wellenberg trifft Wellental → Auslöschung<br><br>
+                    Die <strong>hellen Streifen</strong> entstehen dort, wo die Wellen sich verstärken, die <strong>dunklen Streifen</strong> dort, wo sie sich auslöschen.
                 </div>
             </div>
 
@@ -434,7 +433,7 @@
                         <span class="slider-lbl">↔️ Spaltabstand d</span>
                         <span class="slider-val" id="slitDistanceVal">0.5 mm</span>
                     </div>
-                    <input type="range" id="slitDistance" min="20" max="100" value="50">
+                    <input type="range" id="slitDistance" min="30" max="120" value="60">
                 </div>
 
                 <div class="slider-item">
@@ -442,7 +441,7 @@
                         <span class="slider-lbl">📏 Spaltbreite b</span>
                         <span class="slider-val" id="slitWidthVal">0.1 mm</span>
                     </div>
-                    <input type="range" id="slitWidth" min="3" max="25" value="10">
+                    <input type="range" id="slitWidth" min="5" max="30" value="12">
                 </div>
 
                 <div class="slider-item">
@@ -462,7 +461,7 @@
 
                 <div class="toggle-item" id="toggleProbability" onclick="toggleOption('probability')">
                     <div class="toggle-sw"></div>
-                    <span>Wahrscheinlichkeitsverteilung</span>
+                    <span>Theoretische Intensität</span>
                 </div>
 
                 <div class="btn-row">
@@ -497,9 +496,9 @@
         function resizeCanvases() {
             const simPanel = mainCanvas.parentElement;
             mainCanvas.width = simPanel.clientWidth - 24;
-            mainCanvas.height = Math.min(400, simPanel.clientHeight - 180);
+            mainCanvas.height = Math.min(450, simPanel.clientHeight - 200);
             intensityCanvas.width = intensityCanvas.offsetWidth;
-            intensityCanvas.height = 40;
+            intensityCanvas.height = 50;
         }
 
         window.addEventListener('resize', resizeCanvases);
@@ -516,8 +515,8 @@
 
         // Physics parameters
         let wavelength = 550;
-        let slitDistance = 50;
-        let slitWidth = 10;
+        let slitDistance = 60;
+        let slitWidth = 12;
         let emissionRate = 5;
 
         // Particles and detection
@@ -529,7 +528,6 @@
         let slit2Count = 0;
 
         let time = 0;
-        let waveFronts = [];
 
         // Dynamic geometry
         function getGeometry() {
@@ -553,22 +551,24 @@
             return `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${alpha})`;
         }
 
-        // Calculate interference intensity
+        // Calculate interference intensity (physically correct)
         function getIntensity(y, slitMode = mode) {
             const geo = getGeometry();
-            const d = slitDistance * 0.00001;
-            const b = slitWidth * 0.00001;
-            const L = 0.5;
-            const lambda = wavelength * 1e-9;
-            const yOffset = (y - geo.centerY) * 0.0001;
+            const d = slitDistance * 0.00001;  // convert to meters
+            const b = slitWidth * 0.000003;    // convert to meters
+            const L = 0.5;  // screen distance in meters
+            const lambda = wavelength * 1e-9;  // wavelength in meters
+            const yOffset = (y - geo.centerY) * 0.0001;  // position on screen
             const theta = Math.atan2(yOffset, L);
             const sinTheta = Math.sin(theta);
 
+            // Single slit diffraction envelope
             const alpha = Math.PI * b * sinTheta / lambda;
             const singleSlit = alpha !== 0 ? Math.pow(Math.sin(alpha) / alpha, 2) : 1;
 
             if (slitMode === 'single' || detectorActive) return singleSlit;
 
+            // Double slit interference
             const beta = Math.PI * d * sinTheta / lambda;
             return singleSlit * Math.pow(Math.cos(beta), 2);
         }
@@ -578,6 +578,7 @@
             const geo = getGeometry();
             const color = particleType === 'photon' ? wavelengthToColor(wavelength) : 'rgba(66, 165, 245, 1)';
 
+            // Use rejection sampling based on intensity distribution
             let y, attempts = 0;
             do {
                 y = geo.centerY + (Math.random() - 0.5) * (mainCanvas.height * 0.9);
@@ -591,18 +592,15 @@
                 targetY: y,
                 color: color,
                 slit: Math.random() < 0.5 ? 1 : 2,
+                phase: time,
                 active: true
             });
-
-            if (showWaves && !detectorActive) {
-                waveFronts.push({ x: geo.sourceX, radius: 0, fromSource: true });
-            }
         }
 
         // Update particles
         function updateParticles() {
             const geo = getGeometry();
-            const moveSpeed = 5 * speed;
+            const moveSpeed = 4 * speed;
 
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
@@ -613,20 +611,10 @@
                     p.x += moveSpeed;
                     const progress = (p.x - geo.slitX) / (geo.screenX - geo.slitX);
                     p.y = geo.centerY + (p.targetY - geo.centerY) * progress;
-
-                    if (p.x === geo.slitX + moveSpeed && showWaves && !detectorActive) {
-                        const slit1Y = geo.centerY - slitDistance;
-                        const slit2Y = geo.centerY + slitDistance;
-                        if (mode !== 'single') {
-                            waveFronts.push({ x: geo.slitX, y: slit1Y, radius: 0, fromSlit: 1 });
-                            waveFronts.push({ x: geo.slitX, y: slit2Y, radius: 0, fromSlit: 2 });
-                        } else {
-                            waveFronts.push({ x: geo.slitX, y: geo.centerY, radius: 0, fromSlit: 0 });
-                        }
-                    }
                 } else {
+                    // Particle hits screen
                     detectedPoints.push({
-                        x: geo.screenX + 5 + Math.random() * (mainCanvas.width - geo.screenX - 10),
+                        x: geo.screenX + 3 + Math.random() * 8,
                         y: Math.round(p.y),
                         color: p.color,
                         age: 0
@@ -641,17 +629,117 @@
                     particles.splice(i, 1);
                 }
             }
-
-            for (let i = waveFronts.length - 1; i >= 0; i--) {
-                waveFronts[i].radius += 3 * speed;
-                if (waveFronts[i].radius > 400) waveFronts.splice(i, 1);
-            }
         }
 
         function updateStats() {
             document.getElementById('totalCount').textContent = totalCount;
             document.getElementById('slit1Count').textContent = slit1Count;
             document.getElementById('slit2Count').textContent = slit2Count;
+        }
+
+        // Draw circular wavefronts with interference
+        function drawWavefronts() {
+            const geo = getGeometry();
+            const waveColor = particleType === 'photon' ? wavelengthToColor(wavelength, 1) : 'rgba(66, 165, 245, 1)';
+            const waveSpeed = 2 * speed;
+            const numWaves = 15;
+            const waveSpacing = wavelength / 15;  // Scale wavelength to visual spacing
+
+            const slit1Y = geo.centerY - slitDistance;
+            const slit2Y = geo.centerY + slitDistance;
+
+            // Create offscreen canvas for interference pattern
+            const offCanvas = document.createElement('canvas');
+            offCanvas.width = mainCanvas.width;
+            offCanvas.height = mainCanvas.height;
+            const offCtx = offCanvas.getContext('2d');
+
+            // Draw interference pattern using wave superposition
+            const imageData = offCtx.createImageData(mainCanvas.width, mainCanvas.height);
+            const data = imageData.data;
+
+            const startX = geo.slitX + 10;
+            const endX = geo.screenX - 5;
+
+            for (let px = startX; px < endX; px++) {
+                for (let py = 0; py < mainCanvas.height; py++) {
+                    // Distance from each slit
+                    const d1 = Math.sqrt((px - geo.slitX) ** 2 + (py - slit1Y) ** 2);
+                    const d2 = Math.sqrt((px - geo.slitX) ** 2 + (py - slit2Y) ** 2);
+
+                    // Phase of wave from each slit (including time animation)
+                    const phase1 = (d1 / waveSpacing - time * waveSpeed * 0.1) * 2 * Math.PI;
+                    const phase2 = (d2 / waveSpacing - time * waveSpeed * 0.1) * 2 * Math.PI;
+
+                    let amplitude;
+                    if (mode === 'single' || detectorActive) {
+                        // Single slit: only one wave
+                        const dCenter = Math.sqrt((px - geo.slitX) ** 2 + (py - geo.centerY) ** 2);
+                        const phaseCenter = (dCenter / waveSpacing - time * waveSpeed * 0.1) * 2 * Math.PI;
+                        amplitude = Math.cos(phaseCenter);
+                    } else {
+                        // Double slit: superposition of two waves
+                        const wave1 = Math.cos(phase1);
+                        const wave2 = Math.cos(phase2);
+                        amplitude = (wave1 + wave2) / 2;
+                    }
+
+                    // Convert amplitude to brightness (intensity = amplitude^2, but show amplitude for visibility)
+                    const brightness = (amplitude + 1) / 2;  // Map -1..1 to 0..1
+                    const alpha = brightness * 0.4;
+
+                    const idx = (py * mainCanvas.width + px) * 4;
+                    if (particleType === 'photon') {
+                        const rgb = wavelengthToRGB(wavelength);
+                        data[idx] = rgb.r;
+                        data[idx + 1] = rgb.g;
+                        data[idx + 2] = rgb.b;
+                    } else {
+                        data[idx] = 66;
+                        data[idx + 1] = 165;
+                        data[idx + 2] = 245;
+                    }
+                    data[idx + 3] = alpha * 255;
+                }
+            }
+
+            offCtx.putImageData(imageData, 0, 0);
+            ctx.drawImage(offCanvas, 0, 0);
+
+            // Draw concentric circles from each slit for clarity
+            ctx.strokeStyle = waveColor.replace(/[\d.]+\)$/g, '0.3)');
+            ctx.lineWidth = 1;
+
+            for (let r = 0; r < 400; r += waveSpacing) {
+                const radius = r + (time * waveSpeed * 3) % waveSpacing;
+
+                if (mode !== 'single' && !detectorActive) {
+                    // Two slits
+                    ctx.beginPath();
+                    ctx.arc(geo.slitX, slit1Y, radius, -Math.PI/2, Math.PI/2);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.arc(geo.slitX, slit2Y, radius, -Math.PI/2, Math.PI/2);
+                    ctx.stroke();
+                } else {
+                    // Single slit
+                    ctx.beginPath();
+                    ctx.arc(geo.slitX, geo.centerY, radius, -Math.PI/2, Math.PI/2);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        function wavelengthToRGB(wl) {
+            let r, g, b;
+            if (wl >= 380 && wl < 440) { r = -(wl - 440) / 60; g = 0; b = 1; }
+            else if (wl < 490) { r = 0; g = (wl - 440) / 50; b = 1; }
+            else if (wl < 510) { r = 0; g = 1; b = -(wl - 510) / 20; }
+            else if (wl < 580) { r = (wl - 510) / 70; g = 1; b = 0; }
+            else if (wl < 645) { r = 1; g = -(wl - 645) / 65; b = 0; }
+            else { r = 1; g = 0; b = 0; }
+            return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
         }
 
         // Draw functions
@@ -663,98 +751,146 @@
             ctx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
 
             // Grid
-            ctx.strokeStyle = 'rgba(171, 71, 188, 0.05)';
+            ctx.strokeStyle = 'rgba(171, 71, 188, 0.03)';
             for (let x = 0; x < mainCanvas.width; x += 40) {
                 ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, mainCanvas.height); ctx.stroke();
             }
 
-            // Wave fronts
-            if (showWaves) {
-                const waveColor = particleType === 'photon' ? wavelengthToColor(wavelength, 0.15) : 'rgba(66, 165, 245, 0.15)';
-                ctx.strokeStyle = waveColor;
-                waveFronts.forEach(wf => {
-                    ctx.beginPath();
-                    if (wf.fromSource) {
-                        ctx.arc(wf.x, geo.centerY, wf.radius, -0.5, 0.5);
-                    } else {
-                        const slitY = wf.fromSlit === 1 ? geo.centerY - slitDistance :
-                                      wf.fromSlit === 2 ? geo.centerY + slitDistance : geo.centerY;
-                        ctx.arc(geo.slitX, slitY, wf.radius, -0.8, 0.8);
-                    }
-                    ctx.stroke();
-                });
+            // Wave fronts with interference
+            if (showWaves && isPlaying) {
+                drawWavefronts();
             }
 
-            // Source
+            // Source glow
             const srcColor = particleType === 'photon' ? wavelengthToColor(wavelength) : '#42a5f5';
             const glow = ctx.createRadialGradient(geo.sourceX, geo.centerY, 0, geo.sourceX, geo.centerY, 30);
-            glow.addColorStop(0, srcColor.replace('1)', '0.3)'));
+            glow.addColorStop(0, srcColor.replace('1)', '0.4)'));
             glow.addColorStop(1, 'transparent');
             ctx.fillStyle = glow;
             ctx.beginPath(); ctx.arc(geo.sourceX, geo.centerY, 30, 0, Math.PI * 2); ctx.fill();
             ctx.beginPath(); ctx.arc(geo.sourceX, geo.centerY, 10, 0, Math.PI * 2);
             ctx.fillStyle = srcColor; ctx.fill();
 
-            // Barrier
+            // Incoming plane wave (before slits)
+            if (showWaves && isPlaying) {
+                ctx.strokeStyle = srcColor.replace('1)', '0.2)');
+                ctx.lineWidth = 2;
+                const waveSpacing = wavelength / 15;
+                for (let x = geo.sourceX + 20; x < geo.slitX - 5; x += waveSpacing) {
+                    const xPos = x + (time * speed * 6) % waveSpacing;
+                    if (xPos < geo.slitX - 5) {
+                        ctx.beginPath();
+                        ctx.moveTo(xPos, geo.centerY - 60);
+                        ctx.lineTo(xPos, geo.centerY + 60);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Barrier with slits
             const slit1Y = geo.centerY - slitDistance;
             const slit2Y = geo.centerY + slitDistance;
             const hw = slitWidth / 2;
-            ctx.fillStyle = '#2a2a3a';
 
-            if (mode === 'single') {
-                ctx.fillRect(geo.slitX - 6, 0, 12, geo.centerY - hw);
-                ctx.fillRect(geo.slitX - 6, geo.centerY + hw, 12, mainCanvas.height);
+            ctx.fillStyle = '#1a1a2e';
+            ctx.strokeStyle = '#3a3a5e';
+            ctx.lineWidth = 1;
+
+            if (mode === 'single' || (mode === 'compare' && detectorActive)) {
+                // Single slit
+                ctx.fillRect(geo.slitX - 8, 0, 16, geo.centerY - hw);
+                ctx.fillRect(geo.slitX - 8, geo.centerY + hw, 16, mainCanvas.height);
+                ctx.strokeRect(geo.slitX - 8, 0, 16, geo.centerY - hw);
+                ctx.strokeRect(geo.slitX - 8, geo.centerY + hw, 16, mainCanvas.height);
             } else {
-                ctx.fillRect(geo.slitX - 6, 0, 12, slit1Y - hw);
-                ctx.fillRect(geo.slitX - 6, slit1Y + hw, 12, slit2Y - slit1Y - slitWidth);
-                ctx.fillRect(geo.slitX - 6, slit2Y + hw, 12, mainCanvas.height);
+                // Double slit
+                ctx.fillRect(geo.slitX - 8, 0, 16, slit1Y - hw);
+                ctx.fillRect(geo.slitX - 8, slit1Y + hw, 16, slit2Y - slit1Y - slitWidth);
+                ctx.fillRect(geo.slitX - 8, slit2Y + hw, 16, mainCanvas.height);
+                ctx.strokeRect(geo.slitX - 8, 0, 16, slit1Y - hw);
+                ctx.strokeRect(geo.slitX - 8, slit1Y + hw, 16, slit2Y - slit1Y - slitWidth);
+                ctx.strokeRect(geo.slitX - 8, slit2Y + hw, 16, mainCanvas.height);
             }
 
-            // Slit highlights
+            // Slit openings highlighted
             ctx.strokeStyle = '#ab47bc';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 3;
+            ctx.shadowColor = '#ab47bc';
+            ctx.shadowBlur = 10;
             if (mode === 'single') {
                 ctx.beginPath(); ctx.moveTo(geo.slitX, geo.centerY - hw); ctx.lineTo(geo.slitX, geo.centerY + hw); ctx.stroke();
             } else {
                 ctx.beginPath(); ctx.moveTo(geo.slitX, slit1Y - hw); ctx.lineTo(geo.slitX, slit1Y + hw); ctx.stroke();
                 ctx.beginPath(); ctx.moveTo(geo.slitX, slit2Y - hw); ctx.lineTo(geo.slitX, slit2Y + hw); ctx.stroke();
             }
+            ctx.shadowBlur = 0;
 
-            // Screen
+            // Theoretical probability distribution on screen
             if (showProbability) {
                 for (let y = 0; y < mainCanvas.height; y += 2) {
                     const intensity = getIntensity(y);
-                    ctx.fillStyle = particleType === 'photon' ? wavelengthToColor(wavelength, intensity * 0.4) : `rgba(66, 165, 245, ${intensity * 0.4})`;
-                    ctx.fillRect(geo.screenX, y, mainCanvas.width - geo.screenX, 2);
+                    ctx.fillStyle = particleType === 'photon'
+                        ? wavelengthToColor(wavelength, intensity * 0.5)
+                        : `rgba(66, 165, 245, ${intensity * 0.5})`;
+                    ctx.fillRect(geo.screenX, y, 15, 2);
                 }
             }
 
-            // Detected points
+            // Detection screen
+            ctx.fillStyle = '#0f0f1a';
+            ctx.fillRect(geo.screenX + 15, 0, mainCanvas.width - geo.screenX - 15, mainCanvas.height);
+            ctx.strokeStyle = 'rgba(171, 71, 188, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(geo.screenX + 15, 0);
+            ctx.lineTo(geo.screenX + 15, mainCanvas.height);
+            ctx.stroke();
+
+            // Detected points (accumulated hits)
             detectedPoints.forEach(pt => {
                 ctx.beginPath();
                 ctx.arc(pt.x, pt.y, 2, 0, Math.PI * 2);
-                ctx.fillStyle = pt.color.replace(/[\d.]+\)$/g, `${Math.max(0.2, 1 - pt.age * 0.002)})`);
+                const alpha = Math.max(0.3, 1 - pt.age * 0.001);
+                ctx.fillStyle = pt.color.replace(/[\d.]+\)$/g, `${alpha})`);
                 ctx.fill();
                 pt.age++;
             });
 
             // Flying particles
             particles.forEach(p => {
-                const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 12);
+                const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 15);
                 glow.addColorStop(0, p.color);
                 glow.addColorStop(1, 'transparent');
                 ctx.fillStyle = glow;
-                ctx.beginPath(); ctx.arc(p.x, p.y, 12, 0, Math.PI * 2); ctx.fill();
-                ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-                ctx.fillStyle = p.color; ctx.fill();
+                ctx.beginPath(); ctx.arc(p.x, p.y, 15, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                ctx.fillStyle = '#fff'; ctx.fill();
             });
 
             // Labels
-            ctx.fillStyle = 'rgba(255,255,255,0.4)';
-            ctx.font = '10px Inter';
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.font = '11px Inter';
             ctx.textAlign = 'center';
-            ctx.fillText(particleType === 'photon' ? 'Lichtquelle' : 'e⁻ Quelle', geo.sourceX, geo.centerY + 45);
-            ctx.fillText('Detektorschirm', geo.screenX + 25, 15);
+            ctx.fillText(particleType === 'photon' ? 'Lichtquelle' : 'e⁻ Quelle', geo.sourceX, geo.centerY + 55);
+            ctx.fillText(mode === 'single' ? 'Einzelspalt' : 'Doppelspalt', geo.slitX, 20);
+            ctx.fillText('Schirm', geo.screenX + 30, 20);
+
+            // Slit labels
+            if (mode !== 'single') {
+                ctx.font = '10px Inter';
+                ctx.fillStyle = 'rgba(171, 71, 188, 0.8)';
+                ctx.fillText('Spalt 1', geo.slitX + 25, slit1Y);
+                ctx.fillText('Spalt 2', geo.slitX + 25, slit2Y);
+            }
+
+            // Show interference maxima/minima markers on screen (if enough data)
+            if (totalCount > 50 && mode !== 'single' && !detectorActive) {
+                ctx.fillStyle = 'rgba(0, 255, 100, 0.6)';
+                ctx.font = '9px Inter';
+                ctx.textAlign = 'left';
+                // Main maximum at center
+                ctx.fillText('Max (0)', geo.screenX + 20, geo.centerY + 3);
+            }
         }
 
         function drawIntensityGraph() {
@@ -762,8 +898,22 @@
             ictx.fillStyle = 'rgba(0,0,0,0.5)';
             ictx.fillRect(0, 0, intensityCanvas.width, intensityCanvas.height);
 
+            // Draw theoretical curve
+            ictx.strokeStyle = 'rgba(171, 71, 188, 0.4)';
+            ictx.lineWidth = 1;
+            ictx.beginPath();
+            for (let i = 0; i < intensityCanvas.width; i++) {
+                const y = (i / intensityCanvas.width) * mainCanvas.height;
+                const intensity = getIntensity(y);
+                const h = intensity * (intensityCanvas.height - 5);
+                if (i === 0) ictx.moveTo(i, intensityCanvas.height - h);
+                else ictx.lineTo(i, intensityCanvas.height - h);
+            }
+            ictx.stroke();
+
             if (totalCount === 0) return;
 
+            // Draw histogram
             const maxVal = Math.max(...histogram, 1);
             const barWidth = intensityCanvas.width / histogram.length;
             const color = particleType === 'photon' ? wavelengthToColor(wavelength, 0.8) : 'rgba(66, 165, 245, 0.8)';
@@ -777,12 +927,12 @@
 
         function animate() {
             if (isPlaying) {
-                if (Math.random() < emissionRate * speed * 0.03) emitParticle();
+                if (Math.random() < emissionRate * speed * 0.025) emitParticle();
                 updateParticles();
+                time++;
             }
             draw();
             drawIntensityGraph();
-            time++;
             requestAnimationFrame(animate);
         }
 
@@ -795,7 +945,6 @@
         function resetExperiment() {
             particles = [];
             detectedPoints = [];
-            waveFronts = [];
             histogram = new Array(200).fill(0);
             totalCount = slit1Count = slit2Count = 0;
             updateStats();
