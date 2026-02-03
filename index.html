@@ -695,6 +695,27 @@
                 inset 0 0 30px rgba(255, 170, 0, 0.05);
         }
 
+        /* Formula Block - for MathJax formulas */
+        .formula-block {
+            background: linear-gradient(180deg,
+                rgba(0, 212, 255, 0.08) 0%,
+                rgba(0, 212, 255, 0.02) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 6px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+            font-size: 1.1em;
+            overflow-x: auto;
+            box-shadow:
+                0 0 15px rgba(0, 212, 255, 0.1),
+                inset 0 0 20px rgba(0, 212, 255, 0.03);
+        }
+
+        .formula-block mjx-container {
+            margin: 0 !important;
+        }
+
         /* Intro Collapsible - für Einführungstexte */
         .intro-collapsible {
             background: linear-gradient(180deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.02) 100%);
@@ -1194,6 +1215,19 @@
             color: #fff;
         }
     </style>
+    <!-- MathJax for mathematical formulas -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 </head>
 <body>
     <!-- Sidebar Navigation -->
@@ -1460,12 +1494,12 @@
 
                                     <p>Das klassische Beispiel, das zeigt, wie viel Struktur in diesen Vektoren steckt: Wenn man vom Vektor für <em>König</em> den Vektor für <em>Mann</em> abzieht und den Vektor für <em>Frau</em> addiert, landet man sehr nahe beim Vektor für <em>Königin</em>:</p>
 
-                                    <div class="code-block">König⃗ − Mann⃗ + Frau⃗ ≈ Königin⃗</div>
+                                    <div class="formula-block">$$\overrightarrow{\text{König}} - \overrightarrow{\text{Mann}} + \overrightarrow{\text{Frau}} \approx \overrightarrow{\text{Königin}}$$</div>
 
                                     <p>Die Richtung „Mann → Frau" kodiert Geschlechtsinformation; nicht, weil jemand das so programmiert hat, sondern weil das Modell dieses Muster aus Millionen von Texten gelernt hat. Ähnliche Vektorarithmetik funktioniert auch für andere Beziehungen:</p>
 
-                                    <div class="code-block">Frankreich⃗ − Paris⃗ + Berlin⃗ ≈ Deutschland⃗
-gehen⃗ − ging⃗ + laufen⃗ ≈ lief⃗</div>
+                                    <div class="formula-block">$$\overrightarrow{\text{Frankreich}} - \overrightarrow{\text{Paris}} + \overrightarrow{\text{Berlin}} \approx \overrightarrow{\text{Deutschland}}$$</div>
+                                    <div class="formula-block">$$\overrightarrow{\text{gehen}} - \overrightarrow{\text{ging}} + \overrightarrow{\text{laufen}} \approx \overrightarrow{\text{lief}}$$</div>
 
                                     <p>Zusätzlich zu diesen semantischen Vektoren erhält jedes Token einen Positionsvektor, der kodiert, an welcher Stelle im Satz es steht. Das ist wichtig, weil dieselben Wörter je nach Position verschiedene Dinge bedeuten können: „Der Hund jagte die Katze" ist etwas anderes als „Die Katze jagte den Hund."</p>
 
@@ -1481,7 +1515,7 @@ gehen⃗ − ging⃗ + laufen⃗ ≈ lief⃗</div>
 
                                     <p>Das Modell vergleicht dann den Query eines Tokens mit den Keys aller anderen Tokens. Dort, wo Query und Key gut zusammenpassen (mathematisch: wo ihr Skalarprodukt hoch ist), fließt viel Information. Formal lässt sich der gesamte Attention-Mechanismus in einer einzigen Formel ausdrücken:</p>
 
-                                    <div class="code-block">Attention(Q,K,V) = softmax(Q·Kᵀ / √d_k) · V</div>
+                                    <div class="formula-block">$$\text{Attention}(Q,K,V) = \text{softmax}\left( \frac{Q \cdot K^{T}}{\sqrt{d_{k}}} \right) \cdot V$$</div>
 
                                     <p>Was passiert hier Schritt für Schritt:</p>
                                     <ul>
@@ -1496,14 +1530,26 @@ gehen⃗ − ging⃗ + laufen⃗ ≈ lief⃗</div>
                                     <h4>Multi-Head Attention: Viele Perspektiven gleichzeitig</h4>
                                     <p>In der Praxis führt das Modell diesen Attention-Prozess nicht nur einmal durch, sondern viele Male parallel, über sogenannte <em>Attention Heads</em>. Jeder Head lernt, auf andere Aspekte zu achten: Ein Head könnte grammatische Beziehungen verfolgen (Subjekt → Verb), ein anderer semantische Zusammenhänge (Tier → Lebensraum), ein dritter kausale Verbindungen (Ursache → Wirkung).</p>
 
+                                    <p>Formal: Die Eingabe wird durch verschiedene gelernte Gewichtsmatrizen ($W^Q$, $W^K$, $W^V$) in verschiedene Q-, K- und V-Vektoren projiziert. Jeder Head hat seine eigenen Gewichte und „sieht" den Text dadurch aus einer anderen Perspektive. Die Ergebnisse aller Heads werden am Ende konkateniert und durch eine weitere Transformation zusammengeführt:</p>
+
+                                    <div class="formula-block">$$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h) \cdot W^O$$</div>
+                                    <p>wobei</p>
+                                    <div class="formula-block">$$\text{head}_i = \text{Attention}(Q \cdot W_i^Q, K \cdot W_i^K, V \cdot W_i^V)$$</div>
+
                                     <p>GPT-3 verwendete 96 solcher Heads pro Layer und hat 96 Layer übereinander gestapelt. Jeder Layer nimmt die Ausgabe des vorherigen und verarbeitet sie weiter. In den unteren Layern lernt das Modell einfache Muster (Wortarten, grundlegende Grammatik), in den mittleren komplexere Zusammenhänge (Satzbedeutung, logische Beziehungen), und in den oberen Layern abstrakte Konzepte (Ironie, implizite Annahmen, Weltwissen).</p>
 
-                                    <p>Für Sprachinteressierte ist das ein faszinierender Befund: Die Layer-Hierarchie eines Transformers spiegelt in verblüffender Weise die Ebenen linguistischer Analyse wider, von Phonologie und Morphologie (untere Layer) über Syntax (mittlere Layer) bis hin zu Semantik und Pragmatik (obere Layer). Das Modell wurde nie instruiert, diese linguistischen Ebenen zu unterscheiden; es hat sie als emergente Struktur aus der reinen Textvorhersage entwickelt.</p>
+                                    <p>Für Sprachinteressierte ist das ein faszinierender Befund: Die Layer-Hierarchie eines Transformers spiegelt in verblüffender Weise die Ebenen linguistischer Analyse wider, von Phonologie und Morphologie (untere Layer erkennen Wortbestandteile und Flexionsmuster) über Syntax (mittlere Layer erfassen grammatische Strukturen und Abhängigkeiten zwischen Satzteilen) bis hin zu Semantik und Pragmatik (obere Layer verarbeiten Bedeutung im Kontext, Sprecherintention und implizite Zusammenhänge). Das Modell wurde nie instruiert, diese linguistischen Ebenen zu unterscheiden; es hat sie als emergente Struktur aus der reinen Textvorhersage entwickelt. Ob das etwas Grundlegendes über die Struktur von Sprache selbst aussagt, ist eine offene und spannende Frage und unter anderem eine Fragestellung, die ich in meiner MA-Thesis adressiert habe.</p>
 
                                     <h4>Schritt 3: Von Vektoren zur Vorhersage</h4>
                                     <p>Nach dem Durchlauf durch alle Transformer-Layer hat das letzte Token einen Vektor, der die gesamte verarbeitete Information des bisherigen Textes kondensiert. Dieser Vektor wird durch eine letzte lineare Transformation auf das gesamte Vokabular projiziert, bei GPT-3 waren das ca. 50.000 mögliche Tokens. Für jedes dieser Tokens entsteht ein Score.</p>
 
-                                    <p>Diese Scores werden dann durch die <em>Softmax-Funktion</em> in eine Wahrscheinlichkeitsverteilung umgewandelt: Für jedes mögliche nächste Token eine Wahrscheinlichkeit zwischen 0 und 1, und alle zusammen ergeben 1. Aus dieser Verteilung wird dann ein Token ausgewählt, und der Prozess beginnt von vorne.</p>
+                                    <p>Diese Scores werden dann durch die <em>Softmax-Funktion</em> in eine Wahrscheinlichkeitsverteilung umgewandelt:</p>
+
+                                    <div class="formula-block">$$P(w_i) = \frac{e^{z_i}}{\sum_{j=1}^{N} e^{z_j}}$$</div>
+
+                                    <p>Dabei ist $z_i$ der Score für Token $i$ und $N$ die Vokabulargröße. Alle Scores werden exponenziert ($e^{z_i}$), dann durch die Summe aller exponenzierten Scores geteilt. Das Ergebnis: Für jedes mögliche nächste Token eine Wahrscheinlichkeit zwischen 0 und 1, und alle zusammen ergeben 1. Diese Funktion, dieselbe, die auch im Attention-Mechanismus die Gewichte normalisiert, spielt eine zentrale Rolle dabei, warum LLMs auf bestimmte Weise scheitern (dazu mehr in Abschnitt 1.3).</p>
+
+                                    <p>Aus dieser Verteilung wird dann ein Token ausgewählt, nicht immer das wahrscheinlichste (dazu mehr unter Temperatur in Abschnitt 1.3), und der Prozess beginnt von vorne.</p>
 
                                     <h4>Die entscheidende Frage: Warum entsteht daraus Intelligenz?</h4>
                                     <p>Ein System, das nur das nächste Wort vorhersagt, sollte eigentlich nicht in der Lage sein, logisch zu argumentieren, Gedichte zu schreiben oder Code zu schreiben. Und tatsächlich: Bei kleinen Modellen mit wenigen Millionen Parametern kommt auch nur grammatikalisch plausibel klingender, aber inhaltlich zusammenhangsloser Text heraus.</p>
@@ -1517,9 +1563,9 @@ gehen⃗ − ging⃗ + laufen⃗ ≈ lief⃗</div>
                                         <li>Um das nächste Wort in einer Programmierdokumentation vorherzusagen, muss man die Logik des Codes verstehen.</li>
                                     </ol>
 
-                                    <p>Das Modell wurde nie explizit instruiert, diese Dinge zu lernen. Aber weil sein Trainingskorpus Milliarden von Texten enthält, mathematische Beweise, philosophische Debatten, Programmierdokumentation, hat es diese Fähigkeiten als Nebenprodukt der Textvorhersage entwickelt.</p>
+                                    <p>Das Modell wurde nie explizit instruiert, diese Dinge zu lernen. Aber weil sein Trainingskorpus Milliarden von Texten enthält, mathematische Beweise, philosophische Debatten, Programmierdokumentation, hat es diese Fähigkeiten als Nebenprodukt der Textvorhersage entwickelt. (Wenn ihr mich fragt: Hier sollte es bald einen Nobelpreis geben. Denn das ist, egal wie man zu KI steht, eine der faszinierendsten Entdeckungen unserer Zeit.)</p>
 
-                                    <p>Das ist eine der tiefgreifendsten Erkenntnisse der KI-Forschung der letzten Jahre: <strong>Ausreichend gute Textvorhersage erfordert offenbar ein internes „Weltmodell".</strong> Das Modell hat dieses Wissen nicht als bewusste Fakten gespeichert, sondern als statistische Muster in seinen Milliarden von Parametern.</p>
+                                    <p>Das ist eine der tiefgreifendsten Erkenntnisse der KI-Forschung der letzten Jahre: <strong>Ausreichend gute Textvorhersage erfordert offenbar ein internes „Weltmodell".</strong> Das Modell hat dieses Wissen nicht als bewusste Fakten gespeichert, sondern als statistische Muster in seinen Milliarden von Parametern, was zu beeindruckenden praktischen Auswirkungen führt.</p>
 
                                     <h4>Das Superpositions-Phänomen</h4>
                                     <p>Eine letzte Eigenschaft, die für das Verständnis wichtig ist: LLMs scheinen viel mehr Konzepte speichern zu können, als sie Dimensionen haben. In hochdimensionalen Räumen können extrem viele Vektoren fast senkrecht zueinanderstehen; ein Modell kann möglicherweise Millionen von Konzepten in einem Raum mit nur tausenden Dimensionen speichern. Die Kehrseite: Diese Konzepte überlappen leicht, was zu subtilen Verwirrungen führen kann, eine mögliche Quelle für Halluzinationen (dazu mehr in Abschnitt 1.3).</p>
