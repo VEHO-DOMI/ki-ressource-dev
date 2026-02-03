@@ -558,13 +558,13 @@
                 drawSeriesCircuit();
             }
 
-            // Current direction arrow
+            // Current direction legend
             if (switchOn && getCurrent() > 0) {
-                ctx.fillStyle = '#4caf50';
                 ctx.font = '12px Segoe UI';
-                ctx.fillText('Stromrichtung →', 20, canvas.height - 20);
+                ctx.fillStyle = '#4caf50';
+                ctx.fillText('⊕ Technische Stromrichtung: + → −', 20, canvas.height - 35);
                 ctx.fillStyle = '#42a5f5';
-                ctx.fillText('Elektronenfluss ←', 20, canvas.height - 40);
+                ctx.fillText('● Elektronenfluss: − → +', 20, canvas.height - 18);
             }
 
             updateMeters();
