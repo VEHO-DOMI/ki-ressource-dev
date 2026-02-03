@@ -40,7 +40,7 @@
 
         .main-layout {
             display: grid;
-            grid-template-columns: 1fr 320px;
+            grid-template-columns: 1fr 280px;
             gap: 12px;
             height: calc(100vh - 80px);
             min-height: 550px;
@@ -53,6 +53,12 @@
             }
         }
 
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
         .canvas-container {
             background: rgba(17, 34, 64, 0.6);
             border-radius: 16px;
@@ -61,6 +67,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            flex: 1;
         }
 
         canvas {
@@ -244,38 +251,42 @@
             background: #64ffda;
         }
 
-        /* Info Card */
+        /* Info Card - below canvas */
         .info-card {
-            background: linear-gradient(135deg, rgba(100, 255, 218, 0.15), rgba(100, 255, 218, 0.08));
-            border-radius: 10px;
-            padding: 14px;
-            border: 2px solid rgba(100, 255, 218, 0.3);
-            flex: 1;
-            overflow-y: auto;
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.12), rgba(100, 255, 218, 0.06));
+            border-radius: 12px;
+            padding: 16px 20px;
+            border: 1px solid rgba(100, 255, 218, 0.25);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 16px;
+            align-items: start;
         }
 
         .info-card h4 {
             color: #64ffda;
-            font-size: 0.95em;
-            margin-bottom: 8px;
+            font-size: 1em;
+            margin-bottom: 6px;
             font-weight: 700;
+            grid-column: 1 / -1;
         }
 
         .info-card p {
             color: #ccd6f6;
-            font-size: 0.8em;
+            font-size: 0.85em;
             line-height: 1.6;
+            grid-column: 1 / -1;
         }
 
         .info-highlight {
-            background: rgba(100, 255, 218, 0.15);
-            padding: 10px 12px;
+            background: rgba(100, 255, 218, 0.12);
+            padding: 10px 14px;
             border-radius: 6px;
-            margin-top: 10px;
             border-left: 3px solid #64ffda;
-            font-size: 0.8em;
+            font-size: 0.85em;
             color: #ccd6f6;
+            grid-column: 1 / -1;
         }
 
         .info-highlight strong {
@@ -335,8 +346,17 @@
     </div>
 
     <div class="main-layout">
-        <div class="canvas-container">
-            <canvas id="eyeCanvas" width="750" height="500"></canvas>
+        <div class="left-column">
+            <div class="canvas-container">
+                <canvas id="eyeCanvas" width="750" height="450"></canvas>
+            </div>
+            <div class="info-card" id="infoCard">
+                <h4>Normales Sehen (Emmetropie)</h4>
+                <p>Bei einem normalsichtigen Auge werden Lichtstrahlen durch Hornhaut und Linse so gebrochen, dass sie exakt auf der Netzhaut fokussiert werden.</p>
+                <div class="info-highlight">
+                    <strong>Akkommodation:</strong> Die Linse kann ihre Form ändern (dicker für Nähe, flacher für Ferne), um Objekte in verschiedenen Entfernungen scharf zu sehen.
+                </div>
+            </div>
         </div>
 
         <div class="control-panel">
@@ -405,14 +425,6 @@
                     <div class="legend-item"><div class="legend-dot" style="background: #f97316;"></div>Korrektur</div>
                 </div>
             </div>
-
-            <div class="info-card" id="infoCard">
-                <h4>Normales Sehen</h4>
-                <p>Bei einem normalsichtigen Auge werden Lichtstrahlen durch Hornhaut und Linse so gebrochen, dass sie exakt auf der Netzhaut fokussiert werden.</p>
-                <div class="info-highlight">
-                    <strong>Akkommodation:</strong> Die Linse kann ihre Form ändern, um Objekte in verschiedenen Entfernungen scharf zu sehen.
-                </div>
-            </div>
         </div>
     </div>
 
@@ -430,8 +442,8 @@
 
         // Eye anatomy dimensions (centered at eyeCenterX, eyeCenterY)
         const eyeCenterX = 420;
-        const eyeCenterY = 250;
-        const eyeRadius = 120;
+        const eyeCenterY = 225;
+        const eyeRadius = 115;
 
         // Info texts
         const infoTexts = {
