@@ -1219,13 +1219,13 @@
                 <span class="nav-number">1</span>Grundlagen<span class="nav-expand">▼</span>
             </a>
             <div class="nav-subitems" data-parent="grundlagen">
-                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.1">1.1 Entstehung des Dokuments</a>
-                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.2">1.2 LLM-Funktionsweise</a>
-                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.3">1.3 LLMs vs. Reasoning</a>
-                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.4">1.4 Modelllandschaft</a>
-                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.5">1.5 Kosten & Zugang</a>
-                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.6">1.6 Datenschutz</a>
-                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.7">1.7 Spracheingabe</a>
+                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.1">1.1 Über diese Ressource</a>
+                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.2">1.2 Was ist ein LLM?</a>
+                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.3">1.3 Wie LLMs denken</a>
+                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.4">1.4 LLMs vs. Reasoning</a>
+                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.5">1.5 Modelllandschaft</a>
+                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.6">1.6 Kosten & Zugang</a>
+                <a href="#" class="nav-subitem" data-section="grundlagen" data-subsection="1.7">1.7 Datenschutz</a>
             </div>
 
             <!-- Section 2: Vorbereitung & Anwendung -->
@@ -1371,301 +1371,577 @@
 
         <!-- SECTION 1: GRUNDLAGEN -->
         <section id="grundlagen" class="section">
-            <h1 class="section-title">Grundlagen</h1>
-            <p class="section-subtitle">LLM-Funktionsweise, Reasoning-Modelle, aktuelle Modelllandschaft</p>
+            <h1 class="section-title">Kapitel 1: Grundlagen</h1>
+            <p class="section-subtitle">LLM-Funktionsweise, Reasoning-Modelle, aktuelle Modelllandschaft, Kosten, Datenschutz</p>
 
-            <!-- 1.1 Wie dieses Dokument entstanden ist -->
+            <!-- 1.1 Über diese Ressource -->
             <div class="collapsible open">
                 <div class="collapsible-header">
-                    <h3>1.1 Wie dieses Dokument entstanden ist</h3>
+                    <h3>1.1 Über diese Ressource</h3>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="collapsible-content">
                     <div class="collapsible-inner">
-                        <p>Ich arbeite seit April 2023 intensiv mit KI-Sprachmodellen – mittlerweile fast drei Jahre. Damals habe ich mir zum Ziel gesetzt, jede Aufgabe, die ich manuell erledige, parallel auch von der KI erledigen zu lassen, um systematisch zu testen, was dabei herauskommt.</p>
-                        
-                        <p>Die Anfangszeit war ernüchternd: ChatGPT 3.5, die ersten GPT-4-Versionen, Claude 2, Bard (bevor es Gemini hieß) – die Diskrepanz zwischen meiner manuellen Arbeit und dem, was die KI liefern konnte, war enorm. Viele Outputs waren unbrauchbar, halluziniert oder am Thema vorbei. Man könnte sagen, ich habe in dieser Zeit regelrechte "Vertrauensprobleme" mit KI entwickelt – ich habe nie einem Output blind vertraut, weil die Fehlerquote schlicht zu hoch war.</p>
-                        
-                        <p>Mit jedem neuen Modell hat sich diese Lücke verringert. Die Modelle wurden zuverlässiger, das Training besser, die Kontextfenster größer. Besonders die Extended-Thinking-Modelle waren ein Wendepunkt. Wir sind jetzt an einem Punkt, wo meine Erfahrung zeigt:</p>
+                        <p>Ich arbeite seit April 2023 intensiv mit KI-Sprachmodellen, mittlerweile fast drei Jahre. Damals habe ich mir aus Neugier zum Ziel gesetzt, jede Aufgabe, die ich manuell erledige, parallel auch von der KI erledigen zu lassen, um systematisch zu testen, was dabei herauskommt.</p>
+
+                        <p>Die Anfangszeit war noch ernüchternd. ChatGPT 3.5, die GPT-4-Versionen, Claude 2 und 3, Bard: die Diskrepanz zwischen meiner manuellen Arbeit und dem, was die KI liefern konnte, war enorm. Viele Outputs waren unbrauchbar, halluziniert oder am Thema vorbei. Dadurch habe ich nie wirklich gelernt, dem Output der KI zu vertrauen, und habe immer alles genau überprüfen müssen, weil die Fehlerquote schlicht zu hoch war.</p>
+
+                        <p>Mit jedem neuen Modell hat sich diese Lücke verringert. Die Modelle wurden zuverlässiger, das Training besser, die Kontextfenster größer. Besonders die 2024 eingeführten „Extended-Thinking-Modelle" waren ein Wendepunkt.</p>
+
+                        <h4>Was diese Ressource dokumentiert</h4>
+                        <p>Ich habe über die Zeit quasi alle direkten Anwendungen, die ich im Schulkontext eingesetzt habe, dokumentiert, mit den dazugehörigen Prompts, die ich selbst verwendet habe. Das dient zwei Zwecken: Erstens kann man bei Interesse den gesamten Entstehungsprozess eines Materials nachlesen; jeden Prompt, jede Iteration, jede Designentscheidung. Zweitens habe ich zu jedem Anwendungsfall einen generalisierten Copy-Paste-Prompt erstellt, der als Schablone dient: Man kopiert ihn und passt die Platzhalter an die eigene Situation an.</p>
+
+                        <p>Die Anwendungsbeispiele stammen zunächst aus meinen zwei Fächern, Englisch und Psychologie &amp; Philosophie. Es sind primär Ressourcen, die ich als Lehrer für mich selbst erstellt habe: Unterrichtsmaterialien, Übungen, Tests, Korrekturen. Das Ziel war dabei nicht primär, mir die Arbeit zu erleichtern, sondern vor allem neue Möglichkeiten zu eröffnen, die ohne KI schlicht nicht realisierbar gewesen wären.</p>
+
+                        <p>Ein weiterer Teil dieser Ressource, unter Punkt 4, ist der Versuch einer Vorschau: Wie könnte die Vorgabe des neuen Bildungsministers, KI in alle Schulfächer zu integrieren, konkret umgesetzt werden? Was dort beschrieben wird, ist kein fertiges Konzept, sondern ein Denkanstoß mit konkreten Beispielen dafür, wie fächerübergreifende KI-Integration aussehen könnte.</p>
+
+                        <h4>Für wen ist diese Ressource?</h4>
+                        <p>Diese Ressource richtet sich an drei Gruppen:</p>
+                        <ul>
+                            <li><strong>Einsteiger:innen</strong> – Ihr habt vielleicht ChatGPT ausprobiert, aber noch kein klares Bild davon, was möglich ist und wie man systematisch damit arbeitet.</li>
+                            <li><strong>Experimentierfreudige</strong> – Ihr nutzt KI bereits gelegentlich, aber ohne klaren Workflow. Ihr sucht nach konkreten Anwendungsfällen und bewährten Methoden.</li>
+                            <li><strong>Technikinteressierte</strong> – Ihr wollt verstehen, wie das Ganze funktioniert. Für euch gibt es in diesem Kapitel ausklappbare <em>Hinter den Kulissen</em>-Abschnitte mit technischen Details.</li>
+                        </ul>
+                        <p>Dieses Dokument fasst zusammen, was funktioniert hat, praxiserprobt über hundert Anwendungsfälle für den Schulalltag.</p>
 
                         <div class="highlight-box">
-                            <h4>Die 80%-Regel</h4>
-                            <p style="margin-bottom:0">Unter genauer Instruktion liefern aktuelle KI-Modelle einen Output, der zu etwa 80% direkt verwendbar ist. Die letzten 20% – der Feinschliff, die fachliche Überprüfung, die Anpassung an den konkreten Kontext – obliegen der Fachperson.</p>
+                            <h4>Grundprinzip: Die 80%-Regel</h4>
+                            <p>Unter genauer Instruktion liefern aktuelle KI-Modelle einen Output, der zu etwa 80% direkt verwendbar ist. Die letzten 20%, also der Feinschliff, die fachliche Überprüfung, die Anpassung an den konkreten Kontext, obliegen der Fachperson.</p>
+                            <p style="margin-bottom:0">Was bedeutet das praktisch? Nicht unbedingt Zeitersparnis und auch keine „einfacherer Job". Ich habe deutlich mehr Zeit investiert, um all das zu testen, zu bewerten und zu systematisieren. Ich überprüfe nach wie vor alles, was mir die KI gibt, doppelt.</p>
                         </div>
 
-                        <h4>Was bedeutet das praktisch?</h4>
-                        <p>Nicht unbedingt Zeitersparnis. Ich habe deutlich mehr Zeit investiert, um all das zu testen, zu bewerten und zu systematisieren. Ich überprüfe nach wie vor alles doppelt.</p>
-                        
-                        <p>Was KI aber ermöglicht, sind Dinge, die vorher nicht möglich waren: eine Tiefe der Materialaufbereitung, eine Individualisierung, eine Analysequalität, die im normalen Schulalltag schlicht nicht leistbar wäre.</p>
-                        
-                        <p><strong>Mein Job ist durch KI nicht einfacher geworden.</strong> Aber es haben sich neue Möglichkeiten eröffnet – Dinge zu erschaffen, die vorher an den schieren Zeitlimitierungen gescheitert wären. Das ist für mich der eigentliche Beitrag dieser Technologie.</p>
-                        
-                        <p>Dieses Dokument fasst zusammen, was funktioniert hat – praxiserprobt über 150+ Anwendungsfälle für den Schulalltag.</p>
+                        <p>Was KI aber ermöglicht, sind Dinge, die vorher nicht möglich waren: eine Tiefe der Materialaufbereitung, eine Individualisierung, eine Analysequalität, die im normalen Schulalltag schlicht nicht leistbar wäre. Das ist für mich der eigentliche Beitrag dieser Technologie.</p>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="warning-box">
-                            <strong>Hinweis:</strong> Diese Ressource fokussiert zu 90–95% auf Anwendungsfälle für Lehrpersonen. Anwendungen für Schüler:innen werden in einer späteren Iteration ergänzt.
+            <!-- 1.2 Was ist ein Large Language Model? -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>1.2 Was ist ein Large Language Model?</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <h4>Die Kurzversion</h4>
+                        <p>Ein Large Language Model (LLM) wie ChatGPT, Claude oder Gemini ist im Kern eine Textvorhersagemaschine. Es wurde mit Milliarden von Texten trainiert und hat dabei gelernt: Welches Wort folgt typischerweise auf welches?</p>
+
+                        <p>Das klingt simpel, und ist es konzeptionell auch. Aber die Konsequenzen sind erstaunlich: Ein System, das extrem gut darin ist, das nächste Wort vorherzusagen, muss implizit sehr viel über Sprache, Logik und die Welt verstanden haben.</p>
+
+                        <h4>Was passiert, wenn man eine Frage stellt?</h4>
+                        <ol>
+                            <li><strong>Die Eingabe wird zerlegt</strong> in kleine Stücke, die <em>Tokens</em> heißen. Das können Wörter sein, Wortteile oder Satzzeichen.</li>
+                            <li><strong>Wahrscheinlichkeiten werden berechnet</strong> – Für jedes mögliche nächste Token wird eine Wahrscheinlichkeit berechnet.</li>
+                            <li><strong>Ein Token wird ausgewählt</strong> – basierend auf diesen Wahrscheinlichkeiten.</li>
+                            <li><strong>Wiederholen</strong> – Das neue Token wird zur Eingabe hinzugefügt, und der Prozess beginnt von vorne.</li>
+                        </ol>
+                        <p>Eine Antwort von 500 Wörtern bedeutet etwa 375 einzelne Vorhersage-Zyklen. Jedes Mal schaut das Modell auf alles Bisherige und entscheidet: Was kommt als Nächstes? Wie mutig oder konservativ diese Auswahl ist, steuert ein Parameter namens <em>Temperatur</em>, dazu mehr in Abschnitt 1.3.</p>
+
+                        <!-- Hinter den Kulissen: Transformer -->
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>🔧 Hinter den Kulissen: Die Transformer-Architektur</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <p>Alle aktuellen LLMs basieren auf der sogenannten Transformer-Architektur, die 2017 von Google-Forschern in dem Paper „Attention Is All You Need" vorgestellt wurde. Um zu verstehen, warum LLMs so gut funktionieren, lohnt es sich, die drei zentralen Mechanismen zu kennen: wie Wörter zu Zahlen werden, wie Wörter miteinander kommunizieren, und wie aus all dem eine Vorhersage entsteht.</p>
+
+                                    <h4>Schritt 1: Tokenisierung und Embeddings – Wörter werden zu Vektoren</h4>
+                                    <p>Bevor das Modell mit Text arbeiten kann, muss dieser in Zahlen umgewandelt werden. Das passiert in zwei Stufen:</p>
+
+                                    <p>Zuerst wird der Text in <em>Tokens</em> zerlegt, das sind nicht immer ganze Wörter. Gängige Wörter wie „the" oder „ist" bleiben ganz, aber längere oder seltenere Wörter werden in Teilstücke zerlegt. Das deutsche Kompositum „Unterrichtsmaterialien" wird zum Beispiel in mehrere Tokens aufgeteilt, je nach Tokenizer etwa in „Unter", „richt", „s", „material", „ien". Die genaue Zerlegung hängt vom jeweiligen Modell ab. Als Faustregel gilt: Ein Token entspricht ungefähr 4 Zeichen oder ¾ eines deutschen Wortes.</p>
+
+                                    <p><em>Wer das selbst ausprobieren möchte: Unter <a href="https://platform.openai.com/tokenizer" target="_blank">platform.openai.com/tokenizer</a> kann man beliebige Texte eingeben und live sehen, wie sie in Tokens zerlegt werden.</em></p>
+
+                                    <p>Dann wird jedes Token in einen <em>Vektor</em> umgewandelt, eine lange Liste von Zahlen. Um sich das vorzustellen, hilft eine Analogie: Stellt euch vor, jedes Wort hätte eine Adresse in einer riesigen Stadt. Aber statt einer Straße und Hausnummer hat diese Adresse tausende Koordinaten, eine für jede Bedeutungsdimension. Eine Koordinate könnte grob der Achse „konkret ↔ abstrakt" entsprechen, eine andere „positiv ↔ negativ", eine dritte „lebendig ↔ unbelebt", und so weiter. In GPT-3 hatte jedes Token 12.288 solcher Koordinaten.</p>
+
+                                    <p>Das Entscheidende: Diese Adressen werden nicht manuell vergeben, sondern während des Trainings automatisch gelernt, und zwar so, dass Wörter, die in ähnlichen Kontexten vorkommen, ähnliche Adressen bekommen. „Hund" und „Katze" landen nahe beieinander, weil sie in Texten oft in ähnlichen Rollen auftauchen (als Haustiere, als Subjekte von „frisst", „schläft", „spielt"). „Hund" und „Demokratie" landen weit voneinander entfernt, weil sie fast nie in austauschbaren Kontexten vorkommen.</p>
+
+                                    <p>Das klassische Beispiel, das zeigt, wie viel Struktur in diesen Vektoren steckt: Wenn man vom Vektor für <em>König</em> den Vektor für <em>Mann</em> abzieht und den Vektor für <em>Frau</em> addiert, landet man sehr nahe beim Vektor für <em>Königin</em>:</p>
+
+                                    <div class="code-block">König⃗ − Mann⃗ + Frau⃗ ≈ Königin⃗</div>
+
+                                    <p>Die Richtung „Mann → Frau" kodiert Geschlechtsinformation; nicht, weil jemand das so programmiert hat, sondern weil das Modell dieses Muster aus Millionen von Texten gelernt hat. Ähnliche Vektorarithmetik funktioniert auch für andere Beziehungen:</p>
+
+                                    <div class="code-block">Frankreich⃗ − Paris⃗ + Berlin⃗ ≈ Deutschland⃗
+gehen⃗ − ging⃗ + laufen⃗ ≈ lief⃗</div>
+
+                                    <p>Zusätzlich zu diesen semantischen Vektoren erhält jedes Token einen Positionsvektor, der kodiert, an welcher Stelle im Satz es steht. Das ist wichtig, weil dieselben Wörter je nach Position verschiedene Dinge bedeuten können: „Der Hund jagte die Katze" ist etwas anderes als „Die Katze jagte den Hund."</p>
+
+                                    <h4>Schritt 2: Attention – Wie Wörter miteinander sprechen</h4>
+                                    <p>Hier kommt die Kerninnovation der Transformer: der <em>Attention-Mechanismus</em>. Das Problem, das er löst, ist fundamental: Wenn ein Modell das nächste Wort vorhersagen will, sind nicht alle vorherigen Wörter gleich relevant. Bei dem Satz „Das Restaurant weigerte sich, mir ein Schinkenbrötchen zu servieren, weil es nur vegetarisches Essen anbietet" muss das Modell verstehen, dass „es" sich auf „Restaurant" bezieht und nicht auf „Schinkenbrötchen".</p>
+
+                                    <p>Wie funktioniert das konkret? Für jedes Token im Satz berechnet das Modell drei Dinge:</p>
+                                    <ul>
+                                        <li>Einen <strong>Query-Vektor (Q)</strong>: „Welche Information suche ich?"</li>
+                                        <li>Einen <strong>Key-Vektor (K)</strong>: „Welche Information biete ich an?"</li>
+                                        <li>Einen <strong>Value-Vektor (V)</strong>: „Welchen Inhalt trage ich bei?"</li>
+                                    </ul>
+
+                                    <p>Das Modell vergleicht dann den Query eines Tokens mit den Keys aller anderen Tokens. Dort, wo Query und Key gut zusammenpassen (mathematisch: wo ihr Skalarprodukt hoch ist), fließt viel Information. Formal lässt sich der gesamte Attention-Mechanismus in einer einzigen Formel ausdrücken:</p>
+
+                                    <div class="code-block">Attention(Q,K,V) = softmax(Q·Kᵀ / √d_k) · V</div>
+
+                                    <p>Was passiert hier Schritt für Schritt:</p>
+                                    <ul>
+                                        <li><strong>Q·Kᵀ</strong> — Die Queries aller Tokens werden mit den Keys aller Tokens multipliziert. Das Ergebnis ist eine Matrix von Attention-Scores: Für jedes Wortpaar ein Wert, der angibt, wie relevant die beiden füreinander sind.</li>
+                                        <li><strong>÷√d_k</strong> — Die Scores werden durch die Wurzel der Vektordimension d_k geteilt. Das ist ein Skalierungsfaktor, der verhindert, dass die Werte bei hohen Dimensionen zu extrem werden.</li>
+                                        <li><strong>softmax(...)</strong> — Die skalierten Scores werden durch die Softmax-Funktion geschickt: Für jedes Token entsteht eine Wahrscheinlichkeitsverteilung über alle anderen Tokens, die Attention-Gewichte.</li>
+                                        <li><strong>· V</strong> — Die Attention-Gewichte werden mit den Value-Vektoren multipliziert. So entsteht für jedes Token eine gewichtete Mischung der Inhalte aller anderen Tokens.</li>
+                                    </ul>
+
+                                    <p><em>Self-Attention</em> heißt dieser Mechanismus, weil der Text sich selbst betrachtet: Jedes Wort entscheidet, welche anderen Wörter für es gerade relevant sind.</p>
+
+                                    <h4>Multi-Head Attention: Viele Perspektiven gleichzeitig</h4>
+                                    <p>In der Praxis führt das Modell diesen Attention-Prozess nicht nur einmal durch, sondern viele Male parallel, über sogenannte <em>Attention Heads</em>. Jeder Head lernt, auf andere Aspekte zu achten: Ein Head könnte grammatische Beziehungen verfolgen (Subjekt → Verb), ein anderer semantische Zusammenhänge (Tier → Lebensraum), ein dritter kausale Verbindungen (Ursache → Wirkung).</p>
+
+                                    <p>GPT-3 verwendete 96 solcher Heads pro Layer und hat 96 Layer übereinander gestapelt. Jeder Layer nimmt die Ausgabe des vorherigen und verarbeitet sie weiter. In den unteren Layern lernt das Modell einfache Muster (Wortarten, grundlegende Grammatik), in den mittleren komplexere Zusammenhänge (Satzbedeutung, logische Beziehungen), und in den oberen Layern abstrakte Konzepte (Ironie, implizite Annahmen, Weltwissen).</p>
+
+                                    <p>Für Sprachinteressierte ist das ein faszinierender Befund: Die Layer-Hierarchie eines Transformers spiegelt in verblüffender Weise die Ebenen linguistischer Analyse wider, von Phonologie und Morphologie (untere Layer) über Syntax (mittlere Layer) bis hin zu Semantik und Pragmatik (obere Layer). Das Modell wurde nie instruiert, diese linguistischen Ebenen zu unterscheiden; es hat sie als emergente Struktur aus der reinen Textvorhersage entwickelt.</p>
+
+                                    <h4>Schritt 3: Von Vektoren zur Vorhersage</h4>
+                                    <p>Nach dem Durchlauf durch alle Transformer-Layer hat das letzte Token einen Vektor, der die gesamte verarbeitete Information des bisherigen Textes kondensiert. Dieser Vektor wird durch eine letzte lineare Transformation auf das gesamte Vokabular projiziert, bei GPT-3 waren das ca. 50.000 mögliche Tokens. Für jedes dieser Tokens entsteht ein Score.</p>
+
+                                    <p>Diese Scores werden dann durch die <em>Softmax-Funktion</em> in eine Wahrscheinlichkeitsverteilung umgewandelt: Für jedes mögliche nächste Token eine Wahrscheinlichkeit zwischen 0 und 1, und alle zusammen ergeben 1. Aus dieser Verteilung wird dann ein Token ausgewählt, und der Prozess beginnt von vorne.</p>
+
+                                    <h4>Die entscheidende Frage: Warum entsteht daraus Intelligenz?</h4>
+                                    <p>Ein System, das nur das nächste Wort vorhersagt, sollte eigentlich nicht in der Lage sein, logisch zu argumentieren, Gedichte zu schreiben oder Code zu schreiben. Und tatsächlich: Bei kleinen Modellen mit wenigen Millionen Parametern kommt auch nur grammatikalisch plausibel klingender, aber inhaltlich zusammenhangsloser Text heraus.</p>
+
+                                    <p>Aber ab einer gewissen Größe passiert etwas Bemerkenswertes, das als <em>Emergenz</em> bezeichnet wird: Fähigkeiten tauchen plötzlich auf, die man bei kleineren Modellen nicht beobachtet hatte. Ein Modell mit 10 Milliarden Parametern kann kaum einfache Analogien lösen, aber ein Modell mit 100 Milliarden Parametern kann es plötzlich. Es gibt keinen graduellen Übergang, sondern einen qualitativen Sprung.</p>
+
+                                    <p>Der Grund dafür liegt in der Natur der Aufgabe selbst:</p>
+                                    <ol>
+                                        <li>Um das nächste Wort in einem mathematischen Beweis vorherzusagen, muss man Mathematik verstehen.</li>
+                                        <li>Um das nächste Wort in einer Debatte vorherzusagen, muss man verschiedene Perspektiven nachvollziehen können.</li>
+                                        <li>Um das nächste Wort in einer Programmierdokumentation vorherzusagen, muss man die Logik des Codes verstehen.</li>
+                                    </ol>
+
+                                    <p>Das Modell wurde nie explizit instruiert, diese Dinge zu lernen. Aber weil sein Trainingskorpus Milliarden von Texten enthält, mathematische Beweise, philosophische Debatten, Programmierdokumentation, hat es diese Fähigkeiten als Nebenprodukt der Textvorhersage entwickelt.</p>
+
+                                    <p>Das ist eine der tiefgreifendsten Erkenntnisse der KI-Forschung der letzten Jahre: <strong>Ausreichend gute Textvorhersage erfordert offenbar ein internes „Weltmodell".</strong> Das Modell hat dieses Wissen nicht als bewusste Fakten gespeichert, sondern als statistische Muster in seinen Milliarden von Parametern.</p>
+
+                                    <h4>Das Superpositions-Phänomen</h4>
+                                    <p>Eine letzte Eigenschaft, die für das Verständnis wichtig ist: LLMs scheinen viel mehr Konzepte speichern zu können, als sie Dimensionen haben. In hochdimensionalen Räumen können extrem viele Vektoren fast senkrecht zueinanderstehen; ein Modell kann möglicherweise Millionen von Konzepten in einem Raum mit nur tausenden Dimensionen speichern. Die Kehrseite: Diese Konzepte überlappen leicht, was zu subtilen Verwirrungen führen kann, eine mögliche Quelle für Halluzinationen (dazu mehr in Abschnitt 1.3).</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 1.2 Wie LLMs funktionieren -->
+            <!-- 1.3 Wie LLMs denken – und wo sie scheitern -->
             <div class="collapsible">
                 <div class="collapsible-header">
-                    <h3>1.2 Wie Large Language Models funktionieren</h3>
+                    <h3>1.3 Wie LLMs „denken" – und wo sie scheitern</h3>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="collapsible-content">
                     <div class="collapsible-inner">
-                        <p>Large Language Models (LLMs) wie ChatGPT, Claude oder Gemini sind im Kern statistische Vorhersagemaschinen. Sie wurden mit Milliarden von Texten trainiert und haben dabei Muster gelernt: Welches Wort folgt typischerweise auf welches?</p>
+                        <p>In Abschnitt 1.2 haben wir die Architektur kennengelernt: wie Wörter zu Vektoren werden, wie Attention funktioniert, und wie aus einer Wahrscheinlichkeitsverteilung das nächste Token entsteht. Dieser Abschnitt zeigt, wie sich diese Mechanismen in der Praxis auswirken, im Guten wie im Schlechten.</p>
 
-                        <h4>Next-Token-Prediction: Das Grundprinzip</h4>
-                        <p>Wenn eine Anfrage an ein LLM gestellt wird, durchläuft das System einen iterativen Vorhersageprozess:</p>
-                        
-                        <p><strong>Schritt 1 – Tokenisierung:</strong> Die Eingabe wird in kleinere Einheiten zerlegt – sogenannte Tokens. Ein Token entspricht etwa 4 Zeichen oder ¾ eines deutschen Wortes. Das Wort "Unterrichtsmaterial" wird beispielsweise in mehrere Tokens aufgeteilt ("Unter", "richts", "material"). Das gesamte Vokabular eines Modells umfasst typischerweise 50.000–100.000 solcher Tokens.</p>
-                        
-                        <p><strong>Schritt 2 – Kontextverarbeitung:</strong> Das Modell betrachtet die gesamte bisherige Eingabe (den "Kontext") und erstellt eine interne Repräsentation – eine mathematische Abbildung der Bedeutung in einem hochdimensionalen Vektorraum.</p>
-                        
-                        <p><strong>Schritt 3 – Wahrscheinlichkeitsberechnung:</strong> Für jedes mögliche nächste Token im Vokabular berechnet das Modell eine Wahrscheinlichkeit. Auf "Der Schüler hat die" folgt "Hausübung" mit höherer Wahrscheinlichkeit als "Wolke".</p>
-                        
-                        <p><strong>Schritt 4 – Auswahl:</strong> Ein Token wird ausgewählt, zur Ausgabe hinzugefügt, und der Prozess beginnt von vorne.</p>
-                        
-                        <p>Dieser Prozess wiederholt sich Token für Token. Eine Antwort von 500 Wörtern bedeutet etwa 375 einzelne Vorhersage-Zyklen.</p>
+                        <h4>Temperatur: Kreativität vs. Vorhersagbarkeit</h4>
+                        <p>Am Ende jedes Vorhersageschritts steht eine Wahrscheinlichkeitsverteilung über alle möglichen nächsten Tokens. Der Parameter <em>Temperatur</em> steuert, wie „mutig" oder „konservativ" die Auswahl daraus ist:</p>
 
-                        <h4>Temperatur: Steuerung der Variabilität</h4>
                         <table>
                             <tr>
                                 <th>Temperatur</th>
-                                <th>Mathematischer Effekt</th>
-                                <th>Praktisches Verhalten</th>
+                                <th>Verhalten</th>
                             </tr>
                             <tr>
                                 <td>Niedrig (0–0.3)</td>
-                                <td>Softmax wird "schärfer"</td>
-                                <td>Fast deterministisch, reproduzierbare Outputs</td>
+                                <td>Fast immer das wahrscheinlichste Wort. Vorhersagbar, aber manchmal langweilig.</td>
                             </tr>
                             <tr>
                                 <td>Mittel (0.5–0.7)</td>
-                                <td>Ausgewogene Verteilung</td>
-                                <td>Balance zwischen Fokus und Variation (Standard)</td>
+                                <td>Ausgewogene Mischung. Standard für die meisten Aufgaben.</td>
                             </tr>
                             <tr>
-                                <td>Hoch (0.8–1.2+)</td>
-                                <td>Softmax wird "flacher"</td>
-                                <td>Kreativere, variablere Outputs</td>
+                                <td>Hoch (0.8–1.2)</td>
+                                <td>Auch unwahrscheinlichere Wörter werden gewählt. Kreativer, aber riskanter im Sinne von Fabulation.</td>
                             </tr>
                         </table>
-                        
-                        <p>Die Temperatur lässt sich durch Formulierungen im Prompt beeinflussen: "Sei kreativ und unkonventionell" → variablere Outputs. "Sei präzise und faktisch" → fokussiertere Outputs.</p>
 
-                        <h4>Das Momentum-Problem</h4>
-                        <p>Weil LLMs Token für Token generieren und dabei ihre eigene bisherige Ausgabe als Teil des Kontexts verwenden, entsteht ein Momentum-Effekt: Einmal eingeschlagene Richtungen werden beibehalten und verstärkt.</p>
-                        <ul>
-                            <li>Wenn die Antwort gut startet, bleibt sie meist gut</li>
-                            <li>Wenn die Antwort schlecht startet, wird sie oft progressiv schlechter</li>
-                        </ul>
-                        <p><strong>"Regenerate Response"</strong> liefert manchmal dramatisch bessere Ergebnisse – ein neuer Anfang bedeutet einen komplett anderen Pfad.</p>
+                        <h4>Das Momentum-Problem: Warum LLMs sich nicht selbst korrigieren</h4>
+                        <p>Um zu verstehen, warum dieses Problem so zentral ist, muss man sich die Funktionsweise von LLMs nochmal vergegenwärtigen: Ein LLM generiert seine Antwort <em>autoregressiv</em>, also Token für Token, wobei jedes neue Token auf allen bisherigen basiert, inklusive der bereits generierten eigenen Ausgabe. Das Modell hat dabei keinen eingebauten Mechanismus, innezuhalten, den bisherigen Verlauf kritisch zu betrachten und gegebenenfalls zu korrigieren. Es schaut immer nur vorwärts.</p>
 
-                        <h4>Das Halluzinationsproblem</h4>
-                        <p>LLMs sind darauf optimiert, statistisch plausibel klingende Texte zu generieren – nicht faktisch korrekte. Das Modell "weiß" nichts im menschlichen Sinne.</p>
-                        <p><strong>Halluzination</strong> bedeutet: Das Modell generiert selbstbewusst Informationen, die falsch sind – erfundene Zitate, nicht existierende Studien, falsche Fakten.</p>
-                        <p>Die Situation hat sich seit 2024 durch bessere Modelle und Tool-Integration (Web-Suche, Deep Research) deutlich verbessert.</p>
-                        <p><strong>Anbieter-Unterschiede:</strong> ChatGPT priorisiert Plausibilität über Faktizität – Halluzinationen kommen hier am häufigsten vor. Claude und Gemini sagen häufiger: "Da habe ich keine konkrete Antwort".</p>
+                        <p>Daraus ergibt sich ein <strong>Momentum-Effekt</strong>: Wenn die Antwort gut startet, bleibt sie meist gut, weil die bisher generierten Tokens ein stabiles Fundament bilden. Wenn die Antwort aber schlecht startet, etwa durch eine falsche Prämisse oder einen ungünstigen Formulierungsansatz, wird sie oft progressiv schlechter. Denn das Modell sieht seinen eigenen fehlerhaften Output als Kontext und generiert darauf aufbauend weitere Tokens, die den Fehler vertiefen statt zu korrigieren. In der KI-Forschung wird das als <em>error propagation</em> (Fehlerfortpflanzung) bezeichnet.</p>
+
+                        <p>Yann LeCun, einer der einflussreichsten KI-Forscher, hat dieses Problem in einem viel diskutierten Beitrag von 2023 sogar als fundamentale Grenze autorergressiver Modelle bezeichnet. Sein Argument: Wenn jedes Token eine gewisse Fehlerwahrscheinlichkeit hat, sinkt die Wahrscheinlichkeit einer korrekten Gesamtsequenz exponentiell mit der Länge. Ob das in der Praxis tatsächlich so dramatisch ausfällt, ist umstritten. Neuere Forschung zeigt, dass moderne Transformer durch den Attention-Mechanismus Fehler besser abfangen können als einfache sequenzielle Modelle. Aber das Grundproblem bleibt: Klassische LLMs haben keinen Rückkanal, keine Möglichkeit zur Selbstkorrektur.</p>
+
+                        <p><strong>Genau hier setzen Reasoning-Modelle an</strong> (Abschnitt 1.4), die dieses Problem durch eine explizite Denkphase vor der eigentlichen Antwort adressieren.</p>
+
+                        <h4>Halluzinationen: Das fundamentale Limit</h4>
+                        <p>LLMs sind darauf trainiert, statistisch plausibel klingende Texte zu generieren, nicht faktisch korrekte. Das bedeutet: Ein Modell kann selbstbewusst Dinge behaupten, die schlicht falsch sind, was ihr bestimmt alle schon einmal erlebt habt. Erfundene Zitate, nicht existierende Studien, falsche Fakten; all das präsentiert mit der gleichen Überzeugung wie korrekte Informationen.</p>
+
+                        <p>Warum das so ist, folgt direkt aus der Architektur: Die Softmax-Funktion am Ende jedes Vorhersageschritts <strong>erzwingt immer eine Auswahl</strong>. Das Modell hat keine Möglichkeit zu sagen: „Hier habe ich zu wenig Information." Es kann höchstens lernen, in solchen Situationen Sätze wie „Das weiß ich nicht" zu generieren, aber das ist selbst nur ein statistisches Muster, kein echtes Bewusstsein über die eigene Unsicherheit. Dazu kommt das in 1.2 beschriebene Superpositions-Phänomen: Weil sich die intern gespeicherten Konzepte leicht überlappen, kann es zu subtilen Verwechslungen kommen.</p>
+
+                        <p>Wie konkret das Problem ist, zeigt ein Befund aus Anthropics Interpretability-Forschung von 2025: Die Forscher konnten im Inneren von Claude nachverfolgen, was tatsächlich passiert, wenn das Modell eine Matheaufgabe löst. Bei einer einfachen Aufgabe wie √0.64 fanden sie echte interne Rechenschritte: das Modell berechnet tatsächlich zuerst √64 = 8 und leitet dann 0.8 ab. Bei einer schwierigeren Aufgabe (dem Kosinus einer großen Zahl) fanden sie hingegen keinerlei Evidenz einer Berechnung; Claude erfindet plausibel klingende Zwischenschritte, ohne dass intern irgendetwas gerechnet wird. Noch problematischer: Wenn man Claude bewusst einen falschen Hinweis auf das Ergebnis gibt, arbeitet es rückwärts. Es findet Zwischenschritte, die zum vorgegebenen (falschen) Ergebnis führen. Das ist eine Form von <em>motiviertem Reasoning</em>: Statt das Ergebnis aus einer Rechnung abzuleiten, steht das Ergebnis von Anfang an fest, und das Modell konstruiert im Nachhinein eine plausibel klingende Herleitung dazu.</p>
+
+                        <p>Die gute Nachricht: Die Situation hat sich insgesamt verbessert. Moderne Modelle halluzinieren seltener, Tool-Integration (Web-Suche) hilft bei Fakten, und Claude sowie Gemini sagen häufiger „Das weiß ich nicht." Und wie das Beispiel zeigt, wird aktiv daran geforscht, solche Prozesse von außen erkennbar zu machen.</p>
+
+                        <div class="warning-box">
+                            <strong>Wichtig:</strong> Halluzinationen sind kein Bug, der irgendwann gefixt wird. Sie sind eine Konsequenz davon, wie diese Modelle funktionieren.
+                        </div>
+
+                        <!-- Hinter den Kulissen: Interpretability -->
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>🔧 Hinter den Kulissen: Ein Blick ins Innere – Wie Anthropic das „Denken" von Claude sichtbar machte</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <p>In Abschnitt 1.2 haben wir gesehen, dass LLMs Konzepte als Vektoren in hochdimensionalen Räumen speichern und dass durch Superposition Millionen von Konzepten in tausenden Dimensionen Platz finden. Aber können wir tatsächlich nachweisen, welche Konzepte ein Modell intern repräsentiert? Und können wir verfolgen, wie es zu einer bestimmten Antwort kommt?</p>
+
+                                    <p>Genau das ist Gegenstand der <em>Interpretability-Forschung</em>, dem Versuch, in die Black Box zu blicken. Anthropic (das Unternehmen hinter Claude) hat hier in den letzten Jahren zwei Durchbrüche erzielt.</p>
+
+                                    <h4>Mapping the Mind – Millionen Konzepte sichtbar gemacht</h4>
+                                    <p>Im Mai 2024 veröffentlichte Anthropic die Studie „Scaling Monosemanticity", in der es gelang, Millionen interpretierbarer <em>Features</em> aus Claude 3 Sonnet zu extrahieren. Features sind Aktivierungsmuster, also Gruppen von Neuronen, die gemeinsam feuern und einem menschlich verständlichen Konzept entsprechen. Die Forscher fanden Features für Städte (San Francisco), Personen (Rosalind Franklin), chemische Elemente (Lithium), Programmierkonzepte (Funktionsdefinitionen), aber auch für erstaunlich abstrakte Dinge: „innerer Konflikt", „Sycophancy" (die Tendenz, dem Gegenüber nach dem Mund zu reden), oder „ethische Bedenken".</p>
+
+                                    <p>Besonders aufschlussreich war die Nachbarschaftsstruktur: In der Nähe des Features für „innerer Konflikt" fanden sich Features für Beziehungstrennungen, widersprüchliche Loyalitäten, logische Inkonsistenzen und den Ausdruck „Catch-22". Die interne Organisation der Konzepte entspricht also, zumindest teilweise, unserem menschlichen Verständnis von Ähnlichkeit.</p>
+
+                                    <p>Das Spektakuläre ist, dass diese Features sich nicht nur beobachten lassen, sondern auch <strong>manipulieren</strong>. Im sogenannten <em>Golden Gate Claude</em>-Experiment drehten die Forscher das Feature für die Golden Gate Bridge künstlich hoch. Das Ergebnis: Claude begann, sich mit der Brücke zu identifizieren. Auf die Frage „What is your physical form?" antwortete es nicht mehr wie üblich mit „I have no physical form", sondern beschrieb sich als die ikonische rote Hängebrücke über der San Francisco Bay. Das zeigt: Die Features sind nicht bloß Korrelationen, sondern kausal am Verhalten des Modells beteiligt.</p>
+
+                                    <h4>Circuit Tracing – Den Denkwegen folgen</h4>
+                                    <p>Im März 2025 gingen die Forscher einen Schritt weiter. Mit einer neuen Methode namens <em>Circuit Tracing</em> konnten sie erstmals die vollständigen Rechenwege nachverfolgen, die Claude von einem Prompt zu einer Antwort nimmt:</p>
+
+                                    <p><strong>Vorausplanung:</strong> Obwohl LLMs Token für Token generieren, denken sie nachweislich weiter voraus. Beim Schreiben von Gedichten identifiziert Claude zuerst mögliche Reimwörter am Zeilenende und formuliert dann den Rest der Zeile so, dass er dorthin führt.</p>
+
+                                    <p><strong>Eine universelle Denksprache:</strong> Claude spricht dutzende Sprachen fließend. Aber arbeiten intern separate „Sprachmodule" parallel? Die Circuit-Tracing-Analyse zeigt etwas anderes: Derselbe Satz auf Englisch, Französisch und Chinesisch aktiviert weitgehend dieselben internen Schaltkreise. Claude scheint in einem „konzeptuellen Raum" zu „denken", der zwischen Sprachen geteilt wird, eine Art universelle Denksprache, die erst am Ende in die Zielsprache übersetzt wird.</p>
+
+                                    <p><strong>Eigene Rechenstrategien:</strong> Bei der Addition von 36 + 59 verwendet Claude intern eigene, effiziente Strategien und nicht den Standardalgorithmus mit „1 im Sinn", den es bei der Erklärung für den Benutzer beschreibt. Das Modell hat während des Trainings eigene „mentale Mathematik" entwickelt, ist sich dessen aber offenbar nicht bewusst.</p>
+
+                                    <p><strong>Unfaithful Reasoning:</strong> Dieselbe Methode enthüllte das beschriebene „Bullshitting"-Phänomen: die Fähigkeit, von außen zu erkennen, ob ein Modell tatsächlich „rechnet" oder nur plausible Schritte erfindet. Das betrifft auch die Gedankenketten von Reasoning-Modellen.</p>
+
+                                    <h4>Warum das für die Praxis relevant ist</h4>
+                                    <p>Erstens liefert diese Forschung eine Erklärung dafür, warum Halluzinationen so schwer zu erkennen sind: Von außen betrachtet sieht ein korrekter Rechenweg genauso überzeugend aus wie ein erfundener. Zweitens zeigt sie, dass an konkreten Lösungen gearbeitet wird; die Fähigkeit, „unfaithful reasoning" automatisch zu erkennen, könnte in Zukunft als eingebauter Warnmechanismus dienen. Und drittens bekräftigt sie die 80%-Regel aus Abschnitt 1.1: KI-Outputs können beeindruckend kompetent sein, aber sie müssen fachlich überprüft werden, weil man dem Modell nicht ansieht, ob es gerade tatsächlich „rechnet" oder „bullshittet".</p>
+
+                                    <p><em>Quellen: Anthropic, „Scaling Monosemanticity" (Mai 2024); Anthropic, „Circuit Tracing: Revealing Computational Graphs in Language Models" &amp; „On the Biology of a Large Language Model" (März 2025). Die Originalarbeiten sind frei zugänglich unter <a href="https://transformer-circuits.pub" target="_blank">transformer-circuits.pub</a>.</em></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 1.3 Klassische LLMs vs. Reasoning-Modelle -->
+            <!-- 1.4 Klassische LLMs vs. Reasoning-Modelle -->
             <div class="collapsible">
                 <div class="collapsible-header">
-                    <h3>1.3 Klassische LLMs vs. Reasoning-Modelle</h3>
+                    <h3>1.4 Klassische LLMs vs. Reasoning-Modelle</h3>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="collapsible-content">
                     <div class="collapsible-inner">
-                        <p>Klassische LLMs generieren ihre Antwort in einem Durchgang. Bei komplexen Problemen führt das aufgrund des Momentum-Effekts zu systematischen Fehlern.</p>
+                        <h4>Das Problem mit einem Durchgang</h4>
+                        <p>Klassische LLMs generieren ihre Antwort in einem einzigen Durchgang, Token für Token, ohne innezuhalten. Bei komplexen Problemen führt das zu systematischen Schwächen: Ein negatives Momentum verschärft sich; einmal eingeschlagene (falsche) Richtungen werden beibehalten, und das Modell hat keinen Mechanismus zur Selbstkorrektur.</p>
 
                         <h4>Was Reasoning-Modelle anders machen</h4>
-                        <p>Reasoning-Modelle (auch: "Thinking Models", "Extended Thinking", "Deep Think") verwenden <strong>Test-Time Compute</strong>:</p>
+                        <p>Reasoning-Modelle (auch „Thinking Models", „Extended Thinking", „Deep Think") verwenden eine andere Strategie:</p>
                         <ol>
-                            <li><strong>Denkphase:</strong> Das Modell generiert intern eine Gedankenkette – probiert Ansätze, verwirft sie, strukturiert das Problem.</li>
-                            <li><strong>Selbstüberprüfung:</strong> Das Modell betrachtet seine eigenen Überlegungen, identifiziert Fehler, korrigiert Annahmen.</li>
-                            <li><strong>Antwortphase:</strong> Erst dann wird die eigentliche Antwort formuliert.</li>
+                            <li><strong>Denkphase</strong> – Das Modell generiert intern eine Gedankenkette: probiert Ansätze, verwirft sie, strukturiert das Problem.</li>
+                            <li><strong>Selbstüberprüfung</strong> – Das Modell betrachtet seine eigenen Überlegungen, identifiziert Fehler, korrigiert Annahmen.</li>
+                            <li><strong>Antwortphase</strong> – Erst dann wird die eigentliche Antwort formuliert.</li>
                         </ol>
+                        <p>Das kostet mehr Rechenzeit, liefert aber bei komplexen Aufgaben deutlich bessere Ergebnisse.</p>
 
-                        <h4>Wann klassisch, wann Reasoning?</h4>
-                        <table>
-                            <tr>
-                                <th>Aufgabentyp</th>
-                                <th>Empfehlung</th>
-                                <th>Begründung</th>
-                            </tr>
-                            <tr>
-                                <td>Schnelle Fragen, einfache Erklärungen</td>
-                                <td>Klassisch</td>
-                                <td>Schneller, Reasoning wäre Overkill</td>
-                            </tr>
-                            <tr>
-                                <td>Kreatives Schreiben, Brainstorming</td>
-                                <td>Klassisch</td>
-                                <td>Reasoning kann kreative Texte "überdenken"</td>
-                            </tr>
-                            <tr>
-                                <td>Mathematik, logische Probleme</td>
-                                <td>Reasoning</td>
-                                <td>Dramatisch bessere Ergebnisse</td>
-                            </tr>
-                            <tr>
-                                <td>Komplexe Analysen, mehrstufige Aufgaben</td>
-                                <td>Reasoning</td>
-                                <td>Selbstüberprüfung reduziert Fehler</td>
-                            </tr>
-                            <tr>
-                                <td>Code-Debugging, Architekturentscheidungen</td>
-                                <td>Reasoning</td>
-                                <td>Findet Fehler, die klassische Modelle übersehen</td>
-                            </tr>
-                        </table>
+                        <div class="warning-box">
+                            <strong>Wichtiger Vorbehalt:</strong> Die Circuit-Tracing-Forschung aus 1.3 hat aufgedeckt, dass auch bei Reasoning-Modellen, die „laut denken", die angezeigte Gedankenkette nicht immer verlässlich ist. Claude kann manchmal plausibel klingende Denkschritte zeigen, die nicht dem tatsächlichen internen Prozess entsprechen. Das ist kein Grund, Reasoning-Modelle nicht zu nutzen; sie liefern nachweislich bessere Ergebnisse. Aber es ist ein Grund, auch deren Outputs kritisch zu prüfen.
+                        </div>
+
+                        <!-- Hinter den Kulissen: Test-Time Compute -->
+                        <div class="sub-collapsible">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <span>🔧 Hinter den Kulissen: Test-Time Compute</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <div class="sub-collapsible-inner">
+                                    <h4>Was technisch passiert</h4>
+                                    <p>Bei klassischen Modellen ist die Rechenleistung pro Token ungefähr konstant. Bei Reasoning-Modellen wird zusätzliche Rechenleistung während der Inferenz (nicht während des Trainings) investiert, daher der Begriff „Test-Time Compute".</p>
+
+                                    <p>Die Denkphase ist im Grunde dasselbe wie die normale Textgenerierung, nur dass das Modell mit sich selbst spricht, eine Art innerer Monolog. Dieser innere Monolog wird oft (teilweise) für den User sichtbar gemacht.</p>
+
+                                    <h4>Chain-of-Thought Prompting</h4>
+                                    <p>Interessanterweise kann man auch klassische Modelle zu ähnlichem Verhalten bringen, indem man sie auffordert: „Denke Schritt für Schritt." Dann generieren sie ihre Gedankenkette als Teil der sichtbaren Antwort. Reasoning-Modelle wurden darauf trainiert, dies automatisch und systematischer zu tun, mit dem entscheidenden Unterschied, dass sie intern mehr „Rechenschritte" investieren können, bevor sie eine Antwort formulieren. Die in 1.3 beschriebene Circuit-Tracing-Forschung hat allerdings gezeigt, dass diese sichtbaren Gedankenketten nicht immer dem tatsächlichen internen Prozess entsprechen.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 1.4 Aktuelle Modelllandschaft -->
+            <!-- 1.5 Die aktuelle Modelllandschaft -->
             <div class="collapsible">
                 <div class="collapsible-header">
-                    <h3>1.4 Aktuelle Modelllandschaft (Jänner 2026)</h3>
+                    <h3>1.5 Die aktuelle Modelllandschaft (Stand: Februar 2026)</h3>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="collapsible-content">
                     <div class="collapsible-inner">
-                        <h4>Claude (Anthropic) – Die Claude 4.5 Familie</h4>
-                        <table>
-                            <tr><th>Modell</th><th>Charakteristik</th><th>Kontextfenster</th><th>Extended Thinking</th></tr>
-                            <tr><td>Haiku 4.5</td><td>Schnellstes Modell</td><td>200K Tokens</td><td>Ja</td></tr>
-                            <tr><td>Sonnet 4.5</td><td>Bestes Coding-Modell</td><td>200K (1M Beta)</td><td>Ja</td></tr>
-                            <tr><td>Opus 4.5</td><td>Intelligentestes Modell</td><td>200K Tokens</td><td>Ja</td></tr>
-                        </table>
+                        <p>Die KI-Landschaft ändert sich rasant. Dieser Abschnitt gibt einen Überblick über die wichtigsten Anbieter, mit dem Wissen, dass er schnell veralten wird.</p>
 
-                        <h4>ChatGPT (OpenAI) – GPT-5.2</h4>
+                        <h4>Claude (Anthropic)</h4>
                         <table>
-                            <tr><th>Modus</th><th>Was passiert</th><th>Kontextfenster</th></tr>
-                            <tr><td>Auto</td><td>Router wählt automatisch</td><td>–</td></tr>
-                            <tr><td>GPT-5.2 Instant</td><td>Schnelle Antworten</td><td>bis 400K Tokens</td></tr>
-                            <tr><td>GPT-5.2 Thinking</td><td>Extended Reasoning</td><td>bis 400K Tokens</td></tr>
-                            <tr><td>GPT-5.2 Pro</td><td>Maximale Rechenleistung</td><td>bis 400K Tokens</td></tr>
+                            <tr>
+                                <th>Modell</th>
+                                <th>Charakteristik</th>
+                                <th>Kontextfenster</th>
+                            </tr>
+                            <tr>
+                                <td>Haiku 4.5</td>
+                                <td>Schnell und günstig</td>
+                                <td>200K Tokens</td>
+                            </tr>
+                            <tr>
+                                <td>Sonnet 4.5</td>
+                                <td>Bestes Coding-Modell, vielseitig</td>
+                                <td>200K (1M Beta)</td>
+                            </tr>
+                            <tr>
+                                <td>Opus 4.5</td>
+                                <td>Intelligentestes Modell</td>
+                                <td>200K Tokens</td>
+                            </tr>
                         </table>
+                        <p>Alle Claude-Modelle unterstützen Extended Thinking.</p>
+                        <p><strong>Meine Einschätzung:</strong> Claude ist mein Hauptwerkzeug. Besonders stark bei komplexen Instruktionen, Code, und wenn Antworten bestimmte Formate einhalten sollen. Dass Anthropic gleichzeitig die führende Interpretability-Forschung betreibt (siehe 1.3), gibt mir zusätzliches Vertrauen.</p>
 
-                        <h4>Gemini (Google) – Die Gemini 3 Familie</h4>
+                        <h4>ChatGPT (OpenAI)</h4>
                         <table>
-                            <tr><th>Modus/Modell</th><th>Charakteristik</th><th>Kontextfenster</th></tr>
-                            <tr><td>Gemini 3 Flash</td><td>Extrem schnell</td><td>200K–1M Tokens</td></tr>
-                            <tr><td>Gemini 3 Deep Think</td><td>Extended Reasoning</td><td>1M Tokens</td></tr>
-                            <tr><td>Gemini 3 Pro</td><td>Maximale Intelligenz</td><td>1M–2M Tokens</td></tr>
+                            <tr>
+                                <th>Modus</th>
+                                <th>Charakteristik</th>
+                                <th>Kontextfenster</th>
+                            </tr>
+                            <tr>
+                                <td>GPT-5.2 Instant</td>
+                                <td>Schnelle Antworten</td>
+                                <td>bis 400K Tokens</td>
+                            </tr>
+                            <tr>
+                                <td>GPT-5.2 Thinking</td>
+                                <td>Extended Reasoning</td>
+                                <td>bis 400K Tokens</td>
+                            </tr>
+                            <tr>
+                                <td>GPT-5.2 Pro</td>
+                                <td>Maximale Rechenleistung</td>
+                                <td>bis 400K Tokens</td>
+                            </tr>
                         </table>
+                        <p><strong>Meine Einschätzung:</strong> Gute Allrounder-Qualität. Beste Spracheingabe/Transkription. Tendiert eher zu plausibel klingenden als faktisch korrekten Antworten.</p>
+
+                        <h4>Gemini (Google)</h4>
+                        <table>
+                            <tr>
+                                <th>Modell</th>
+                                <th>Charakteristik</th>
+                                <th>Kontextfenster</th>
+                            </tr>
+                            <tr>
+                                <td>Gemini 3 Flash</td>
+                                <td>Extrem schnell</td>
+                                <td>200K–1M Tokens</td>
+                            </tr>
+                            <tr>
+                                <td>Gemini 3 Deep Think</td>
+                                <td>Extended Reasoning</td>
+                                <td>1M Tokens</td>
+                            </tr>
+                            <tr>
+                                <td>Gemini 3 Pro</td>
+                                <td>Maximale Intelligenz</td>
+                                <td>1M–2M Tokens</td>
+                            </tr>
+                        </table>
+                        <p><strong>Meine Einschätzung:</strong> Die größten Kontextfenster. Interessant für sehr lange Dokumente. Sagt häufiger „Das weiß ich nicht."</p>
+
+                        <h4>Open-Source-Modelle</h4>
+                        <p>Neben den kommerziellen Anbietern gibt es eine wachsende Landschaft an Open-Source-Modellen (genauer: Open-Weight-Modellen, da die Gewichte frei verfügbar sind, der Trainingscode aber nicht immer). Der entscheidende Unterschied: Bei Claude, ChatGPT und Gemini nutzt man die Modelle über das Interface des jeweiligen Anbieters. Open-Source-Modelle kann man hingegen herunterladen und auf eigener Hardware betreiben, was volle Kontrolle über Daten und Kosten bedeutet, aber auch entsprechende technische Infrastruktur voraussetzt.</p>
+
+                        <table>
+                            <tr>
+                                <th>Modell</th>
+                                <th>Herkunft</th>
+                                <th>Stärke</th>
+                            </tr>
+                            <tr>
+                                <td>DeepSeek V3.2</td>
+                                <td>DeepSeek (China)</td>
+                                <td>Reasoning und Coding auf dem Niveau kommerzieller Modelle; MIT-Lizenz</td>
+                            </tr>
+                            <tr>
+                                <td>Llama 4 (Scout/Maverick)</td>
+                                <td>Meta</td>
+                                <td>Multimodal (Text, Bilder, Video); bis zu 10M Token Kontextfenster</td>
+                            </tr>
+                            <tr>
+                                <td>Qwen 3</td>
+                                <td>Alibaba (China)</td>
+                                <td>Starkes Reasoning; gute mehrsprachige Unterstützung</td>
+                            </tr>
+                            <tr>
+                                <td>Mistral Large / Mixtral</td>
+                                <td>Mistral (Frankreich)</td>
+                                <td>Effiziente Mixture-of-Experts-Architektur; Apache 2.0 Lizenz</td>
+                            </tr>
+                        </table>
+                        <p>Für uns sind Open-Source-Modelle derzeit (noch) weniger relevant, da sie technisches Setup erfordern und die Chat-Interfaces der kommerziellen Anbieter deutlich komfortabler sind. Spannend werden sie aber durch Plattformen wie Monica.ai (siehe unten), die den Zugang zu verschiedenen Modellen unter einem Dach bündeln.</p>
+
+                        <h4>Multi-Modell-Plattformen</h4>
+                        <p>Anbieter wie Monica.ai bieten Zugang zu allen führenden Modellen über ein einziges Interface: Claude, ChatGPT, Gemini, DeepSeek und andere. Das ermöglicht es, bei wichtigen Aufgaben die Outputs verschiedener KIs nebeneinander zu vergleichen. Ich nutze das regelmäßig, vor allem bei High-Stakes-Aufgaben, bei denen ich sichergehen will, dass ein Ergebnis nicht nur von einem Modell so gesehen wird. Wenn drei verschiedene Modelle unabhängig voneinander zum gleichen Schluss kommen, ist die Wahrscheinlichkeit deutlich höher, dass das Ergebnis stimmt.</p>
 
                         <h4>Was ist ein Kontextfenster?</h4>
-                        <p>Das Kontextfenster ist die maximale Textmenge, die ein Modell gleichzeitig "sehen" kann:</p>
+                        <p>Das Kontextfenster ist die maximale Textmenge, die ein Modell gleichzeitig „sehen" kann, gewissermaßen sein Arbeitsgedächtnis. Alles, was eingegeben wird, plus die bisherige Konversation, plus die Antwort muss hineinpassen. (Die Einheit Token wurde in 1.2 erklärt: ca. 4 Zeichen oder ¾ eines deutschen Wortes.)</p>
+
+                        <table>
+                            <tr>
+                                <th>Größe</th>
+                                <th>Entspricht ungefähr</th>
+                            </tr>
+                            <tr>
+                                <td>200K Tokens</td>
+                                <td>~150.000 Wörter = 300–500 Seiten</td>
+                            </tr>
+                            <tr>
+                                <td>1M Tokens</td>
+                                <td>~750.000 Wörter = mehrere Bücher</td>
+                            </tr>
+                            <tr>
+                                <td>2M Tokens</td>
+                                <td>~1,5 Millionen Wörter</td>
+                            </tr>
+                        </table>
+                        <p><strong>Praktische Bedeutung:</strong> Bei längeren Konversationen kann das Modell frühere Teile „vergessen", wenn das Limit erreicht wird. Wie man damit umgeht, wird in Abschnitt 2.5 (Context Management) beschrieben. Für die meisten Unterrichtsanwendungen sind 200K Tokens mehr als ausreichend.</p>
+
+                        <h4>Bildgenerierung</h4>
                         <ul>
-                            <li><strong>200K Tokens</strong> = ca. 150.000 Wörter = 300–500 Seiten Text</li>
-                            <li><strong>1M Tokens</strong> = ca. 750.000 Wörter = 1.500+ Seiten Text</li>
-                            <li><strong>2M Tokens</strong> = ca. 1,5 Millionen Wörter = mehrere vollständige Bücher</li>
+                            <li><strong>ChatGPT (GPT Image):</strong> Sehr ausgereift, erzeugt ca. 90% von dem, was man sich vorstellt.</li>
+                            <li><strong>Nano Banana Pro (Google):</strong> Sehr realistische Bilder, kann Text in Bildern korrekt darstellen.</li>
+                            <li><strong>Alternative:</strong> Für Diagramme und Graphen ist es oftmals effektiver, HTML-Code generieren zu lassen.</li>
                         </ul>
-
-                        <h4>Bildgenerierungsmodelle</h4>
-                        <p><strong>ChatGPT (GPT Image):</strong> Sehr ausgereift – erzeugt ca. 90% von dem, was man sich vorstellt.</p>
-                        <p><strong>Nano Banana Pro (Google):</strong> Das derzeit realistischste Bildmodell. Kann Text in Bildern korrekt darstellen und sogar Graphen/Diagramme fehlerfrei generieren.</p>
-                        <p><strong>Alternative – HTML-generierte Visualisierungen:</strong> Für Diagramme, Graphen, strukturierte Darstellungen ist es oft effektiver, HTML-Code generieren zu lassen.</p>
-
-                        <h4>NotebookLM (Google)</h4>
-                        <p>Speziell für die Arbeit mit eigenen Dokumenten konzipiert. Interessant für Schüler:innen (Zusammenfassen, Prüfungsvorbereitung). Wird in einer zukünftigen Iteration behandelt.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- 1.5 Kosten und Zugang -->
+            <!-- 1.6 Kosten und Zugang -->
             <div class="collapsible">
                 <div class="collapsible-header">
-                    <h3>1.5 Kosten und Zugang</h3>
+                    <h3>1.6 Kosten und Zugang</h3>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="collapsible-content">
                     <div class="collapsible-inner">
                         <h4>Kostenlose Nutzung</h4>
-                        <p>Alle Anbieter bieten kostenlose Versionen mit Einschränkungen: Begrenzte Nachrichten, eingeschränkter Zugang zu Reasoning-Modi, kürzere Kontextfenster.</p>
-                        <p>Für gelegentliche Nutzung ausreichend. Bei intensiverer Arbeit stößt man schnell an Limits.</p>
+                        <p>Alle Anbieter bieten kostenlose Versionen mit Einschränkungen: Begrenzte Nachrichten pro Tag/Stunde, eingeschränkter Zugang zu Reasoning-Modi (siehe 1.4), kürzere Kontextfenster. Für gelegentliche Nutzung ausreichend; bei intensiverer Arbeit stößt man schnell an Limits.</p>
 
                         <h4>Bezahlte Abos</h4>
                         <table>
-                            <tr><th>Anbieter</th><th>Abo</th><th>Preis</th><th>Was man bekommt</th></tr>
-                            <tr><td>Claude</td><td>Pro</td><td>~20 €/Monat</td><td>Höhere Limits, Priority Access</td></tr>
-                            <tr><td>Claude</td><td>Max</td><td>~100 €/Monat</td><td>Fast unbegrenzt, alle Features</td></tr>
-                            <tr><td>ChatGPT</td><td>Plus</td><td>~20 €/Monat</td><td>Höhere Limits, GPT-5.2 Thinking</td></tr>
-                            <tr><td>ChatGPT</td><td>Pro</td><td>~200 €/Monat</td><td>Unbegrenzter Zugang</td></tr>
-                            <tr><td>Gemini</td><td>Advanced</td><td>~20 €/Monat</td><td>Gemini 3 Pro, Deep Think, 2TB</td></tr>
+                            <tr>
+                                <th>Anbieter</th>
+                                <th>Abo</th>
+                                <th>Preis</th>
+                                <th>Was man bekommt</th>
+                            </tr>
+                            <tr>
+                                <td>Claude</td>
+                                <td>Pro</td>
+                                <td>~20 €/Monat</td>
+                                <td>Höhere Limits, Priority Access</td>
+                            </tr>
+                            <tr>
+                                <td>Claude</td>
+                                <td>Max</td>
+                                <td>~100–200 €/Monat</td>
+                                <td>Fast unbegrenzt, alle Features</td>
+                            </tr>
+                            <tr>
+                                <td>ChatGPT</td>
+                                <td>Plus</td>
+                                <td>~20 €/Monat</td>
+                                <td>Höhere Limits, Thinking-Modus</td>
+                            </tr>
+                            <tr>
+                                <td>ChatGPT</td>
+                                <td>Pro</td>
+                                <td>~200 €/Monat</td>
+                                <td>Unbegrenzter Zugang</td>
+                            </tr>
+                            <tr>
+                                <td>Gemini</td>
+                                <td>Advanced</td>
+                                <td>~20 €/Monat</td>
+                                <td>Gemini 3 Pro, Deep Think, 2TB Storage</td>
+                            </tr>
                         </table>
 
-                        <h4>Multi-Modell-Plattformen</h4>
-                        <p>Plattformen wie <strong>Monica.ai</strong>, <strong>Poe</strong> oder <strong>OpenRouter</strong> bieten Zugang zu mehreren Anbietern.</p>
-                        <p>Meine Erfahrung mit Monica.ai: ~200 €/Jahr für Zugang zu allen Text-Modellen plus Bildgenerierung.</p>
+                        <h4>Chat-Interface vs. API</h4>
+                        <p>Alle bisherigen Preise beziehen sich auf die Chat-Interfaces, also die Webseiten und Apps (claude.ai, chatgpt.com, gemini.google.com), über die man als Endnutzer mit den Modellen interagiert. Daneben bieten alle Anbieter auch <em>APIs</em> (Application Programming Interfaces) an: Programmierschnittstellen, über die man die Modelle direkt in eigene Software, Skripte oder Workflows einbinden kann. Die API-Nutzung wird nach Verbrauch abgerechnet (pro Token) und ist vor allem für Entwickler und technisch versierte Nutzer relevant. Für mich war bisher das Chat-Interface ausreichend.</p>
+
+                        <h4>Coding-Agenten und Automatisierungstools</h4>
+                        <p>Seit 2025 hat sich eine neue Kategorie von KI-Tools entwickelt, die über das klassische Chat-Interface hinausgehen. Statt nur Text zu generieren, können diese Tools eigenständig Aktionen auf dem Computer ausführen:</p>
+                        <ul>
+                            <li><strong>Claude Code</strong> (Anthropic, seit Februar 2025): Ein Kommandozeilen-Tool, das Claude direkt in die Entwicklungsumgebung bringt. Claude Code kann Dateien lesen und bearbeiten, Programme ausführen und mehrstufige Aufgaben selbständig abarbeiten.</li>
+                            <li><strong>Claude Cowork</strong> (Anthropic, seit Jänner 2026): Das Pendant für Nicht-Entwickler. Cowork kann auf lokale Dateien und Ordner zugreifen und dort eigenständig arbeiten: Dokumente verarbeiten, Dateien organisieren, mehrstufige Workflows automatisieren. <em>Diese Ressource wurde beispielsweise komplett mit Claude Cowork erstellt.</em></li>
+                            <li><strong>OpenAI Codex</strong> (OpenAI, seit Februar 2026): OpenAIs Antwort auf Claude Code. Ein Desktop-Tool, das mehrere KI-Agenten parallel auf verschiedenen Projekten laufen lassen kann.</li>
+                        </ul>
+                        <p>Diese Tools sind derzeit primär für Entwickler und technisch versierte Nutzer relevant, zeigen aber die Richtung: KI bewegt sich vom Chatbot zum Agenten, der eigenständig Aufgaben erledigt.</p>
 
                         <h4>Mein aktuelles Setup</h4>
                         <ul>
-                            <li><strong>Hauptarbeit:</strong> Claude Max (100 €/Monat)</li>
-                            <li><strong>Vergleich & Test:</strong> Monica.ai (200 €/Jahr)</li>
-                            <li><strong>In Planung:</strong> Gemini Advanced (wegen Kontextfenster)</li>
+                            <li><strong>Hauptarbeit:</strong> Claude Max (100–200 €/Monat), für intensive, tägliche Nutzung</li>
+                            <li><strong>Vergleich &amp; Test:</strong> Monica.ai (~200 €/Jahr), für Zugang zu allen Modellen</li>
+                            <li><strong>In Planung:</strong> Gemini Advanced, wegen der großen Kontextfenster</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- 1.6 Datenschutz und Sicherheit -->
+            <!-- 1.7 Datenschutz und Sicherheit -->
             <div class="collapsible">
                 <div class="collapsible-header">
-                    <h3>1.6 Datenschutz und Sicherheit</h3>
+                    <h3>1.7 Datenschutz und Sicherheit</h3>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="collapsible-content">
                     <div class="collapsible-inner">
                         <h4>Werden meine Chats für das Training verwendet?</h4>
-                        <p>Bei allen Anbietern gibt es eine Einstellung, die erlaubt, dass Konversationen zur Modellverbesserung verwendet werden. <strong>Diese sollte deaktiviert werden:</strong></p>
+                        <p>Bei allen Anbietern gibt es eine Einstellung, die erlaubt, dass Konversationen zur Modellverbesserung verwendet werden. Diese sollte deaktiviert werden:</p>
                         <ul>
-                            <li><strong>ChatGPT:</strong> Settings → Data Controls → "Improve the model for everyone" deaktivieren</li>
+                            <li><strong>ChatGPT:</strong> Settings → Data Controls → „Improve the model for everyone" deaktivieren</li>
                             <li><strong>Claude:</strong> Einstellungen → entsprechende Option deaktivieren</li>
                             <li><strong>Gemini:</strong> Google-Kontoeinstellungen → Datenschutz</li>
                         </ul>
 
                         <h4>Wie funktioniert das technisch?</h4>
-                        <p>Das LLM selbst ist "eingefroren" – seine Parameter ändern sich nicht durch einzelne Gespräche. Der Inhalt eines Chats wird nicht direkt in das Modell eingespeist.</p>
-                        <p>Was Anbieter tun können: Konversationen für Reinforcement Learning verwenden – um zu lernen, welche Antworten als hilfreich bewertet werden.</p>
+                        <p>Das LLM selbst ist „eingefroren"; seine Milliarden Parameter (die in 1.2 beschriebenen Vektoren und Gewichtsmatrizen) ändern sich nicht durch einzelne Gespräche. Der Inhalt eines Chats wird nicht direkt in das Modell eingespeist. Was Anbieter tun können: Konversationen für Reinforcement Learning verwenden, um zu lernen, welche Antworten als hilfreich bewertet werden. Oder: Gespräche manuell prüfen, um Probleme zu identifizieren.</p>
 
-                        <h4>Praktische Empfehlung</h4>
-                        <p>Für schulische Zwecke: Trainings-Option deaktivieren und bei sensiblen Daten (Schülernamen, Noten) vorsichtig sein. Im Zweifelsfall: Daten anonymisieren.</p>
+                        <div class="highlight-box">
+                            <h4>Praktische Empfehlung</h4>
+                            <ul style="margin-bottom:0">
+                                <li>Trainings-Option deaktivieren</li>
+                                <li>Keine echten Schülernamen verwenden, anonymisieren (z.B. „Schüler:in A")</li>
+                                <li>Keine Noten oder sensiblen Daten direkt eingeben</li>
+                                <li>Im Zweifelsfall: Lieber vorsichtig sein</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 1.7 Spracheingabe -->
-            <div class="collapsible">
-                <div class="collapsible-header">
-                    <h3>1.7 Spracheingabe: Ein unterschätztes Werkzeug</h3>
-                    <span class="toggle-icon">▼</span>
-                </div>
-                <div class="collapsible-content">
-                    <div class="collapsible-inner">
-                        <p>Ein Prinzip, das sich durch meine gesamte Arbeit zieht: Je mehr Kontext man der KI gibt, je besser man erklärt, warum etwas wichtig ist, je strukturierter man seine Gedanken präsentiert – desto besser wird das Ergebnis.</p>
-                        
-                        <p>Das lässt sich natürlich alles tippen. Aber manchmal will man einfach reden – seine Gedanken laut entwickeln, eine Idee "durchsprechen".</p>
-                        
-                        <p>Moderne KI-Modelle sind mittlerweile sehr gut darin, auch unstrukturierte Spracheingaben zu verstehen. Sie können aus einem fünfminütigen "Gedankenstream" die Kernidee extrahieren.</p>
-                        
-                        <p><strong>Dieses Dokument selbst ist größtenteils durch Spracheingabe entstanden.</strong></p>
-
-                        <div class="highlight-box">
-                            <h4>Praktischer Tipp</h4>
-                            <p style="margin-bottom:0">Alle großen Plattformen unterstützen Spracheingabe direkt im Chat. Einfach das Mikrofon-Symbol nutzen und lossprechen. Besonders nützlich für: Erste Ideenentwicklung, Kontexterklärungen, Feedback und Korrekturwünsche.</p>
-                        </div>
-                    </div>
-                </div>
+            <!-- Zusammenfassung Kapitel 1 -->
+            <div class="highlight-box" style="margin-top: 2rem;">
+                <h4>Zusammenfassung Kapitel 1</h4>
+                <ul>
+                    <li><strong>LLMs sind Textvorhersagemaschinen</strong> – extrem gut darin, das nächste Wort zu raten, was implizit viel Wissen erfordert. Aktuelle Forschung zeigt, dass sie dabei intern planen, in einer sprachübergreifenden „Denksprache" arbeiten und eigene Rechenstrategien entwickeln.</li>
+                    <li><strong>Die 80%-Regel</strong> – KI liefert ~80% verwendbaren Output. Die letzten 20% sind der Job der Lehrperson.</li>
+                    <li><strong>Halluzinationen sind unvermeidlich</strong> – Jeder Output muss fachlich geprüft werden. LLMs können nicht unterscheiden, ob sie gerade tatsächlich „rechnen" oder plausibel klingende Schritte erfinden.</li>
+                    <li><strong>Reasoning-Modelle für komplexe Aufgaben</strong> – Bei Mathe, Logik, Code und mehrstufigen Analysen. Aber auch deren Gedankenketten sind nicht immer verlässlich.</li>
+                    <li><strong>Kontext ist alles</strong> – Je mehr man erklärt, desto besser das Ergebnis. Wie das praktisch geht, zeigt Kapitel 2.</li>
+                    <li><strong>Datenschutz beachten</strong> – Trainings-Option deaktivieren, keine echten Schülerdaten.</li>
+                </ul>
+                <p style="margin-bottom:0; margin-top: 1rem;"><strong>Weiter zu Kapitel 2: Vorbereitung &amp; Anwendung →</strong></p>
             </div>
         </section>
 
