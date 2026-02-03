@@ -247,15 +247,15 @@
         }
 
         .panel-title {
-            font-size: 0.65em;
+            font-size: 0.6em;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             color: rgba(255,255,255,0.3);
-            margin-bottom: 8px;
-            margin-top: 6px;
+            margin-bottom: 4px;
+            margin-top: 4px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
 
         .panel-title:first-child {
@@ -263,16 +263,19 @@
         }
 
         .day-counter {
-            text-align: center;
-            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 6px 10px;
             background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(46, 204, 113, 0.05));
             border-radius: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             flex-shrink: 0;
         }
 
         .day-value {
-            font-size: 2em;
+            font-size: 1.4em;
             font-weight: 700;
             color: #e74c3c;
         }
@@ -282,18 +285,18 @@
             color: rgba(255,255,255,0.4);
         }
 
-        /* Stats Grid */
+        /* Stats Grid - Compact Horizontal */
         .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 8px;
+            display: flex;
+            gap: 4px;
+            margin-bottom: 6px;
             flex-shrink: 0;
         }
 
         .stat-card {
-            padding: 8px;
-            border-radius: 8px;
+            flex: 1;
+            padding: 4px 2px;
+            border-radius: 6px;
             text-align: center;
             transition: all 0.3s;
         }
@@ -305,7 +308,7 @@
         .stat-card.dead { background: rgba(127, 140, 141, 0.15); border: 1px solid rgba(127, 140, 141, 0.3); }
 
         .stat-value {
-            font-size: 1.3em;
+            font-size: 1.1em;
             font-weight: 700;
         }
 
@@ -316,33 +319,39 @@
         .stat-card.dead .stat-value { color: #7f8c8d; }
 
         .stat-label {
-            font-size: 0.55em;
+            font-size: 0.5em;
             color: rgba(255,255,255,0.4);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
-        /* Sliders */
+        /* Sliders - Compact */
+        .sliders-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin-bottom: 6px;
+        }
+
         .slider-group {
-            margin: 6px 0;
-            padding: 8px;
+            padding: 5px 6px;
             background: rgba(255,255,255,0.03);
-            border-radius: 8px;
+            border-radius: 6px;
             flex-shrink: 0;
         }
 
         .slider-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 4px;
-            gap: 4px;
+            margin-bottom: 2px;
+            gap: 2px;
         }
 
         .slider-label {
-            font-size: 0.7em;
+            font-size: 0.6em;
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 2px;
             flex: 1;
             min-width: 0;
         }
@@ -350,7 +359,7 @@
         .slider-value {
             font-weight: 600;
             color: #e74c3c;
-            font-size: 0.7em;
+            font-size: 0.6em;
             white-space: nowrap;
         }
 
@@ -388,20 +397,20 @@
         #vaccinationRate { background: linear-gradient(90deg, #7f8c8d, #9b59b6); }
         #socialDistance { background: linear-gradient(90deg, #e74c3c, #2ecc71); }
 
-        /* Buttons */
+        /* Buttons - Compact */
         .btn-row {
             display: flex;
-            gap: 6px;
-            margin-top: 6px;
+            gap: 4px;
+            margin-top: 4px;
             flex-shrink: 0;
         }
 
         .btn {
             flex: 1;
-            padding: 8px 6px;
+            padding: 6px 4px;
             border: none;
-            border-radius: 8px;
-            font-size: 0.7em;
+            border-radius: 6px;
+            font-size: 0.65em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -432,24 +441,24 @@
             color: white;
         }
 
-        /* Graph */
+        /* Graph - Compact */
         .graph-container {
-            margin-top: 6px;
-            padding: 8px;
+            margin-top: 4px;
+            padding: 6px;
             background: rgba(0,0,0,0.3);
-            border-radius: 8px;
+            border-radius: 6px;
             flex-shrink: 0;
         }
 
         .graph-title {
-            font-size: 0.65em;
+            font-size: 0.6em;
             color: rgba(255,255,255,0.3);
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         #graphCanvas {
             width: 100%;
-            height: 60px;
+            height: 50px;
             border-radius: 4px;
         }
 
@@ -458,27 +467,27 @@
             display: none;
         }
 
-        /* Scenario Buttons */
+        /* Scenario Buttons - Compact */
         .scenario-section {
-            margin-top: 6px;
-            padding-top: 6px;
+            margin-top: 4px;
+            padding-top: 4px;
             border-top: 1px solid rgba(255,255,255,0.05);
             flex-shrink: 0;
         }
 
         .scenario-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3px;
         }
 
         .scenario-btn {
-            padding: 6px 4px;
+            padding: 4px 2px;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 6px;
+            border-radius: 4px;
             color: rgba(255,255,255,0.6);
-            font-size: 0.65em;
+            font-size: 0.55em;
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
@@ -545,11 +554,10 @@
 
             <div class="control-panel">
                 <div class="day-counter">
+                    <div class="day-label">Tag</div>
                     <div class="day-value" id="dayCount">0</div>
-                    <div class="day-label">Tage seit Ausbruch</div>
                 </div>
 
-                <div class="panel-title">📊 Statistiken</div>
                 <div class="stats-grid">
                     <div class="stat-card healthy">
                         <div class="stat-value" id="healthyCount">99</div>
@@ -569,48 +577,47 @@
                     </div>
                 </div>
 
-                <div class="panel-title">⚙️ Krankheitsparameter</div>
-
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span class="slider-label">🦠 Ansteckungsrate</span>
-                        <span class="slider-value" id="infectionValue">50%</span>
+                <div class="panel-title">⚙️ Parameter</div>
+                <div class="sliders-container">
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label">🦠 Ansteckung</span>
+                            <span class="slider-value" id="infectionValue">50%</span>
+                        </div>
+                        <input type="range" id="infectionRate" min="10" max="100" value="50">
                     </div>
-                    <input type="range" id="infectionRate" min="10" max="100" value="50">
-                </div>
 
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span class="slider-label">⏱️ Krankheitsdauer</span>
-                        <span class="slider-value" id="recoveryValue">14 Tage</span>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label">⏱️ Dauer</span>
+                            <span class="slider-value" id="recoveryValue">14d</span>
+                        </div>
+                        <input type="range" id="recoveryTime" min="5" max="30" value="14">
                     </div>
-                    <input type="range" id="recoveryTime" min="5" max="30" value="14">
-                </div>
 
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span class="slider-label">💀 Sterblichkeit</span>
-                        <span class="slider-value" id="mortalityValue">2%</span>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label">💀 Sterblichkeit</span>
+                            <span class="slider-value" id="mortalityValue">2%</span>
+                        </div>
+                        <input type="range" id="mortalityRate" min="0" max="20" value="2">
                     </div>
-                    <input type="range" id="mortalityRate" min="0" max="20" value="2">
-                </div>
 
-                <div class="panel-title">🛡️ Schutzmaßnahmen</div>
-
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span class="slider-label">↔️ Social Distancing</span>
-                        <span class="slider-value" id="distanceValue">0%</span>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label">↔️ Distancing</span>
+                            <span class="slider-value" id="distanceValue">0%</span>
+                        </div>
+                        <input type="range" id="socialDistance" min="0" max="90" value="0">
                     </div>
-                    <input type="range" id="socialDistance" min="0" max="90" value="0">
-                </div>
 
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span class="slider-label">💉 Impfrate</span>
-                        <span class="slider-value" id="vaccineValue">0%</span>
+                    <div class="slider-group" style="grid-column: span 2;">
+                        <div class="slider-header">
+                            <span class="slider-label">💉 Impfrate (kontinuierlich)</span>
+                            <span class="slider-value" id="vaccineValue">0%</span>
+                        </div>
+                        <input type="range" id="vaccinationRate" min="0" max="50" value="0">
                     </div>
-                    <input type="range" id="vaccinationRate" min="0" max="50" value="0">
                 </div>
 
                 <div class="btn-row">
@@ -631,10 +638,10 @@
                 <div class="scenario-section">
                     <div class="panel-title">🎬 Szenarien</div>
                     <div class="scenario-grid">
-                        <button class="scenario-btn" onclick="loadScenario('flu')">Grippe (R₀ 1.3)</button>
-                        <button class="scenario-btn" onclick="loadScenario('measles')">Masern (R₀ 15)</button>
-                        <button class="scenario-btn" onclick="loadScenario('covid')">COVID-19 (R₀ 2.5)</button>
-                        <button class="scenario-btn" onclick="loadScenario('ebola')">Ebola (R₀ 2)</button>
+                        <button class="scenario-btn" onclick="loadScenario('flu')">Grippe</button>
+                        <button class="scenario-btn" onclick="loadScenario('measles')">Masern</button>
+                        <button class="scenario-btn" onclick="loadScenario('covid')">COVID</button>
+                        <button class="scenario-btn" onclick="loadScenario('ebola')">Ebola</button>
                     </div>
                 </div>
             </div>
@@ -1024,7 +1031,7 @@
             document.getElementById('recoveryTime').value = s.recovery;
             document.getElementById('mortalityRate').value = s.mortality;
             document.getElementById('infectionValue').textContent = s.infection + '%';
-            document.getElementById('recoveryValue').textContent = s.recovery + ' Tage';
+            document.getElementById('recoveryValue').textContent = s.recovery + 'd';
             document.getElementById('mortalityValue').textContent = s.mortality + '%';
         }
 
@@ -1036,7 +1043,7 @@
 
         document.getElementById('recoveryTime').addEventListener('input', (e) => {
             recoveryDays = parseInt(e.target.value);
-            document.getElementById('recoveryValue').textContent = recoveryDays + ' Tage';
+            document.getElementById('recoveryValue').textContent = recoveryDays + 'd';
         });
 
         document.getElementById('mortalityRate').addEventListener('input', (e) => {
