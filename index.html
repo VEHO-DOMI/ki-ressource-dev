@@ -1306,6 +1306,7 @@
                 <a href="#" class="nav-subitem" data-section="vorbereitung" data-subsection="2.3">2.3 Schulbuch-Transkription</a>
                 <a href="#" class="nav-subitem" data-section="vorbereitung" data-subsection="2.4">2.4 Projects & Gems</a>
                 <a href="#" class="nav-subitem" data-section="vorbereitung" data-subsection="2.5">2.5 Context Management</a>
+                <a href="#" class="nav-subitem" data-section="vorbereitung" data-subsection="2.6">2.6 KI-Output erkennen</a>
             </div>
 
             <!-- Section 3: Unterrichtsmaterialien -->
@@ -2446,6 +2447,52 @@ damit wir genau dort weitermachen können, wo wir aufgehört haben.</pre>
                 </div>
             </div>
 
+            <!-- 2.6 KI-Output erkennen -->
+            <div class="collapsible">
+                <div class="collapsible-header">
+                    <h3>2.6 KI-Output erkennen</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <p>Als Lehrkraft ist es hilfreich zu wissen, woran man KI-generierte Texte erkennen kann – nicht um Schüler:innen zu "erwischen", sondern um informierte Gespräche über den Umgang mit diesen Werkzeugen führen zu können.</p>
+
+                        <h4>Technische Merkmale</h4>
+                        <p>Das erste, worauf ich persönlich achte: <strong>Anführungszeichen und Apostrophe.</strong> KI-Output verwendet standardmäßig gerade Anführungszeichen ("...") und Apostrophe ('), nie die geschwungenen typografischen Varianten („..." oder '). Wenn man selbst am Computer tippt, ist die Standardfunktion in den meisten Programmen die geschwungene Variante. Ein Text, der durchgehend gerade Anführungszeichen hat, wurde mit hoher Wahrscheinlichkeit aus einem KI-Chat kopiert.</p>
+
+                        <p><strong>Gleichmäßige Paragrafenlänge:</strong> KI-generierte Texte tendieren dazu, alle Absätze ungefähr gleich lang zu machen. Natürliches Schreiben hat typischerweise eine Mischung aus kurzen und längeren Paragraphen – mal ein Zweizeiler, mal ein ausführlicher Absatz.</p>
+
+                        <p><strong>ChatGPT-Dokumente:</strong> Wenn ChatGPT ein Word-Dokument erstellt, haben die Überschriften standardmäßig immer dieselbe blaue Formatierung. Das lässt sich natürlich anpassen, aber wer den Output einfach übernimmt, behält dieses Erkennungsmerkmal.</p>
+
+                        <h4>Sprachliche Merkmale – Deutsch</h4>
+                        <p><em>Detaillierte Ausarbeitung folgt.</em> Erste Anhaltspunkte:</p>
+                        <ul>
+                            <li><strong>Typische Einleitungen:</strong> "In der heutigen..." als Textbeginn</li>
+                            <li><strong>Floskeln:</strong> "Wichtige Tipps", "Es ist entscheidend", "Eine Rolle spielen"</li>
+                            <li><strong>Konnektoren-Häufung:</strong> "dennoch", "daher", "zudem", "hingegen", "gleichzeitig", "infolgedessen"</li>
+                            <li><strong>Dreier-Strukturen:</strong> Immer drei Tipps, drei Argumente, drei Schritte</li>
+                            <li><strong>Gedankenstriche:</strong> Übermäßiger Einsatz von Gedankenstrichen (–), oft gefolgt von drei kommagetrennten Adjektiven</li>
+                            <li><strong>Regionale Fehler:</strong> ß statt ss (Schweiz), englische Schreibweisen (c statt k)</li>
+                        </ul>
+
+                        <h4>Sprachliche Merkmale – Englisch</h4>
+                        <p><em>Detaillierte Ausarbeitung folgt.</em> Erste Anhaltspunkte:</p>
+                        <ul>
+                            <li><strong>"Not just X, it's Y":</strong> Diese Struktur kommt in menschlichem Schreiben selten vor, bei KI ständig</li>
+                            <li><strong>Em Dashes (—):</strong> Exzessiver Einsatz von Gedankenstrichen</li>
+                            <li><strong>Buzzwords:</strong> "elevate", "delve", "innovative", "compelling", "leverage", "streamline", "robust", "seamless"</li>
+                            <li><strong>Übertriebenes Lob:</strong> "Great question!", "Excellent point!" am Anfang</li>
+                            <li><strong>Listen mit 3 oder 5 Items:</strong> Menschliches Schreiben hat unregelmäßigere Aufzählungen</li>
+                            <li><strong>Erzwungene Metaphern:</strong> Lighthouse/fog, journey/path, building/foundation</li>
+                        </ul>
+
+                        <div class="warning-box">
+                            <strong>Wichtig:</strong> KI-Detektoren (GPTZero, Turnitin etc.) sind bei deutschen Texten wenig zuverlässig. Eine Studie der Ruhr-Universität Bochum zeigte, dass Lehrkräfte mit etwa 70% Genauigkeit KI-Texte erkennen – besser als viele automatische Tools. Der beste Ansatz bleibt: den Schreibprozess kennen, nicht nur das Endprodukt bewerten.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Zusammenfassung Kapitel 2 -->
             <div class="highlight-box" style="margin-top: 2rem;">
                 <h4>Zusammenfassung Kapitel 2</h4>
@@ -2454,8 +2501,9 @@ damit wir genau dort weitermachen können, wo wir aufgehört haben.</pre>
                     <li><strong>Die fünf Prompt-Elemente</strong> – Rolle, Kontext, Ergebnis, WARUM, Beispiele. Das WARUM ist am wichtigsten.</li>
                     <li><strong>Iteration ist normal</strong> – Gute Materialien entstehen über 3–8 Prompts, nicht in einem Durchgang.</li>
                     <li><strong>Schulbuch-Transkription</strong> – Die wichtigste Vorarbeit. Reine Textdateien statt PDFs, Vokabel-Masterlisten als Referenz.</li>
-                    <li><strong>Claude Projects</strong> – Für wiederkehrende Aufgaben: System-Prompt + Referenzdokumente = konsistente Ergebnisse.</li>
+                    <li><strong>Projects & Gems</strong> – Für wiederkehrende Aufgaben: System-Prompt + Referenzdokumente = konsistente Ergebnisse.</li>
                     <li><strong>Context Management</strong> – Übergabe-Prompts erstellen, bevor das Kontextlimit erreicht wird.</li>
+                    <li><strong>KI-Output erkennen</strong> – Technische Merkmale (gerade Anführungszeichen, Formatierung) und sprachliche Muster als Erkennungshilfe.</li>
                 </ol>
                 <p style="margin-bottom:0; margin-top: 1rem;"><strong>Weiter zu Kapitel 3: Unterrichtsmaterialien →</strong></p>
             </div>
