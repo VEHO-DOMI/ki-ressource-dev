@@ -1540,7 +1540,7 @@
                                     <p>Zusätzlich zu diesen semantischen Vektoren erhält jedes Token einen Positionsvektor, der kodiert, an welcher Stelle im Satz es steht. Das ist wichtig, weil dieselben Wörter je nach Position verschiedene Dinge bedeuten können: „Der Hund jagte die Katze" ist etwas anderes als „Die Katze jagte den Hund."</p>
 
                                     <h4>Schritt 2: Attention – Wie Wörter miteinander sprechen</h4>
-                                    <p>Hier kommt die Kerninnovation der Transformer: der <em>Attention-Mechanismus</em>. Das Problem, das er löst, ist fundamental: Wenn ein Modell das nächste Wort vorhersagen will, sind nicht alle vorherigen Wörter gleich relevant. Bei dem Satz „Der Tesla bog in die Garage ein, weil sein Akku fast leer war" muss das Modell verstehen, dass „sein" sich auf „Tesla" bezieht und nicht auf „Garage".</p>
+                                    <p>Hier kommt die Kerninnovation der Transformer: der <em>Attention-Mechanismus</em>. Das Problem, das er löst, ist fundamental: Wenn ein Modell das nächste Wort vorhersagen will, sind nicht alle vorherigen Wörter gleich relevant. Bei dem Satz „Die Anwältin befragte die Zeugin, bevor sie ihre Aussage machte" muss das Modell verstehen, dass „sie" sich auf „Zeugin" bezieht und nicht auf „Anwältin" – obwohl beide grammatisch möglich wären. Diese Zuordnung gelingt nur durch semantisches Kontextwissen.</p>
 
                                     <p>Wie funktioniert das konkret? Für jedes Token im Satz berechnet das Modell drei Dinge:</p>
                                     <ul>
