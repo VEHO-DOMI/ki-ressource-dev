@@ -55,28 +55,30 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            padding: 16px;
+            padding: 8px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 8px;
             overflow: hidden;
         }
 
         .chart-container {
-            flex: 0.6;
+            flex: 0.55;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 8px;
-            padding: 12px;
+            padding: 8px;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            min-height: 0;
         }
 
         .basket-container {
-            flex: 0.4;
+            flex: 0.45;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 8px;
-            padding: 12px;
+            padding: 8px;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            overflow-y: auto;
+            overflow: hidden;
+            min-height: 0;
         }
 
         canvas {
@@ -762,81 +764,76 @@
         function drawBasket() {
             const w = basketCanvas.width;
             const h = basketCanvas.height;
-            const padding = 16;
-            const itemWidth = (w - padding * 2) / 2;
-            const itemHeight = (h - padding * 2) / Math.ceil(goods.length / 2);
-            const barWidth = (itemWidth - 40) / 2;
-            const barSpacing = 8;
+            const labelWidth = 90;
+            const priceWidth = 50;
+            const padding = 8;
+            const legendHeight = 18;
+            const rowHeight = Math.floor((h - padding * 2 - legendHeight) / goods.length);
+            const barAreaWidth = w - labelWidth - priceWidth * 2 - padding * 2 - 8;
 
             basketCtx.clearRect(0, 0, w, h);
 
+            // Find max price for scaling
+            let maxPrice = 0;
+            goods.forEach(good => {
+                const fp = calculateFuturePrice(good.currentPrice, state.animatedInflation, state.animatedYears);
+                if (fp > maxPrice) maxPrice = fp;
+            });
+            maxPrice *= 1.1;
+
             goods.forEach((good, idx) => {
-                const row = Math.floor(idx / 2);
-                const col = idx % 2;
-                const x = padding + col * itemWidth;
-                const y = padding + row * itemHeight;
-
-                // Item background
-                basketCtx.fillStyle = 'rgba(255, 255, 255, 0.02)';
-                basketCtx.fillRect(x, y, itemWidth - 4, itemHeight - 4);
-                basketCtx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-                basketCtx.lineWidth = 1;
-                basketCtx.strokeRect(x, y, itemWidth - 4, itemHeight - 4);
-
-                // Icon and name
-                basketCtx.font = 'bold 14px Inter';
-                basketCtx.textAlign = 'left';
-                basketCtx.fillStyle = '#fff';
-                basketCtx.fillText(good.icon + ' ' + good.name, x + 8, y + 20);
-
-                // Current price (today)
+                const y = padding + idx * rowHeight;
+                const barH = Math.max(Math.floor(rowHeight * 0.32), 4);
                 const currentPrice = good.currentPrice;
                 const futurePrice = calculateFuturePrice(good.currentPrice, state.animatedInflation, state.animatedYears);
+                const barX = labelWidth;
 
-                const barY = y + 28;
-                const barHeight = itemHeight - 40;
-                const maxPrice = Math.max(currentPrice, futurePrice) * 1.2;
-                const scale = barHeight / maxPrice;
+                // Alternating row background
+                if (idx % 2 === 0) {
+                    basketCtx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+                    basketCtx.fillRect(0, y, w, rowHeight);
+                }
 
-                // Current price bar
-                const currentHeight = Math.min(currentPrice * scale, barHeight);
+                // Item label (icon + name)
+                basketCtx.font = '11px Inter';
+                basketCtx.textAlign = 'left';
+                basketCtx.fillStyle = '#fff';
+                basketCtx.fillText(good.icon + ' ' + good.name, padding, y + rowHeight * 0.42);
+
+                // Today bar (cyan)
+                const currentW = (currentPrice / maxPrice) * barAreaWidth;
+                const bar1Y = y + rowHeight * 0.15;
                 basketCtx.fillStyle = '#00d9ff';
-                basketCtx.fillRect(x + 8, barY + barHeight - currentHeight, barWidth - barSpacing, currentHeight);
+                basketCtx.fillRect(barX, bar1Y, currentW, barH);
 
-                // Future price bar
-                const futureHeight = Math.min(futurePrice * scale, barHeight);
+                // Future bar (pink)
+                const futureW = (futurePrice / maxPrice) * barAreaWidth;
+                const bar2Y = y + rowHeight * 0.55;
                 basketCtx.fillStyle = '#ff6ba6';
-                basketCtx.fillRect(x + 8 + barWidth + barSpacing, barY + barHeight - futureHeight, barWidth - barSpacing, futureHeight);
+                basketCtx.fillRect(barX, bar2Y, futureW, barH);
 
-                // Price labels
+                // Price labels (right side)
                 basketCtx.font = '10px Inter';
-                basketCtx.textAlign = 'center';
+                basketCtx.textAlign = 'right';
                 basketCtx.fillStyle = '#00d9ff';
-                basketCtx.fillText('€' + currentPrice.toFixed(2), x + 8 + barWidth / 2 - barSpacing, barY + barHeight + 12);
-
+                basketCtx.fillText('€' + currentPrice.toFixed(2), barX + currentW + priceWidth, bar1Y + barH - 1);
                 basketCtx.fillStyle = '#ff6ba6';
-                basketCtx.fillText('€' + futurePrice.toFixed(2), x + 8 + barWidth + barSpacing + barWidth / 2 - barSpacing, barY + barHeight + 12);
-
-                // Time labels
-                basketCtx.font = '9px Inter';
-                basketCtx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-                basketCtx.fillText('Heute', x + 8 + barWidth / 2 - barSpacing, barY - 4);
-                basketCtx.fillText(`+${state.animatedYears.toFixed(0)}a`, x + 8 + barWidth + barSpacing + barWidth / 2 - barSpacing, barY - 4);
+                basketCtx.fillText('€' + futurePrice.toFixed(2), barX + futureW + priceWidth, bar2Y + barH - 1);
             });
 
-            // Legend
-            const legendY = padding + Math.ceil(goods.length / 2) * itemHeight + 8;
+            // Legend row at bottom
+            const ly = h - legendHeight;
             basketCtx.fillStyle = '#00d9ff';
-            basketCtx.fillRect(padding, legendY, 10, 10);
+            basketCtx.fillRect(labelWidth, ly + 3, 10, 10);
             basketCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
             basketCtx.font = '10px Inter';
             basketCtx.textAlign = 'left';
-            basketCtx.fillText('Heutige Preise', padding + 14, legendY + 9);
+            basketCtx.fillText('Heute', labelWidth + 14, ly + 12);
 
             basketCtx.fillStyle = '#ff6ba6';
-            basketCtx.fillRect(padding + 130, legendY, 10, 10);
+            basketCtx.fillRect(labelWidth + 80, ly + 3, 10, 10);
             basketCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-            basketCtx.fillText('Zukünftige Preise', padding + 144, legendY + 9);
+            basketCtx.fillText(`In ${state.animatedYears.toFixed(0)} Jahren`, labelWidth + 94, ly + 12);
         }
 
         // ===================== INITIALIZATION =====================
