@@ -380,13 +380,14 @@
         }
 
         // ========================
-        // CANVAS UTILITY
+        // CANVAS UTILITY - FIXED FOR LOGICAL PIXELS
         // ========================
         function getCanvasCoords() {
             const canvas = state.canvas;
             const dpr = state.dpr;
-            const w = canvas.offsetWidth * dpr;
-            const h = canvas.offsetHeight * dpr;
+            // CRITICAL FIX: Use logical pixel dimensions (canvas.width / dpr), NOT physical
+            const w = canvas.width / dpr;
+            const h = canvas.height / dpr;
 
             const left = config.paddingLeft;
             const right = w - config.paddingRight;
@@ -623,9 +624,8 @@
             const w = coords.canvas.w;
             const h = coords.canvas.h;
 
-            // Clear canvas
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.01)';
-            ctx.fillRect(0, 0, w, h);
+            // CRITICAL FIX: Proper canvas clearing (no ghosting)
+            ctx.clearRect(0, 0, w, h);
 
             // Draw grid and axes
             drawGrid(ctx, coords);
@@ -740,7 +740,7 @@
         }
 
         // ========================
-        // CANVAS SETUP
+        // CANVAS SETUP - FIXED FOR RETINA DISPLAYS
         // ========================
         function setupCanvas() {
             const wrapper = document.querySelector('.canvas-wrapper');
@@ -751,10 +751,22 @@
             state.dpr = window.devicePixelRatio || 1;
 
             function resizeCanvas() {
+                // CRITICAL FIX: Properly set DPR and use setTransform instead of scale
+                state.dpr = window.devicePixelRatio || 1;
+                const dpr = state.dpr;
                 const rect = wrapper.getBoundingClientRect();
-                canvas.width = rect.width * state.dpr;
-                canvas.height = rect.height * state.dpr;
-                state.ctx.scale(state.dpr, state.dpr);
+
+                // Set physical pixel dimensions
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+
+                // Set CSS size for logical pixels
+                canvas.style.width = rect.width + 'px';
+                canvas.style.height = rect.height + 'px';
+
+                // CRITICAL FIX: Use setTransform instead of scale to avoid accumulation
+                state.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
                 render();
             }
 

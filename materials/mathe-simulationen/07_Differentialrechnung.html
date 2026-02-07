@@ -225,60 +225,70 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
 
+        let dpr = 1;
+
         const state = {
             functionType: 'quadratic',
             x0: 1,
             h: 0.5,
-            showTangent: true,
-            canvasWidth: 0,
-            canvasHeight: 0,
-            graphHeight: 0,
-            pixelRatio: 1
+            showTangent: true
         };
 
-        // Function definitions
+        // Function definitions with separate y-ranges
         const functions = {
             quadratic: {
                 name: 'f(x) = x²',
                 f: (x) => x * x,
                 fPrime: (x) => 2 * x,
-                yMin: -1,
-                yMax: 8
+                yMin: -2,
+                yMax: 10,
+                dyMin: -10,
+                dyMax: 10
             },
             cubic: {
                 name: 'f(x) = x³',
                 f: (x) => x * x * x,
                 fPrime: (x) => 3 * x * x,
-                yMin: -10,
-                yMax: 10
+                yMin: -15,
+                yMax: 15,
+                dyMin: -5,
+                dyMax: 50
             },
             sine: {
                 name: 'f(x) = sin(x)',
                 f: (x) => Math.sin(x),
                 fPrime: (x) => Math.cos(x),
                 yMin: -1.5,
-                yMax: 1.5
+                yMax: 1.5,
+                dyMin: -1.5,
+                dyMax: 1.5
             },
             exponential: {
                 name: 'f(x) = eˣ',
                 f: (x) => Math.exp(x),
                 fPrime: (x) => Math.exp(x),
-                yMin: -1,
-                yMax: 30
+                yMin: -2,
+                yMax: 15,
+                dyMin: -2,
+                dyMax: 15
             },
             logarithm: {
                 name: 'f(x) = ln(x)',
                 f: (x) => x > 0 ? Math.log(x) : null,
                 fPrime: (x) => x > 0 ? 1 / x : null,
-                yMin: -3,
-                yMax: 3
+                yMin: -4,
+                yMax: 4,
+                dyMin: -2,
+                dyMax: 10
             },
             hyperbola: {
                 name: 'f(x) = 1/x',
                 f: (x) => x !== 0 ? 1 / x : null,
                 fPrime: (x) => x !== 0 ? -1 / (x * x) : null,
-                yMin: -10,
-                yMax: 10
+                yMin: -8,
+                yMax: 8,
+                dyMin: -10,
+                dyMax: 2
             }
         };
 
@@ -288,9 +298,10 @@
         const coordSystem = {
             xMin: -5,
             xMax: 5,
-            xAxisPadding: 50,
-            rightPadding: 20,
-            topBottomPadding: 15
+            leftPadding: 55,
+            rightPadding: 15,
+            topPadding: 5,
+            bottomPadding: 25
         };
 
         // ============================================================================
@@ -301,131 +312,147 @@
             return value.toFixed(2).toString().replace('.', ',');
         }
 
-        function worldToCanvas(x, y, yMin, yMax, graphTop, graphBottom) {
-            const canvasWidth = canvas.width;
-            const xRange = coordSystem.xMax - coordSystem.xMin;
-            const yRange = yMax - yMin;
-
-            const canvasX = coordSystem.xAxisPadding +
-                ((x - coordSystem.xMin) / xRange) * (canvasWidth - coordSystem.xAxisPadding - coordSystem.rightPadding);
-
-            const canvasY = graphTop +
-                ((yMax - y) / yRange) * (graphBottom - graphTop);
-
-            return { canvasX, canvasY };
+        function worldToCanvasX(x, graphLeft, graphRight, xMin, xMax) {
+            return graphLeft + (x - xMin) / (xMax - xMin) * (graphRight - graphLeft);
         }
 
-        function canvasToWorld(canvasX, canvasY, yMin, yMax, graphTop, graphBottom) {
-            const canvasWidth = canvas.width;
-            const xRange = coordSystem.xMax - coordSystem.xMin;
-            const yRange = yMax - yMin;
+        function worldToCanvasY(y, graphTop, graphBottom, yMin, yMax) {
+            return graphTop + (yMax - y) / (yMax - yMin) * (graphBottom - graphTop);
+        }
 
-            const x = coordSystem.xMin +
-                ((canvasX - coordSystem.xAxisPadding) /
-                (canvasWidth - coordSystem.xAxisPadding - coordSystem.rightPadding)) * xRange;
+        function canvasToWorldX(canvasX, graphLeft, graphRight, xMin, xMax) {
+            return xMin + (canvasX - graphLeft) / (graphRight - graphLeft) * (xMax - xMin);
+        }
 
-            const y = yMax -
-                ((canvasY - graphTop) / (graphBottom - graphTop)) * yRange;
-
-            return { x, y };
+        function canvasToWorldY(canvasY, graphTop, graphBottom, yMin, yMax) {
+            return yMax - (canvasY - graphTop) / (graphBottom - graphTop) * (yMax - yMin);
         }
 
         // ============================================================================
-        // CANVAS RENDERING
+        // CANVAS MANAGEMENT
         // ============================================================================
-        function drawGrid(graphTop, graphBottom, yMin, yMax) {
+        function resizeCanvas() {
+            dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+
+            // Use setTransform to avoid accumulation
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        // ============================================================================
+        // DRAWING FUNCTIONS
+        // ============================================================================
+        function getLogicalDimensions() {
+            return {
+                w: canvas.width / dpr,
+                h: canvas.height / dpr
+            };
+        }
+
+        function drawGrid(graphLeft, graphRight, graphTop, graphBottom, yMin, yMax) {
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-            ctx.lineWidth = 0.5 * state.pixelRatio;
+            ctx.lineWidth = 0.5;
 
-            // Vertical grid lines
+            // Vertical grid lines at integer x values
             for (let x = Math.ceil(coordSystem.xMin); x <= Math.floor(coordSystem.xMax); x++) {
-                const pos = worldToCanvas(x, 0, yMin, yMax, graphTop, graphBottom);
+                const canvasX = worldToCanvasX(x, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
                 ctx.beginPath();
-                ctx.moveTo(pos.canvasX, graphTop);
-                ctx.lineTo(pos.canvasX, graphBottom);
+                ctx.moveTo(canvasX, graphTop);
+                ctx.lineTo(canvasX, graphBottom);
                 ctx.stroke();
             }
 
-            // Horizontal grid lines
-            const yStep = Math.pow(10, Math.floor(Math.log10(yMax - yMin))) / 2;
-            for (let y = Math.ceil(yMin / yStep) * yStep; y <= yMax; y += yStep) {
-                const pos = worldToCanvas(0, y, yMin, yMax, graphTop, graphBottom);
+            // Horizontal grid lines at integer y values
+            const yStep = 1;
+            let yValue = Math.ceil(yMin / yStep) * yStep;
+            while (yValue <= yMax) {
+                const canvasY = worldToCanvasY(yValue, graphTop, graphBottom, yMin, yMax);
                 ctx.beginPath();
-                ctx.moveTo(coordSystem.xAxisPadding, pos.canvasY);
-                ctx.lineTo(canvas.width - coordSystem.rightPadding, pos.canvasY);
+                ctx.moveTo(graphLeft, canvasY);
+                ctx.lineTo(graphRight, canvasY);
                 ctx.stroke();
+                yValue += yStep;
             }
         }
 
-        function drawAxes(graphTop, graphBottom, yMin, yMax) {
+        function drawAxes(graphLeft, graphRight, graphTop, graphBottom, yMin, yMax) {
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-            ctx.lineWidth = 1.5 * state.pixelRatio;
+            ctx.lineWidth = 1.5;
 
             // Y-axis
             ctx.beginPath();
-            ctx.moveTo(coordSystem.xAxisPadding, graphTop);
-            ctx.lineTo(coordSystem.xAxisPadding, graphBottom);
+            ctx.moveTo(graphLeft, graphTop);
+            ctx.lineTo(graphLeft, graphBottom);
             ctx.stroke();
 
-            // X-axis
-            const zeroY = worldToCanvas(0, 0, yMin, yMax, graphTop, graphBottom);
+            // X-axis (at y=0 if visible, else at bottom)
+            let zeroCanvasY = worldToCanvasY(0, graphTop, graphBottom, yMin, yMax);
+            if (zeroCanvasY < graphTop || zeroCanvasY > graphBottom) {
+                zeroCanvasY = graphBottom;
+            }
             ctx.beginPath();
-            ctx.moveTo(coordSystem.xAxisPadding, zeroY.canvasY);
-            ctx.lineTo(canvas.width - coordSystem.rightPadding, zeroY.canvasY);
+            ctx.moveTo(graphLeft, zeroCanvasY);
+            ctx.lineTo(graphRight, zeroCanvasY);
             ctx.stroke();
 
             // Y-axis tick marks and labels
             ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-            ctx.font = `${11 * state.pixelRatio}px 'Inter', sans-serif`;
+            ctx.font = '10px "Inter", sans-serif';
             ctx.textAlign = 'right';
             ctx.textBaseline = 'middle';
 
-            const yStep = Math.pow(10, Math.floor(Math.log10(yMax - yMin))) / 2;
-            for (let y = Math.ceil(yMin / yStep) * yStep; y <= yMax; y += yStep) {
-                const pos = worldToCanvas(0, y, yMin, yMax, graphTop, graphBottom);
+            const yStep = 1;
+            let yValue = Math.ceil(yMin / yStep) * yStep;
+            while (yValue <= yMax) {
+                const canvasY = worldToCanvasY(yValue, graphTop, graphBottom, yMin, yMax);
                 ctx.beginPath();
-                ctx.moveTo(coordSystem.xAxisPadding - 5, pos.canvasY);
-                ctx.lineTo(coordSystem.xAxisPadding, pos.canvasY);
+                ctx.moveTo(graphLeft - 5, canvasY);
+                ctx.lineTo(graphLeft, canvasY);
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-                ctx.lineWidth = 1 * state.pixelRatio;
+                ctx.lineWidth = 1;
                 ctx.stroke();
 
-                const label = y === 0 ? '0' : formatNumber(y);
-                ctx.fillText(label, coordSystem.xAxisPadding - 8, pos.canvasY);
+                const label = yValue === 0 ? '0' : formatNumber(yValue);
+                ctx.fillText(label, graphLeft - 8, canvasY);
+                yValue += yStep;
             }
 
             // X-axis tick marks and labels
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
             for (let x = Math.ceil(coordSystem.xMin); x <= Math.floor(coordSystem.xMax); x++) {
-                const pos = worldToCanvas(x, 0, yMin, yMax, graphTop, graphBottom);
+                const canvasX = worldToCanvasX(x, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
                 ctx.beginPath();
-                ctx.moveTo(pos.canvasX, graphBottom);
-                ctx.lineTo(pos.canvasX, graphBottom + 5);
+                ctx.moveTo(canvasX, graphBottom);
+                ctx.lineTo(canvasX, graphBottom + 5);
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-                ctx.lineWidth = 1 * state.pixelRatio;
+                ctx.lineWidth = 1;
                 ctx.stroke();
 
                 if (x !== 0) {
-                    ctx.fillText(x.toString(), pos.canvasX, graphBottom + 8);
+                    ctx.fillText(x.toString(), canvasX, graphBottom + 8);
                 }
             }
         }
 
-        function drawFunctionCurve(graphTop, graphBottom, yMin, yMax, color, isDerivative = false) {
+        function drawFunctionCurve(graphLeft, graphRight, graphTop, graphBottom, yMin, yMax, color, isDerivative = false) {
             const func = isDerivative ?
                 functions[state.functionType].fPrime :
                 functions[state.functionType].f;
 
             ctx.strokeStyle = color;
-            ctx.lineWidth = 2.5 * state.pixelRatio;
+            ctx.lineWidth = 2.5;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
             const step = 0.02;
             let started = false;
 
-            ctx.beginPath();
             for (let x = coordSystem.xMin; x <= coordSystem.xMax; x += step) {
                 const y = func(x);
                 if (y === null || !isFinite(y)) {
@@ -434,27 +461,28 @@
                     continue;
                 }
 
-                // Skip outliers for display
+                // Skip large outliers
                 if (y > yMax * 2 || y < yMin * 2) {
                     if (started) ctx.stroke();
                     started = false;
                     continue;
                 }
 
-                const pos = worldToCanvas(x, y, yMin, yMax, graphTop, graphBottom);
+                const canvasX = worldToCanvasX(x, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
+                const canvasY = worldToCanvasY(y, graphTop, graphBottom, yMin, yMax);
 
                 if (!started) {
                     ctx.beginPath();
-                    ctx.moveTo(pos.canvasX, pos.canvasY);
+                    ctx.moveTo(canvasX, canvasY);
                     started = true;
                 } else {
-                    ctx.lineTo(pos.canvasX, pos.canvasY);
+                    ctx.lineTo(canvasX, canvasY);
                 }
             }
             if (started) ctx.stroke();
         }
 
-        function drawSecantLine(graphTop, graphBottom, yMin, yMax) {
+        function drawSecantLine(graphLeft, graphRight, graphTop, graphBottom, yMin, yMax) {
             const func = functions[state.functionType].f;
             const x0 = state.x0;
             const x1 = x0 + state.h;
@@ -466,60 +494,64 @@
 
             const slope = (y1 - y0) / state.h;
 
-            // Draw secant line extended across view
+            // Draw secant line extended
             const xLeft = coordSystem.xMin;
             const xRight = coordSystem.xMax;
             const yLeft = y0 + slope * (xLeft - x0);
             const yRight = y0 + slope * (xRight - x0);
 
-            const pos1 = worldToCanvas(xLeft, yLeft, yMin, yMax, graphTop, graphBottom);
-            const pos2 = worldToCanvas(xRight, yRight, yMin, yMax, graphTop, graphBottom);
+            const pos1X = worldToCanvasX(xLeft, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
+            const pos1Y = worldToCanvasY(yLeft, graphTop, graphBottom, yMin, yMax);
+            const pos2X = worldToCanvasX(xRight, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
+            const pos2Y = worldToCanvasY(yRight, graphTop, graphBottom, yMin, yMax);
 
             ctx.strokeStyle = '#ff6b6b';
-            ctx.lineWidth = 2 * state.pixelRatio;
+            ctx.lineWidth = 2;
             ctx.setLineDash([]);
             ctx.beginPath();
-            ctx.moveTo(pos1.canvasX, pos1.canvasY);
-            ctx.lineTo(pos2.canvasX, pos2.canvasY);
+            ctx.moveTo(pos1X, pos1Y);
+            ctx.lineTo(pos2X, pos2Y);
             ctx.stroke();
 
             // Draw difference triangle
-            const posP = worldToCanvas(x0, y0, yMin, yMax, graphTop, graphBottom);
-            const posQ = worldToCanvas(x1, y1, yMin, yMax, graphTop, graphBottom);
-            const posR = worldToCanvas(x1, y0, yMin, yMax, graphTop, graphBottom);
+            const posPX = worldToCanvasX(x0, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
+            const posPY = worldToCanvasY(y0, graphTop, graphBottom, yMin, yMax);
+            const posQX = worldToCanvasX(x1, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
+            const posQY = worldToCanvasY(y1, graphTop, graphBottom, yMin, yMax);
+            const posRX = worldToCanvasX(x1, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
+            const posRY = worldToCanvasY(y0, graphTop, graphBottom, yMin, yMax);
 
             ctx.strokeStyle = 'rgba(255, 107, 107, 0.5)';
-            ctx.lineWidth = 1.5 * state.pixelRatio;
-            ctx.setLineDash([3 * state.pixelRatio, 3 * state.pixelRatio]);
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([3, 3]);
             ctx.beginPath();
-            ctx.moveTo(posP.canvasX, posP.canvasY);
-            ctx.lineTo(posR.canvasX, posR.canvasY);
-            ctx.lineTo(posQ.canvasX, posQ.canvasY);
+            ctx.moveTo(posPX, posPY);
+            ctx.lineTo(posRX, posRY);
+            ctx.lineTo(posQX, posQY);
             ctx.stroke();
             ctx.setLineDash([]);
 
-            // Labels for Δx and Δy
+            // Labels
             ctx.fillStyle = 'rgba(255, 107, 107, 0.8)';
-            ctx.font = `${10 * state.pixelRatio}px 'Inter', sans-serif`;
+            ctx.font = '10px "Inter", sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
-            ctx.fillText('Δx', (posP.canvasX + posR.canvasX) / 2, posR.canvasY + 3);
+            ctx.fillText('Δx', (posPX + posRX) / 2, posRY + 3);
 
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
-            ctx.fillText('Δy', posR.canvasX + 3, (posR.canvasY + posQ.canvasY) / 2);
+            ctx.fillText('Δy', posRX + 3, (posRY + posQY) / 2);
 
             // Slope label
             ctx.fillStyle = 'rgba(255, 107, 107, 0.9)';
-            ctx.font = `${10 * state.pixelRatio}px 'Inter', sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
-            const midX = (posP.canvasX + posQ.canvasX) / 2;
-            const midY = (posP.canvasY + posQ.canvasY) / 2;
+            const midX = (posPX + posQX) / 2;
+            const midY = (posPY + posQY) / 2;
             ctx.fillText(`m = ${formatNumber(slope)}`, midX, midY - 5);
         }
 
-        function drawTangentLine(graphTop, graphBottom, yMin, yMax) {
+        function drawTangentLine(graphLeft, graphRight, graphTop, graphBottom, yMin, yMax) {
             if (!state.showTangent) return;
 
             const func = functions[state.functionType].f;
@@ -530,26 +562,27 @@
 
             if (y0 === null || slope === null || !isFinite(slope)) return;
 
-            // Tangent line equation: y = slope * (x - x0) + y0
             const xLeft = coordSystem.xMin;
             const xRight = coordSystem.xMax;
             const yLeft = slope * (xLeft - x0) + y0;
             const yRight = slope * (xRight - x0) + y0;
 
-            const pos1 = worldToCanvas(xLeft, yLeft, yMin, yMax, graphTop, graphBottom);
-            const pos2 = worldToCanvas(xRight, yRight, yMin, yMax, graphTop, graphBottom);
+            const pos1X = worldToCanvasX(xLeft, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
+            const pos1Y = worldToCanvasY(yLeft, graphTop, graphBottom, yMin, yMax);
+            const pos2X = worldToCanvasX(xRight, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
+            const pos2Y = worldToCanvasY(yRight, graphTop, graphBottom, yMin, yMax);
 
             ctx.strokeStyle = '#ffd93d';
-            ctx.lineWidth = 2 * state.pixelRatio;
-            ctx.setLineDash([5 * state.pixelRatio, 3 * state.pixelRatio]);
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 3]);
             ctx.beginPath();
-            ctx.moveTo(pos1.canvasX, pos1.canvasY);
-            ctx.lineTo(pos2.canvasX, pos2.canvasY);
+            ctx.moveTo(pos1X, pos1Y);
+            ctx.lineTo(pos2X, pos2Y);
             ctx.stroke();
             ctx.setLineDash([]);
         }
 
-        function drawPoints(graphTop, graphBottom, yMin, yMax, isTop = true) {
+        function drawPoints(graphLeft, graphRight, graphTop, graphBottom, yMin, yMax, isTopGraph) {
             const func = functions[state.functionType].f;
             const x0 = state.x0;
             const x1 = x0 + state.h;
@@ -557,22 +590,24 @@
             const y0 = func(x0);
             const y1 = func(x1);
 
-            if (isTop) {
-                // Point P
+            if (isTopGraph) {
+                // Point P (on function)
                 if (y0 !== null && isFinite(y0)) {
-                    const posP = worldToCanvas(x0, y0, yMin, yMax, graphTop, graphBottom);
+                    const posPX = worldToCanvasX(x0, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
+                    const posPY = worldToCanvasY(y0, graphTop, graphBottom, yMin, yMax);
                     ctx.fillStyle = '#00e5ff';
                     ctx.beginPath();
-                    ctx.arc(posP.canvasX, posP.canvasY, 4 * state.pixelRatio, 0, 2 * Math.PI);
+                    ctx.arc(posPX, posPY, 4, 0, 2 * Math.PI);
                     ctx.fill();
                 }
 
-                // Point Q
+                // Point Q (on function)
                 if (y1 !== null && isFinite(y1)) {
-                    const posQ = worldToCanvas(x1, y1, yMin, yMax, graphTop, graphBottom);
+                    const posQX = worldToCanvasX(x1, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
+                    const posQY = worldToCanvasY(y1, graphTop, graphBottom, yMin, yMax);
                     ctx.fillStyle = 'rgba(255, 107, 107, 0.7)';
                     ctx.beginPath();
-                    ctx.arc(posQ.canvasX, posQ.canvasY, 3 * state.pixelRatio, 0, 2 * Math.PI);
+                    ctx.arc(posQX, posQY, 3, 0, 2 * Math.PI);
                     ctx.fill();
                 }
             } else {
@@ -580,85 +615,78 @@
                 const fPrime = functions[state.functionType].fPrime;
                 const slope = fPrime(x0);
                 if (slope !== null && isFinite(slope)) {
-                    const posDeriv = worldToCanvas(x0, slope, yMin, yMax, graphTop, graphBottom);
+                    const posDX = worldToCanvasX(x0, graphLeft, graphRight, coordSystem.xMin, coordSystem.xMax);
+                    const posDY = worldToCanvasY(slope, graphTop, graphBottom, yMin, yMax);
                     ctx.fillStyle = '#7c4dff';
                     ctx.beginPath();
-                    ctx.arc(posDeriv.canvasX, posDeriv.canvasY, 4 * state.pixelRatio, 0, 2 * Math.PI);
+                    ctx.arc(posDX, posDY, 4, 0, 2 * Math.PI);
                     ctx.fill();
 
-                    // Vertical connection line
-                    const posTop = worldToCanvas(x0, func(x0), yMin, yMax, graphTop, graphBottom);
+                    // Vertical connection line (optional visual enhancement)
                     ctx.strokeStyle = 'rgba(124, 77, 255, 0.3)';
-                    ctx.lineWidth = 1.5 * state.pixelRatio;
-                    ctx.setLineDash([3 * state.pixelRatio, 3 * state.pixelRatio]);
+                    ctx.lineWidth = 1.5;
+                    ctx.setLineDash([3, 3]);
                     ctx.beginPath();
-                    ctx.moveTo(posTop.canvasX, posTop.canvasY);
-                    ctx.lineTo(posDeriv.canvasX, posDeriv.canvasY);
+                    ctx.moveTo(posDX, graphTop);
+                    ctx.lineTo(posDX, graphBottom);
                     ctx.stroke();
                     ctx.setLineDash([]);
                 }
             }
         }
 
-        function drawFunctionLabels(graphTop, graphBottom, yMin, yMax, isTop = true) {
+        function drawFunctionLabel(graphLeft, graphTop, yMin, yMax, isTopGraph) {
             ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-            ctx.font = `${11 * state.pixelRatio}px 'Inter', sans-serif`;
+            ctx.font = '11px "Inter", sans-serif';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'top';
 
-            if (isTop) {
+            if (isTopGraph) {
                 ctx.fillStyle = 'rgba(0, 229, 255, 0.8)';
-                ctx.fillText(functions[state.functionType].name, coordSystem.xAxisPadding + 10, graphTop + 8);
+                ctx.fillText(functions[state.functionType].name, graphLeft + 10, graphTop + 8);
             } else {
                 ctx.fillStyle = 'rgba(124, 77, 255, 0.8)';
                 const fPrimeName = functions[state.functionType].name.replace('f(x)', "f'(x)");
-                ctx.fillText(fPrimeName, coordSystem.xAxisPadding + 10, graphTop + 8);
+                ctx.fillText(fPrimeName, graphLeft + 10, graphTop + 8);
             }
-        }
-
-        function resizeCanvas() {
-            const dpr = window.devicePixelRatio || 1;
-            state.pixelRatio = dpr;
-
-            const rect = canvas.getBoundingClientRect();
-            state.canvasWidth = rect.width;
-            state.canvasHeight = rect.height;
-
-            canvas.width = state.canvasWidth * dpr;
-            canvas.height = state.canvasHeight * dpr;
-
-            ctx.scale(dpr, dpr);
-
-            state.graphHeight = (state.canvasHeight - 8) / 2;
         }
 
         function draw() {
             const func = functions[state.functionType];
+            const dims = getLogicalDimensions();
 
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
-            ctx.fillRect(0, 0, state.canvasWidth, state.canvasHeight);
+            // Clear canvas completely
+            ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+            ctx.clearRect(0, 0, dims.w, dims.h);
 
-            // Graph 1: f(x)
-            const graph1Top = coordSystem.topBottomPadding;
-            const graph1Bottom = graph1Top + state.graphHeight - 4;
+            const gap = 6;
+            const topH = (dims.h - gap) * 0.55;
+            const botH = (dims.h - gap) * 0.45;
 
-            drawGrid(graph1Top, graph1Bottom, func.yMin, func.yMax);
-            drawAxes(graph1Top, graph1Bottom, func.yMin, func.yMax);
-            drawFunctionCurve(graph1Top, graph1Bottom, func.yMin, func.yMax, '#00e5ff', false);
-            drawSecantLine(graph1Top, graph1Bottom, func.yMin, func.yMax);
-            drawTangentLine(graph1Top, graph1Bottom, func.yMin, func.yMax);
-            drawPoints(graph1Top, graph1Bottom, func.yMin, func.yMax, true);
-            drawFunctionLabels(graph1Top, graph1Bottom, func.yMin, func.yMax, true);
+            const graphLeft = coordSystem.leftPadding;
+            const graphRight = dims.w - coordSystem.rightPadding;
 
-            // Graph 2: f'(x)
-            const graph2Top = graph1Bottom + 8;
-            const graph2Bottom = graph2Top + state.graphHeight - 4;
+            // TOP GRAPH: f(x)
+            const graph1Top = coordSystem.topPadding;
+            const graph1Bottom = graph1Top + topH - coordSystem.bottomPadding;
 
-            drawGrid(graph2Top, graph2Bottom, func.yMin, func.yMax);
-            drawAxes(graph2Top, graph2Bottom, func.yMin, func.yMax);
-            drawFunctionCurve(graph2Top, graph2Bottom, func.yMin, func.yMax, '#7c4dff', true);
-            drawPoints(graph2Top, graph2Bottom, func.yMin, func.yMax, false);
-            drawFunctionLabels(graph2Top, graph2Bottom, func.yMin, func.yMax, false);
+            drawGrid(graphLeft, graphRight, graph1Top, graph1Bottom, func.yMin, func.yMax);
+            drawAxes(graphLeft, graphRight, graph1Top, graph1Bottom, func.yMin, func.yMax);
+            drawFunctionCurve(graphLeft, graphRight, graph1Top, graph1Bottom, func.yMin, func.yMax, '#00e5ff', false);
+            drawSecantLine(graphLeft, graphRight, graph1Top, graph1Bottom, func.yMin, func.yMax);
+            drawTangentLine(graphLeft, graphRight, graph1Top, graph1Bottom, func.yMin, func.yMax);
+            drawPoints(graphLeft, graphRight, graph1Top, graph1Bottom, func.yMin, func.yMax, true);
+            drawFunctionLabel(graphLeft, graph1Top, func.yMin, func.yMax, true);
+
+            // BOTTOM GRAPH: f'(x)
+            const graph2Top = graph1Bottom + gap;
+            const graph2Bottom = graph2Top + botH - coordSystem.bottomPadding;
+
+            drawGrid(graphLeft, graphRight, graph2Top, graph2Bottom, func.dyMin, func.dyMax);
+            drawAxes(graphLeft, graphRight, graph2Top, graph2Bottom, func.dyMin, func.dyMax);
+            drawFunctionCurve(graphLeft, graphRight, graph2Top, graph2Bottom, func.dyMin, func.dyMax, '#7c4dff', true);
+            drawPoints(graphLeft, graphRight, graph2Top, graph2Bottom, func.dyMin, func.dyMax, false);
+            drawFunctionLabel(graphLeft, graph2Top, func.dyMin, func.dyMax, false);
 
             updateInfo();
         }

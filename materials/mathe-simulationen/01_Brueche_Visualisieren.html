@@ -24,8 +24,8 @@
             display: grid;
             grid-template-columns: 1fr 280px;
             height: 100vh;
-            gap: 16px;
-            padding: 16px;
+            gap: 12px;
+            padding: 12px;
         }
 
         .canvas-area {
@@ -36,7 +36,7 @@
         }
 
         header {
-            max-height: 50px;
+            max-height: 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -61,6 +61,7 @@
             background: rgba(255, 255, 255, 0.02);
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            display: block;
         }
 
         .controls {
@@ -369,17 +370,14 @@
     <script>
         // Configuration
         const CONFIG = {
-            canvasPadding: 30,
-            pieChartRadius: 60,
-            barHeight: 20,
-            numberLineHeight: 30,
             colors: {
                 primary: '#00e5ff',
                 secondary: '#ff6b6b',
                 result: '#ffd93d',
                 gridDark: 'rgba(255, 255, 255, 0.1)',
                 textLight: 'rgba(255, 255, 255, 0.8)',
-                textDim: 'rgba(255, 255, 255, 0.5)'
+                textDim: 'rgba(255, 255, 255, 0.5)',
+                bgDark: 'rgba(255, 255, 255, 0.05)'
             }
         };
 
@@ -410,11 +408,17 @@
         const ctx = canvas.getContext('2d');
         let dpr = window.devicePixelRatio || 1;
 
-        function setupCanvas() {
-            const rect = canvas.getBoundingClientRect();
+        function resizeCanvases() {
+            dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+
             canvas.width = rect.width * dpr;
             canvas.height = rect.height * dpr;
-            ctx.scale(dpr, dpr);
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+
+            // Use setTransform to avoid accumulation
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
         function getCanvasSize() {
@@ -432,7 +436,7 @@
             const startAngle = -Math.PI / 2;
 
             // Draw background circle
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.fillStyle = CONFIG.colors.bgDark;
             ctx.beginPath();
             ctx.arc(x, y, radius, 0, 2 * Math.PI);
             ctx.fill();
@@ -474,7 +478,7 @@
             const segmentWidth = width / denominator;
 
             // Draw background bar
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.fillStyle = CONFIG.colors.bgDark;
             ctx.fillRect(x, y, width, height);
 
             // Draw filled segments
@@ -501,9 +505,9 @@
         function drawNumberLine(x, y, width, numerator, denominator, color) {
             if (denominator === 0) return;
 
-            const maxValue = 2;
-            const segmentWidth = width / maxValue;
             const fraction = numerator / denominator;
+            const maxValue = Math.max(2, Math.ceil(fraction + 0.5));
+            const segmentWidth = width / maxValue;
             const markerX = x + fraction * segmentWidth;
 
             // Draw main line
@@ -531,7 +535,7 @@
                 ctx.lineTo(tickX, y + tickLength);
                 ctx.stroke();
 
-                const label = i.toString().replace('.', ',');
+                const label = i.toString();
                 ctx.fillText(label, tickX, y + tickLength + 6);
             }
 
@@ -549,92 +553,102 @@
         }
 
         function draw() {
-            const size = getCanvasSize();
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
-            ctx.fillRect(0, 0, size.width, size.height);
+            const w = canvas.width / dpr;
+            const h = canvas.height / dpr;
 
-            const padding = CONFIG.canvasPadding;
-            let yOffset = padding;
+            // FIXED: Use clearRect instead of semi-transparent fill
+            ctx.clearRect(0, 0, w, h);
+
+            const sectionHeight = h / 3;
+            const padding = 30;
 
             if (state.operation === 'none') {
                 // Single fraction mode
-                const canvasCenter = size.width / 2;
+                const canvasCenter = w / 2;
 
-                // Title
+                // Section 1: Pie Chart
+                let y = padding;
                 ctx.fillStyle = CONFIG.colors.textLight;
-                ctx.font = `500 12px 'Inter', sans-serif`;
+                ctx.font = `500 10px 'Inter', sans-serif`;
                 ctx.textAlign = 'center';
-                ctx.fillText('Tortendiagramm', canvasCenter, yOffset);
-                yOffset += 25;
+                ctx.fillText('Tortendiagramm', canvasCenter, y);
+                y += 16;
 
-                // Pie chart
-                drawPieChart(canvasCenter, yOffset + CONFIG.pieChartRadius, CONFIG.pieChartRadius, state.numerator1, state.denominator1, CONFIG.colors.primary);
-                yOffset += CONFIG.pieChartRadius * 2 + 30;
+                const pieRadius = Math.min(w - 2 * padding, sectionHeight - 40) * 0.35;
+                drawPieChart(canvasCenter, y + pieRadius, pieRadius, state.numerator1, state.denominator1, CONFIG.colors.primary);
+                y += sectionHeight;
 
-                // Fraction bar
+                // Section 2: Fraction Bar
                 ctx.fillStyle = CONFIG.colors.textLight;
-                ctx.font = `500 12px 'Inter', sans-serif`;
+                ctx.font = `500 10px 'Inter', sans-serif`;
                 ctx.textAlign = 'center';
-                ctx.fillText('Bruchbalken', canvasCenter, yOffset);
-                yOffset += 20;
+                ctx.fillText('Bruchbalken', canvasCenter, y);
+                y += 16;
 
-                const barWidth = Math.min(300, size.width - 2 * padding);
+                const barWidth = Math.min(w - 2 * padding, sectionHeight - 60) * 0.7;
+                const barHeight = 24;
                 const barX = canvasCenter - barWidth / 2;
-                drawFractionBar(barX, yOffset, barWidth, CONFIG.barHeight, state.numerator1, state.denominator1, CONFIG.colors.primary);
-                yOffset += CONFIG.barHeight + 30;
+                drawFractionBar(barX, y, barWidth, barHeight, state.numerator1, state.denominator1, CONFIG.colors.primary);
+                y += sectionHeight;
 
-                // Number line
+                // Section 3: Number Line
                 ctx.fillStyle = CONFIG.colors.textLight;
-                ctx.font = `500 12px 'Inter', sans-serif`;
+                ctx.font = `500 10px 'Inter', sans-serif`;
                 ctx.textAlign = 'center';
-                ctx.fillText('Zahlenstrahl', canvasCenter, yOffset);
-                yOffset += 20;
+                ctx.fillText('Zahlenstrahl', canvasCenter, y);
+                y += 16;
 
-                const lineWidth = Math.min(300, size.width - 2 * padding);
+                const lineWidth = Math.min(w - 2 * padding, sectionHeight - 60) * 0.7;
                 const lineX = canvasCenter - lineWidth / 2;
-                drawNumberLine(lineX, yOffset, lineWidth, state.numerator1, state.denominator1, CONFIG.colors.primary);
+                drawNumberLine(lineX, y, lineWidth, state.numerator1, state.denominator1, CONFIG.colors.primary);
             } else {
                 // Operation mode
-                const col1X = padding + 80;
-                const col2X = size.width / 2 + padding;
+                const col1X = w * 0.25;
+                const col2X = w * 0.75;
 
                 // Title
                 ctx.fillStyle = CONFIG.colors.textLight;
-                ctx.font = `500 12px 'Inter', sans-serif`;
+                ctx.font = `500 11px 'Inter', sans-serif`;
                 ctx.textAlign = 'center';
-                ctx.fillText('1. Bruch', col1X, yOffset);
-                ctx.fillText('2. Bruch', col2X, yOffset);
-                yOffset += 20;
+                ctx.fillText('1. Bruch', col1X, padding);
+                ctx.fillText('2. Bruch', col2X, padding);
+                let y = padding + 22;
 
-                const chartRadius = 40;
+                const chartRadius = Math.min(sectionHeight - 40, (w / 2) - padding) * 0.3;
 
-                // First fraction
+                // Section 1: Pie Charts
                 ctx.fillStyle = CONFIG.colors.textLight;
                 ctx.font = `500 10px 'Inter', sans-serif`;
                 ctx.textAlign = 'center';
-                ctx.fillText('Tortendiagramm', col1X, yOffset);
-                ctx.textAlign = 'center';
-                ctx.fillText('Tortendiagramm', col2X, yOffset);
-                yOffset += 18;
+                ctx.fillText('Tortendiagramm', col1X, y);
+                ctx.fillText('Tortendiagramm', col2X, y);
+                y += 16;
 
-                drawPieChart(col1X, yOffset + chartRadius, chartRadius, state.numerator1, state.denominator1, CONFIG.colors.primary);
-                drawPieChart(col2X, yOffset + chartRadius, chartRadius, state.numerator2, state.denominator2, CONFIG.colors.secondary);
-                yOffset += chartRadius * 2 + 25;
+                drawPieChart(col1X, y + chartRadius, chartRadius, state.numerator1, state.denominator1, CONFIG.colors.primary);
+                drawPieChart(col2X, y + chartRadius, chartRadius, state.numerator2, state.denominator2, CONFIG.colors.secondary);
+                y += sectionHeight;
 
-                // Fraction bars
+                // Section 2: Fraction Bars
                 ctx.fillStyle = CONFIG.colors.textLight;
                 ctx.font = `500 10px 'Inter', sans-serif`;
                 ctx.textAlign = 'center';
-                ctx.fillText('Bruchbalken', col1X, yOffset);
-                ctx.fillText('Bruchbalken', col2X, yOffset);
-                yOffset += 18;
+                ctx.fillText('Bruchbalken', col1X, y);
+                ctx.fillText('Bruchbalken', col2X, y);
+                y += 16;
 
-                const barWidth = 100;
-                drawFractionBar(col1X - barWidth / 2, yOffset, barWidth, 18, state.numerator1, state.denominator1, CONFIG.colors.primary);
-                drawFractionBar(col2X - barWidth / 2, yOffset, barWidth, 18, state.numerator2, state.denominator2, CONFIG.colors.secondary);
-                yOffset += 35;
+                const opBarWidth = Math.min((w / 2) - padding, sectionHeight - 60) * 0.6;
+                const opBarHeight = 20;
+                drawFractionBar(col1X - opBarWidth / 2, y, opBarWidth, opBarHeight, state.numerator1, state.denominator1, CONFIG.colors.primary);
+                drawFractionBar(col2X - opBarWidth / 2, y, opBarWidth, opBarHeight, state.numerator2, state.denominator2, CONFIG.colors.secondary);
+                y += sectionHeight;
 
-                // Calculate result
+                // Section 3: Result
+                ctx.fillStyle = CONFIG.colors.textLight;
+                ctx.font = `500 11px 'Inter', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText('Ergebnis', w / 2, y);
+                y += 22;
+
                 let resultNum, resultDen;
                 if (state.operation === 'add') {
                     const lcm = (state.denominator1 * state.denominator2) / gcd(state.denominator1, state.denominator2);
@@ -646,21 +660,16 @@
                     resultDen = lcm;
                 }
 
-                // Result section
-                ctx.fillStyle = CONFIG.colors.textLight;
-                ctx.font = `500 12px 'Inter', sans-serif`;
-                ctx.textAlign = 'center';
-                ctx.fillText('Ergebnis', size.width / 2, yOffset);
-                yOffset += 20;
+                const resultBarWidth = Math.min(w - 2 * padding, sectionHeight - 60) * 0.6;
+                const resultBarHeight = 24;
+                const resultBarX = w / 2 - resultBarWidth / 2;
+                drawFractionBar(resultBarX, y, resultBarWidth, resultBarHeight, Math.abs(resultNum), resultDen, CONFIG.colors.result);
+                y += 40;
 
-                const resultBarX = size.width / 2 - 75;
-                drawFractionBar(resultBarX, yOffset, 150, 20, Math.abs(resultNum), resultDen, CONFIG.colors.result);
-
-                yOffset += 35;
                 ctx.fillStyle = CONFIG.colors.result;
                 ctx.font = `600 14px 'Courier New', monospace`;
                 ctx.textAlign = 'center';
-                ctx.fillText(`${resultNum}/${resultDen}`, size.width / 2, yOffset);
+                ctx.fillText(`${resultNum}/${resultDen}`, w / 2, y);
             }
         }
 
@@ -760,14 +769,13 @@
 
         // Resize handler
         window.addEventListener('resize', () => {
-            dpr = window.devicePixelRatio || 1;
-            setupCanvas();
+            resizeCanvases();
             updateDisplay();
         });
 
         // Initialize
         setTimeout(() => {
-            setupCanvas();
+            resizeCanvases();
             updateDisplay();
         }, 50);
     </script>
