@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klimadiagramm-Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a237e 50%, #01579b 100%);
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .main-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow: auto;
+        }
+
+        .canvas-wrapper {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        canvas {
+            flex: 1;
+            display: block;
+        }
+
+        .controls-panel {
+            width: 320px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            max-height: 100%;
+        }
+
+        .control-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .control-header {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64b5f6;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: #90caf9;
+            font-weight: 300;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        select:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        select:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #64b5f6;
+            box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.1);
+        }
+
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-group:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .toggle-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #64b5f6;
+        }
+
+        .toggle-label {
+            flex: 1;
+            font-size: 13px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .info-box {
+            background: rgba(100, 181, 246, 0.08);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #b3e5fc;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #64b5f6;
+        }
+
+        .info-value {
+            color: #e0e0e0;
+        }
+
+        .climate-zone {
+            background: rgba(76, 175, 80, 0.08);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .climate-zone-code {
+            font-size: 18px;
+            font-weight: 700;
+            color: #81c784;
+            margin-bottom: 4px;
+        }
+
+        .climate-zone-name {
+            font-size: 12px;
+            color: #a5d6a7;
+        }
+
+        .legend {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 3px;
+            border-radius: 1px;
+            flex-shrink: 0;
+        }
+
+        .legend-color.temp {
+            background: #ef5350;
+        }
+
+        .legend-color.precip {
+            background: #42a5f5;
+        }
+
+        .legend-color.humid {
+            background: rgba(66, 165, 245, 0.3);
+        }
+
+        .legend-color.arid {
+            background: rgba(239, 83, 80, 0.3);
+        }
+
+        .legend-text {
+            color: #b0bec5;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .controls-panel {
+                width: 100%;
+                max-height: none;
+                max-width: 100%;
+            }
+
+            .main-section {
+                overflow: visible;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .canvas-wrapper {
+                padding: 10px;
+            }
+
+            .controls-panel {
+                padding: 16px;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(100, 181, 246, 0.4);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 181, 246, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-section">
+            <div class="canvas-wrapper">
+                <canvas id="climateCanvas"></canvas>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-section">
+                <div class="section-title">Klimadiagramm-Explorer</div>
+                <div class="section-subtitle">Klimazonen der Erde interaktiv erkunden</div>
+            </div>
+
+            <div class="control-section">
+                <div class="control-header">Standort 1</div>
+                <select id="location1">
+                    <option value="Wien">Wien, Österreich</option>
+                    <option value="Kairo">Kairo, Ägypten</option>
+                    <option value="Singapur">Singapur</option>
+                    <option value="Moskau">Moskau, Russland</option>
+                    <option value="Manaus">Manaus, Brasilien</option>
+                    <option value="McMurdo">McMurdo, Antarktis</option>
+                    <option value="Mumbai">Mumbai, Indien</option>
+                    <option value="Peking">Peking, China</option>
+                    <option value="Innsbruck">Innsbruck, Österreich</option>
+                    <option value="Nairobi">Nairobi, Kenia</option>
+                    <option value="Jakutsk">Jakutsk, Russland</option>
+                    <option value="Lima">Lima, Peru</option>
+                </select>
+            </div>
+
+            <div class="control-section">
+                <div class="control-header">Standort 2 (Vergleich)</div>
+                <select id="location2">
+                    <option value="">Aus</option>
+                    <option value="Wien">Wien, Österreich</option>
+                    <option value="Kairo">Kairo, Ägypten</option>
+                    <option value="Singapur">Singapur</option>
+                    <option value="Moskau">Moskau, Russland</option>
+                    <option value="Manaus">Manaus, Brasilien</option>
+                    <option value="McMurdo">McMurdo, Antarktis</option>
+                    <option value="Mumbai">Mumbai, Indien</option>
+                    <option value="Peking">Peking, China</option>
+                    <option value="Innsbruck">Innsbruck, Österreich</option>
+                    <option value="Nairobi">Nairobi, Kenia</option>
+                    <option value="Jakutsk">Jakutsk, Russland</option>
+                    <option value="Lima">Lima, Peru</option>
+                </select>
+            </div>
+
+            <div class="control-section">
+                <label class="toggle-group">
+                    <input type="checkbox" id="highlightPeriods" class="toggle-checkbox" checked>
+                    <span class="toggle-label">Aride/Humide Perioden hervorheben</span>
+                </label>
+            </div>
+
+            <div class="control-section">
+                <label class="toggle-group">
+                    <input type="checkbox" id="showClimateZone" class="toggle-checkbox" checked>
+                    <span class="toggle-label">Klimazone anzeigen</span>
+                </label>
+            </div>
+
+            <div class="control-section" id="climateZoneSection">
+                <div class="climate-zone">
+                    <div class="climate-zone-code" id="zoneCode1">Cfb</div>
+                    <div class="climate-zone-name" id="zoneName1">Warmgemäßigtes Klima</div>
+                </div>
+            </div>
+
+            <div class="control-section" id="climateZoneSection2" style="display: none;">
+                <div class="climate-zone">
+                    <div class="climate-zone-code" id="zoneCode2">-</div>
+                    <div class="climate-zone-name" id="zoneName2">-</div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <div class="info-box">
+                    <div class="info-row">
+                        <span class="info-label">Koordinaten:</span>
+                        <span class="info-value" id="infoCoords">48°N, 16°E</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Höhe:</span>
+                        <span class="info-value" id="infoAlt">203 m</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Ø Temperatur:</span>
+                        <span class="info-value" id="infoTemp">10,4 °C</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Ø Niederschlag:</span>
+                        <span class="info-value" id="infoPrecip">597 mm</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <div class="legend">
+                    <div class="legend-item">
+                        <span class="legend-color temp"></span>
+                        <span class="legend-text">Temperaturkurve (°C)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color precip"></span>
+                        <span class="legend-text">Niederschlag (mm)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color humid"></span>
+                        <span class="legend-text">Humide Periode</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color arid"></span>
+                        <span class="legend-text">Aride Periode</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const climateData = {
+            "Wien": {
+                name: "Wien",
+                lat: "48°N",
+                lon: "16°E",
+                alt: 203,
+                zone: "Cfb",
+                zoneName: "Warmgemäßigtes Klima",
+                temp: [0.3, 1.5, 5.7, 10.7, 15.7, 18.8, 20.8, 20.2, 15.8, 10.4, 5.1, 1.4],
+                precip: [37, 33, 45, 45, 62, 70, 68, 58, 53, 40, 45, 42]
+            },
+            "Kairo": {
+                name: "Kairo",
+                lat: "30°N",
+                lon: "31°E",
+                alt: 75,
+                zone: "BWh",
+                zoneName: "Heißes Wüstenklima",
+                temp: [13.6, 14.9, 17.6, 21.5, 25.2, 27.7, 28.6, 28.3, 26.6, 23.3, 18.7, 14.8],
+                precip: [5, 4, 4, 1, 1, 0, 0, 0, 0, 1, 3, 6]
+            },
+            "Singapur": {
+                name: "Singapur",
+                lat: "1°N",
+                lon: "104°E",
+                alt: 16,
+                zone: "Af",
+                zoneName: "Tropisches Regenwaldklima",
+                temp: [26.5, 27.1, 27.5, 27.9, 28.3, 28.3, 27.9, 27.9, 27.6, 27.4, 27.0, 26.6],
+                precip: [234, 160, 185, 178, 171, 162, 159, 176, 170, 197, 254, 269]
+            },
+            "Moskau": {
+                name: "Moskau",
+                lat: "56°N",
+                lon: "38°E",
+                alt: 156,
+                zone: "Dfb",
+                zoneName: "Feuchtes Kontinentalklima",
+                temp: [-7.5, -6.7, -1.0, 6.7, 13.2, 17.0, 19.2, 17.0, 11.3, 5.2, -1.2, -5.8],
+                precip: [42, 36, 34, 44, 51, 75, 85, 82, 65, 59, 55, 51]
+            },
+            "Manaus": {
+                name: "Manaus",
+                lat: "3°S",
+                lon: "60°W",
+                alt: 92,
+                zone: "Af",
+                zoneName: "Tropisches Regenwaldklima",
+                temp: [26.7, 26.5, 26.6, 26.8, 27.0, 27.3, 27.6, 28.2, 28.5, 28.3, 27.7, 27.1],
+                precip: [260, 288, 314, 300, 256, 114, 88, 58, 83, 126, 183, 217]
+            },
+            "McMurdo": {
+                name: "McMurdo",
+                lat: "78°S",
+                lon: "167°E",
+                alt: 24,
+                zone: "EF",
+                zoneName: "Eisklima",
+                temp: [-3.0, -9.0, -18.0, -22.0, -24.0, -25.0, -27.0, -28.0, -25.0, -19.0, -9.0, -3.0],
+                precip: [13, 10, 15, 13, 13, 10, 8, 10, 10, 8, 8, 10]
+            },
+            "Mumbai": {
+                name: "Mumbai",
+                lat: "19°N",
+                lon: "73°E",
+                alt: 14,
+                zone: "Am",
+                zoneName: "Tropisches Monsunklima",
+                temp: [24.4, 24.8, 27.0, 29.2, 30.3, 29.2, 27.6, 27.3, 27.4, 28.5, 27.5, 25.6],
+                precip: [1, 1, 0, 1, 15, 530, 714, 554, 306, 65, 14, 3]
+            },
+            "Peking": {
+                name: "Peking",
+                lat: "40°N",
+                lon: "116°E",
+                alt: 55,
+                zone: "Dwa",
+                zoneName: "Monsun-Kontinentalklima",
+                temp: [-3.4, -0.7, 5.8, 14.1, 20.1, 24.2, 26.0, 24.9, 19.9, 12.9, 4.4, -1.8],
+                precip: [3, 6, 9, 26, 34, 78, 185, 160, 46, 22, 8, 3]
+            },
+            "Innsbruck": {
+                name: "Innsbruck",
+                lat: "47°N",
+                lon: "11°E",
+                alt: 574,
+                zone: "Cfb",
+                zoneName: "Warmgemäßigtes Klima",
+                temp: [-1.5, 0.9, 5.5, 9.6, 14.5, 17.4, 19.2, 18.7, 14.7, 9.3, 3.5, -0.6],
+                precip: [44, 39, 50, 56, 79, 109, 132, 120, 77, 56, 56, 50]
+            },
+            "Nairobi": {
+                name: "Nairobi",
+                lat: "1°S",
+                lon: "37°E",
+                alt: 1795,
+                zone: "Csb",
+                zoneName: "Subtropisches Sommertrockenes Klima",
+                temp: [18.8, 19.5, 19.8, 19.4, 18.3, 16.8, 16.0, 16.5, 18.0, 19.1, 18.6, 18.4],
+                precip: [54, 56, 94, 196, 158, 36, 18, 22, 28, 56, 139, 93]
+            },
+            "Jakutsk": {
+                name: "Jakutsk",
+                lat: "62°N",
+                lon: "130°E",
+                alt: 103,
+                zone: "Dfd",
+                zoneName: "Extrem kontinentales Klima",
+                temp: [-38.6, -33.8, -20.1, -5.0, 8.0, 17.0, 19.5, 15.2, 6.0, -7.8, -27.0, -37.6],
+                precip: [8, 7, 5, 9, 18, 39, 42, 36, 23, 15, 12, 10]
+            },
+            "Lima": {
+                name: "Lima",
+                lat: "12°S",
+                lon: "77°W",
+                alt: 161,
+                zone: "BWn",
+                zoneName: "Küstenwüstenklima",
+                temp: [22.1, 22.7, 22.2, 20.6, 18.5, 17.1, 16.5, 16.2, 16.5, 17.3, 18.8, 20.8],
+                precip: [1, 0, 0, 0, 1, 2, 1, 2, 2, 1, 0, 1]
+            }
+        };
+
+        const months = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
+        const canvas = document.getElementById("climateCanvas");
+        const ctx = canvas.getContext("2d");
+
+        function resizeCanvas() {
+            const wrapper = canvas.parentElement;
+            canvas.width = wrapper.clientWidth;
+            canvas.height = wrapper.clientHeight;
+            draw();
+        }
+
+        function getAnnualMeanTemp(temps) {
+            return (temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(1);
+        }
+
+        function getAnnualPrecip(precips) {
+            return precips.reduce((a, b) => a + b, 0);
+        }
+
+        function updateInfo(location, index) {
+            const data = climateData[location];
+            if (!data) return;
+
+            const selector = index === 1 ? "" : "2";
+            document.getElementById("infoCoords").textContent = `${data.lat}, ${data.lon}`;
+            document.getElementById("infoAlt").textContent = `${data.alt} m`;
+            document.getElementById("infoTemp").textContent = `${getAnnualMeanTemp(data.temp)} °C`;
+            document.getElementById("infoPrecip").textContent = `${getAnnualPrecip(data.precip)} mm`;
+
+            if (document.getElementById("showClimateZone").checked) {
+                document.getElementById("zoneCode" + selector).textContent = data.zone;
+                document.getElementById("zoneName" + selector).textContent = data.zoneName;
+            }
+        }
+
+        function drawClimateChart(x, y, w, h, data, color, offset) {
+            const padding = 50;
+            const chartWidth = w - padding * 2;
+            const chartHeight = h - padding * 2;
+
+            // Calculate scales
+            const minTemp = Math.min(...data.temp);
+            const maxTemp = Math.max(...data.temp);
+            const maxPrecip = Math.max(...data.precip);
+
+            const tempRange = maxTemp - minTemp || 10;
+            const precipRange = maxPrecip || 100;
+
+            // Draw axis labels and grid
+            ctx.fillStyle = "#b0bec5";
+            ctx.font = "12px Inter";
+            ctx.textAlign = "center";
+
+            // Month labels
+            for (let i = 0; i < 12; i++) {
+                const xPos = x + padding + (i / 11) * chartWidth;
+                ctx.fillText(months[i], xPos, y + h - 10);
+            }
+
+            // Temperature axis (left)
+            ctx.textAlign = "right";
+            ctx.fillStyle = "#ef5350";
+            ctx.font = "bold 12px Inter";
+            for (let i = 0; i <= 5; i++) {
+                const temp = minTemp + (i / 5) * tempRange;
+                const yPos = y + h - padding - (i / 5) * chartHeight;
+                ctx.fillText(Math.round(temp) + "°", x + padding - 10, yPos + 4);
+
+                // Grid line
+                ctx.strokeStyle = "rgba(239, 83, 80, 0.1)";
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(x + padding, yPos);
+                ctx.lineTo(x + padding + chartWidth, yPos);
+                ctx.stroke();
+            }
+
+            // Precipitation axis (right)
+            ctx.textAlign = "left";
+            ctx.fillStyle = "#42a5f5";
+            ctx.font = "bold 12px Inter";
+            for (let i = 0; i <= 5; i++) {
+                const precip = (i / 5) * precipRange;
+                const yPos = y + h - padding - (i / 5) * chartHeight;
+                ctx.fillText(Math.round(precip), x + padding + chartWidth + 10, yPos + 4);
+
+                // Grid line
+                ctx.strokeStyle = "rgba(66, 165, 245, 0.1)";
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(x + padding, yPos);
+                ctx.lineTo(x + padding + chartWidth, yPos);
+                ctx.stroke();
+            }
+
+            // Function to get pixel position
+            const getX = (month) => x + padding + (month / 11) * chartWidth;
+            const getTempY = (temp) => y + h - padding - ((temp - minTemp) / tempRange) * chartHeight;
+            const getPrecipY = (precip) => y + h - padding - (precip / precipRange) * chartHeight;
+
+            // Draw arid/humid regions if enabled
+            if (document.getElementById("highlightPeriods").checked) {
+                for (let i = 0; i < 12; i++) {
+                    const temp = data.temp[i];
+                    const precip = data.precip[i];
+                    const threshold = temp * 2;
+
+                    const x1 = getX(i);
+                    const x2 = getX(i + 1);
+
+                    if (precip > threshold) {
+                        // Humid
+                        ctx.fillStyle = "rgba(66, 165, 245, 0.15)";
+                    } else {
+                        // Arid
+                        ctx.fillStyle = "rgba(239, 83, 80, 0.15)";
+                    }
+
+                    ctx.fillRect(x1, y + padding, x2 - x1, chartHeight);
+                }
+            }
+
+            // Draw precipitation bars
+            ctx.fillStyle = "rgba(66, 165, 245, 0.7)";
+            for (let i = 0; i < 12; i++) {
+                const xPos = getX(i);
+                const yPos = getPrecipY(data.precip[i]);
+                const barWidth = chartWidth / 12 * 0.7;
+
+                ctx.fillRect(xPos - barWidth / 2, yPos, barWidth, y + h - padding - yPos);
+            }
+
+            // Draw temperature curve
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for (let i = 0; i < 12; i++) {
+                const xPos = getX(i);
+                const yPos = getTempY(data.temp[i]);
+                if (i === 0) {
+                    ctx.moveTo(xPos, yPos);
+                } else {
+                    ctx.lineTo(xPos, yPos);
+                }
+            }
+            ctx.stroke();
+
+            // Draw circles on temperature curve
+            ctx.fillStyle = color;
+            for (let i = 0; i < 12; i++) {
+                const xPos = getX(i);
+                const yPos = getTempY(data.temp[i]);
+                ctx.beginPath();
+                ctx.arc(xPos, yPos, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Draw axes
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x + padding, y + padding);
+            ctx.lineTo(x + padding, y + h - padding);
+            ctx.lineTo(x + w - padding, y + h - padding);
+            ctx.stroke();
+
+            // Draw title and info
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 16px Inter";
+            ctx.textAlign = "center";
+            ctx.fillText(data.name, x + w / 2, y + 25);
+
+            ctx.fillStyle = "#90caf9";
+            ctx.font = "12px Inter";
+            ctx.fillText(`${data.lat}, ${data.lon} | ${data.alt}m`, x + w / 2, y + 45);
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.03)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const loc1 = document.getElementById("location1").value;
+            const loc2 = document.getElementById("location2").value;
+
+            if (loc2) {
+                // Side by side
+                const w = canvas.width / 2 - 10;
+                const h = canvas.height;
+                drawClimateChart(5, 5, w, h, climateData[loc1], "#ef5350", 0);
+                drawClimateChart(w + 15, 5, w, h, climateData[loc2], "#ffa726", 1);
+            } else {
+                // Single chart
+                drawClimateChart(10, 10, canvas.width - 20, canvas.height - 20, climateData[loc1], "#ef5350", 0);
+            }
+        }
+
+        // Event listeners
+        document.getElementById("location1").addEventListener("change", (e) => {
+            updateInfo(e.target.value, 1);
+            document.getElementById("climateZoneSection").style.display = "block";
+            draw();
+        });
+
+        document.getElementById("location2").addEventListener("change", (e) => {
+            if (e.target.value) {
+                updateInfo(e.target.value, 2);
+                document.getElementById("climateZoneSection2").style.display = "block";
+            } else {
+                document.getElementById("climateZoneSection2").style.display = "none";
+            }
+            draw();
+        });
+
+        document.getElementById("highlightPeriods").addEventListener("change", draw);
+        document.getElementById("showClimateZone").addEventListener("change", () => {
+            if (!document.getElementById("showClimateZone").checked) {
+                document.getElementById("climateZoneSection").style.display = "none";
+                document.getElementById("climateZoneSection2").style.display = "none";
+            } else {
+                document.getElementById("climateZoneSection").style.display = "block";
+                if (document.getElementById("location2").value) {
+                    document.getElementById("climateZoneSection2").style.display = "block";
+                }
+            }
+            draw();
+        });
+
+        window.addEventListener("resize", resizeCanvas);
+
+        // Initialize
+        resizeCanvas();
+        updateInfo("Wien", 1);
+    </script>
+</body>
+</html>

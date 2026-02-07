@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bevölkerungspyramide - Demografischer Übergang</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a1a1a 0%, #004d40 50%, #00695c 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .visualization-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .pyramid-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 25px;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .dtm-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 200px;
+        }
+
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel-header {
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            margin-bottom: 10px;
+        }
+
+        .panel-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .panel-header p {
+            font-size: 13px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .country-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .country-btn {
+            padding: 10px 15px;
+            background: rgba(0, 180, 180, 0.2);
+            border: 1px solid rgba(0, 180, 180, 0.4);
+            border-radius: 8px;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .country-btn:hover {
+            background: rgba(0, 180, 180, 0.4);
+            border-color: rgba(0, 180, 180, 0.6);
+        }
+
+        .country-btn.active {
+            background: rgba(0, 180, 180, 0.6);
+            border-color rgba(0, 180, 180, 0.8);
+            box-shadow: 0 0 15px rgba(0, 180, 180, 0.4);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .control-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .control-value {
+            color: #00d4d4;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #00d4d4;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0, 212, 212, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 12px rgba(0, 212, 212, 0.6);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #00d4d4;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 8px rgba(0, 212, 212, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 12px rgba(0, 212, 212, 0.6);
+        }
+
+        .phase-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .phase-btn {
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+        }
+
+        .phase-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .phase-btn.active {
+            background: #00d4d4;
+            border-color: #00d4d4;
+            color: #0a1a1a;
+        }
+
+        .animation-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .play-btn {
+            padding: 10px 20px;
+            background: rgba(76, 175, 80, 0.3);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            border-radius: 8px;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            flex: 1;
+        }
+
+        .play-btn:hover {
+            background: rgba(76, 175, 80, 0.5);
+            border-color: rgba(76, 175, 80, 0.7);
+        }
+
+        .play-btn.playing {
+            background: rgba(244, 67, 54, 0.3);
+            border-color: rgba(244, 67, 54, 0.5);
+        }
+
+        .info-panel {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #00d4d4;
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            padding: 15px;
+            font-size: 12px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        .male-color {
+            background: linear-gradient(135deg, #00b4d4 0%, #0080c0 100%);
+        }
+
+        .female-color {
+            background: linear-gradient(135deg, #ff4d94 0%, #c41b8f 100%);
+        }
+
+        .year-display {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: #00d4d4;
+            margin-bottom: 15px;
+        }
+
+        .population-counter {
+            text-align: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .country-buttons {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .phase-selector {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .info-panel {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0;
+            }
+
+            .glass-panel {
+                padding: 20px;
+            }
+
+            .country-buttons {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .info-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- LEFT: Visualization -->
+        <div class="visualization-area">
+            <!-- Population Pyramid -->
+            <div class="glass-panel pyramid-container">
+                <div class="year-display" id="yearDisplay">2024</div>
+                <div class="population-counter" id="populationCounter">Bevölkerung: 9.1 Mio.</div>
+                <canvas id="pyramidCanvas" width="400" height="550"></canvas>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color male-color"></div>
+                        <span>Männer</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color female-color"></div>
+                        <span>Frauen</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DTM Chart -->
+            <div class="glass-panel dtm-container">
+                <canvas id="dtmCanvas" width="400" height="180"></canvas>
+            </div>
+        </div>
+
+        <!-- RIGHT: Controls -->
+        <div class="glass-panel controls-panel">
+            <div class="panel-header">
+                <h1>Bevölkerungspyramide</h1>
+                <p>Demografischer Übergang interaktiv</p>
+            </div>
+
+            <!-- Country Presets -->
+            <div class="control-group">
+                <label class="control-label">Ländervorlagen</label>
+                <div class="country-buttons">
+                    <button class="country-btn active" data-country="Österreich">Österreich</button>
+                    <button class="country-btn" data-country="Nigeria">Nigeria</button>
+                    <button class="country-btn" data-country="Japan">Japan</button>
+                    <button class="country-btn" data-country="USA">USA</button>
+                    <button class="country-btn" data-country="Indien">Indien</button>
+                </div>
+            </div>
+
+            <!-- Birth Rate Slider -->
+            <div class="control-group">
+                <label class="control-label">
+                    Geburtenrate
+                    <span class="control-value"><span id="birthRateValue">9.5</span>/1000</span>
+                </label>
+                <input type="range" id="birthRateSlider" min="5" max="45" value="9.5" step="0.5">
+            </div>
+
+            <!-- Death Rate Slider -->
+            <div class="control-group">
+                <label class="control-label">
+                    Sterberate
+                    <span class="control-value"><span id="deathRateValue">10.2</span>/1000</span>
+                </label>
+                <input type="range" id="deathRateSlider" min="5" max="25" value="10.2" step="0.5">
+            </div>
+
+            <!-- Net Migration Slider -->
+            <div class="control-group">
+                <label class="control-label">
+                    Nettomigration
+                    <span class="control-value"><span id="migrationValue">0</span>/1000</span>
+                </label>
+                <input type="range" id="migrationSlider" min="-10" max="10" value="0" step="0.5">
+            </div>
+
+            <!-- DTM Phase Selector -->
+            <div class="control-group">
+                <label class="control-label">Demografische Phase</label>
+                <div class="phase-selector">
+                    <button class="phase-btn" data-phase="1" title="Prätransformativ">Phase 1</button>
+                    <button class="phase-btn" data-phase="2" title="Frühtransformativ">Phase 2</button>
+                    <button class="phase-btn" data-phase="3" title="Mitteltransformativ">Phase 3</button>
+                    <button class="phase-btn" data-phase="4" title="Spättransformativ">Phase 4</button>
+                    <button class="phase-btn active" data-phase="5" title="Posttransformativ">Phase 5</button>
+                </div>
+            </div>
+
+            <!-- Animation Controls -->
+            <div class="control-group">
+                <label class="control-label">Animation</label>
+                <div class="animation-controls">
+                    <button class="play-btn" id="playBtn">▶ Abspielen</button>
+                </div>
+                <label class="control-label" style="margin-top: 10px;">
+                    Geschwindigkeit
+                    <span class="control-value"><span id="speedValue">1</span>x</span>
+                </label>
+                <input type="range" id="speedSlider" min="0.5" max="5" value="1" step="0.5">
+            </div>
+
+            <!-- Info Panel -->
+            <div class="info-panel">
+                <div class="info-item">
+                    <div class="info-label">Form</div>
+                    <div class="info-value" id="pyramidForm" style="font-size: 12px;">urnenförmig</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Natürliches Wachstum</div>
+                    <div class="info-value" id="naturalGrowth">-0.7‰</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Gesamtbevölkerung</div>
+                    <div class="info-value" id="totalPopulation">9.1M</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Country Data
+        const countryData = {
+            "Österreich": {
+                year: 2024, pop: 9100000, type: "urnenförmig",
+                male: [2.2, 2.3, 2.5, 2.6, 2.8, 3.2, 3.5, 3.8, 3.6, 3.3, 3.0, 3.5, 3.8, 3.5, 2.8, 2.0, 1.3, 0.7, 0.3, 0.1],
+                female: [2.1, 2.2, 2.4, 2.5, 2.7, 3.1, 3.4, 3.7, 3.5, 3.2, 3.0, 3.5, 3.9, 3.7, 3.1, 2.4, 1.8, 1.1, 0.5, 0.2],
+                phase: 5, birthRate: 9.5, deathRate: 10.2
+            },
+            "Nigeria": {
+                year: 2024, pop: 224000000, type: "pyramidenförmig",
+                male: [8.5, 7.5, 6.8, 6.0, 5.2, 4.5, 3.8, 3.2, 2.6, 2.1, 1.6, 1.2, 0.8, 0.5, 0.3, 0.15, 0.08, 0.03, 0.01, 0.005],
+                female: [8.2, 7.3, 6.6, 5.8, 5.1, 4.4, 3.7, 3.1, 2.6, 2.1, 1.7, 1.3, 0.9, 0.6, 0.35, 0.2, 0.1, 0.05, 0.02, 0.01],
+                phase: 2, birthRate: 36.0, deathRate: 11.5
+            },
+            "Japan": {
+                year: 2024, pop: 123000000, type: "urnenförmig",
+                male: [1.8, 2.0, 2.2, 2.3, 2.5, 2.8, 3.0, 3.2, 3.5, 3.8, 3.5, 3.2, 3.8, 4.0, 3.2, 2.5, 1.8, 1.0, 0.4, 0.1],
+                female: [1.7, 1.9, 2.1, 2.2, 2.4, 2.7, 2.9, 3.1, 3.4, 3.7, 3.4, 3.2, 3.9, 4.2, 3.5, 2.9, 2.3, 1.5, 0.7, 0.3],
+                phase: 5, birthRate: 6.8, deathRate: 12.0
+            },
+            "USA": {
+                year: 2024, pop: 335000000, type: "glockenförmig",
+                male: [3.0, 3.1, 3.2, 3.1, 3.0, 3.3, 3.5, 3.4, 3.2, 3.0, 3.3, 3.5, 3.3, 2.8, 2.2, 1.6, 1.0, 0.5, 0.2, 0.05],
+                female: [2.9, 3.0, 3.1, 3.0, 2.9, 3.2, 3.4, 3.3, 3.1, 3.0, 3.3, 3.6, 3.4, 2.9, 2.4, 1.9, 1.3, 0.7, 0.3, 0.1],
+                phase: 4, birthRate: 11.0, deathRate: 10.2
+            },
+            "Indien": {
+                year: 2024, pop: 1440000000, type: "bienenkorb",
+                male: [4.3, 4.5, 4.7, 4.8, 4.6, 4.3, 4.0, 3.6, 3.2, 2.8, 2.3, 1.8, 1.3, 0.9, 0.5, 0.3, 0.15, 0.05, 0.02, 0.005],
+                female: [4.0, 4.2, 4.4, 4.6, 4.4, 4.1, 3.8, 3.5, 3.1, 2.7, 2.3, 1.8, 1.4, 1.0, 0.6, 0.35, 0.2, 0.08, 0.03, 0.01],
+                phase: 3, birthRate: 17.0, deathRate: 7.3
+            }
+        };
+
+        // DTM Phase Descriptions
+        const dtmPhases = {
+            1: { name: "Prätransformativ", color: "#ff6b6b" },
+            2: { name: "Frühtransformativ", color: "#ffa534" },
+            3: { name: "Mitteltransformativ", color: "#4ecdc4" },
+            4: { name: "Spättransformativ", color: "#95e1d3" },
+            5: { name: "Posttransformativ", color: "#6bcf7f" }
+        };
+
+        // Application State
+        let state = {
+            country: "Österreich",
+            year: 2024,
+            data: JSON.parse(JSON.stringify(countryData["Österreich"])),
+            birthRate: 9.5,
+            deathRate: 10.2,
+            migration: 0,
+            phase: 5,
+            playing: false,
+            speed: 1,
+            animationProgress: 0
+        };
+
+        // Canvas Setup
+        const pyramidCanvas = document.getElementById("pyramidCanvas");
+        const pyramidCtx = pyramidCanvas.getContext("2d");
+        const dtmCanvas = document.getElementById("dtmCanvas");
+        const dtmCtx = dtmCanvas.getContext("2d");
+
+        // Resize canvases
+        function resizeCanvases() {
+            const pyramidContainer = pyramidCanvas.parentElement;
+            const dtmContainer = dtmCanvas.parentElement;
+
+            pyramidCanvas.width = Math.min(pyramidContainer.offsetWidth - 50, 500);
+            pyramidCanvas.height = 550;
+
+            dtmCanvas.width = Math.min(dtmContainer.offsetWidth - 50, 500);
+            dtmCanvas.height = 180;
+        }
+        resizeCanvases();
+        window.addEventListener("resize", resizeCanvases);
+
+        // Age groups
+        const ageGroups = ["0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39",
+                          "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74",
+                          "75-79", "80-84", "85-89", "90-94", "95+"];
+
+        // Update pyramid form classification
+        function classifyPyramidForm() {
+            const youngRatio = (state.data.male.slice(0, 3).reduce((a, b) => a + b) +
+                               state.data.female.slice(0, 3).reduce((a, b) => a + b)) / 6;
+            const oldRatio = (state.data.male.slice(-3).reduce((a, b) => a + b) +
+                             state.data.female.slice(-3).reduce((a, b) => a + b)) / 6;
+
+            if (youngRatio > 5) return "bienenkorb";
+            if (youngRatio > 3) return "pyramidenförmig";
+            if (oldRatio > youngRatio) return "urnenförmig";
+            return "glockenförmig";
+        }
+
+        // Draw Population Pyramid
+        function drawPyramid() {
+            pyramidCtx.clearRect(0, 0, pyramidCanvas.width, pyramidCanvas.height);
+
+            const width = pyramidCanvas.width;
+            const height = pyramidCanvas.height;
+            const padding = 50;
+            const barHeight = (height - padding * 2) / 20;
+            const centerX = width / 2;
+
+            // Draw background grid
+            pyramidCtx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+            pyramidCtx.lineWidth = 1;
+
+            for (let i = 2; i <= 8; i += 2) {
+                const x = centerX + (i / 8) * (width / 2 - padding);
+                pyramidCtx.beginPath();
+                pyramidCtx.moveTo(x, padding);
+                pyramidCtx.lineTo(x, height - padding);
+                pyramidCtx.stroke();
+
+                const mirrorX = centerX - (i / 8) * (width / 2 - padding);
+                pyramidCtx.beginPath();
+                pyramidCtx.moveTo(mirrorX, padding);
+                pyramidCtx.lineTo(mirrorX, height - padding);
+                pyramidCtx.stroke();
+            }
+
+            // Draw age groups and bars
+            const maxValue = Math.max(...state.data.male, ...state.data.female) * 1.1;
+            const scale = (width / 2 - padding - 30) / maxValue;
+
+            pyramidCtx.font = "11px Inter";
+            pyramidCtx.fillStyle = "rgba(255, 255, 255, 0.6)";
+            pyramidCtx.textAlign = "right";
+
+            for (let i = 0; i < 20; i++) {
+                const y = padding + i * barHeight + barHeight / 2;
+
+                // Age label
+                pyramidCtx.fillText(ageGroups[i], centerX - 10, y + 4);
+
+                // Male bar (left)
+                const maleWidth = state.data.male[i] * scale;
+                const maleGradient = pyramidCtx.createLinearGradient(centerX - maleWidth, y - barHeight / 2, centerX, y - barHeight / 2);
+                maleGradient.addColorStop(0, "#0080c0");
+                maleGradient.addColorStop(1, "#00b4d4");
+                pyramidCtx.fillStyle = maleGradient;
+                pyramidCtx.fillRect(centerX - maleWidth, y - barHeight / 3, maleWidth, barHeight / 1.5);
+
+                // Female bar (right)
+                const femaleWidth = state.data.female[i] * scale;
+                const femaleGradient = pyramidCtx.createLinearGradient(centerX, y - barHeight / 2, centerX + femaleWidth, y - barHeight / 2);
+                femaleGradient.addColorStop(0, "#c41b8f");
+                femaleGradient.addColorStop(1, "#ff4d94");
+                pyramidCtx.fillStyle = femaleGradient;
+                pyramidCtx.fillRect(centerX, y - barHeight / 3, femaleWidth, barHeight / 1.5);
+            }
+
+            // Draw axes
+            pyramidCtx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+            pyramidCtx.lineWidth = 2;
+            pyramidCtx.beginPath();
+            pyramidCtx.moveTo(centerX, padding);
+            pyramidCtx.lineTo(centerX, height - padding);
+            pyramidCtx.stroke();
+
+            // X-axis labels
+            pyramidCtx.fillStyle = "rgba(255, 255, 255, 0.5)";
+            pyramidCtx.textAlign = "center";
+            pyramidCtx.font = "10px Inter";
+
+            for (let i = 0; i <= 8; i += 2) {
+                const percent = (i / 8) * 8;
+                const rightX = centerX + (i / 8) * (width / 2 - padding);
+                const leftX = centerX - (i / 8) * (width / 2 - padding);
+
+                pyramidCtx.fillText(percent + "%", rightX, height - padding + 20);
+                pyramidCtx.fillText(percent + "%", leftX, height - padding + 20);
+            }
+        }
+
+        // Draw DTM Chart
+        function drawDTM() {
+            dtmCtx.clearRect(0, 0, dtmCanvas.width, dtmCanvas.height);
+
+            const width = dtmCanvas.width;
+            const height = dtmCanvas.height;
+            const padding = 30;
+            const graphHeight = height - padding * 2;
+            const graphWidth = width - padding * 2;
+            const phaseWidth = graphWidth / 5;
+
+            // Background
+            dtmCtx.fillStyle = "rgba(255, 255, 255, 0.02)";
+            dtmCtx.fillRect(padding, padding, graphWidth, graphHeight);
+
+            // Draw phase backgrounds
+            const colors = ["#ff6b6b", "#ffa534", "#4ecdc4", "#95e1d3", "#6bcf7f"];
+            for (let p = 0; p < 5; p++) {
+                dtmCtx.fillStyle = colors[p];
+                dtmCtx.globalAlpha = state.phase === p + 1 ? 0.15 : 0.05;
+                dtmCtx.fillRect(padding + p * phaseWidth, padding, phaseWidth, graphHeight);
+            }
+            dtmCtx.globalAlpha = 1;
+
+            // Birth and death rate curves
+            dtmCtx.lineWidth = 3;
+            dtmCtx.lineCap = "round";
+            dtmCtx.lineJoin = "round";
+
+            // Draw birth rate line (green)
+            dtmCtx.strokeStyle = "#76ff03";
+            dtmCtx.beginPath();
+            const birthRate = Math.max(1, Math.min(45, state.birthRate));
+            const deathRate = Math.max(1, Math.min(25, state.deathRate));
+
+            for (let p = 0; p < 5; p++) {
+                const x = padding + (p + 0.5) * phaseWidth;
+                const y = height - padding - ((birthRate - 5) / 40) * graphHeight;
+                if (p === 0) dtmCtx.moveTo(x, y);
+                else dtmCtx.lineTo(x, y);
+            }
+            dtmCtx.stroke();
+
+            // Draw death rate line (red)
+            dtmCtx.strokeStyle = "#ff5252";
+            dtmCtx.beginPath();
+            for (let p = 0; p < 5; p++) {
+                const x = padding + (p + 0.5) * phaseWidth;
+                const y = height - padding - ((deathRate - 5) / 20) * graphHeight;
+                if (p === 0) dtmCtx.moveTo(x, y);
+                else dtmCtx.lineTo(x, y);
+            }
+            dtmCtx.stroke();
+
+            // Growth area (between curves)
+            dtmCtx.fillStyle = "rgba(118, 255, 3, 0.1)";
+            dtmCtx.beginPath();
+            for (let p = 0; p < 5; p++) {
+                const x = padding + (p + 0.5) * phaseWidth;
+                const birthY = height - padding - ((birthRate - 5) / 40) * graphHeight;
+                const deathY = height - padding - ((deathRate - 5) / 20) * graphHeight;
+                if (p === 0) dtmCtx.moveTo(x, birthY);
+                else dtmCtx.lineTo(x, birthY);
+            }
+            for (let p = 4; p >= 0; p--) {
+                const x = padding + (p + 0.5) * phaseWidth;
+                const deathY = height - padding - ((deathRate - 5) / 20) * graphHeight;
+                dtmCtx.lineTo(x, deathY);
+            }
+            dtmCtx.closePath();
+            dtmCtx.fill();
+
+            // Phase labels
+            dtmCtx.fillStyle = "rgba(255, 255, 255, 0.6)";
+            dtmCtx.font = "10px Inter";
+            dtmCtx.textAlign = "center";
+            for (let p = 0; p < 5; p++) {
+                const x = padding + (p + 0.5) * phaseWidth;
+                dtmCtx.fillText("Phase " + (p + 1), x, padding - 10);
+            }
+
+            // Axes
+            dtmCtx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+            dtmCtx.lineWidth = 1;
+            dtmCtx.beginPath();
+            dtmCtx.moveTo(padding, padding);
+            dtmCtx.lineTo(padding, height - padding);
+            dtmCtx.lineTo(width - padding, height - padding);
+            dtmCtx.stroke();
+
+            // Legend
+            dtmCtx.fillStyle = "#76ff03";
+            dtmCtx.fillRect(width - 120, 5, 10, 10);
+            dtmCtx.fillStyle = "rgba(255, 255, 255, 0.7)";
+            dtmCtx.font = "10px Inter";
+            dtmCtx.textAlign = "left";
+            dtmCtx.fillText("Geburtenrate", width - 105, 13);
+
+            dtmCtx.fillStyle = "#ff5252";
+            dtmCtx.fillRect(width - 120, 20, 10, 10);
+            dtmCtx.fillStyle = "rgba(255, 255, 255, 0.7)";
+            dtmCtx.fillText("Sterberate", width - 105, 28);
+        }
+
+        // Update display
+        function updateDisplay() {
+            const form = classifyPyramidForm();
+            const naturalGrowth = state.birthRate - state.deathRate;
+            const popM = (state.data.pop / 1000000).toFixed(1);
+
+            document.getElementById("yearDisplay").textContent = state.year;
+            document.getElementById("populationCounter").textContent = `Bevölkerung: ${popM} Mio.`;
+            document.getElementById("pyramidForm").textContent = form;
+            document.getElementById("naturalGrowth").textContent = naturalGrowth.toFixed(1) + "‰";
+            document.getElementById("totalPopulation").textContent = popM + "M";
+
+            document.getElementById("birthRateValue").textContent = state.birthRate.toFixed(1);
+            document.getElementById("deathRateValue").textContent = state.deathRate.toFixed(1);
+            document.getElementById("migrationValue").textContent = state.migration.toFixed(1);
+            document.getElementById("speedValue").textContent = state.speed.toFixed(1);
+
+            drawPyramid();
+            drawDTM();
+        }
+
+        // Event Listeners
+        document.querySelectorAll(".country-btn").forEach(btn => {
+            btn.addEventListener("click", function() {
+                document.querySelectorAll(".country-btn").forEach(b => b.classList.remove("active"));
+                this.classList.add("active");
+
+                const country = this.dataset.country;
+                const data = countryData[country];
+                state.country = country;
+                state.data = JSON.parse(JSON.stringify(data));
+                state.year = data.year;
+                state.birthRate = data.birthRate;
+                state.deathRate = data.deathRate;
+                state.phase = data.phase;
+
+                document.getElementById("birthRateSlider").value = state.birthRate;
+                document.getElementById("deathRateSlider").value = state.deathRate;
+
+                updatePhaseButtons();
+                updateDisplay();
+            });
+        });
+
+        document.getElementById("birthRateSlider").addEventListener("input", function() {
+            state.birthRate = parseFloat(this.value);
+            updateDisplay();
+        });
+
+        document.getElementById("deathRateSlider").addEventListener("input", function() {
+            state.deathRate = parseFloat(this.value);
+            updateDisplay();
+        });
+
+        document.getElementById("migrationSlider").addEventListener("input", function() {
+            state.migration = parseFloat(this.value);
+            updateDisplay();
+        });
+
+        document.getElementById("speedSlider").addEventListener("input", function() {
+            state.speed = parseFloat(this.value);
+        });
+
+        function updatePhaseButtons() {
+            document.querySelectorAll(".phase-btn").forEach(btn => {
+                btn.classList.remove("active");
+                if (parseInt(btn.dataset.phase) === state.phase) {
+                    btn.classList.add("active");
+                }
+            });
+        }
+
+        document.querySelectorAll(".phase-btn").forEach(btn => {
+            btn.addEventListener("click", function() {
+                state.phase = parseInt(this.dataset.phase);
+
+                // Auto-adjust rates based on phase
+                const phaseRates = {
+                    1: { birth: 30, death: 30 },
+                    2: { birth: 35, death: 15 },
+                    3: { birth: 20, death: 10 },
+                    4: { birth: 15, death: 10 },
+                    5: { birth: 10, death: 12 }
+                };
+
+                const rates = phaseRates[state.phase];
+                state.birthRate = rates.birth;
+                state.deathRate = rates.death;
+
+                document.getElementById("birthRateSlider").value = state.birthRate;
+                document.getElementById("deathRateSlider").value = state.deathRate;
+
+                updatePhaseButtons();
+                updateDisplay();
+            });
+        });
+
+        const playBtn = document.getElementById("playBtn");
+        playBtn.addEventListener("click", function() {
+            state.playing = !state.playing;
+            playBtn.classList.toggle("playing");
+            playBtn.textContent = state.playing ? "⏸ Pausieren" : "▶ Abspielen";
+        });
+
+        // Animation loop
+        function animate() {
+            if (state.playing) {
+                state.year += state.speed * 0.1;
+                if (state.year > 2100) state.year = 2024;
+            }
+
+            updateDisplay();
+            requestAnimationFrame(animate);
+        }
+
+        // Initial setup
+        updatePhaseButtons();
+        updateDisplay();
+        animate();
+    </script>
+</body>
+</html>

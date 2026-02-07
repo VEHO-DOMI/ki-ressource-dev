@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Höhenstufen der Vegetation - Interaktive Erkundung</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a1a0a 0%, #1a3020 50%, #2d4a30 100%);
+            color: #e8f4e8;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 20px;
+            height: calc(100vh - 40px);
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+                height: auto;
+                gap: 20px;
+            }
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .canvas-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+        }
+
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .controls-panel h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #b8f5b8;
+        }
+
+        .controls-panel .subtitle {
+            font-size: 13px;
+            font-weight: 300;
+            color: #90d490;
+            margin-bottom: 16px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .control-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #b8f5b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .altitude-display {
+            font-size: 28px;
+            font-weight: 700;
+            color: #90f590;
+            text-align: center;
+            margin: 12px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .altitude-display small {
+            font-size: 12px;
+            color: #6ba86b;
+            display: block;
+            font-weight: 400;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #90f590;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(144, 245, 144, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #90f590;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(144, 245, 144, 0.5);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .button-group.mountain-select {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #b8f5b8;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        button.active {
+            background: rgba(144, 245, 144, 0.2);
+            border-color: rgba(144, 245, 144, 0.5);
+            color: #90f590;
+            box-shadow: 0 0 12px rgba(144, 245, 144, 0.3);
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #90f590;
+        }
+
+        .toggle-group label {
+            margin: 0;
+            font-size: 12px;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: normal;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .info-panel {
+            background: rgba(100, 200, 100, 0.08);
+            border: 1px solid rgba(144, 245, 144, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .info-panel .zone-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #90f590;
+            margin-bottom: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #b8f5b8;
+        }
+
+        .info-value {
+            color: #a8e8a8;
+            text-align: right;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 6px;
+            margin-top: 12px;
+            font-size: 11px;
+        }
+
+        .legend-item {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .legend-text {
+            flex: 1;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            canvas {
+                max-height: 400px;
+            }
+
+            .controls-panel {
+                max-height: none;
+            }
+        }
+
+        .zone-colors {
+            --kolline: #1a4d1a;
+            --submontane: #2d6d2d;
+            --montane: #3a7d3a;
+            --subalpine: #a8b85f;
+            --alpine: #8a9a8a;
+            --nivale: #d8dcd8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="canvas-container glass-panel">
+            <canvas id="mountainCanvas"></canvas>
+        </div>
+
+        <div class="controls-panel glass-panel">
+            <div>
+                <h1>Höhenstufen der Vegetation</h1>
+                <p class="subtitle">Vertikale Zonierung im Gebirge</p>
+            </div>
+
+            <div class="control-group">
+                <label>Höhe über Meer</label>
+                <div class="altitude-display">
+                    <span id="altitudeValue">2000</span><small>Meter</small>
+                </div>
+                <input type="range" id="altitudeSlider" min="0" max="4500" value="2000" step="50">
+            </div>
+
+            <div class="control-group">
+                <label>Berg auswählen</label>
+                <div class="button-group mountain-select">
+                    <button id="btnAlpen" class="active">Alpen</button>
+                    <button id="btnKili">Kilimandscharo</button>
+                    <button id="btnAnden">Anden</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="toggle-group">
+                    <input type="checkbox" id="toggleLabels" checked>
+                    <label for="toggleLabels">Zonenbeschriftungen</label>
+                </div>
+                <div class="toggle-group">
+                    <input type="checkbox" id="toggleTempPrec" checked>
+                    <label for="toggleTempPrec">Temperatur/Niederschlag</label>
+                </div>
+                <div class="toggle-group">
+                    <input type="checkbox" id="toggleTreeline" checked>
+                    <label for="toggleTreeline">Baumgrenze hervorheben</label>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <div class="zone-name" id="zoneName">Alpine Stufe</div>
+                <div class="info-row">
+                    <span class="info-label">Höhe:</span>
+                    <span class="info-value" id="zoneAltitude">2000-3000m</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Temp:</span>
+                    <span class="info-value" id="zoneTemp">-3 bis 0°C</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Vegetation:</span>
+                    <span class="info-value" id="zoneVegetation">Alpine Wiesen</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Tiere:</span>
+                    <span class="info-value" id="zoneAnimals">Gämse, Adler</span>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #1a4d1a;"></div>
+                    <div class="legend-text">Kolline Stufe</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #2d6d2d;"></div>
+                    <div class="legend-text">Submontane Stufe</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #3a7d3a;"></div>
+                    <div class="legend-text">Montane Stufe</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #a8b85f;"></div>
+                    <div class="legend-text">Subalpine Stufe</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #8a9a8a;"></div>
+                    <div class="legend-text">Alpine Stufe</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #d8dcd8;"></div>
+                    <div class="legend-text">Nivale Stufe</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mountain definitions
+        const mountains = {
+            alpen: {
+                name: 'Alpen',
+                peak: 3800,
+                treeline: 2000,
+                zones: [
+                    { name: 'Kolline Stufe', min: 200, max: 500, color: '#1a4d1a', temp: '8-12°C', vegetation: 'Laubwälder, Weinbau', animals: 'Hirsch, Fuchs' },
+                    { name: 'Submontane Stufe', min: 500, max: 900, color: '#2d6d2d', temp: '6-8°C', vegetation: 'Mischwald, Wiesen', animals: 'Reh, Dachs' },
+                    { name: 'Montane Stufe', min: 900, max: 1500, color: '#3a7d3a', temp: '3-6°C', vegetation: 'Fichtenwälder (Tanne)', animals: 'Murmeltier, Auerhahn' },
+                    { name: 'Subalpine Stufe', min: 1500, max: 2000, color: '#a8b85f', temp: '0-3°C', vegetation: 'Lärche, Zirbe, Krummholz', animals: 'Gämse, Schneehase' },
+                    { name: 'Alpine Stufe', min: 2000, max: 3000, color: '#8a9a8a', temp: '-3 bis 0°C', vegetation: 'Alpine Wiesen, Zwergsträucher', animals: 'Gämse, Adler' },
+                    { name: 'Nivale Stufe', min: 3000, max: 4500, color: '#d8dcd8', temp: '< -3°C', vegetation: 'Fels, Schnee, Eis', animals: 'Steinbock (seltene Besucher)' }
+                ]
+            },
+            kilimandscharo: {
+                name: 'Kilimandscharo',
+                peak: 5895,
+                treeline: 3500,
+                zones: [
+                    { name: 'Kolline Stufe', min: 700, max: 1500, color: '#1a4d1a', temp: '20-24°C', vegetation: 'Trockensavanne, Buschland', animals: 'Elefant, Löwe' },
+                    { name: 'Submontane Stufe', min: 1500, max: 2500, color: '#2d6d2d', temp: '15-20°C', vegetation: 'Regenwald, Dichte Vegetation', animals: 'Affe, Antilope' },
+                    { name: 'Montane Stufe', min: 2500, max: 3500, color: '#3a7d3a', temp: '10-15°C', vegetation: 'Bergwald, Bambus', animals: 'Elefant, Büffel' },
+                    { name: 'Subalpine Stufe', min: 3500, max: 4500, color: '#a8b85f', temp: '3-10°C', vegetation: 'Erikaheiden, Krummholz', animals: 'Klippschliefer, Vögel' },
+                    { name: 'Alpine Stufe', min: 4500, max: 5500, color: '#8a9a8a', temp: '-3 bis 3°C', vegetation: 'Moose, Flechten, Gräser', animals: 'Seltene Besucher' },
+                    { name: 'Nivale Stufe', min: 5500, max: 6000, color: '#d8dcd8', temp: '< -3°C', vegetation: 'Schnee, Eis, Gestein', animals: 'Keine permanente Fauna' }
+                ]
+            },
+            anden: {
+                name: 'Anden',
+                peak: 6000,
+                treeline: 4000,
+                zones: [
+                    { name: 'Kolline Stufe', min: 500, max: 1500, color: '#1a4d1a', temp: '18-22°C', vegetation: 'Trockenwald, Dornbusch', animals: 'Guanako, Kojote' },
+                    { name: 'Submontane Stufe', min: 1500, max: 2500, color: '#2d6d2d', temp: '12-18°C', vegetation: 'Bergwald, Nebelwald', animals: 'Puma, Andenbär' },
+                    { name: 'Montane Stufe', min: 2500, max: 3500, color: '#3a7d3a', temp: '6-12°C', vegetation: 'Kiefernwald, Eichenwald', animals: 'Schaf, Lama' },
+                    { name: 'Subalpine Stufe', min: 3500, max: 4000, color: '#a8b85f', temp: '2-6°C', vegetation: 'Polylepis-Wald, Krummholz', animals: 'Viscacha, Andenvogel' },
+                    { name: 'Alpine Stufe', min: 4000, max: 5200, color: '#8a9a8a', temp: '-3 bis 2°C', vegetation: 'Páramo, Puno-Gräser', animals: 'Vikunja, Andenameise' },
+                    { name: 'Nivale Stufe', min: 5200, max: 6000, color: '#d8dcd8', temp: '< -3°C', vegetation: 'Schnee, Gletscher, Fels', animals: 'Keine permanente Fauna' }
+                ]
+            }
+        };
+
+        const zoneData = {
+            'Kolline Stufe': { altitude: '200-500m', temp: '8-12°C', vegetation: 'Laubwälder, Weinbau, Siedlungen', animals: 'Hirsch, Fuchs, Dachs' },
+            'Submontane Stufe': { altitude: '500-900m', temp: '6-8°C', vegetation: 'Mischwald, Bergwiesen', animals: 'Reh, Dachs, Schwarzwild' },
+            'Montane Stufe': { altitude: '900-1500m', temp: '3-6°C', vegetation: 'Fichtenwälder, Tannenwald', animals: 'Murmeltier, Auerhahn, Luchs' },
+            'Subalpine Stufe': { altitude: '1500-2000m', temp: '0-3°C', vegetation: 'Lärche, Zirbe, Krummholz', animals: 'Gämse, Schneehase, Steinadler' },
+            'Alpine Stufe': { altitude: '2000-3000m', temp: '-3 bis 0°C', vegetation: 'Alpine Wiesen, Zwergsträucher', animals: 'Gämse, Adler, Alpenhase' },
+            'Nivale Stufe': { altitude: '3000m+', temp: '< -3°C', vegetation: 'Fels, Schnee, Eis', animals: 'Seltene Besucher' }
+        };
+
+        let currentMountain = 'alpen';
+        let currentAltitude = 2000;
+        let showLabels = true;
+        let showTempPrec = true;
+        let showTreeline = true;
+
+        const canvas = document.getElementById('mountainCanvas');
+        const ctx = canvas.getContext('2d');
+        const altSlider = document.getElementById('altitudeSlider');
+        const altDisplay = document.getElementById('altitudeValue');
+
+        // Set canvas size
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = Math.min(container.clientWidth - 48, 1000);
+            canvas.height = Math.min(container.clientHeight - 48, 600);
+            draw();
+        }
+
+        // Mountain profile generator
+        function generateMountainProfile(peak, canvasWidth) {
+            const points = [];
+            const baseAltitude = 200;
+
+            for (let x = 0; x <= canvasWidth; x += canvasWidth / 100) {
+                const normalized = x / canvasWidth;
+                // Smooth mountain curve
+                const altitudeAtX = baseAltitude + (peak - baseAltitude) * Math.sin(normalized * Math.PI) ** 2.5;
+                points.push({ x, altitude: altitudeAtX });
+            }
+
+            return points;
+        }
+
+        function getZoneAtAltitude(altitude, mountainName) {
+            const mountain = mountains[mountainName];
+            for (let zone of mountain.zones) {
+                if (altitude >= zone.min && altitude <= zone.max) {
+                    return zone;
+                }
+            }
+            return mountain.zones[0];
+        }
+
+        function drawTreeIcon(x, y, size, isLarch = false) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            if (isLarch) {
+                // Larch tree - more sparse
+                ctx.fillStyle = '#d4a574';
+                ctx.fillRect(-2, 8, 4, 6);
+                ctx.fillStyle = '#7a9a3a';
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(-6, 8);
+                ctx.lineTo(6, 8);
+                ctx.closePath();
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(0, 3);
+                ctx.lineTo(-4, 8);
+                ctx.lineTo(4, 8);
+                ctx.closePath();
+                ctx.fill();
+            } else {
+                // Conifer tree
+                ctx.fillStyle = '#3a5d3a';
+                ctx.fillRect(-1.5, 6, 3, 5);
+                ctx.fillStyle = '#2a4d2a';
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(-5, 6);
+                ctx.lineTo(5, 6);
+                ctx.closePath();
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(0, 2);
+                ctx.lineTo(-3, 6);
+                ctx.lineTo(3, 6);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            ctx.restore();
+        }
+
+        function drawShrub(x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.fillStyle = '#6a8a4a';
+            ctx.beginPath();
+            ctx.arc(0, 0, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#7a9a5a';
+            ctx.beginPath();
+            ctx.arc(-3, -2, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(3, -2, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawRock(x, y, size) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.fillStyle = '#7a8a8a';
+            ctx.beginPath();
+            ctx.moveTo(-size, 0);
+            ctx.lineTo(-size/2, -size/1.5);
+            ctx.lineTo(size/2, -size/1.8);
+            ctx.lineTo(size, 0);
+            ctx.lineTo(size/2, size/2);
+            ctx.lineTo(-size/2, size/2);
+            ctx.closePath();
+            ctx.fill();
+            ctx.strokeStyle = '#6a7a7a';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawVegetation(x, y, altitude, zoneName) {
+            if (altitude < 500) {
+                // Deciduous trees and settlements
+                if (Math.random() > 0.6) drawTreeIcon(x, y - 15, 8);
+                if (Math.random() > 0.8) {
+                    ctx.fillStyle = 'rgba(150, 100, 50, 0.4)';
+                    ctx.fillRect(x - 3, y - 8, 6, 8);
+                }
+            } else if (altitude < 900) {
+                // Mixed forest
+                if (Math.random() > 0.5) drawTreeIcon(x, y - 12, 7);
+            } else if (altitude < 2000) {
+                // Coniferous forest
+                if (Math.random() > 0.4) drawTreeIcon(x, y - 10, 6);
+            } else if (altitude < 2500) {
+                // Subalpine shrubs
+                if (Math.random() > 0.5) drawShrub(x, y - 5);
+            } else if (altitude < 3300) {
+                // Alpine meadow - grass and rocks
+                if (Math.random() > 0.6) {
+                    ctx.fillStyle = '#6a8a4a';
+                    ctx.fillRect(x - 1, y - 3, 2, 3);
+                }
+                if (Math.random() > 0.8) drawRock(x, y - 3, 2);
+            }
+        }
+
+        function draw() {
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 60;
+            const graphWidth = width - 2 * padding;
+            const graphHeight = height - 2 * padding;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+
+            // Background
+            ctx.fillStyle = 'rgba(10, 20, 15, 0.3)';
+            ctx.fillRect(padding, padding, graphWidth, graphHeight);
+
+            const mountain = mountains[currentMountain];
+            const maxAltitude = currentMountain === 'alpen' ? 4500 : 6000;
+
+            // Scale function
+            const xScale = (dist) => padding + (dist / graphWidth) * graphWidth;
+            const yScale = (alt) => height - padding - (alt / maxAltitude) * graphHeight;
+
+            // Draw zones with gradient
+            const mountainProfile = generateMountainProfile(mountain.peak, graphWidth);
+
+            // Fill zones under mountain
+            for (let i = 0; i < mountainProfile.length - 1; i++) {
+                const point1 = mountainProfile[i];
+                const point2 = mountainProfile[i + 1];
+
+                const zone1 = getZoneAtAltitude(point1.altitude, currentMountain);
+                const zone2 = getZoneAtAltitude(point2.altitude, currentMountain);
+
+                ctx.fillStyle = zone1.color;
+                ctx.beginPath();
+                ctx.moveTo(xScale(point1.x), yScale(point1.altitude));
+                ctx.lineTo(xScale(point2.x), yScale(point2.altitude));
+                ctx.lineTo(xScale(point2.x), height - padding);
+                ctx.lineTo(xScale(point1.x), height - padding);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            // Draw vegetation on mountain
+            for (let i = 0; i < mountainProfile.length; i += Math.ceil(mountainProfile.length / 40)) {
+                const point = mountainProfile[i];
+                const zone = getZoneAtAltitude(point.altitude, currentMountain);
+                drawVegetation(xScale(point.x), yScale(point.altitude), point.altitude, zone.name);
+            }
+
+            // Draw mountain outline
+            ctx.strokeStyle = '#2a3a2a';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(xScale(mountainProfile[0].x), yScale(mountainProfile[0].altitude));
+            for (let point of mountainProfile) {
+                ctx.lineTo(xScale(point.x), yScale(point.altitude));
+            }
+            ctx.stroke();
+
+            // Draw treeline if enabled
+            if (showTreeline) {
+                ctx.strokeStyle = 'rgba(200, 150, 100, 0.6)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(padding, yScale(mountain.treeline));
+                ctx.lineTo(padding + graphWidth, yScale(mountain.treeline));
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Treeline label
+                ctx.fillStyle = 'rgba(200, 150, 100, 0.8)';
+                ctx.font = 'bold 10px Inter, sans-serif';
+                ctx.textAlign = 'right';
+                ctx.fillText('Baumgrenze', padding - 8, yScale(mountain.treeline) - 5);
+            }
+
+            // Draw altitude indicator line
+            const indicatorY = yScale(currentAltitude);
+            ctx.strokeStyle = 'rgba(144, 245, 144, 0.8)';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(padding, indicatorY);
+            ctx.lineTo(padding + graphWidth, indicatorY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw altitude labels on left
+            ctx.fillStyle = 'rgba(184, 245, 184, 0.6)';
+            ctx.font = '11px Inter, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for (let alt = 0; alt <= maxAltitude; alt += currentMountain === 'alpen' ? 500 : 1000) {
+                const y = yScale(alt);
+                ctx.fillText(alt + 'm', padding - 10, y);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(padding - 5, y);
+                ctx.lineTo(padding, y);
+                ctx.stroke();
+            }
+
+            // Draw zone labels if enabled
+            if (showLabels) {
+                ctx.fillStyle = 'rgba(230, 245, 230, 0.9)';
+                ctx.font = 'bold 11px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                for (let zone of mountain.zones) {
+                    const midAltitude = (zone.min + zone.max) / 2;
+                    const x = padding + graphWidth / 2;
+                    const y = yScale(midAltitude);
+
+                    if (y > padding && y < height - padding) {
+                        ctx.fillText(zone.name, x, y);
+                    }
+                }
+            }
+
+            // Draw temperature/precipitation graph if enabled
+            if (showTempPrec) {
+                const graphX = padding + graphWidth + 10;
+                const graphRight = width - padding + 10;
+                const graphTop = padding + 40;
+                const graphBot = height - padding;
+                const miniHeight = graphBot - graphTop;
+
+                // Temperature curve (right side)
+                ctx.strokeStyle = 'rgba(200, 100, 100, 0.7)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let i = 0; i <= 100; i++) {
+                    const alt = (i / 100) * mountain.peak;
+                    const temp = 20 - (alt / 100) * 6; // Roughly 0.6°C per 100m
+                    const x = graphX + (i / 100) * (graphRight - graphX - 10);
+                    const y = graphTop + miniHeight - Math.max(0, temp / 30) * miniHeight;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+
+                // Label
+                ctx.fillStyle = 'rgba(200, 100, 100, 0.8)';
+                ctx.font = '9px Inter, sans-serif';
+                ctx.textAlign = 'right';
+                ctx.fillText('Temp.', graphRight - 5, graphTop + 10);
+            }
+
+            // Update info panel
+            const zone = getZoneAtAltitude(currentAltitude, currentMountain);
+            document.getElementById('zoneName').textContent = zone.name;
+            document.getElementById('zoneAltitude').textContent = zone.min + '-' + zone.max + 'm';
+            document.getElementById('zoneTemp').textContent = zone.temp;
+            document.getElementById('zoneVegetation').textContent = zone.vegetation;
+            document.getElementById('zoneAnimals').textContent = zone.animals;
+        }
+
+        // Event listeners
+        altSlider.addEventListener('input', (e) => {
+            currentAltitude = parseInt(e.target.value);
+            altDisplay.textContent = currentAltitude;
+            draw();
+        });
+
+        document.getElementById('btnAlpen').addEventListener('click', () => {
+            setMountain('alpen', document.getElementById('btnAlpen'));
+        });
+
+        document.getElementById('btnKili').addEventListener('click', () => {
+            setMountain('kilimandscharo', document.getElementById('btnKili'));
+        });
+
+        document.getElementById('btnAnden').addEventListener('click', () => {
+            setMountain('anden', document.getElementById('btnAnden'));
+        });
+
+        function setMountain(name, btn) {
+            currentMountain = name;
+            altSlider.max = name === 'alpen' ? 4500 : 6000;
+            if (currentAltitude > parseInt(altSlider.max)) {
+                currentAltitude = parseInt(altSlider.max);
+                altSlider.value = currentAltitude;
+                altDisplay.textContent = currentAltitude;
+            }
+
+            document.querySelectorAll('.button-group.mountain-select button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            draw();
+        }
+
+        document.getElementById('toggleLabels').addEventListener('change', (e) => {
+            showLabels = e.target.checked;
+            draw();
+        });
+
+        document.getElementById('toggleTempPrec').addEventListener('change', (e) => {
+            showTempPrec = e.target.checked;
+            draw();
+        });
+
+        document.getElementById('toggleTreeline').addEventListener('change', (e) => {
+            showTreeline = e.target.checked;
+            draw();
+        });
+
+        // Initial setup
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angebot & Nachfrage - Marktmodell</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a0a 0%, #4a3800 50%, #6d4c00 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        canvas {
+            width: 100%;
+            height: 500px;
+            display: block;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .control-section {
+            padding: 0;
+        }
+
+        .control-section h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ffd700;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .control-section p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 12px;
+            font-weight: 300;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .radio-option:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .radio-option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #ffd700;
+        }
+
+        .radio-option label {
+            cursor: pointer;
+            font-size: 0.95rem;
+            flex: 1;
+            font-weight: 400;
+        }
+
+        .slider-container {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .slider-container.active {
+            display: block;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .slider-label span:last-child {
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, #ffd700 0%, #ffa500 100%);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ffd700;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 2px 12px rgba(255, 215, 0, 0.6);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ffd700;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 2px 12px rgba(255, 215, 0, 0.6);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        button:hover {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: rgba(255, 215, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .info-panel {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 5px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+        }
+
+        .info-value {
+            color: #ffd700;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        .toggle-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-checkbox:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .toggle-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #ffd700;
+        }
+
+        .toggle-checkbox label {
+            cursor: pointer;
+            font-size: 0.95rem;
+            flex: 1;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Angebot & Nachfrage</h1>
+            <p>Interaktives Marktmodell zur Wirtschaftskunde</p>
+        </header>
+
+        <div class="main-grid">
+            <div class="glass-panel">
+                <canvas id="marketCanvas"></canvas>
+            </div>
+
+            <div class="glass-panel controls-panel">
+                <div class="control-section">
+                    <h3>Marktmodell</h3>
+                    <p>Interaktive Simulation von Angebot und Nachfrage</p>
+                </div>
+
+                <div class="control-section">
+                    <h3>Kurven verschieben</h3>
+                    <p>Klicken und ziehen Sie die Kurven nach links oder rechts</p>
+                    <div class="button-group">
+                        <button onclick="model.shift('supply', -5)">Angebot ←</button>
+                        <button onclick="model.shift('supply', 5)">Angebot →</button>
+                    </div>
+                    <div class="button-group">
+                        <button onclick="model.shift('demand', -5)">Nachfrage ←</button>
+                        <button onclick="model.shift('demand', 5)">Nachfrage →</button>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>Markteingriffe</h3>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="none" name="intervention" value="none" checked onchange="handleIntervention('none')">
+                            <label for="none">Keine</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="tax" name="intervention" value="tax" onchange="handleIntervention('tax')">
+                            <label for="tax">Steuer (Tax)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="subsidy" name="intervention" value="subsidy" onchange="handleIntervention('subsidy')">
+                            <label for="subsidy">Subvention (Subsidy)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="ceiling" name="intervention" value="ceiling" onchange="handleIntervention('ceiling')">
+                            <label for="ceiling">Höchstpreis (Ceiling)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="floor" name="intervention" value="floor" onchange="handleIntervention('floor')">
+                            <label for="floor">Mindestpreis (Floor)</label>
+                        </div>
+                    </div>
+
+                    <div id="taxSlider" class="slider-container">
+                        <div class="slider-label">
+                            <span>Steuersatz</span>
+                            <span id="taxValue">0%</span>
+                        </div>
+                        <input type="range" min="0" max="30" value="0" onchange="handleTaxChange(this.value)" oninput="handleTaxChange(this.value)">
+                    </div>
+
+                    <div id="subsidySlider" class="slider-container">
+                        <div class="slider-label">
+                            <span>Subventionssatz</span>
+                            <span id="subsidyValue">0%</span>
+                        </div>
+                        <input type="range" min="0" max="30" value="0" onchange="handleSubsidyChange(this.value)" oninput="handleSubsidyChange(this.value)">
+                    </div>
+
+                    <div id="ceilingControl" class="slider-container">
+                        <div class="toggle-checkbox">
+                            <input type="checkbox" id="ceilingEnabled" onchange="handleCeilingToggle(this.checked)">
+                            <label for="ceilingEnabled">Höchstpreis aktivieren</label>
+                        </div>
+                        <div class="slider-label" style="margin-top: 10px;">
+                            <span>Preisniveau</span>
+                            <span id="ceilingValue">50</span>
+                        </div>
+                        <input type="range" min="10" max="90" value="50" onchange="handleCeilingChange(this.value)" oninput="handleCeilingChange(this.value)">
+                    </div>
+
+                    <div id="floorControl" class="slider-container">
+                        <div class="toggle-checkbox">
+                            <input type="checkbox" id="floorEnabled" onchange="handleFloorToggle(this.checked)">
+                            <label for="floorEnabled">Mindestpreis aktivieren</label>
+                        </div>
+                        <div class="slider-label" style="margin-top: 10px;">
+                            <span>Preisniveau</span>
+                            <span id="floorValue">50</span>
+                        </div>
+                        <input type="range" min="10" max="90" value="50" onchange="handleFloorChange(this.value)" oninput="handleFloorChange(this.value)">
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <button onclick="model.reset()" style="width: 100%; grid-column: 1/-1;">Zurücksetzen</button>
+                </div>
+
+                <div class="control-section">
+                    <h3>Marktinformation</h3>
+                    <div class="info-panel">
+                        <div class="info-row">
+                            <span class="info-label">Gleichgewichtspreis (P*)</span>
+                            <span class="info-value" id="priceValue">50.0</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Gleichgewichtsmenge (Q*)</span>
+                            <span class="info-value" id="quantityValue">50.0</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Konsumentenrente</span>
+                            <span class="info-value" id="consumerSurplus">1250.0</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Produzentenrente</span>
+                            <span class="info-value" id="producerSurplus">1250.0</span>
+                        </div>
+                        <div id="interventionInfo"></div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>Legende</h3>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #00ff88;"></div>
+                            <span>Angebot</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #00d9ff;"></div>
+                            <span>Nachfrage</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #ffd700;"></div>
+                            <span>Gleichgewicht</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #ff3333;"></div>
+                            <span>Steuer</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #00ff00;"></div>
+                            <span>Subvention</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #ff9933;"></div>
+                            <span>Mangel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class MarketModel {
+            constructor() {
+                this.canvas = document.getElementById('marketCanvas');
+                this.ctx = this.canvas.getContext('2d');
+
+                // Set canvas size
+                this.resizeCanvas();
+                window.addEventListener('resize', () => this.resizeCanvas());
+
+                // Market parameters
+                this.supplyShift = 0;  // 0 to 100 range
+                this.demandShift = 0;  // 0 to 100 range
+
+                // Intervention parameters
+                this.intervention = 'none';
+                this.taxRate = 0;
+                this.subsidyRate = 0;
+                this.priceFloor = 50;
+                this.priceCeiling = 50;
+                this.floorEnabled = false;
+                this.ceilingEnabled = false;
+
+                // Animation
+                this.animationFrame = null;
+                this.targetSupplyShift = 0;
+                this.targetDemandShift = 0;
+
+                this.draw();
+            }
+
+            resizeCanvas() {
+                const container = this.canvas.parentElement;
+                this.canvas.width = container.clientWidth;
+                this.canvas.height = container.clientHeight;
+                this.draw();
+            }
+
+            // Supply function: Q_s = 20 + 0.6*P + supplyShift
+            supplyFunction(price) {
+                return Math.max(0, 20 + 0.6 * price + this.supplyShift);
+            }
+
+            // Demand function: Q_d = 100 - 0.4*P - demandShift
+            demandFunction(price) {
+                return Math.max(0, 100 - 0.4 * price - this.demandShift);
+            }
+
+            // Find equilibrium
+            findEquilibrium() {
+                // Solve: 20 + 0.6*P + shift_s = 100 - 0.4*P - shift_d
+                // 1.0*P = 80 - shift_s - shift_d
+                // P = 80 - shift_s - shift_d
+                const equilPrice = Math.max(0, Math.min(100, 80 - this.supplyShift + this.demandShift));
+                const equilQty = this.demandFunction(equilPrice);
+
+                return {
+                    price: equilPrice,
+                    quantity: equilQty
+                };
+            }
+
+            shift(curve, amount) {
+                if (curve === 'supply') {
+                    this.targetSupplyShift = Math.max(-20, Math.min(20, this.targetSupplyShift + amount));
+                } else if (curve === 'demand') {
+                    this.targetDemandShift = Math.max(-20, Math.min(20, this.targetDemandShift + amount));
+                }
+                this.animate();
+            }
+
+            reset() {
+                this.targetSupplyShift = 0;
+                this.targetDemandShift = 0;
+                this.intervention = 'none';
+                this.taxRate = 0;
+                this.subsidyRate = 0;
+                this.floorEnabled = false;
+                this.ceilingEnabled = false;
+
+                document.getElementById('none').checked = true;
+                document.getElementById('taxSlider').classList.remove('active');
+                document.getElementById('subsidySlider').classList.remove('active');
+                document.getElementById('ceilingControl').classList.remove('active');
+                document.getElementById('floorControl').classList.remove('active');
+
+                this.animate();
+            }
+
+            animate() {
+                if (this.animationFrame) {
+                    cancelAnimationFrame(this.animationFrame);
+                }
+
+                const animate = () => {
+                    const speed = 0.15;
+                    this.supplyShift += (this.targetSupplyShift - this.supplyShift) * speed;
+                    this.demandShift += (this.targetDemandShift - this.demandShift) * speed;
+
+                    if (Math.abs(this.targetSupplyShift - this.supplyShift) > 0.1 ||
+                        Math.abs(this.targetDemandShift - this.demandShift) > 0.1) {
+                        this.draw();
+                        this.animationFrame = requestAnimationFrame(animate);
+                    } else {
+                        this.supplyShift = this.targetSupplyShift;
+                        this.demandShift = this.targetDemandShift;
+                        this.draw();
+                        this.updateInfo();
+                    }
+                };
+
+                animate();
+            }
+
+            draw() {
+                const w = this.canvas.width;
+                const h = this.canvas.height;
+                const padding = 60;
+                const graphW = w - 2 * padding;
+                const graphH = h - 2 * padding;
+
+                // Clear canvas
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+                this.ctx.clearRect(0, 0, w, h);
+
+                // Draw grid
+                this.drawGrid(padding, graphW, graphH);
+
+                // Draw axes
+                this.drawAxes(padding, graphW, graphH);
+
+                // Draw supply curve
+                this.drawCurve(padding, graphW, graphH, 'supply', '#00ff88');
+
+                // Draw demand curve
+                this.drawCurve(padding, graphW, graphH, 'demand', '#00d9ff');
+
+                // Find equilibrium
+                const equilibrium = this.findEquilibrium();
+                const eqX = padding + (equilibrium.quantity / 100) * graphW;
+                const eqY = padding + graphH - (equilibrium.price / 100) * graphH;
+
+                // Draw surpluses before interventions
+                this.drawSurpluses(padding, graphW, graphH, equilibrium);
+
+                // Draw interventions
+                if (this.intervention === 'tax') {
+                    this.drawTaxWedge(padding, graphW, graphH, equilibrium);
+                } else if (this.intervention === 'subsidy') {
+                    this.drawSubsidyArea(padding, graphW, graphH, equilibrium);
+                } else if (this.intervention === 'ceiling' && this.ceilingEnabled) {
+                    this.drawPriceCeiling(padding, graphW, graphH, equilibrium);
+                } else if (this.intervention === 'floor' && this.floorEnabled) {
+                    this.drawPriceFloor(padding, graphW, graphH, equilibrium);
+                }
+
+                // Draw equilibrium point and dashed lines
+                this.drawEquilibrium(padding, graphW, graphH, eqX, eqY, equilibrium);
+
+                this.updateInfo();
+            }
+
+            drawGrid(padding, graphW, graphH) {
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+                this.ctx.lineWidth = 1;
+
+                // Vertical grid lines
+                for (let i = 0; i <= 10; i++) {
+                    const x = padding + (i / 10) * graphW;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, padding);
+                    this.ctx.lineTo(x, padding + graphH);
+                    this.ctx.stroke();
+                }
+
+                // Horizontal grid lines
+                for (let i = 0; i <= 10; i++) {
+                    const y = padding + (i / 10) * graphH;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(padding, y);
+                    this.ctx.lineTo(padding + graphW, y);
+                    this.ctx.stroke();
+                }
+            }
+
+            drawAxes(padding, graphW, graphH) {
+                const w = this.canvas.width;
+                const h = this.canvas.height;
+
+                // Axes
+                this.ctx.strokeStyle = '#ffffff';
+                this.ctx.lineWidth = 2;
+                this.ctx.beginPath();
+                this.ctx.moveTo(padding, padding + graphH);
+                this.ctx.lineTo(padding + graphW, padding + graphH);
+                this.ctx.stroke();
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(padding, padding);
+                this.ctx.lineTo(padding, padding + graphH);
+                this.ctx.stroke();
+
+                // Tick marks and labels
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.font = 'bold 12px Inter';
+                this.ctx.textAlign = 'center';
+                this.ctx.textBaseline = 'top';
+
+                for (let i = 0; i <= 10; i++) {
+                    const x = padding + (i / 10) * graphW;
+                    const y = padding + graphH;
+
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, y);
+                    this.ctx.lineTo(x, y + 5);
+                    this.ctx.stroke();
+
+                    if (i % 2 === 0) {
+                        this.ctx.fillText((i * 10).toString(), x, y + 10);
+                    }
+                }
+
+                this.ctx.textAlign = 'right';
+                this.ctx.textBaseline = 'middle';
+
+                for (let i = 0; i <= 10; i++) {
+                    const x = padding;
+                    const y = padding + graphH - (i / 10) * graphH;
+
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x - 5, y);
+                    this.ctx.lineTo(x, y);
+                    this.ctx.stroke();
+
+                    if (i % 2 === 0) {
+                        this.ctx.fillText((i * 10).toString(), x - 10, y);
+                    }
+                }
+
+                // Axis labels
+                this.ctx.font = '600 14px Inter';
+                this.ctx.fillStyle = '#ffd700';
+                this.ctx.textAlign = 'center';
+                this.ctx.textBaseline = 'top';
+                this.ctx.fillText('Menge (Q)', padding + graphW / 2, padding + graphH + 35);
+
+                this.ctx.save();
+                this.ctx.translate(15, padding + graphH / 2);
+                this.ctx.rotate(-Math.PI / 2);
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('Preis (P)', 0, 0);
+                this.ctx.restore();
+            }
+
+            drawCurve(padding, graphW, graphH, type, color) {
+                const func = type === 'supply' ? this.supplyFunction.bind(this) : this.demandFunction.bind(this);
+
+                this.ctx.strokeStyle = color;
+                this.ctx.lineWidth = 3;
+                this.ctx.beginPath();
+
+                for (let q = 0; q <= 100; q += 1) {
+                    const p = type === 'supply' ?
+                        (q - 20 - this.supplyShift) / 0.6 :
+                        (100 - q - this.demandShift) / 0.4;
+
+                    if (p >= 0 && p <= 100) {
+                        const x = padding + (q / 100) * graphW;
+                        const y = padding + graphH - (p / 100) * graphH;
+
+                        if (q === 0) {
+                            this.ctx.moveTo(x, y);
+                        } else {
+                            this.ctx.lineTo(x, y);
+                        }
+                    }
+                }
+
+                this.ctx.stroke();
+
+                // Draw label
+                this.ctx.fillStyle = color;
+                this.ctx.font = '600 16px Inter';
+                if (type === 'supply') {
+                    this.ctx.fillText('Angebot (S)', padding + graphW - 80, padding + 30);
+                } else {
+                    this.ctx.fillText('Nachfrage (D)', padding + 20, padding + graphH - 30);
+                }
+            }
+
+            drawSurpluses(padding, graphW, graphH, equilibrium) {
+                const eqX = padding + (equilibrium.quantity / 100) * graphW;
+                const eqY = padding + graphH - (equilibrium.price / 100) * graphH;
+
+                // Consumer surplus (triangle above equilibrium price, below demand curve)
+                this.ctx.fillStyle = 'rgba(0, 217, 255, 0.15)';
+                this.ctx.beginPath();
+
+                // Find max price on demand curve (at Q=0)
+                const maxP = (100 - this.demandShift) / 0.4;
+                const maxPx = padding;
+                const maxPy = padding + graphH - (Math.min(maxP, 100) / 100) * graphH;
+
+                this.ctx.moveTo(maxPx, maxPy);
+                this.ctx.lineTo(eqX, eqY);
+                this.ctx.lineTo(padding, eqY);
+                this.ctx.closePath();
+                this.ctx.fill();
+
+                // Producer surplus (triangle below equilibrium price, above supply curve)
+                this.ctx.fillStyle = 'rgba(0, 255, 136, 0.15)';
+                this.ctx.beginPath();
+
+                const minP = (-20 - this.supplyShift) / 0.6;
+                const minPx = padding;
+                const minPy = padding + graphH - (Math.max(minP, 0) / 100) * graphH;
+
+                this.ctx.moveTo(minPx, minPy);
+                this.ctx.lineTo(eqX, eqY);
+                this.ctx.lineTo(padding, eqY);
+                this.ctx.closePath();
+                this.ctx.fill();
+            }
+
+            drawEquilibrium(padding, graphW, graphH, eqX, eqY, equilibrium) {
+                // Dashed lines to axes
+                this.ctx.strokeStyle = 'rgba(255, 215, 0, 0.3)';
+                this.ctx.lineWidth = 1;
+                this.ctx.setLineDash([5, 5]);
+
+                // Line to quantity axis
+                this.ctx.beginPath();
+                this.ctx.moveTo(eqX, eqY);
+                this.ctx.lineTo(eqX, padding + graphH);
+                this.ctx.stroke();
+
+                // Line to price axis
+                this.ctx.beginPath();
+                this.ctx.moveTo(eqX, eqY);
+                this.ctx.lineTo(padding, eqY);
+                this.ctx.stroke();
+
+                this.ctx.setLineDash([]);
+
+                // Equilibrium point
+                this.ctx.fillStyle = '#ffd700';
+                this.ctx.beginPath();
+                this.ctx.arc(eqX, eqY, 6, 0, Math.PI * 2);
+                this.ctx.fill();
+
+                // Equilibrium label
+                this.ctx.fillStyle = '#ffd700';
+                this.ctx.font = '600 13px Inter';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('Gleichgewicht (P*, Q*)', eqX, eqY - 25);
+            }
+
+            drawTaxWedge(padding, graphW, graphH, equilibrium) {
+                // Tax creates wedge between supply and demand
+                const taxAmount = this.taxRate;
+
+                // Find quantities at the tax-inclusive prices
+                const buyerPrice = equilibrium.price + taxAmount / 2;
+                const sellerPrice = equilibrium.price - taxAmount / 2;
+
+                const qty = Math.min(
+                    this.demandFunction(buyerPrice),
+                    this.supplyFunction(sellerPrice)
+                );
+
+                if (qty > 0 && buyerPrice < 100 && sellerPrice >= 0) {
+                    const x1 = padding + (qty / 100) * graphW;
+                    const y1 = padding + graphH - (buyerPrice / 100) * graphH;
+                    const y2 = padding + graphH - (sellerPrice / 100) * graphH;
+
+                    // Draw tax wedge
+                    this.ctx.fillStyle = 'rgba(255, 51, 51, 0.25)';
+                    this.ctx.beginPath();
+                    this.ctx.rect(x1 - 20, y2, 40, y1 - y2);
+                    this.ctx.fill();
+
+                    // Wedge border
+                    this.ctx.strokeStyle = '#ff3333';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x1 - 20, y1);
+                    this.ctx.lineTo(x1 - 20, y2);
+                    this.ctx.moveTo(x1 + 20, y1);
+                    this.ctx.lineTo(x1 + 20, y2);
+                    this.ctx.stroke();
+
+                    // Add info about tax burden
+                    const dwtLoss = 0.5 * taxAmount * (equilibrium.quantity - qty);
+                    document.getElementById('interventionInfo').innerHTML = `
+                        <div class="info-row">
+                            <span class="info-label">Neue Menge (Q)</span>
+                            <span class="info-value">${qty.toFixed(1)}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Wohlfahrtsverlust</span>
+                            <span class="info-value">${dwtLoss.toFixed(1)}</span>
+                        </div>
+                    `;
+                }
+            }
+
+            drawSubsidyArea(padding, graphW, graphH, equilibrium) {
+                const subsidyAmount = this.subsidyRate;
+
+                const sellerReceives = equilibrium.price + subsidyAmount;
+                const buyerPays = equilibrium.price - subsidyAmount / 2;
+
+                const qty = Math.min(
+                    this.demandFunction(buyerPays),
+                    this.supplyFunction(sellerReceives)
+                );
+
+                if (qty > 0 && qty > equilibrium.quantity) {
+                    const x1 = padding + (equilibrium.quantity / 100) * graphW;
+                    const x2 = padding + (qty / 100) * graphW;
+                    const y = padding + graphH - (equilibrium.price / 100) * graphH;
+
+                    // Draw subsidy area
+                    this.ctx.fillStyle = 'rgba(0, 255, 0, 0.2)';
+                    this.ctx.beginPath();
+                    this.ctx.rect(x1, y - 20, x2 - x1, 40);
+                    this.ctx.fill();
+
+                    const cost = subsidyAmount * qty;
+                    document.getElementById('interventionInfo').innerHTML = `
+                        <div class="info-row">
+                            <span class="info-label">Neue Menge (Q)</span>
+                            <span class="info-value">${qty.toFixed(1)}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Subventionskosten</span>
+                            <span class="info-value">${cost.toFixed(1)}</span>
+                        </div>
+                    `;
+                }
+            }
+
+            drawPriceCeiling(padding, graphW, graphH, equilibrium) {
+                if (this.priceCeiling < equilibrium.price) {
+                    const y = padding + graphH - (this.priceCeiling / 100) * graphH;
+
+                    // Draw ceiling line
+                    this.ctx.strokeStyle = '#ff9933';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.setLineDash([5, 5]);
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(padding, y);
+                    this.ctx.lineTo(padding + graphW, y);
+                    this.ctx.stroke();
+                    this.ctx.setLineDash([]);
+
+                    // Quantity demanded at ceiling price
+                    const qDemanded = this.demandFunction(this.priceCeiling);
+                    const qSupplied = this.supplyFunction(this.priceCeiling);
+                    const shortage = Math.max(0, qDemanded - qSupplied);
+
+                    if (shortage > 0) {
+                        // Highlight shortage area
+                        this.ctx.fillStyle = 'rgba(255, 153, 51, 0.2)';
+                        const x1 = padding + (qSupplied / 100) * graphW;
+                        const x2 = padding + (qDemanded / 100) * graphW;
+                        this.ctx.beginPath();
+                        this.ctx.rect(x1, y - 15, x2 - x1, 30);
+                        this.ctx.fill();
+
+                        document.getElementById('interventionInfo').innerHTML = `
+                            <div class="info-row">
+                                <span class="info-label">Nachfrageüberschuss</span>
+                                <span class="info-value">${shortage.toFixed(1)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Angebotsenge (Q)</span>
+                                <span class="info-value">${qSupplied.toFixed(1)}</span>
+                            </div>
+                        `;
+                    }
+                }
+            }
+
+            drawPriceFloor(padding, graphW, graphH, equilibrium) {
+                if (this.priceFloor > equilibrium.price) {
+                    const y = padding + graphH - (this.priceFloor / 100) * graphH;
+
+                    // Draw floor line
+                    this.ctx.strokeStyle = '#9933ff';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.setLineDash([5, 5]);
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(padding, y);
+                    this.ctx.lineTo(padding + graphW, y);
+                    this.ctx.stroke();
+                    this.ctx.setLineDash([]);
+
+                    // Quantity supplied at floor price
+                    const qSupplied = this.supplyFunction(this.priceFloor);
+                    const qDemanded = this.demandFunction(this.priceFloor);
+                    const surplus = Math.max(0, qSupplied - qDemanded);
+
+                    if (surplus > 0) {
+                        // Highlight surplus area
+                        this.ctx.fillStyle = 'rgba(153, 51, 255, 0.2)';
+                        const x1 = padding + (qDemanded / 100) * graphW;
+                        const x2 = padding + (qSupplied / 100) * graphW;
+                        this.ctx.beginPath();
+                        this.ctx.rect(x1, y - 15, x2 - x1, 30);
+                        this.ctx.fill();
+
+                        document.getElementById('interventionInfo').innerHTML = `
+                            <div class="info-row">
+                                <span class="info-label">Angebotsüberschuss</span>
+                                <span class="info-value">${surplus.toFixed(1)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Verkaufte Menge (Q)</span>
+                                <span class="info-value">${qDemanded.toFixed(1)}</span>
+                            </div>
+                        `;
+                    }
+                }
+            }
+
+            updateInfo() {
+                const equilibrium = this.findEquilibrium();
+
+                document.getElementById('priceValue').textContent = equilibrium.price.toFixed(1);
+                document.getElementById('quantityValue').textContent = equilibrium.quantity.toFixed(1);
+
+                // Consumer surplus: 0.5 * (maxP - P*) * Q*
+                // Where maxP is demand intercept
+                const maxP = (100 - this.demandShift) / 0.4;
+                const cs = 0.5 * (maxP - equilibrium.price) * equilibrium.quantity;
+                document.getElementById('consumerSurplus').textContent = Math.max(0, cs).toFixed(1);
+
+                // Producer surplus: 0.5 * (P* - minP) * Q*
+                // Where minP is supply intercept
+                const minP = (-20 - this.supplyShift) / 0.6;
+                const ps = 0.5 * (equilibrium.price - minP) * equilibrium.quantity;
+                document.getElementById('producerSurplus').textContent = Math.max(0, ps).toFixed(1);
+
+                if (this.intervention === 'none') {
+                    document.getElementById('interventionInfo').innerHTML = '';
+                }
+            }
+        }
+
+        // Initialize model
+        const model = new MarketModel();
+
+        // Event handlers
+        function handleIntervention(type) {
+            model.intervention = type;
+
+            document.getElementById('taxSlider').classList.toggle('active', type === 'tax');
+            document.getElementById('subsidySlider').classList.toggle('active', type === 'subsidy');
+            document.getElementById('ceilingControl').classList.toggle('active', type === 'ceiling');
+            document.getElementById('floorControl').classList.toggle('active', type === 'floor');
+
+            model.draw();
+        }
+
+        function handleTaxChange(value) {
+            model.taxRate = parseFloat(value);
+            document.getElementById('taxValue').textContent = value + '%';
+            model.draw();
+        }
+
+        function handleSubsidyChange(value) {
+            model.subsidyRate = parseFloat(value);
+            document.getElementById('subsidyValue').textContent = value + '%';
+            model.draw();
+        }
+
+        function handleCeilingToggle(checked) {
+            model.ceilingEnabled = checked;
+            model.draw();
+        }
+
+        function handleCeilingChange(value) {
+            model.priceCeiling = parseFloat(value);
+            document.getElementById('ceilingValue').textContent = value;
+            model.draw();
+        }
+
+        function handleFloorToggle(checked) {
+            model.floorEnabled = checked;
+            model.draw();
+        }
+
+        function handleFloorChange(value) {
+            model.priceFloor = parseFloat(value);
+            document.getElementById('floorValue').textContent = value;
+            model.draw();
+        }
+
+        // Touch/mouse support for dragging curves
+        let isDragging = false;
+        let dragType = null;
+
+        model.canvas.addEventListener('mousedown', (e) => {
+            const rect = model.canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Check if click is near supply curve
+            isDragging = true;
+            dragType = 'supply';
+        });
+
+        model.canvas.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            const rect = model.canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const prevX = isDragging ? x : 0;
+
+            model.animate();
+        });
+
+        model.canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+            dragType = null;
+        });
+
+        model.canvas.addEventListener('mouseleave', () => {
+            isDragging = false;
+            dragType = null;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standortfaktoren nach Weber - Interaktive Simulation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a1a0a 0%, #1a3a00 50%, #2d5000 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #7eff4d;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 8px rgba(126, 255, 77, 0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            font-weight: 300;
+            color: #b0d080;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        .canvas-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        #canvas {
+            width: 100%;
+            height: 600px;
+            background: linear-gradient(135deg, rgba(10, 26, 10, 0.8) 0%, rgba(26, 58, 0, 0.8) 100%);
+            border-radius: 12px;
+            cursor: crosshair;
+            display: block;
+            background-image:
+                linear-gradient(rgba(126, 255, 77, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(126, 255, 77, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .controls-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .panel-header {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #7eff4d;
+            margin-bottom: 8px;
+        }
+
+        .panel-subtitle {
+            font-size: 0.85em;
+            color: #8fae4f;
+            font-weight: 300;
+            margin-bottom: 16px;
+        }
+
+        .control-group {
+            margin-bottom: 18px;
+        }
+
+        .label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+            font-weight: 500;
+            color: #d0d0d0;
+        }
+
+        .value-display {
+            font-weight: 600;
+            color: #7eff4d;
+            font-size: 0.95em;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, rgba(255, 165, 0, 0.3), rgba(255, 165, 0, 0.6));
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffa500, #ffcc00);
+            cursor: grab;
+            box-shadow: 0 2px 6px rgba(255, 165, 0, 0.4);
+            transition: transform 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffa500, #ffcc00);
+            cursor: grab;
+            box-shadow: 0 2px 6px rgba(255, 165, 0, 0.4);
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 10px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(126, 255, 77, 0.1);
+            color: #7eff4d;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn:hover {
+            background: rgba(126, 255, 77, 0.2);
+            border-color: rgba(126, 255, 77, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(126, 255, 77, 0.2);
+        }
+
+        .btn.active {
+            background: rgba(126, 255, 77, 0.3);
+            border-color: rgba(126, 255, 77, 0.6);
+            box-shadow: 0 4px 12px rgba(126, 255, 77, 0.3);
+        }
+
+        .btn.preset {
+            background: rgba(100, 150, 200, 0.1);
+            color: #64b8ff;
+            border-color: rgba(100, 150, 200, 0.2);
+        }
+
+        .btn.preset:hover {
+            background: rgba(100, 150, 200, 0.2);
+            border-color: rgba(100, 150, 200, 0.4);
+            box-shadow: 0 4px 12px rgba(100, 150, 200, 0.2);
+        }
+
+        .btn.reset {
+            background: rgba(255, 100, 100, 0.1);
+            color: #ff6464;
+            border-color: rgba(255, 100, 100, 0.2);
+        }
+
+        .btn.reset:hover {
+            background: rgba(255, 100, 100, 0.2);
+            border-color: rgba(255, 100, 100, 0.4);
+            box-shadow: 0 4px 12px rgba(255, 100, 100, 0.2);
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .toggle.active {
+            background: rgba(126, 255, 77, 0.3);
+            border-color: rgba(126, 255, 77, 0.5);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #7eff4d;
+            border-radius: 10px;
+            top: 2px;
+            left: 2px;
+            transition: left 0.3s ease;
+            box-shadow: 0 2px 4px rgba(126, 255, 77, 0.3);
+        }
+
+        .toggle.active::after {
+            left: 22px;
+        }
+
+        .toggle-label {
+            font-size: 0.95em;
+            color: #d0d0d0;
+            cursor: pointer;
+            user-select: none;
+            flex: 1;
+        }
+
+        .info-panel {
+            background: rgba(126, 255, 77, 0.08);
+            border: 1px solid rgba(126, 255, 77, 0.2);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .info-title {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: #7eff4d;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-item {
+            font-size: 0.85em;
+            color: #b0d080;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .info-label {
+            font-weight: 400;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #7eff4d;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            font-size: 0.8em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-label {
+            color: #a0c060;
+            line-height: 1.3;
+        }
+
+        @media (max-width: 900px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            #canvas {
+                height: 450px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .header p {
+                font-size: 0.95em;
+            }
+
+            .glass-panel {
+                padding: 14px;
+            }
+
+            #canvas {
+                height: 350px;
+            }
+
+            .legend {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Standortfaktoren nach Weber</h1>
+            <p>Optimale Standortwahl für Betriebe</p>
+        </div>
+
+        <div class="layout">
+            <div class="canvas-section">
+                <div class="glass-panel">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <div class="glass-panel">
+                    <div class="panel-header">Gewichtungen</div>
+                    <div class="panel-subtitle">Einfluss der Materialien und Produkte</div>
+
+                    <div class="control-group">
+                        <label class="label">
+                            <span>Rohstoff 1 (Gewicht)</span>
+                            <span class="value-display" id="weight1-display">5</span>
+                        </label>
+                        <input type="range" id="weight1" min="1" max="10" value="5">
+                    </div>
+
+                    <div class="control-group">
+                        <label class="label">
+                            <span>Rohstoff 2 (Gewicht)</span>
+                            <span class="value-display" id="weight2-display">3</span>
+                        </label>
+                        <input type="range" id="weight2" min="1" max="10" value="3">
+                    </div>
+
+                    <div class="control-group">
+                        <label class="label">
+                            <span>Produkt (Gewicht)</span>
+                            <span class="value-display" id="weight3-display">2</span>
+                        </label>
+                        <input type="range" id="weight3" min="1" max="10" value="2">
+                    </div>
+                </div>
+
+                <div class="glass-panel">
+                    <div class="panel-header">Szenarien</div>
+                    <div class="button-group">
+                        <button class="btn preset" data-scenario="steel">Stahlwerk</button>
+                        <button class="btn preset" data-scenario="bakery">Bäckerei</button>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn preset" data-scenario="brewery">Brauerei</button>
+                        <button class="btn preset" data-scenario="cement">Zementwerk</button>
+                    </div>
+                </div>
+
+                <div class="glass-panel">
+                    <div class="panel-header">Darstellung</div>
+
+                    <div class="toggle-container">
+                        <div class="toggle active" id="toggle-isolines"></div>
+                        <label class="toggle-label" for="toggle-isolines">Transportkosten-Isolinien</label>
+                    </div>
+
+                    <div class="toggle-container">
+                        <div class="toggle" id="toggle-heatmap"></div>
+                        <label class="toggle-label" for="toggle-heatmap">Kostenheatmap</label>
+                    </div>
+
+                    <div class="toggle-container">
+                        <div class="toggle active" id="toggle-labels"></div>
+                        <label class="toggle-label" for="toggle-labels">Beschriftungen</label>
+                    </div>
+                </div>
+
+                <div class="glass-panel">
+                    <button class="btn reset" id="reset-btn">Zurücksetzen</button>
+                </div>
+
+                <div class="glass-panel">
+                    <div class="info-panel">
+                        <div class="info-title">Optimale Lage</div>
+                        <div class="info-item">
+                            <span class="info-label">Gesamtkosten:</span>
+                            <span class="info-value" id="total-cost">0 km·Gewicht</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Zu Rohstoff 1:</span>
+                            <span class="info-value" id="dist1">0 km</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Zu Rohstoff 2:</span>
+                            <span class="info-value" id="dist2">0 km</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Zum Markt:</span>
+                            <span class="info-value" id="dist3">0 km</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Orientierung:</span>
+                            <span class="info-value" id="orientation">Ausgewogen</span>
+                        </div>
+                    </div>
+
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: #ffa500;"></div>
+                            <span class="legend-label">Rohstoffe</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: #4db8ff;"></div>
+                            <span class="legend-label">Markt</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: #7eff4d;"></div>
+                            <span class="legend-label">Optimum</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: linear-gradient(135deg, #ff4444, #ffff00, #44ff44);"></div>
+                            <span class="legend-label">Kostengradient</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        const state = {
+            points: {
+                m1: { x: 150, y: 450, label: 'Rohstoff 1' },
+                m2: { x: 750, y: 150, label: 'Rohstoff 2' },
+                market: { x: 450, y: 600, label: 'Markt' }
+            },
+            weights: {
+                w1: 5,
+                w2: 3,
+                w3: 2
+            },
+            optimal: { x: 350, y: 350 },
+            dragging: null,
+            showIsolines: true,
+            showHeatmap: false,
+            showLabels: true
+        };
+
+        const scenarios = {
+            steel: {
+                w1: 6,
+                w2: 3,
+                w3: 2,
+                label: 'Stahlwerk (Rohstofforientiert)'
+            },
+            bakery: {
+                w1: 1,
+                w2: 1,
+                w3: 2,
+                label: 'Bäckerei (Marktorientiert)'
+            },
+            brewery: {
+                w1: 2,
+                w2: 5,
+                w3: 3,
+                label: 'Brauerei (Wasserlastig)'
+            },
+            cement: {
+                w1: 8,
+                w2: 3,
+                w3: 4,
+                label: 'Zementwerk (Rohstofforientiert)'
+            }
+        };
+
+        // Canvas setup
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            render();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Weiszfeld algorithm for Weber point
+        function calculateWeberPoint(p1, p2, p3, w1, w2, w3, iterations = 50) {
+            let x = (p1.x * w1 + p2.x * w2 + p3.x * w3) / (w1 + w2 + w3);
+            let y = (p1.y * w1 + p2.y * w2 + p3.y * w3) / (w1 + w2 + w3);
+
+            for (let iter = 0; iter < iterations; iter++) {
+                const d1 = Math.hypot(x - p1.x, y - p1.y) || 0.001;
+                const d2 = Math.hypot(x - p2.x, y - p2.y) || 0.001;
+                const d3 = Math.hypot(x - p3.x, y - p3.y) || 0.001;
+
+                const denominator = w1 / d1 + w2 / d2 + w3 / d3;
+                if (denominator === 0) break;
+
+                x = (w1 * p1.x / d1 + w2 * p2.x / d2 + w3 * p3.x / d3) / denominator;
+                y = (w1 * p1.y / d1 + w2 * p2.y / d2 + w3 * p3.y / d3) / denominator;
+            }
+
+            return { x, y };
+        }
+
+        // Calculate total transport cost
+        function calculateTotalCost(point, p1, p2, p3, w1, w2, w3) {
+            const d1 = Math.hypot(point.x - p1.x, point.y - p1.y);
+            const d2 = Math.hypot(point.x - p2.x, point.y - p2.y);
+            const d3 = Math.hypot(point.x - p3.x, point.y - p3.y);
+            return w1 * d1 + w2 * d2 + w3 * d3;
+        }
+
+        // Determine location orientation
+        function getOrientation(w1, w2, w3) {
+            const weights = [
+                { w: w1, label: 'Rohstofforientiert' },
+                { w: w2, label: 'Rohstofforientiert' },
+                { w: w3, label: 'Marktorientiert' }
+            ];
+
+            if (w1 >= w2 && w1 >= w3) return 'Rohstofforientiert (M1)';
+            if (w2 >= w1 && w2 >= w3) return 'Rohstofforientiert (M2)';
+            if (w3 > w1 && w3 > w2) return 'Marktorientiert';
+            return 'Ausgewogen';
+        }
+
+        // Draw heatmap
+        function drawHeatmap() {
+            const resolution = 5;
+            const imageData = ctx.createImageData(canvas.width, canvas.height);
+            const data = imageData.data;
+
+            for (let i = 0; i < canvas.width; i += resolution) {
+                for (let j = 0; j < canvas.height; j += resolution) {
+                    const cost = calculateTotalCost(
+                        { x: i, y: j },
+                        state.points.m1,
+                        state.points.m2,
+                        state.points.market,
+                        state.weights.w1,
+                        state.weights.w2,
+                        state.weights.w3
+                    );
+
+                    const normalizedCost = Math.min(cost / 500, 1);
+                    let r, g, b;
+
+                    if (normalizedCost < 0.5) {
+                        r = Math.round(68 + (255 - 68) * (normalizedCost * 2));
+                        g = Math.round(255);
+                        b = Math.round(68);
+                    } else {
+                        r = Math.round(255);
+                        g = Math.round(255 - (255 - 68) * ((normalizedCost - 0.5) * 2));
+                        b = Math.round(68);
+                    }
+
+                    const pixelIndex = (j * canvas.width + i) * 4;
+                    data[pixelIndex] = r;
+                    data[pixelIndex + 1] = g;
+                    data[pixelIndex + 2] = b;
+                    data[pixelIndex + 3] = 30;
+                }
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        // Draw cost isolines (concentric circles)
+        function drawIsolines() {
+            const p1 = state.points.m1;
+            const p2 = state.points.m2;
+            const p3 = state.points.market;
+            const w1 = state.weights.w1;
+            const w2 = state.weights.w2;
+            const w3 = state.weights.w3;
+
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 0.3;
+
+            // Isolines around M1 (orange)
+            ctx.strokeStyle = '#ffa500';
+            for (let r = 20; r < 300; r += 40) {
+                ctx.beginPath();
+                ctx.arc(p1.x, p1.y, r, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Isolines around M2 (orange)
+            for (let r = 20; r < 300; r += 40) {
+                ctx.beginPath();
+                ctx.arc(p2.x, p2.y, r, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Isolines around Market (blue)
+            ctx.strokeStyle = '#4db8ff';
+            for (let r = 20; r < 300; r += 40) {
+                ctx.beginPath();
+                ctx.arc(p3.x, p3.y, r, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            ctx.globalAlpha = 1;
+        }
+
+        // Draw connecting lines
+        function drawConnectionLines() {
+            const opt = state.optimal;
+            ctx.strokeStyle = 'rgba(126, 255, 77, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+
+            // Lines to vertices
+            [state.points.m1, state.points.m2, state.points.market].forEach(point => {
+                ctx.beginPath();
+                ctx.moveTo(opt.x, opt.y);
+                ctx.lineTo(point.x, point.y);
+                ctx.stroke();
+            });
+
+            ctx.setLineDash([]);
+        }
+
+        // Draw distance labels
+        function drawDistanceLabels() {
+            const opt = state.optimal;
+            ctx.fillStyle = '#7eff4d';
+            ctx.font = 'bold 12px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.globalAlpha = 0.8;
+
+            const d1 = Math.hypot(opt.x - state.points.m1.x, opt.y - state.points.m1.y);
+            const d2 = Math.hypot(opt.x - state.points.m2.x, opt.y - state.points.m2.y);
+            const d3 = Math.hypot(opt.x - state.points.market.x, opt.y - state.points.market.y);
+
+            const mid1 = {
+                x: (opt.x + state.points.m1.x) / 2,
+                y: (opt.y + state.points.m1.y) / 2
+            };
+            const mid2 = {
+                x: (opt.x + state.points.m2.x) / 2,
+                y: (opt.y + state.points.m2.y) / 2
+            };
+            const mid3 = {
+                x: (opt.x + state.points.market.x) / 2,
+                y: (opt.y + state.points.market.y) / 2
+            };
+
+            ctx.fillText(`${d1.toFixed(0)} km`, mid1.x, mid1.y - 8);
+            ctx.fillText(`${d2.toFixed(0)} km`, mid2.x, mid2.y - 8);
+            ctx.fillText(`${d3.toFixed(0)} km`, mid3.x, mid3.y - 8);
+
+            ctx.globalAlpha = 1;
+        }
+
+        // Draw points
+        function drawPoints() {
+            // M1
+            ctx.fillStyle = '#ffa500';
+            ctx.beginPath();
+            ctx.arc(state.points.m1.x, state.points.m1.y, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255, 165, 0, 0.6)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // M2
+            ctx.fillStyle = '#ffa500';
+            ctx.beginPath();
+            ctx.arc(state.points.m2.x, state.points.m2.y, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Market
+            ctx.fillStyle = '#4db8ff';
+            ctx.beginPath();
+            ctx.arc(state.points.market.x, state.points.market.y, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(77, 184, 255, 0.6)';
+            ctx.stroke();
+
+            // Optimal point (diamond/star)
+            const opt = state.optimal;
+            ctx.fillStyle = '#7eff4d';
+            ctx.globalAlpha = 0.9;
+            ctx.save();
+            ctx.translate(opt.x, opt.y);
+            ctx.rotate(Math.PI / 4);
+            ctx.fillRect(-8, -8, 16, 16);
+            ctx.restore();
+            ctx.globalAlpha = 1;
+        }
+
+        // Draw labels
+        function drawLabels() {
+            ctx.fillStyle = '#7eff4d';
+            ctx.font = '600 14px Inter, sans-serif';
+            ctx.globalAlpha = 0.9;
+
+            ctx.textAlign = 'center';
+            ctx.fillText('M1', state.points.m1.x, state.points.m1.y - 28);
+            ctx.fillText('M2', state.points.m2.x, state.points.m2.y - 28);
+
+            ctx.fillStyle = '#4db8ff';
+            ctx.fillText('Markt', state.points.market.x, state.points.market.y + 28);
+
+            ctx.fillStyle = '#7eff4d';
+            ctx.font = '700 13px Inter, sans-serif';
+            ctx.fillText('✓', state.optimal.x, state.optimal.y + 5);
+
+            ctx.globalAlpha = 1;
+        }
+
+        // Main render function
+        function render() {
+            // Clear canvas
+            ctx.fillStyle = 'rgba(10, 26, 10, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Calculate optimal point
+            state.optimal = calculateWeberPoint(
+                state.points.m1,
+                state.points.m2,
+                state.points.market,
+                state.weights.w1,
+                state.weights.w2,
+                state.weights.w3
+            );
+
+            // Draw heatmap if enabled
+            if (state.showHeatmap) {
+                drawHeatmap();
+            }
+
+            // Draw isolines if enabled
+            if (state.showIsolines) {
+                drawIsolines();
+            }
+
+            // Draw connections
+            drawConnectionLines();
+            if (state.showLabels) {
+                drawDistanceLabels();
+            }
+
+            // Draw points
+            drawPoints();
+
+            // Draw labels if enabled
+            if (state.showLabels) {
+                drawLabels();
+            }
+
+            // Update info panel
+            updateInfoPanel();
+        }
+
+        // Update info panel
+        function updateInfoPanel() {
+            const d1 = Math.hypot(state.optimal.x - state.points.m1.x, state.optimal.y - state.points.m1.y);
+            const d2 = Math.hypot(state.optimal.x - state.points.m2.x, state.optimal.y - state.points.m2.y);
+            const d3 = Math.hypot(state.optimal.x - state.points.market.x, state.optimal.y - state.points.market.y);
+            const totalCost = calculateTotalCost(
+                state.optimal,
+                state.points.m1,
+                state.points.m2,
+                state.points.market,
+                state.weights.w1,
+                state.weights.w2,
+                state.weights.w3
+            );
+
+            document.getElementById('total-cost').textContent = totalCost.toFixed(0) + ' km·Gewicht';
+            document.getElementById('dist1').textContent = d1.toFixed(0) + ' km';
+            document.getElementById('dist2').textContent = d2.toFixed(0) + ' km';
+            document.getElementById('dist3').textContent = d3.toFixed(0) + ' km';
+            document.getElementById('orientation').textContent = getOrientation(state.weights.w1, state.weights.w2, state.weights.w3);
+        }
+
+        // Event listeners for weights
+        document.getElementById('weight1').addEventListener('input', (e) => {
+            state.weights.w1 = parseInt(e.target.value);
+            document.getElementById('weight1-display').textContent = state.weights.w1;
+            render();
+        });
+
+        document.getElementById('weight2').addEventListener('input', (e) => {
+            state.weights.w2 = parseInt(e.target.value);
+            document.getElementById('weight2-display').textContent = state.weights.w2;
+            render();
+        });
+
+        document.getElementById('weight3').addEventListener('input', (e) => {
+            state.weights.w3 = parseInt(e.target.value);
+            document.getElementById('weight3-display').textContent = state.weights.w3;
+            render();
+        });
+
+        // Scenario buttons
+        document.querySelectorAll('.btn.preset').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const scenario = scenarios[e.target.dataset.scenario];
+                state.weights.w1 = scenario.w1;
+                state.weights.w2 = scenario.w2;
+                state.weights.w3 = scenario.w3;
+                document.getElementById('weight1').value = scenario.w1;
+                document.getElementById('weight2').value = scenario.w2;
+                document.getElementById('weight3').value = scenario.w3;
+                document.getElementById('weight1-display').textContent = scenario.w1;
+                document.getElementById('weight2-display').textContent = scenario.w2;
+                document.getElementById('weight3-display').textContent = scenario.w3;
+                render();
+            });
+        });
+
+        // Toggle buttons
+        function setupToggle(id, stateKey) {
+            const toggle = document.getElementById(id);
+            const label = toggle.nextElementSibling;
+
+            const updateToggle = () => {
+                if (state[stateKey]) {
+                    toggle.classList.add('active');
+                } else {
+                    toggle.classList.remove('active');
+                }
+                render();
+            };
+
+            toggle.addEventListener('click', () => {
+                state[stateKey] = !state[stateKey];
+                updateToggle();
+            });
+
+            label.addEventListener('click', () => {
+                state[stateKey] = !state[stateKey];
+                updateToggle();
+            });
+        }
+
+        setupToggle('toggle-isolines', 'showIsolines');
+        setupToggle('toggle-heatmap', 'showHeatmap');
+        setupToggle('toggle-labels', 'showLabels');
+
+        // Reset button
+        document.getElementById('reset-btn').addEventListener('click', () => {
+            state.weights = { w1: 5, w2: 3, w3: 2 };
+            state.points = {
+                m1: { x: 150, y: 450, label: 'Rohstoff 1' },
+                m2: { x: 750, y: 150, label: 'Rohstoff 2' },
+                market: { x: 450, y: 600, label: 'Markt' }
+            };
+            document.getElementById('weight1').value = 5;
+            document.getElementById('weight2').value = 3;
+            document.getElementById('weight3').value = 2;
+            document.getElementById('weight1-display').textContent = '5';
+            document.getElementById('weight2-display').textContent = '3';
+            document.getElementById('weight3-display').textContent = '2';
+            render();
+        });
+
+        // Canvas interaction - dragging
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const points = [
+                { key: 'm1', point: state.points.m1 },
+                { key: 'm2', point: state.points.m2 },
+                { key: 'market', point: state.points.market }
+            ];
+
+            for (const { key, point } of points) {
+                const dist = Math.hypot(x - point.x, y - point.y);
+                if (dist < 20) {
+                    state.dragging = { key, point };
+                    canvas.style.cursor = 'grabbing';
+                    break;
+                }
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            if (state.dragging) {
+                state.dragging.point.x = Math.max(0, Math.min(canvas.width, x));
+                state.dragging.point.y = Math.max(0, Math.min(canvas.height, y));
+                render();
+            } else {
+                // Check hover
+                const points = [state.points.m1, state.points.m2, state.points.market];
+                let hovering = false;
+                for (const point of points) {
+                    const dist = Math.hypot(x - point.x, y - point.y);
+                    if (dist < 20) {
+                        hovering = true;
+                        break;
+                    }
+                }
+                canvas.style.cursor = hovering ? 'grab' : 'crosshair';
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            state.dragging = null;
+            canvas.style.cursor = 'crosshair';
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            state.dragging = null;
+            canvas.style.cursor = 'crosshair';
+        });
+
+        // Touch support
+        canvas.addEventListener('touchstart', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+
+            const points = [
+                { key: 'm1', point: state.points.m1 },
+                { key: 'm2', point: state.points.m2 },
+                { key: 'market', point: state.points.market }
+            ];
+
+            for (const { key, point } of points) {
+                const dist = Math.hypot(x - point.x, y - point.y);
+                if (dist < 25) {
+                    state.dragging = { key, point };
+                    break;
+                }
+            }
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            if (!state.dragging) return;
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+
+            state.dragging.point.x = Math.max(0, Math.min(canvas.width, x));
+            state.dragging.point.y = Math.max(0, Math.min(canvas.height, y));
+            render();
+        });
+
+        canvas.addEventListener('touchend', () => {
+            state.dragging = null;
+        });
+
+        // Initial render
+        render();
+    </script>
+</body>
+</html>

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welthandelsströme - Geographie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #050510 0%, #0a0a2e 50%, #0d1040 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 20px;
+            height: calc(100vh - 40px);
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        /* Glass morphism panels */
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .canvas-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .controls-panel h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .controls-panel .subtitle {
+            font-size: 12px;
+            font-weight: 300;
+            color: #a0a0c0;
+            margin-bottom: 15px;
+        }
+
+        .control-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .control-section h2 {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #b0b0d0;
+            margin-bottom: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toggle-button, .region-button {
+            padding: 10px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .toggle-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .toggle-button.active {
+            background: rgba(100, 200, 255, 0.3);
+            border-color: rgba(100, 200, 255, 0.6);
+            color: #64c8ff;
+        }
+
+        .region-button {
+            padding: 8px 12px;
+            font-size: 11px;
+            text-align: left;
+        }
+
+        .region-button.active {
+            background: rgba(100, 200, 255, 0.2);
+            border-color: rgba(100, 200, 255, 0.5);
+        }
+
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .slider-label {
+            font-size: 12px;
+            color: #a0a0c0;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #64c8ff;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(100, 200, 255, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #64c8ff;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(100, 200, 255, 0.5);
+        }
+
+        .timeline-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .timeline-button {
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .timeline-button.active {
+            background: rgba(100, 150, 255, 0.3);
+            border-color: rgba(100, 150, 255, 0.6);
+            color: #64d8ff;
+        }
+
+        .timeline-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .info-panel {
+            background: rgba(100, 200, 255, 0.05);
+            border: 1px solid rgba(100, 200, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .info-panel.empty {
+            color: #80809a;
+            text-align: center;
+            padding: 20px 12px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .info-label {
+            color: #a0a0c0;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #64d8ff;
+            font-weight: 600;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            font-size: 11px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .scroll-helper {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .canvas-container {
+                height: 400px;
+            }
+
+            .controls-panel {
+                max-height: none;
+            }
+        }
+
+        /* Scrollbar styling */
+        .panel::-webkit-scrollbar,
+        .scroll-helper::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel::-webkit-scrollbar-track,
+        .scroll-helper::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb,
+        .scroll-helper::-webkit-scrollbar-thumb {
+            background: rgba(100, 200, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb:hover,
+        .scroll-helper::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 200, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="canvas-container panel">
+            <canvas id="tradeCanvas"></canvas>
+        </div>
+
+        <div class="controls-panel panel">
+            <div>
+                <h1>Welthandelsströme</h1>
+                <p class="subtitle">Globalisierung und internationaler Handel</p>
+            </div>
+
+            <div class="control-section">
+                <h2>Warengruppen</h2>
+                <div class="button-group">
+                    <button class="toggle-button active" data-commodity="oil">🛢️ Erdöl & Gas</button>
+                    <button class="toggle-button active" data-commodity="tech">💻 Technologie & Elektronik</button>
+                    <button class="toggle-button active" data-commodity="agrar">🌾 Agrarprodukte</button>
+                    <button class="toggle-button active" data-commodity="industrie">⚙️ Industriegüter</button>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h2>Zeitraum</h2>
+                <div class="timeline-buttons">
+                    <button class="timeline-button active" data-year="2000">2000</button>
+                    <button class="timeline-button" data-year="2010">2010</button>
+                    <button class="timeline-button" data-year="2020">2020</button>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h2>Animationsgeschwindigkeit</h2>
+                <input type="range" id="speedSlider" min="0.2" max="2" step="0.1" value="1">
+            </div>
+
+            <div class="control-section">
+                <h2>Optionen</h2>
+                <div class="button-group">
+                    <button class="toggle-button active" id="euTradeToggle">🇪🇺 EU-Binnenhandel</button>
+                    <button class="toggle-button" id="austriaToggle">🇦🇹 Österreich hervorheben</button>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h2>Regionen</h2>
+                <div class="scroll-helper">
+                    <div class="button-group" id="regionButtons">
+                        <!-- Filled by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h2>Legendeende</h2>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #00ff88;"></div>
+                        <span>Erdöl & Gas</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #00ccff;"></div>
+                        <span>Technologie</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #aa8844;"></div>
+                        <span>Agrarprodukte</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #9999cc;"></div>
+                        <span>Industriegüter</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h2>Region Info</h2>
+                <div id="infoPanel" class="info-panel empty">
+                    Klicke auf eine Region auf der Karte
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Constants and Data
+        const REGIONS = {
+            'EU': { name: 'Europäische Union', color: '#4466ff', x: 0.35, y: 0.35, radius: 40 },
+            'USA': { name: 'USA', color: '#ff4466', x: 0.15, y: 0.35, radius: 45 },
+            'China': { name: 'China', color: '#ffcc00', x: 0.65, y: 0.40, radius: 50 },
+            'Japan': { name: 'Japan/Südkorea', color: '#00ffdd', x: 0.75, y: 0.35, radius: 35 },
+            'BRICS': { name: 'BRICS (ohne China)', color: '#ff8844', x: 0.55, y: 0.55, radius: 40 },
+            'OPEC': { name: 'Naher Osten (OPEC)', color: '#00ff88', x: 0.45, y: 0.50, radius: 35 },
+            'LatAm': { name: 'Lateinamerika', color: '#cc66ff', x: 0.25, y: 0.65, radius: 38 },
+            'Afrika': { name: 'Afrika', color: '#cc8844', x: 0.45, y: 0.65, radius: 40 }
+        };
+
+        const COMMODITIES = {
+            'oil': { name: 'Erdöl & Gas', color: '#00ff88' },
+            'tech': { name: 'Technologie & Elektronik', color: '#00ccff' },
+            'agrar': { name: 'Agrarprodukte', color: '#aa8844' },
+            'industrie': { name: 'Industriegüter', color: '#9999cc' }
+        };
+
+        // Trade flows: [from, to, commodity, volumeByYear]
+        const TRADE_FLOWS = [
+            ['EU', 'USA', 'tech', { 2000: 120, 2010: 150, 2020: 180 }],
+            ['EU', 'USA', 'industrie', { 2000: 140, 2010: 170, 2020: 200 }],
+            ['USA', 'EU', 'tech', { 2000: 100, 2010: 130, 2020: 150 }],
+            ['USA', 'EU', 'industrie', { 2000: 120, 2010: 150, 2020: 180 }],
+            ['China', 'USA', 'tech', { 2000: 80, 2010: 200, 2020: 350 }],
+            ['China', 'USA', 'industrie', { 2000: 100, 2010: 180, 2020: 280 }],
+            ['USA', 'China', 'tech', { 2000: 40, 2010: 60, 2020: 80 }],
+            ['USA', 'China', 'agrar', { 2000: 20, 2010: 35, 2020: 50 }],
+            ['China', 'EU', 'tech', { 2000: 70, 2010: 180, 2020: 300 }],
+            ['China', 'EU', 'industrie', { 2000: 90, 2010: 170, 2020: 250 }],
+            ['EU', 'China', 'tech', { 2000: 40, 2010: 60, 2020: 80 }],
+            ['EU', 'China', 'industrie', { 2000: 120, 2010: 160, 2020: 200 }],
+            ['OPEC', 'EU', 'oil', { 2000: 80, 2010: 120, 2020: 150 }],
+            ['OPEC', 'China', 'oil', { 2000: 30, 2010: 120, 2020: 200 }],
+            ['OPEC', 'Japan', 'oil', { 2000: 70, 2010: 90, 2020: 100 }],
+            ['LatAm', 'USA', 'agrar', { 2000: 50, 2010: 65, 2020: 80 }],
+            ['LatAm', 'USA', 'oil', { 2000: 40, 2010: 55, 2020: 60 }],
+            ['LatAm', 'EU', 'agrar', { 2000: 40, 2010: 50, 2020: 60 }],
+            ['Afrika', 'EU', 'oil', { 2000: 30, 2010: 40, 2020: 50 }],
+            ['Afrika', 'EU', 'agrar', { 2000: 25, 2010: 32, 2020: 40 }],
+            ['Afrika', 'China', 'oil', { 2000: 10, 2010: 40, 2020: 80 }],
+            ['BRICS', 'EU', 'industrie', { 2000: 60, 2010: 80, 2020: 100 }],
+            ['BRICS', 'EU', 'agrar', { 2000: 50, 2010: 65, 2020: 80 }],
+            ['EU', 'BRICS', 'tech', { 2000: 60, 2010: 75, 2020: 90 }],
+            ['EU', 'BRICS', 'industrie', { 2000: 80, 2010: 100, 2020: 120 }],
+            ['Japan', 'USA', 'tech', { 2000: 80, 2010: 90, 2020: 100 }],
+            ['Japan', 'USA', 'industrie', { 2000: 60, 2010: 70, 2020: 80 }],
+            ['Japan', 'China', 'tech', { 2000: 40, 2010: 50, 2020: 60 }],
+        ];
+
+        // State
+        let state = {
+            selectedCommodities: new Set(['oil', 'tech', 'agrar', 'industrie']),
+            selectedRegion: null,
+            currentYear: 2000,
+            animationSpeed: 1,
+            showEUTrade: true,
+            showAustria: false,
+            animationTime: 0
+        };
+
+        // Canvas setup
+        const canvas = document.getElementById('tradeCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Drawing functions
+        function drawWorldMap() {
+            const w = canvas.width;
+            const h = canvas.height;
+
+            // Ocean background
+            ctx.fillStyle = '#0a0a20';
+            ctx.fillRect(0, 0, w, h);
+
+            // Simplified continents
+            drawContinent('northAmerica', 0.1, 0.2, 0.25, 0.45, w, h);
+            drawContinent('southAmerica', 0.15, 0.5, 0.3, 0.75, w, h);
+            drawContinent('europe', 0.3, 0.2, 0.45, 0.4, w, h);
+            drawContinent('africa', 0.35, 0.4, 0.55, 0.75, w, h);
+            drawContinent('asia', 0.5, 0.15, 0.85, 0.55, w, h);
+            drawContinent('australia', 0.75, 0.65, 0.85, 0.8, w, h);
+
+            // Grid lines (subtle)
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i <= 10; i++) {
+                const x = (i / 10) * w;
+                const y = (i / 10) * h;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, h);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(w, y);
+                ctx.stroke();
+            }
+
+            // Trade region circles
+            for (const [key, region] of Object.entries(REGIONS)) {
+                const rx = region.x * w;
+                const ry = region.y * h;
+                const radius = region.radius;
+
+                // Region circle with glow effect
+                ctx.fillStyle = region.color + '20';
+                ctx.beginPath();
+                ctx.arc(rx, ry, radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Outer ring
+                ctx.strokeStyle = region.color + '60';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Inner highlight
+                if (state.selectedRegion === key) {
+                    ctx.strokeStyle = region.color + 'ff';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                }
+
+                // Region label
+                ctx.fillStyle = region.color;
+                ctx.font = 'bold 12px Inter';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(key, rx, ry);
+            }
+        }
+
+        function drawContinent(name, x1, y1, x2, y2, w, h) {
+            ctx.fillStyle = '#2a2a3e';
+            const x1p = x1 * w, y1p = y1 * h, x2p = x2 * w, y2p = y2 * h;
+
+            ctx.beginPath();
+            if (name === 'northAmerica') {
+                ctx.moveTo(x1p + (x2p - x1p) * 0.2, y1p);
+                ctx.bezierCurveTo(x1p + (x2p - x1p) * 0.3, y1p + (y2p - y1p) * 0.2,
+                    x2p - (x2p - x1p) * 0.2, y1p + (y2p - y1p) * 0.2,
+                    x2p - (x2p - x1p) * 0.1, y1p + (y2p - y1p) * 0.4);
+                ctx.bezierCurveTo(x2p, y1p + (y2p - y1p) * 0.6,
+                    x2p - (x2p - x1p) * 0.1, y2p - (y2p - y1p) * 0.2,
+                    x1p + (x2p - x1p) * 0.3, y2p - (y2p - y1p) * 0.2);
+                ctx.bezierCurveTo(x1p + (x2p - x1p) * 0.1, y1p + (y2p - y1p) * 0.5,
+                    x1p + (x2p - x1p) * 0.15, y1p + (y2p - y1p) * 0.3,
+                    x1p + (x2p - x1p) * 0.2, y1p);
+            } else if (name === 'southAmerica') {
+                ctx.moveTo(x1p + (x2p - x1p) * 0.3, y1p);
+                ctx.bezierCurveTo(x2p - (x2p - x1p) * 0.1, y1p + (y2p - y1p) * 0.15,
+                    x2p - (x2p - x1p) * 0.05, y1p + (y2p - y1p) * 0.4,
+                    x2p - (x2p - x1p) * 0.15, y1p + (y2p - y1p) * 0.6);
+                ctx.bezierCurveTo(x2p - (x2p - x1p) * 0.2, y2p,
+                    x1p + (x2p - x1p) * 0.2, y2p,
+                    x1p + (x2p - x1p) * 0.15, y1p + (y2p - y1p) * 0.6);
+                ctx.bezierCurveTo(x1p + (x2p - x1p) * 0.1, y1p + (y2p - y1p) * 0.4,
+                    x1p + (x2p - x1p) * 0.15, y1p + (y2p - y1p) * 0.2,
+                    x1p + (x2p - x1p) * 0.3, y1p);
+            } else if (name === 'europe') {
+                ctx.moveTo(x1p + (x2p - x1p) * 0.2, y1p);
+                ctx.lineTo(x2p - (x2p - x1p) * 0.2, y1p + (y2p - y1p) * 0.1);
+                ctx.lineTo(x2p - (x2p - x1p) * 0.1, y1p + (y2p - y1p) * 0.3);
+                ctx.lineTo(x2p - (x2p - x1p) * 0.2, y2p - (y2p - y1p) * 0.1);
+                ctx.lineTo(x1p + (x2p - x1p) * 0.3, y2p);
+                ctx.lineTo(x1p, y1p + (y2p - y1p) * 0.6);
+                ctx.lineTo(x1p + (x2p - x1p) * 0.1, y1p + (y2p - y1p) * 0.2);
+            } else if (name === 'africa') {
+                ctx.moveTo(x1p + (x2p - x1p) * 0.3, y1p);
+                ctx.lineTo(x2p - (x2p - x1p) * 0.1, y1p + (y2p - y1p) * 0.1);
+                ctx.lineTo(x2p, y1p + (y2p - y1p) * 0.3);
+                ctx.lineTo(x2p - (x2p - x1p) * 0.15, y2p - (y2p - y1p) * 0.1);
+                ctx.lineTo(x1p + (x2p - x1p) * 0.2, y2p);
+                ctx.lineTo(x1p, y1p + (y2p - y1p) * 0.7);
+            } else if (name === 'asia') {
+                ctx.moveTo(x1p, y1p + (y2p - y1p) * 0.2);
+                ctx.lineTo(x1p + (x2p - x1p) * 0.3, y1p);
+                ctx.lineTo(x2p - (x2p - x1p) * 0.1, y1p + (y2p - y1p) * 0.1);
+                ctx.lineTo(x2p, y1p + (y2p - y1p) * 0.4);
+                ctx.lineTo(x2p - (x2p - x1p) * 0.15, y2p - (y2p - y1p) * 0.05);
+                ctx.lineTo(x1p + (x2p - x1p) * 0.2, y2p);
+                ctx.lineTo(x1p, y2p - (y2p - y1p) * 0.3);
+            } else if (name === 'australia') {
+                ctx.moveTo(x1p + (x2p - x1p) * 0.3, y1p);
+                ctx.lineTo(x2p - (x2p - x1p) * 0.2, y1p + (y2p - y1p) * 0.2);
+                ctx.lineTo(x2p - (x2p - x1p) * 0.1, y2p - (y2p - y1p) * 0.1);
+                ctx.lineTo(x1p + (x2p - x1p) * 0.2, y2p);
+                ctx.lineTo(x1p, y1p + (y2p - y1p) * 0.6);
+            }
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function drawTradeFlows() {
+            const w = canvas.width;
+            const h = canvas.height;
+
+            const filteredFlows = TRADE_FLOWS.filter(flow => {
+                const [from, to, commodity] = flow;
+                if (!state.selectedCommodities.has(commodity)) return false;
+                if (state.selectedRegion && from !== state.selectedRegion && to !== state.selectedRegion) {
+                    return false;
+                }
+                if (!state.showEUTrade && ((from === 'EU' && to === 'EU') || (from === 'EU' && REGIONS[to]?.eu) || (to === 'EU' && REGIONS[from]?.eu))) {
+                    return false;
+                }
+                return true;
+            });
+
+            filteredFlows.forEach((flow, index) => {
+                const [from, to, commodity, volumes] = flow;
+                const volume = volumes[state.currentYear];
+                const fromRegion = REGIONS[from];
+                const toRegion = REGIONS[to];
+
+                const x1 = fromRegion.x * w;
+                const y1 = fromRegion.y * h;
+                const x2 = toRegion.x * w;
+                const y2 = toRegion.y * h;
+
+                // Arrow thickness based on volume
+                const thickness = Math.max(1, Math.min(8, volume / 50));
+                const color = COMMODITIES[commodity].color;
+
+                // Draw bezier curve
+                const cpx = (x1 + x2) / 2 + (Math.sin(index) * 50);
+                const cpy = (y1 + y2) / 2 - 50;
+
+                ctx.strokeStyle = color + 'cc';
+                ctx.lineWidth = thickness;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.quadraticCurveTo(cpx, cpy, x2, y2);
+                ctx.stroke();
+
+                // Draw animated dots along the curve
+                const progress = (state.animationTime * state.animationSpeed) % 1;
+                const steps = 8;
+                for (let i = 0; i < steps; i++) {
+                    const t = (progress + i / steps) % 1;
+                    const px = Math.pow(1 - t, 2) * x1 + 2 * (1 - t) * t * cpx + Math.pow(t, 2) * x2;
+                    const py = Math.pow(1 - t, 2) * y1 + 2 * (1 - t) * t * cpy + Math.pow(t, 2) * y2;
+
+                    ctx.fillStyle = color + (100 + Math.floor((1 - i / steps) * 155)).toString(16).padStart(2, '0');
+                    ctx.beginPath();
+                    ctx.arc(px, py, Math.max(2, thickness / 2), 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Draw arrowhead
+                const t = 0.95;
+                const px = Math.pow(1 - t, 2) * x1 + 2 * (1 - t) * t * cpx + Math.pow(t, 2) * x2;
+                const py = Math.pow(1 - t, 2) * y1 + 2 * (1 - t) * t * cpy + Math.pow(t, 2) * y2;
+                const angle = Math.atan2(py - y1, px - x1);
+
+                ctx.fillStyle = color;
+                ctx.save();
+                ctx.translate(px, py);
+                ctx.rotate(angle);
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(-8, -4);
+                ctx.lineTo(-6, 0);
+                ctx.lineTo(-8, 4);
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            });
+        }
+
+        function drawAustria() {
+            if (!state.showAustria) return;
+
+            const w = canvas.width;
+            const h = canvas.height;
+
+            // Austria position (roughly in EU area)
+            const ax = 0.42 * w;
+            const ay = 0.32 * h;
+
+            ctx.fillStyle = '#ffcc00' + '40';
+            ctx.beginPath();
+            ctx.arc(ax, ay, 15, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = '#ffcc00';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#ffcc00';
+            ctx.font = 'bold 11px Inter';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('AT', ax, ay);
+
+            // Draw flows to Austria's main partners
+            const partners = ['EU', 'Germany', 'USA', 'Italy', 'Switzerland'];
+            partners.forEach((partner, idx) => {
+                if (partner === 'Germany' || partner === 'Italy' || partner === 'Switzerland') {
+                    // Simplified representation - connect to nearby regions
+                    const targetRegion = partner === 'Germany' || partner === 'Switzerland' ? REGIONS.EU : REGIONS.EU;
+                    if (!targetRegion) return;
+
+                    const tx = targetRegion.x * w;
+                    const ty = targetRegion.y * h;
+
+                    ctx.strokeStyle = '#ffcc00' + '66';
+                    ctx.lineWidth = 1.5;
+                    ctx.setLineDash([4, 4]);
+                    ctx.beginPath();
+                    ctx.moveTo(ax, ay);
+                    ctx.lineTo(tx, ty);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+            });
+        }
+
+        function render() {
+            drawWorldMap();
+            drawTradeFlows();
+            drawAustria();
+
+            state.animationTime += 0.016; // ~60fps
+            requestAnimationFrame(render);
+        }
+
+        // Event handlers
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            for (const [key, region] of Object.entries(REGIONS)) {
+                const rx = region.x * canvas.width;
+                const ry = region.y * canvas.height;
+                const distance = Math.sqrt((x - rx) ** 2 + (y - ry) ** 2);
+
+                if (distance < region.radius) {
+                    if (state.selectedRegion === key) {
+                        state.selectedRegion = null;
+                    } else {
+                        state.selectedRegion = key;
+                    }
+                    updateRegionInfo();
+                    updateRegionButtons();
+                    return;
+                }
+            }
+        });
+
+        document.querySelectorAll('.toggle-button[data-commodity]').forEach(button => {
+            button.addEventListener('click', () => {
+                const commodity = button.dataset.commodity;
+                if (state.selectedCommodities.has(commodity)) {
+                    state.selectedCommodities.delete(commodity);
+                    button.classList.remove('active');
+                } else {
+                    state.selectedCommodities.add(commodity);
+                    button.classList.add('active');
+                }
+            });
+        });
+
+        document.querySelectorAll('.timeline-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.timeline-button').forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+                state.currentYear = parseInt(button.dataset.year);
+                updateRegionInfo();
+            });
+        });
+
+        document.getElementById('speedSlider').addEventListener('input', (e) => {
+            state.animationSpeed = parseFloat(e.target.value);
+        });
+
+        document.getElementById('euTradeToggle').addEventListener('click', function() {
+            state.showEUTrade = !state.showEUTrade;
+            this.classList.toggle('active');
+        });
+
+        document.getElementById('austriaToggle').addEventListener('click', function() {
+            state.showAustria = !state.showAustria;
+            this.classList.toggle('active');
+        });
+
+        function updateRegionButtons() {
+            const container = document.getElementById('regionButtons');
+            container.innerHTML = '';
+
+            for (const [key, region] of Object.entries(REGIONS)) {
+                const button = document.createElement('button');
+                button.className = 'region-button';
+                if (state.selectedRegion === key) button.classList.add('active');
+                button.textContent = region.name;
+                button.addEventListener('click', () => {
+                    if (state.selectedRegion === key) {
+                        state.selectedRegion = null;
+                    } else {
+                        state.selectedRegion = key;
+                    }
+                    updateRegionInfo();
+                    updateRegionButtons();
+                });
+                container.appendChild(button);
+            }
+        }
+
+        function updateRegionInfo() {
+            const panel = document.getElementById('infoPanel');
+            if (!state.selectedRegion) {
+                panel.className = 'info-panel empty';
+                panel.innerHTML = 'Klicke auf eine Region auf der Karte';
+                return;
+            }
+
+            const region = REGIONS[state.selectedRegion];
+            const flows = TRADE_FLOWS.filter(f => f[0] === state.selectedRegion || f[1] === state.selectedRegion);
+
+            let totalExports = 0, totalImports = 0;
+            flows.forEach(flow => {
+                const volume = flow[3][state.currentYear];
+                if (flow[0] === state.selectedRegion) totalExports += volume;
+                if (flow[1] === state.selectedRegion) totalImports += volume;
+            });
+
+            const balance = totalExports - totalImports;
+
+            panel.className = 'info-panel';
+            panel.innerHTML = `
+                <div style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(100, 200, 255, 0.2);">
+                    <div style="font-weight: 700; color: ${region.color}; margin-bottom: 4px;">${region.name}</div>
+                    <div style="font-size: 11px; color: #80809a;">Jahr: ${state.currentYear}</div>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Exporte:</span>
+                    <span class="info-value">${totalExports.toFixed(0)} Mrd. USD</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Importe:</span>
+                    <span class="info-value">${totalImports.toFixed(0)} Mrd. USD</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Bilanz:</span>
+                    <span class="info-value" style="color: ${balance >= 0 ? '#00ff88' : '#ff6688'}">${balance >= 0 ? '+' : ''}${balance.toFixed(0)} Mrd. USD</span>
+                </div>
+            `;
+        }
+
+        // Initialize
+        updateRegionButtons();
+        updateRegionInfo();
+        render();
+    </script>
+</body>
+</html>
