@@ -19,17 +19,18 @@
             background: linear-gradient(135deg, #050510 0%, #0a0a2e 50%, #0d1040 100%);
             color: #e0e0e0;
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
             overflow-x: hidden;
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 100%;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 20px;
-            height: calc(100vh - 40px);
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            height: calc(100vh - 24px);
+            padding: 12px;
         }
 
         @media (max-width: 900px) {
@@ -45,7 +46,7 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            padding: 20px;
+            padding: 12px;
             overflow-y: auto;
         }
 
@@ -54,6 +55,8 @@
             background: rgba(255, 255, 255, 0.02);
             border-radius: 12px;
             overflow: hidden;
+            flex: 1;
+            min-height: 0;
         }
 
         canvas {
@@ -66,51 +69,51 @@
         .controls-panel {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
         }
 
         .controls-panel h1 {
-            font-size: 24px;
+            font-size: 1.3em;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .controls-panel .subtitle {
-            font-size: 12px;
+            font-size: 0.75em;
             font-weight: 300;
             color: #a0a0c0;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
         .control-section {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .control-section h2 {
-            font-size: 13px;
+            font-size: 0.75em;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: #b0b0d0;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .button-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .toggle-button, .region-button {
-            padding: 10px 14px;
+            padding: 6px 10px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             background: rgba(255, 255, 255, 0.05);
             color: #e0e0e0;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 0.75em;
             font-weight: 500;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
@@ -128,8 +131,8 @@
         }
 
         .region-button {
-            padding: 8px 12px;
-            font-size: 11px;
+            padding: 6px 8px;
+            font-size: 0.7em;
             text-align: left;
         }
 
@@ -141,11 +144,11 @@
         .slider-container {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .slider-label {
-            font-size: 12px;
+            font-size: 0.75em;
             color: #a0a0c0;
         }
 
@@ -183,17 +186,17 @@
         .timeline-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
+            gap: 6px;
         }
 
         .timeline-button {
-            padding: 10px;
+            padding: 6px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             background: rgba(255, 255, 255, 0.05);
             color: #e0e0e0;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 0.7em;
             font-weight: 500;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
@@ -213,21 +216,21 @@
             background: rgba(100, 200, 255, 0.05);
             border: 1px solid rgba(100, 200, 255, 0.2);
             border-radius: 8px;
-            padding: 12px;
-            font-size: 12px;
-            line-height: 1.6;
+            padding: 8px;
+            font-size: 0.75em;
+            line-height: 1.5;
         }
 
         .info-panel.empty {
             color: #80809a;
             text-align: center;
-            padding: 20px 12px;
+            padding: 12px 8px;
         }
 
         .info-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .info-label {
@@ -243,25 +246,25 @@
         .legend {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 8px;
-            font-size: 11px;
+            gap: 6px;
+            font-size: 0.7em;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .legend-color {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 2px;
             flex-shrink: 0;
         }
 
         .scroll-helper {
-            max-height: 500px;
+            max-height: none;
             overflow-y: auto;
         }
 
