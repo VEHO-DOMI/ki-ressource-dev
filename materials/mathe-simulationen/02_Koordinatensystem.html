@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koordinatensystem & Funktionen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a103d 50%, #2d1060 100%);
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 8px 12px;
+            gap: 6px;
+        }
+
+        .header {
+            max-height: 36px;
+            display: flex;
+            align-items: center;
+            padding: 0 6px;
+            font-size: 0.8em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #00e5ff;
+            text-transform: uppercase;
+        }
+
+        .canvas-wrapper {
+            flex: 1;
+            min-height: 0;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        canvas {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px 12px;
+            display: grid;
+            grid-template-columns: auto 1fr auto 1fr auto;
+            gap: 8px;
+            align-items: center;
+            font-size: 0.65em;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .control-label {
+            font-weight: 600;
+            color: #00e5ff;
+            white-space: nowrap;
+            min-width: fit-content;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        input[type="range"] {
+            width: 80px;
+            height: 4px;
+            border-radius: 2px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(0, 229, 255, 0.3));
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00e5ff;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+            transition: box-shadow 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.9);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00e5ff;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+            transition: box-shadow 0.2s;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.9);
+        }
+
+        .value-display {
+            color: #7c4dff;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        button {
+            background: rgba(0, 229, 255, 0.15);
+            border: 1px solid rgba(0, 229, 255, 0.4);
+            color: #00e5ff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.65em;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            background: rgba(0, 229, 255, 0.25);
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+            border-color: rgba(0, 229, 255, 0.6);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #00e5ff;
+        }
+
+        .checkbox-label {
+            color: #00e5ff;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            Koordinatensystem & Funktionen
+        </div>
+
+        <div class="canvas-wrapper">
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label class="control-label">k (Steigung)</label>
+                <div class="slider-container">
+                    <input type="range" id="slopeSlider" min="-5" max="5" step="0.1" value="1">
+                    <span class="value-display" id="slopeValue">1,0</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">d (Achsenabschnitt)</label>
+                <div class="slider-container">
+                    <input type="range" id="interceptSlider" min="-5" max="5" step="0.1" value="0">
+                    <span class="value-display" id="interceptValue">0,0</span>
+                </div>
+            </div>
+
+            <button id="clearBtn">Punkte löschen</button>
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="gridCheckbox" checked>
+                <label class="checkbox-label" for="gridCheckbox">Gitter anzeigen</label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const slopeSlider = document.getElementById('slopeSlider');
+        const interceptSlider = document.getElementById('interceptSlider');
+        const slopeValue = document.getElementById('slopeValue');
+        const interceptValue = document.getElementById('interceptValue');
+        const clearBtn = document.getElementById('clearBtn');
+        const gridCheckbox = document.getElementById('gridCheckbox');
+
+        // State
+        let points = [];
+        let k = 1;
+        let d = 0;
+        let showGrid = true;
+
+        // Canvas setup with devicePixelRatio
+        function setupCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const wrapper = canvas.parentElement;
+            const rect = wrapper.getBoundingClientRect();
+
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+        }
+
+        // Format number with Austrian notation (comma as decimal separator)
+        function formatNumber(num) {
+            return num.toFixed(1).replace('.', ',');
+        }
+
+        // Draw coordinate system
+        function drawCoordinateSystem() {
+            const padding = 60;
+            const width = canvas.width / (window.devicePixelRatio || 1);
+            const height = canvas.height / (window.devicePixelRatio || 1);
+
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = (width - 2 * padding) / 20; // scale for -10 to 10
+
+            // Clear canvas
+            ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw grid
+            if (showGrid) {
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+                ctx.lineWidth = 1;
+                for (let i = -10; i <= 10; i++) {
+                    // Vertical lines
+                    const x = centerX + i * scale;
+                    ctx.beginPath();
+                    ctx.moveTo(x, padding);
+                    ctx.lineTo(x, height - padding);
+                    ctx.stroke();
+
+                    // Horizontal lines
+                    const y = centerY - i * scale;
+                    ctx.beginPath();
+                    ctx.moveTo(padding, y);
+                    ctx.lineTo(width - padding, y);
+                    ctx.stroke();
+                }
+            }
+
+            // Draw axes
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2;
+
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(padding, centerY);
+            ctx.lineTo(width - padding, centerY);
+            ctx.stroke();
+
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, padding);
+            ctx.lineTo(centerX, height - padding);
+            ctx.stroke();
+
+            // Draw axis arrows
+            const arrowSize = 8;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+
+            // X-axis arrow (right)
+            ctx.beginPath();
+            ctx.moveTo(width - padding, centerY);
+            ctx.lineTo(width - padding - arrowSize, centerY - arrowSize / 2);
+            ctx.lineTo(width - padding - arrowSize, centerY + arrowSize / 2);
+            ctx.closePath();
+            ctx.fill();
+
+            // Y-axis arrow (up)
+            ctx.beginPath();
+            ctx.moveTo(centerX, padding);
+            ctx.lineTo(centerX - arrowSize / 2, padding + arrowSize);
+            ctx.lineTo(centerX + arrowSize / 2, padding + arrowSize);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw tick marks and labels
+            ctx.font = '10px Inter';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+
+            for (let i = -10; i <= 10; i++) {
+                if (i === 0) continue;
+
+                const x = centerX + i * scale;
+                const y = centerY - i * scale;
+
+                // X-axis ticks
+                ctx.beginPath();
+                ctx.moveTo(x, centerY - 3);
+                ctx.lineTo(x, centerY + 3);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // X-axis label
+                ctx.fillText(i.toString(), x, centerY + 8);
+
+                // Y-axis ticks
+                ctx.beginPath();
+                ctx.moveTo(centerX - 3, y);
+                ctx.lineTo(centerX + 3, y);
+                ctx.stroke();
+
+                // Y-axis label
+                ctx.textAlign = 'right';
+                ctx.fillText(i.toString(), centerX - 8, y - 5);
+                ctx.textAlign = 'center';
+            }
+
+            // Axis labels
+            ctx.font = 'bold 11px Inter';
+            ctx.fillStyle = '#00e5ff';
+            ctx.textAlign = 'left';
+            ctx.fillText('x', width - padding + 8, centerY + 10);
+            ctx.textAlign = 'center';
+            ctx.fillText('y', centerX + 10, padding - 8);
+
+            return { centerX, centerY, scale, padding, width, height };
+        }
+
+        // Draw linear function
+        function drawFunction(centerX, centerY, scale, padding, width, height) {
+            // Calculate line endpoints
+            const xMin = -10;
+            const xMax = 10;
+
+            const y1 = d + k * xMin;
+            const y2 = d + k * xMax;
+
+            const canvasX1 = centerX + xMin * scale;
+            const canvasY1 = centerY - y1 * scale;
+            const canvasX2 = centerX + xMax * scale;
+            const canvasY2 = centerY - y2 * scale;
+
+            // Clip line to canvas bounds
+            let x1 = canvasX1, y1Canvas = canvasY1, x2 = canvasX2, y2Canvas = canvasY2;
+
+            // Draw line with glow
+            ctx.shadowColor = 'rgba(0, 229, 255, 0.6)';
+            ctx.shadowBlur = 8;
+            ctx.strokeStyle = '#00e5ff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1Canvas);
+            ctx.lineTo(x2, y2Canvas);
+            ctx.stroke();
+            ctx.shadowColor = 'transparent';
+
+            // Draw slope triangle (Steigungsdreieck)
+            const triangleX1 = 0;
+            const triangleY1 = d;
+            const triangleX2 = 1;
+            const triangleY2 = k + d;
+
+            const canvasTriangleX1 = centerX + triangleX1 * scale;
+            const canvasTriangleY1 = centerY - triangleY1 * scale;
+            const canvasTriangleX2 = centerX + triangleX2 * scale;
+            const canvasTriangleY2 = centerY - triangleY2 * scale;
+
+            // Draw slope triangle
+            ctx.strokeStyle = 'rgba(124, 77, 255, 0.4)';
+            ctx.fillStyle = 'rgba(124, 77, 255, 0.1)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(canvasTriangleX1, canvasTriangleY1);
+            ctx.lineTo(canvasTriangleX2, canvasTriangleY1);
+            ctx.lineTo(canvasTriangleX2, canvasTriangleY2);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Draw slope triangle labels
+            ctx.font = '9px Inter';
+            ctx.fillStyle = 'rgba(124, 77, 255, 0.8)';
+            ctx.textAlign = 'center';
+            ctx.fillText('Δx=1', (canvasTriangleX1 + canvasTriangleX2) / 2, canvasTriangleY1 + 10);
+
+            ctx.textAlign = 'right';
+            ctx.fillText('Δy=' + formatNumber(k), canvasTriangleX2 + 8, (canvasTriangleY1 + canvasTriangleY2) / 2);
+        }
+
+        // Draw points
+        function drawPoints() {
+            ctx.fillStyle = '#00e5ff';
+            ctx.font = '10px Inter';
+
+            points.forEach(point => {
+                // Draw circle
+                ctx.shadowColor = 'rgba(0, 229, 255, 0.6)';
+                ctx.shadowBlur = 6;
+                ctx.beginPath();
+                ctx.arc(point.canvasX, point.canvasY, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowColor = 'transparent';
+
+                // Draw label
+                ctx.fillStyle = '#00e5ff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText('(' + point.x + '|' + point.y + ')', point.canvasX, point.canvasY - 10);
+            });
+        }
+
+        // Draw equation
+        function drawEquation(width, height) {
+            ctx.font = 'bold 12px Inter';
+            ctx.fillStyle = '#00e5ff';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+
+            const equation = 'y = ' + formatNumber(k) + '·x + ' + formatNumber(d);
+            ctx.fillText(equation, 20, 20);
+        }
+
+        // Main render function
+        function render() {
+            const info = drawCoordinateSystem();
+            drawFunction(info.centerX, info.centerY, info.scale, info.padding, info.width, info.height);
+            drawPoints();
+            drawEquation(info.width, info.height);
+        }
+
+        // Handle canvas click
+        function onCanvasClick(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const dpr = window.devicePixelRatio || 1;
+            const clickX = x * dpr;
+            const clickY = y * dpr;
+
+            // Get coordinate system info
+            const width = canvas.width / dpr;
+            const height = canvas.height / dpr;
+            const padding = 60;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = (width - 2 * padding) / 20;
+
+            // Convert canvas coordinates to graph coordinates
+            const graphX = Math.round((clickX - centerX) / scale);
+            const graphY = Math.round((centerY - clickY) / scale);
+
+            // Check bounds
+            if (graphX >= -10 && graphX <= 10 && graphY >= -10 && graphY <= 10) {
+                // Check if point already exists
+                const exists = points.some(p => p.x === graphX && p.y === graphY);
+                if (!exists) {
+                    points.push({
+                        x: graphX,
+                        y: graphY,
+                        canvasX: centerX + graphX * scale,
+                        canvasY: centerY - graphY * scale
+                    });
+                    render();
+                }
+            }
+        }
+
+        // Event listeners
+        slopeSlider.addEventListener('input', (e) => {
+            k = parseFloat(e.target.value);
+            slopeValue.textContent = formatNumber(k);
+            render();
+        });
+
+        interceptSlider.addEventListener('input', (e) => {
+            d = parseFloat(e.target.value);
+            interceptValue.textContent = formatNumber(d);
+            render();
+        });
+
+        clearBtn.addEventListener('click', () => {
+            points = [];
+            render();
+        });
+
+        gridCheckbox.addEventListener('change', (e) => {
+            showGrid = e.target.checked;
+            render();
+        });
+
+        canvas.addEventListener('click', onCanvasClick);
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            setupCanvas();
+            render();
+        });
+
+        // Initial setup
+        setTimeout(() => {
+            setupCanvas();
+            render();
+        }, 50);
+    </script>
+</body>
+</html>

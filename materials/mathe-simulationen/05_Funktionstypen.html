@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funktionstypen im Vergleich</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a103d 50%, #2d1060 100%);
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 8px 12px;
+            gap: 6px;
+        }
+
+        #header {
+            max-height: 36px;
+            display: flex;
+            align-items: center;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #00e5ff;
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+        }
+
+        #canvas {
+            flex: 1;
+            min-height: 0;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            display: block;
+        }
+
+        #controlsPanel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+            max-height: 140px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        #controlsGrid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            width: 100%;
+        }
+
+        .functionColumn {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .columnHeader {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .columnHeader input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+            accent-color: #00e5ff;
+        }
+
+        .columnLabel {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .label-linear { color: #00e5ff; }
+        .label-quadratic { color: #ff6b6b; }
+        .label-exponential { color: #ffd93d; }
+        .label-trigonometric { color: #6bcf7f; }
+
+        .sliderContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .sliderRow {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65em;
+        }
+
+        .sliderLabel {
+            width: 12px;
+            text-align: center;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            flex-shrink: 0;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            min-width: 0;
+            height: 4px;
+            border-radius: 2px;
+            background: linear-gradient(to right, rgba(0, 229, 255, 0.3), rgba(0, 229, 255, 0.6));
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00e5ff;
+            cursor: pointer;
+            box-shadow: 0 0 6px rgba(0, 229, 255, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00e5ff;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 6px rgba(0, 229, 255, 0.5);
+        }
+
+        .sliderValue {
+            width: 30px;
+            text-align: right;
+            font-size: 0.65em;
+            color: rgba(255, 255, 255, 0.8);
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
+        }
+
+        .equationDisplay {
+            font-size: 0.65em;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 3px 4px;
+            border-radius: 4px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            word-break: break-word;
+            line-height: 1.3;
+        }
+
+        /* Scrollbar styling */
+        #controlsPanel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #controlsPanel::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        #controlsPanel::-webkit-scrollbar-thumb {
+            background: rgba(0, 229, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        #controlsPanel::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 229, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">Funktionstypen im Vergleich</div>
+        <canvas id="canvas"></canvas>
+        <div id="controlsPanel">
+            <div id="controlsGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===================== STATE =====================
+        const state = {
+            functions: {
+                linear: {
+                    name: 'Linear',
+                    visible: true,
+                    color: '#00e5ff',
+                    params: { a: 1, b: 0 },
+                    ranges: { a: [-5, 5], b: [-5, 5] }
+                },
+                quadratic: {
+                    name: 'Quadratisch',
+                    visible: true,
+                    color: '#ff6b6b',
+                    params: { a: 1, b: 0, c: 0 },
+                    ranges: { a: [-3, 3], b: [-5, 5], c: [-5, 5] }
+                },
+                exponential: {
+                    name: 'Exponentiell',
+                    visible: false,
+                    color: '#ffd93d',
+                    params: { a: 1, b: 1.5, c: 0 },
+                    ranges: { a: [0.5, 3], b: [0.5, 3], c: [-5, 5] }
+                },
+                trigonometric: {
+                    name: 'Trigonometrisch',
+                    visible: false,
+                    color: '#6bcf7f',
+                    params: { a: 1, b: 1, c: 0, d: 0 },
+                    ranges: { a: [0.5, 5], b: [0.5, 5], c: [-3.14, 3.14], d: [-5, 5] }
+                }
+            }
+        };
+
+        // ===================== UTILITIES =====================
+        function formatNumber(num) {
+            return num.toFixed(1).replace('.', ',');
+        }
+
+        function getEquationText(funcType, funcData) {
+            const p = funcData.params;
+            switch (funcType) {
+                case 'linear':
+                    return `f(x) = ${formatNumber(p.a)}·x ${p.b >= 0 ? '+' : ''} ${formatNumber(p.b)}`;
+                case 'quadratic':
+                    let eq = `f(x) = ${formatNumber(p.a)}·x²`;
+                    eq += p.b >= 0 ? ' + ' : ' ';
+                    eq += `${formatNumber(p.b)}·x`;
+                    eq += p.c >= 0 ? ' + ' : ' ';
+                    eq += formatNumber(p.c);
+                    return eq;
+                case 'exponential':
+                    return `f(x) = ${formatNumber(p.a)}·${formatNumber(p.b)}ˣ ${p.c >= 0 ? '+' : ''} ${formatNumber(p.c)}`;
+                case 'trigonometric':
+                    return `f(x) = ${formatNumber(p.a)}·sin(${formatNumber(p.b)}·x ${p.c >= 0 ? '+' : ''} ${formatNumber(p.c)}) ${p.d >= 0 ? '+' : ''} ${formatNumber(p.d)}`;
+                default:
+                    return '';
+            }
+        }
+
+        // ===================== CANVAS SETUP =====================
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+        }
+
+        window.addEventListener('resize', () => {
+            setTimeout(resizeCanvas, 50);
+        });
+
+        resizeCanvas();
+
+        // ===================== CANVAS RENDERING =====================
+        const graphPadding = {
+            left: 50,
+            right: 30,
+            top: 30,
+            bottom: 40
+        };
+
+        function getCanvasWidth() {
+            return canvas.width / (window.devicePixelRatio || 1);
+        }
+
+        function getCanvasHeight() {
+            return canvas.height / (window.devicePixelRatio || 1);
+        }
+
+        function getGraphWidth() {
+            return getCanvasWidth() - graphPadding.left - graphPadding.right;
+        }
+
+        function getGraphHeight() {
+            return getCanvasHeight() - graphPadding.top - graphPadding.bottom;
+        }
+
+        function dataToScreen(x, y) {
+            const graphX = graphPadding.left + ((x + 10) / 20) * getGraphWidth();
+            const graphY = graphPadding.top + (1 - (y + 10) / 20) * getGraphHeight();
+            return { x: graphX, y: graphY };
+        }
+
+        function screenToData(screenX, screenY) {
+            const x = ((screenX - graphPadding.left) / getGraphWidth()) * 20 - 10;
+            const y = (1 - (screenY - graphPadding.top) / getGraphHeight()) * 20 - 10;
+            return { x, y };
+        }
+
+        function drawGrid() {
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+            ctx.lineWidth = 1;
+
+            for (let i = -10; i <= 10; i++) {
+                if (i === 0) continue;
+                const pos = dataToScreen(i, 0);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, graphPadding.top);
+                ctx.lineTo(pos.x, getCanvasHeight() - graphPadding.bottom);
+                ctx.stroke();
+
+                const posY = dataToScreen(0, i);
+                ctx.beginPath();
+                ctx.moveTo(graphPadding.left, posY.y);
+                ctx.lineTo(getCanvasWidth() - graphPadding.right, posY.y);
+                ctx.stroke();
+            }
+        }
+
+        function drawAxes() {
+            const origin = dataToScreen(0, 0);
+
+            // Axes
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+            ctx.lineWidth = 2;
+
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(graphPadding.left, origin.y);
+            ctx.lineTo(getCanvasWidth() - graphPadding.right, origin.y);
+            ctx.stroke();
+
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(origin.x, graphPadding.top);
+            ctx.lineTo(origin.x, getCanvasHeight() - graphPadding.bottom);
+            ctx.stroke();
+
+            // Arrows for X-axis
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            const arrowSize = 6;
+            ctx.beginPath();
+            ctx.moveTo(getCanvasWidth() - graphPadding.right, origin.y);
+            ctx.lineTo(getCanvasWidth() - graphPadding.right - arrowSize, origin.y - arrowSize / 2);
+            ctx.lineTo(getCanvasWidth() - graphPadding.right - arrowSize, origin.y + arrowSize / 2);
+            ctx.closePath();
+            ctx.fill();
+
+            // Arrows for Y-axis
+            ctx.beginPath();
+            ctx.moveTo(origin.x, graphPadding.top);
+            ctx.lineTo(origin.x - arrowSize / 2, graphPadding.top + arrowSize);
+            ctx.lineTo(origin.x + arrowSize / 2, graphPadding.top + arrowSize);
+            ctx.closePath();
+            ctx.fill();
+
+            // Ticks and labels
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.font = '10px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+
+            for (let i = -10; i <= 10; i += 2) {
+                const pos = dataToScreen(i, 0);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, origin.y - 4);
+                ctx.lineTo(pos.x, origin.y + 4);
+                ctx.stroke();
+                ctx.fillText(i.toString(), pos.x, origin.y + 6);
+            }
+
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for (let i = -10; i <= 10; i += 2) {
+                const pos = dataToScreen(0, i);
+                ctx.beginPath();
+                ctx.moveTo(origin.x - 4, pos.y);
+                ctx.lineTo(origin.x + 4, pos.y);
+                ctx.stroke();
+                ctx.fillText(i.toString(), origin.x - 8, pos.y);
+            }
+        }
+
+        function evaluateFunction(funcType, x) {
+            const p = state.functions[funcType].params;
+            switch (funcType) {
+                case 'linear':
+                    return p.a * x + p.b;
+                case 'quadratic':
+                    return p.a * x * x + p.b * x + p.c;
+                case 'exponential':
+                    return p.a * Math.pow(p.b, x) + p.c;
+                case 'trigonometric':
+                    return p.a * Math.sin(p.b * x + p.c) + p.d;
+                default:
+                    return 0;
+            }
+        }
+
+        function drawFunction(funcType) {
+            const funcData = state.functions[funcType];
+            if (!funcData.visible) return;
+
+            ctx.strokeStyle = funcData.color;
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Draw shadow/glow
+            ctx.shadowColor = funcData.color;
+            ctx.shadowBlur = 8;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
+            let isFirst = true;
+            const step = 0.5; // Screen pixels
+
+            for (let screenX = graphPadding.left; screenX <= getCanvasWidth() - graphPadding.right; screenX += step) {
+                const dataX = ((screenX - graphPadding.left) / getGraphWidth()) * 20 - 10;
+                const dataY = evaluateFunction(funcType, dataX);
+
+                // Clamp to visible range
+                if (dataY < -10 || dataY > 10) {
+                    isFirst = true;
+                    continue;
+                }
+
+                const screenY = dataToScreen(dataX, dataY).y;
+
+                if (isFirst) {
+                    ctx.beginPath();
+                    ctx.moveTo(screenX, screenY);
+                    isFirst = false;
+                } else {
+                    ctx.lineTo(screenX, screenY);
+                }
+            }
+
+            ctx.stroke();
+            ctx.shadowColor = 'transparent';
+        }
+
+        function drawLegend() {
+            const activeFunctions = Object.entries(state.functions)
+                .filter(([_, data]) => data.visible)
+                .map(([type, data]) => ({
+                    type,
+                    name: data.name,
+                    color: data.color,
+                    equation: getEquationText(type, data)
+                }));
+
+            if (activeFunctions.length === 0) return;
+
+            const legendX = getCanvasWidth() - graphPadding.right - 200;
+            const legendY = graphPadding.top + 15;
+            const lineHeight = 18;
+            const dotSize = 6;
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+            ctx.fillRect(legendX - 8, legendY - 8, 200, activeFunctions.length * lineHeight + 6);
+
+            ctx.font = '10px Inter, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+
+            activeFunctions.forEach((func, i) => {
+                const y = legendY + i * lineHeight;
+
+                // Color dot
+                ctx.fillStyle = func.color;
+                ctx.beginPath();
+                ctx.arc(legendX, y, dotSize, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Label
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.fillText(func.name, legendX + 16, y);
+            });
+
+            // Equations below legend
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+            ctx.fillRect(legendX - 8, legendY + activeFunctions.length * lineHeight + 4, 200, activeFunctions.length * (lineHeight - 2) + 6);
+
+            ctx.font = '9px Courier New, monospace';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            activeFunctions.forEach((func, i) => {
+                const y = legendY + activeFunctions.length * lineHeight + 10 + i * (lineHeight - 2);
+                ctx.fillText(func.equation, legendX, y);
+            });
+        }
+
+        function render() {
+            ctx.fillStyle = 'rgba(20, 10, 40, 0.3)';
+            ctx.fillRect(0, 0, getCanvasWidth(), getCanvasHeight());
+
+            ctx.save();
+
+            // Clip to graph area
+            ctx.beginPath();
+            ctx.rect(graphPadding.left, graphPadding.top, getGraphWidth(), getGraphHeight());
+            ctx.clip();
+
+            drawGrid();
+            drawFunction('linear');
+            drawFunction('quadratic');
+            drawFunction('exponential');
+            drawFunction('trigonometric');
+
+            ctx.restore();
+
+            drawAxes();
+            drawLegend();
+        }
+
+        // ===================== CONTROLS SETUP =====================
+        const controlsGrid = document.getElementById('controlsGrid');
+
+        function createFunctionControls(funcType, funcData) {
+            const column = document.createElement('div');
+            column.className = 'functionColumn';
+
+            const paramKeys = Object.keys(funcData.params);
+            const labelColor = {
+                linear: 'label-linear',
+                quadratic: 'label-quadratic',
+                exponential: 'label-exponential',
+                trigonometric: 'label-trigonometric'
+            }[funcType];
+
+            // Header
+            const header = document.createElement('div');
+            header.className = 'columnHeader';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = funcData.visible;
+            checkbox.addEventListener('change', () => {
+                funcData.visible = checkbox.checked;
+                render();
+            });
+
+            const label = document.createElement('span');
+            label.className = `columnLabel ${labelColor}`;
+            label.textContent = funcData.name;
+
+            header.appendChild(checkbox);
+            header.appendChild(label);
+            column.appendChild(header);
+
+            // Sliders
+            const sliderContainer = document.createElement('div');
+            sliderContainer.className = 'sliderContainer';
+
+            paramKeys.forEach(param => {
+                const [min, max] = funcData.ranges[param];
+                const currentValue = funcData.params[param];
+
+                const row = document.createElement('div');
+                row.className = 'sliderRow';
+
+                const paramLabel = document.createElement('div');
+                paramLabel.className = 'sliderLabel';
+                paramLabel.textContent = param;
+
+                const slider = document.createElement('input');
+                slider.type = 'range';
+                slider.min = min;
+                slider.max = max;
+                slider.step = 0.1;
+                slider.value = currentValue;
+
+                const valueDisplay = document.createElement('div');
+                valueDisplay.className = 'sliderValue';
+                valueDisplay.textContent = formatNumber(currentValue);
+
+                slider.addEventListener('input', () => {
+                    const newValue = parseFloat(slider.value);
+                    funcData.params[param] = newValue;
+                    valueDisplay.textContent = formatNumber(newValue);
+                    render();
+                });
+
+                row.appendChild(paramLabel);
+                row.appendChild(slider);
+                row.appendChild(valueDisplay);
+                sliderContainer.appendChild(row);
+            });
+
+            column.appendChild(sliderContainer);
+
+            // Equation display
+            const equation = document.createElement('div');
+            equation.className = 'equationDisplay';
+            equation.textContent = getEquationText(funcType, funcData);
+
+            column.appendChild(equation);
+
+            // Update equation on slider change (via delegated event)
+            sliderContainer.addEventListener('input', () => {
+                equation.textContent = getEquationText(funcType, funcData);
+            });
+
+            return column;
+        }
+
+        // Build controls
+        Object.entries(state.functions).forEach(([funcType, funcData]) => {
+            const controls = createFunctionControls(funcType, funcData);
+            controlsGrid.appendChild(controls);
+        });
+
+        // Initial render
+        render();
+
+        // Render on window resize
+        window.addEventListener('resize', () => {
+            setTimeout(() => {
+                resizeCanvas();
+                render();
+            }, 50);
+        });
+    </script>
+</body>
+</html>

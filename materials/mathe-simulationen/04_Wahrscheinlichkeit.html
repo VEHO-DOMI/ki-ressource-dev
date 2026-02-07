@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wahrscheinlichkeit & Zufall - Gesetz der großen Zahlen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a103d 50%, #2d1060 100%);
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            height: 100vh;
+            gap: 0;
+        }
+
+        .canvas-container {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+        }
+
+        .header {
+            max-height: 40px;
+            margin-bottom: 12px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 2px;
+            color: #00e5ff;
+        }
+
+        .header p {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+        }
+
+        #canvas {
+            flex: 1;
+            min-height: 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .controls-panel {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin-right: 0;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-label {
+            font-size: 0.7em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        select, button {
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            color: #ffffff;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        select:hover, button:hover {
+            background: rgba(0, 229, 255, 0.2);
+            border-color: rgba(0, 229, 255, 0.5);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button.secondary {
+            background: rgba(124, 77, 255, 0.1);
+            border-color: rgba(124, 77, 255, 0.3);
+        }
+
+        button.secondary:hover {
+            background: rgba(124, 77, 255, 0.2);
+            border-color: rgba(124, 77, 255, 0.5);
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 8px 8px;
+            font-size: 0.65em;
+        }
+
+        .toggle-btn.active {
+            background: rgba(0, 229, 255, 0.3);
+            border-color: rgba(0, 229, 255, 0.8);
+        }
+
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(0, 229, 255, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00e5ff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00e5ff;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+        }
+
+        .stats-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.75em;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #00e5ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="canvas-container">
+            <div class="header">
+                <h1>Wahrscheinlichkeit & Zufall</h1>
+                <p>Gesetz der großen Zahlen</p>
+            </div>
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-group">
+                <label class="control-label">Modus</label>
+                <select id="modeSelect">
+                    <option value="dice">Würfelwurf</option>
+                    <option value="coin">Münzwurf</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Würfe</label>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <button id="roll1">1× Würfeln</button>
+                    <button id="roll10">10× Würfeln</button>
+                    <button id="roll100">100× Würfeln</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Auto</label>
+                <div class="toggle-group">
+                    <button class="toggle-btn" id="autoToggle">Auto</button>
+                    <button class="toggle-btn secondary" id="resetBtn">Zurück</button>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <label class="control-label">Geschwindigkeit</label>
+                <input type="range" id="speedSlider" min="1" max="10" value="5">
+                <div style="font-size: 0.65em; color: rgba(255, 255, 255, 0.5); text-align: center;" id="speedValue">5×</div>
+            </div>
+
+            <div class="stats-box">
+                <div class="stat-row">
+                    <span>Würfe:</span>
+                    <span class="stat-value" id="rollCount">0</span>
+                </div>
+                <div id="statsContainer" style="margin-top: 8px;">
+                    <!-- Dynamic stats will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const modeSelect = document.getElementById('modeSelect');
+        const roll1Btn = document.getElementById('roll1');
+        const roll10Btn = document.getElementById('roll10');
+        const roll100Btn = document.getElementById('roll100');
+        const autoToggle = document.getElementById('autoToggle');
+        const resetBtn = document.getElementById('resetBtn');
+        const speedSlider = document.getElementById('speedSlider');
+        const rollCountDisplay = document.getElementById('rollCount');
+        const statsContainer = document.getElementById('statsContainer');
+        const speedValue = document.getElementById('speedValue');
+
+        // State
+        let mode = 'dice';
+        let rolls = [];
+        let isAutoRunning = false;
+        let animationFrameId = null;
+        let frameCounter = 0;
+        const framesPerRoll = 10;
+
+        // Colors palette
+        const colors = ['#00e5ff', '#ff6b6b', '#ffd93d', '#6bcf7f', '#c77dff', '#ff9f43'];
+        const diceColors = ['#00e5ff', '#ff6b6b', '#ffd93d', '#6bcf7f', '#c77dff', '#ff9f43'];
+
+        // Setup canvas
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', () => {
+            setTimeout(resizeCanvas, 50);
+        });
+
+        // Utility functions
+        function formatNumber(num) {
+            return num.toString().replace('.', ',');
+        }
+
+        function getDisplayValue(num, decimals = 2) {
+            return formatNumber(num.toFixed(decimals));
+        }
+
+        function rollDice() {
+            return Math.floor(Math.random() * 6) + 1;
+        }
+
+        function flipCoin() {
+            return Math.random() < 0.5 ? 'K' : 'Z';
+        }
+
+        // Simulate rolls
+        function performRolls(count) {
+            for (let i = 0; i < count; i++) {
+                if (mode === 'dice') {
+                    rolls.push(rollDice());
+                } else {
+                    rolls.push(flipCoin());
+                }
+            }
+            frameCounter = 0;
+        }
+
+        // Update UI
+        function updateStats() {
+            rollCountDisplay.textContent = rolls.length;
+
+            statsContainer.innerHTML = '';
+
+            if (mode === 'dice') {
+                for (let i = 1; i <= 6; i++) {
+                    const count = rolls.filter(r => r === i).length;
+                    const relative = rolls.length > 0 ? (count / rolls.length) : 0;
+                    const row = document.createElement('div');
+                    row.className = 'stat-row';
+                    row.innerHTML = `
+                        <span>${i}:</span>
+                        <span class="stat-value">${getDisplayValue(relative)}</span>
+                    `;
+                    statsContainer.appendChild(row);
+                }
+            } else {
+                const kopfCount = rolls.filter(r => r === 'K').length;
+                const zahlCount = rolls.filter(r => r === 'Z').length;
+                const kopfRel = rolls.length > 0 ? (kopfCount / rolls.length) : 0;
+                const zahlRel = rolls.length > 0 ? (zahlCount / rolls.length) : 0;
+
+                let html = `
+                    <div class="stat-row">
+                        <span>Kopf:</span>
+                        <span class="stat-value">${getDisplayValue(kopfRel)}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Zahl:</span>
+                        <span class="stat-value">${getDisplayValue(zahlRel)}</span>
+                    </div>
+                `;
+                statsContainer.innerHTML = html;
+            }
+        }
+
+        // Canvas rendering
+        function drawDie(x, y, size, value) {
+            // Draw rounded rectangle
+            const radius = size * 0.1;
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + size - radius, y);
+            ctx.quadraticCurveTo(x + size, y, x + size, y + radius);
+            ctx.lineTo(x + size, y + size - radius);
+            ctx.quadraticCurveTo(x + size, y + size, x + size - radius, y + size);
+            ctx.lineTo(x + radius, y + size);
+            ctx.quadraticCurveTo(x, y + size, x, y + size - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.fill();
+
+            // Draw dots based on value
+            ctx.fillStyle = '#1a103d';
+            const dotRadius = size * 0.08;
+            const centerX = x + size / 2;
+            const centerY = y + size / 2;
+
+            const dotPositions = {
+                1: [[centerX, centerY]],
+                2: [[x + size * 0.3, y + size * 0.3], [x + size * 0.7, y + size * 0.7]],
+                3: [[x + size * 0.3, y + size * 0.3], [centerX, centerY], [x + size * 0.7, y + size * 0.7]],
+                4: [[x + size * 0.3, y + size * 0.3], [x + size * 0.7, y + size * 0.3], [x + size * 0.3, y + size * 0.7], [x + size * 0.7, y + size * 0.7]],
+                5: [[x + size * 0.3, y + size * 0.3], [x + size * 0.7, y + size * 0.3], [centerX, centerY], [x + size * 0.3, y + size * 0.7], [x + size * 0.7, y + size * 0.7]],
+                6: [[x + size * 0.3, y + size * 0.25], [x + size * 0.3, y + size * 0.5], [x + size * 0.3, y + size * 0.75], [x + size * 0.7, y + size * 0.25], [x + size * 0.7, y + size * 0.5], [x + size * 0.7, y + size * 0.75]]
+            };
+
+            const positions = dotPositions[value] || dotPositions[1];
+            positions.forEach(pos => {
+                ctx.beginPath();
+                ctx.arc(pos[0], pos[1], dotRadius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function drawCoin(x, y, size, value) {
+            // Draw circle with gradient
+            const gradient = ctx.createLinearGradient(x, y, x + size, y + size);
+            gradient.addColorStop(0, '#c0c0c0');
+            gradient.addColorStop(0.5, '#ffffff');
+            gradient.addColorStop(1, '#a0a0a0');
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(x + size / 2, y + size / 2, size / 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = '#808080';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw text
+            ctx.fillStyle = '#1a103d';
+            ctx.font = `bold ${size * 0.4}px 'Inter', sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(value, x + size / 2, y + size / 2);
+        }
+
+        function drawBarChart(x, y, width, height, data, labels, maxValue) {
+            const barWidth = width / data.length;
+            const padding = barWidth * 0.1;
+            const chartWidth = barWidth - padding * 2;
+
+            // Y-axis
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x, y + height);
+            ctx.lineTo(x + width, y + height);
+            ctx.stroke();
+
+            // Grid lines
+            for (let i = 0; i <= 4; i++) {
+                const gridY = y + (height / 4) * i;
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.beginPath();
+                ctx.moveTo(x, gridY);
+                ctx.lineTo(x + width, gridY);
+                ctx.stroke();
+
+                // Y-axis label
+                const value = (100 * (1 - i / 4)).toFixed(0);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.font = '10px Inter';
+                ctx.textAlign = 'right';
+                ctx.fillText(value + '%', x - 6, gridY + 3);
+            }
+
+            // Draw bars
+            data.forEach((value, i) => {
+                const barX = x + i * barWidth + padding;
+                const barHeight = (value / maxValue) * height;
+                const barY = y + height - barHeight;
+
+                // Gradient fill
+                const gradient = ctx.createLinearGradient(barX, barY, barX, barY + barHeight);
+                gradient.addColorStop(0, colors[i % colors.length]);
+                gradient.addColorStop(1, colors[i % colors.length] + '80');
+
+                ctx.fillStyle = gradient;
+                ctx.fillRect(barX, barY, chartWidth, barHeight);
+
+                // Label
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.font = '10px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText(labels[i], barX + chartWidth / 2, y + height + 15);
+            });
+        }
+
+        function drawLineChart(x, y, width, height, data, maxValue, theoreticalLine) {
+            const padding = 20;
+            const chartX = x + padding;
+            const chartY = y;
+            const chartWidth = width - padding * 2;
+            const chartHeight = height - padding;
+
+            // Y-axis
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(chartX, chartY);
+            ctx.lineTo(chartX, chartY + chartHeight);
+            ctx.lineTo(chartX + chartWidth, chartY + chartHeight);
+            ctx.stroke();
+
+            // Grid lines
+            for (let i = 0; i <= 4; i++) {
+                const gridY = chartY + (chartHeight / 4) * i;
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.beginPath();
+                ctx.moveTo(chartX, gridY);
+                ctx.lineTo(chartX + chartWidth, gridY);
+                ctx.stroke();
+
+                // Y-axis label
+                const value = (1 - i / 4).toFixed(2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.font = '10px Inter';
+                ctx.textAlign = 'right';
+                ctx.fillText(getDisplayValue(parseFloat(value)), chartX - 6, gridY + 3);
+            }
+
+            // Draw theoretical probability line
+            if (theoreticalLine !== undefined) {
+                const theoreticalY = chartY + chartHeight * (1 - theoreticalLine);
+                ctx.strokeStyle = '#ffd93d';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(chartX, theoreticalY);
+                ctx.lineTo(chartX + chartWidth, theoreticalY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // Draw data line
+            if (data.length > 0) {
+                ctx.strokeStyle = '#00e5ff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+
+                data.forEach((value, i) => {
+                    const xRatio = Math.log(i + 2) / Math.log(data.length + 1);
+                    const px = chartX + xRatio * chartWidth;
+                    const py = chartY + chartHeight * (1 - value / maxValue);
+
+                    if (i === 0) {
+                        ctx.moveTo(px, py);
+                    } else {
+                        ctx.lineTo(px, py);
+                    }
+                });
+
+                ctx.stroke();
+
+                // Draw points
+                ctx.fillStyle = '#00e5ff';
+                data.forEach((value, i) => {
+                    const xRatio = Math.log(i + 2) / Math.log(data.length + 1);
+                    const px = chartX + xRatio * chartWidth;
+                    const py = chartY + chartHeight * (1 - value / maxValue);
+                    ctx.beginPath();
+                    ctx.arc(px, py, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+
+            // X-axis label
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.font = '10px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('Anzahl der Würfe (log)', chartX + chartWidth / 2, chartY + chartHeight + 20);
+        }
+
+        function render() {
+            const width = canvas.offsetWidth;
+            const height = canvas.offsetHeight;
+
+            // Clear canvas
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+            ctx.fillRect(0, 0, width, height);
+
+            const margin = 20;
+            const topSection = height * 0.5;
+            const bottomSection = height - topSection;
+
+            if (mode === 'dice') {
+                const lastValue = rolls.length > 0 ? rolls[rolls.length - 1] : 1;
+
+                // Top left: die
+                drawDie(margin, margin, 80, lastValue);
+
+                // Top right: frequency bar chart
+                const frequencies = [0, 0, 0, 0, 0, 0];
+                rolls.forEach(r => frequencies[r - 1]++);
+                const maxFreq = Math.max(...frequencies, 1);
+                drawBarChart(width * 0.5, margin, width * 0.5 - margin * 2, topSection - margin * 2, frequencies, ['1', '2', '3', '4', '5', '6'], maxFreq);
+
+                // Bottom: convergence line chart
+                const relativeFreq = [];
+                let count6 = 0;
+                for (let i = 0; i < rolls.length; i++) {
+                    if (rolls[i] === 6) count6++;
+                    relativeFreq.push(count6 / (i + 1));
+                }
+                drawLineChart(margin, topSection + margin, width - margin * 2, bottomSection - margin * 2, relativeFreq, 1, 1 / 6);
+
+            } else {
+                const lastValue = rolls.length > 0 ? rolls[rolls.length - 1] : 'K';
+
+                // Top left: coin
+                drawCoin(margin, margin, 80, lastValue);
+
+                // Top right: frequency bar chart
+                const kopfCount = rolls.filter(r => r === 'K').length;
+                const zahlCount = rolls.filter(r => r === 'Z').length;
+                drawBarChart(width * 0.5, margin, width * 0.5 - margin * 2, topSection - margin * 2, [kopfCount, zahlCount], ['Kopf', 'Zahl'], Math.max(kopfCount, zahlCount, 1));
+
+                // Bottom: convergence line chart
+                const relativeFreq = [];
+                let kopfCum = 0;
+                for (let i = 0; i < rolls.length; i++) {
+                    if (rolls[i] === 'K') kopfCum++;
+                    relativeFreq.push(kopfCum / (i + 1));
+                }
+                drawLineChart(margin, topSection + margin, width - margin * 2, bottomSection - margin * 2, relativeFreq, 1, 0.5);
+            }
+
+            updateStats();
+        }
+
+        function autoRoll() {
+            frameCounter++;
+            const speed = parseInt(speedSlider.value);
+            const rollsPerFrame = speed / 5;
+
+            if (frameCounter >= framesPerRoll / rollsPerFrame) {
+                performRolls(1);
+                frameCounter = 0;
+            }
+
+            render();
+
+            if (isAutoRunning) {
+                animationFrameId = requestAnimationFrame(autoRoll);
+            }
+        }
+
+        // Event listeners
+        modeSelect.addEventListener('change', (e) => {
+            mode = e.target.value;
+            rolls = [];
+            frameCounter = 0;
+            isAutoRunning = false;
+            autoToggle.classList.remove('active');
+            render();
+        });
+
+        roll1Btn.addEventListener('click', () => {
+            performRolls(1);
+            render();
+        });
+
+        roll10Btn.addEventListener('click', () => {
+            performRolls(10);
+            render();
+        });
+
+        roll100Btn.addEventListener('click', () => {
+            performRolls(100);
+            render();
+        });
+
+        autoToggle.addEventListener('click', () => {
+            isAutoRunning = !isAutoRunning;
+            autoToggle.classList.toggle('active');
+            if (isAutoRunning) {
+                autoRoll();
+            } else {
+                cancelAnimationFrame(animationFrameId);
+            }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            rolls = [];
+            frameCounter = 0;
+            isAutoRunning = false;
+            autoToggle.classList.remove('active');
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            render();
+        });
+
+        speedSlider.addEventListener('input', (e) => {
+            speedValue.textContent = e.target.value + '×';
+        });
+
+        // Initial render
+        render();
+    </script>
+</body>
+</html>

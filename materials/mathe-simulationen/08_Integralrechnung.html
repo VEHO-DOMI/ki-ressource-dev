@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integralrechnung – Riemannsche Summen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a103d 50%, #2d1060 100%);
+      color: #ffffff;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 8px 12px;
+      gap: 6px;
+    }
+
+    .header {
+      max-height: 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .header h1 {
+      font-size: 1.2em;
+      font-weight: 700;
+      color: #00e5ff;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .header p {
+      font-size: 0.65em;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.6);
+      margin: 0;
+    }
+
+    .canvas-wrapper {
+      flex: 1;
+      min-height: 0;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 8px;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .controls {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 8px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      font-size: 0.7em;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .control-group label {
+      font-weight: 600;
+      white-space: nowrap;
+      color: #00e5ff;
+    }
+
+    select, input[type="range"], input[type="checkbox"] {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 4px 6px;
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85em;
+      cursor: pointer;
+    }
+
+    select {
+      min-width: 120px;
+    }
+
+    input[type="range"] {
+      padding: 0;
+      width: 80px;
+      height: 18px;
+      accent-color: #00e5ff;
+    }
+
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: #00e5ff;
+    }
+
+    .info-display {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-size: 0.75em;
+      line-height: 1.4;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.85);
+      min-height: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .info-line {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .info-item {
+      display: flex;
+      gap: 6px;
+    }
+
+    .info-label {
+      color: #00e5ff;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Integralrechnung</h1>
+      <p>Riemannsche Summen & Flächenberechnung</p>
+    </div>
+
+    <div class="canvas-wrapper">
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <label for="function">Funktion:</label>
+        <select id="function">
+          <option value="quadratic">f(x) = x²</option>
+          <option value="cubic">f(x) = x³ - 3x</option>
+          <option value="sine">f(x) = sin(x)</option>
+          <option value="parabola">f(x) = -x² + 4</option>
+          <option value="exponential">f(x) = eˣ - 1</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="n">n:</label>
+        <input type="range" id="n" min="1" max="100" value="5">
+        <span id="n-value">5</span>
+      </div>
+
+      <div class="control-group">
+        <label for="method">Methode:</label>
+        <select id="method">
+          <option value="upper">Obersumme</option>
+          <option value="lower">Untersumme</option>
+          <option value="midpoint">Mittelpunktsregel</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="a">a:</label>
+        <input type="range" id="a" min="-4" max="4" step="0.1" value="0">
+        <span id="a-value">0,0</span>
+      </div>
+
+      <div class="control-group">
+        <label for="b">b:</label>
+        <input type="range" id="b" min="-4" max="4" step="0.1" value="3">
+        <span id="b-value">3,0</span>
+      </div>
+
+      <div class="control-group">
+        <input type="checkbox" id="showExact" checked>
+        <label for="showExact" style="color: #ffffff; margin: 0;">Exakter Wert</label>
+      </div>
+    </div>
+
+    <div class="info-display">
+      <div class="info-line">
+        <div class="info-item">
+          <span class="info-label">Riemannsche Summe:</span>
+          <span id="riemann-value">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Exakter Wert:</span>
+          <span id="exact-value">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Fehler:</span>
+          <span id="error-value">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State
+    const state = {
+      functionType: 'quadratic',
+      n: 5,
+      method: 'upper',
+      a: 0,
+      b: 3,
+      showExact: true
+    };
+
+    // Function definitions
+    const functions = {
+      quadratic: {
+        f: x => x * x,
+        integral: (a, b) => (Math.pow(b, 3) - Math.pow(a, 3)) / 3,
+        label: 'x²'
+      },
+      cubic: {
+        f: x => Math.pow(x, 3) - 3 * x,
+        integral: (a, b) => (Math.pow(b, 4) - Math.pow(a, 4)) / 4 - 3 * (Math.pow(b, 2) - Math.pow(a, 2)) / 2,
+        label: 'x³ - 3x'
+      },
+      sine: {
+        f: x => Math.sin(x),
+        integral: (a, b) => -Math.cos(b) + Math.cos(a),
+        label: 'sin(x)'
+      },
+      parabola: {
+        f: x => -x * x + 4,
+        integral: (a, b) => -(Math.pow(b, 3) - Math.pow(a, 3)) / 3 + 4 * (b - a),
+        label: '-x² + 4'
+      },
+      exponential: {
+        f: x => Math.exp(x) - 1,
+        integral: (a, b) => Math.exp(b) - Math.exp(a) - (b - a),
+        label: 'eˣ - 1'
+      }
+    };
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // DPI scaling
+    function setupCanvas() {
+      const dpi = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpi;
+      canvas.height = rect.height * dpi;
+      ctx.scale(dpi, dpi);
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+    }
+
+    function formatNumber(num, decimals = 2) {
+      return num.toFixed(decimals).replace('.', ',');
+    }
+
+    function calculateRiemannSum(a, b, n, method, funcDef) {
+      if (a >= b || n < 1) return 0;
+
+      const dx = (b - a) / n;
+      let sum = 0;
+
+      for (let i = 0; i < n; i++) {
+        const x_left = a + i * dx;
+        const x_right = a + (i + 1) * dx;
+        const x_mid = (x_left + x_right) / 2;
+
+        let height;
+        if (method === 'upper') {
+          const f_left = funcDef.f(x_left);
+          const f_right = funcDef.f(x_right);
+          const f_mid = funcDef.f(x_mid);
+          height = Math.max(f_left, f_right, f_mid);
+        } else if (method === 'lower') {
+          const f_left = funcDef.f(x_left);
+          const f_right = funcDef.f(x_right);
+          const f_mid = funcDef.f(x_mid);
+          height = Math.min(f_left, f_right, f_mid);
+        } else {
+          height = funcDef.f(x_mid);
+        }
+
+        sum += height * dx;
+      }
+
+      return sum;
+    }
+
+    function drawCanvas() {
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+      const padding = { left: 50, right: 30, top: 25, bottom: 35 };
+      const graphWidth = w - padding.left - padding.right;
+      const graphHeight = h - padding.top - padding.bottom;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const funcDef = functions[state.functionType];
+      const { a, b } = state;
+      const dx = (b - a) / state.n;
+
+      // Determine y-range
+      let yMin = Infinity, yMax = -Infinity;
+      const testPoints = [];
+      for (let i = a; i <= b; i += (b - a) / 200) {
+        testPoints.push(funcDef.f(i));
+      }
+      yMin = Math.min(...testPoints);
+      yMax = Math.max(...testPoints);
+      const yPadding = (yMax - yMin) * 0.1 || 1;
+      yMin -= yPadding;
+      yMax += yPadding;
+
+      const xRange = Math.max(5, b + 1 - (a - 1));
+      const xMin = a - 1;
+      const xMax = b + 1;
+
+      // Scale functions
+      const scaleX = x => padding.left + ((x - xMin) / (xMax - xMin)) * graphWidth;
+      const scaleY = y => h - padding.bottom - ((y - yMin) / (yMax - yMin)) * graphHeight;
+
+      // Draw axes
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(scaleX(0), scaleY(yMin));
+      ctx.lineTo(scaleX(0), scaleY(yMax));
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(scaleX(xMin), scaleY(0));
+      ctx.lineTo(scaleX(xMax), scaleY(0));
+      ctx.stroke();
+
+      // Draw grid
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.lineWidth = 0.5;
+      for (let i = Math.ceil(xMin); i <= Math.floor(xMax); i++) {
+        if (i !== 0) {
+          ctx.beginPath();
+          ctx.moveTo(scaleX(i), scaleY(yMin));
+          ctx.lineTo(scaleX(i), scaleY(yMax));
+          ctx.stroke();
+        }
+      }
+
+      // Draw integration limits
+      ctx.strokeStyle = 'rgba(0, 229, 255, 0.4)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(scaleX(a), scaleY(yMin));
+      ctx.lineTo(scaleX(a), scaleY(yMax));
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(scaleX(b), scaleY(yMin));
+      ctx.lineTo(scaleX(b), scaleY(yMax));
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Draw exact integral shading
+      if (state.showExact) {
+        ctx.fillStyle = 'rgba(0, 229, 255, 0.1)';
+        ctx.beginPath();
+        ctx.moveTo(scaleX(a), scaleY(0));
+        for (let i = a; i <= b; i += (b - a) / 200) {
+          ctx.lineTo(scaleX(i), scaleY(funcDef.f(i)));
+        }
+        ctx.lineTo(scaleX(b), scaleY(0));
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Draw Riemann rectangles
+      for (let i = 0; i < state.n; i++) {
+        const x_left = a + i * dx;
+        const x_right = a + (i + 1) * dx;
+        const x_mid = (x_left + x_right) / 2;
+
+        let height;
+        if (state.method === 'upper') {
+          const f_left = funcDef.f(x_left);
+          const f_right = funcDef.f(x_right);
+          const f_mid = funcDef.f(x_mid);
+          height = Math.max(f_left, f_right, f_mid);
+        } else if (state.method === 'lower') {
+          const f_left = funcDef.f(x_left);
+          const f_right = funcDef.f(x_right);
+          const f_mid = funcDef.f(x_mid);
+          height = Math.min(f_left, f_right, f_mid);
+        } else {
+          height = funcDef.f(x_mid);
+        }
+
+        const rectX = scaleX(x_left);
+        const rectY = scaleY(height);
+        const rectW = scaleX(x_right) - scaleX(x_left);
+        const rectH = scaleY(0) - scaleY(height);
+
+        let fillColor, strokeColor;
+        if (state.method === 'upper') {
+          fillColor = 'rgba(255, 107, 107, 0.3)';
+          strokeColor = '#ff6b6b';
+        } else if (state.method === 'lower') {
+          fillColor = 'rgba(107, 207, 127, 0.3)';
+          strokeColor = '#6bcf7f';
+        } else {
+          fillColor = 'rgba(255, 217, 61, 0.3)';
+          strokeColor = '#ffd93d';
+        }
+
+        ctx.fillStyle = fillColor;
+        ctx.fillRect(rectX, rectY, rectW, rectH);
+
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(rectX, rectY, rectW, rectH);
+      }
+
+      // Draw function curve
+      ctx.strokeStyle = '#00e5ff';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      let firstPoint = true;
+      for (let i = a; i <= b; i += (b - a) / 300) {
+        const y = funcDef.f(i);
+        if (firstPoint) {
+          ctx.moveTo(scaleX(i), scaleY(y));
+          firstPoint = false;
+        } else {
+          ctx.lineTo(scaleX(i), scaleY(y));
+        }
+      }
+      ctx.stroke();
+
+      // Draw axis labels
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.font = 'normal 10px "Inter", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (let i = Math.ceil(xMin); i <= Math.floor(xMax); i += 1) {
+        if (i !== 0) {
+          ctx.fillText(i.toString(), scaleX(i), scaleY(0) + 3);
+        }
+      }
+
+      // Draw integral notation
+      ctx.fillStyle = '#00e5ff';
+      ctx.font = 'normal 11px "Inter", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(`∫${formatNumber(a, 1)}^${formatNumber(b, 1)} f(x) dx`, padding.left + 5, padding.top + 5);
+    }
+
+    function updateInfo() {
+      const funcDef = functions[state.functionType];
+      const riemann = calculateRiemannSum(state.a, state.b, state.n, state.method, funcDef);
+      const exact = funcDef.integral(state.a, state.b);
+      const error = Math.abs(riemann - exact);
+
+      document.getElementById('riemann-value').textContent = formatNumber(riemann, 2);
+      document.getElementById('exact-value').textContent = `∫${formatNumber(state.a, 1)}^${formatNumber(state.b, 1)} f(x) dx = ${formatNumber(exact, 2)}`;
+      document.getElementById('error-value').textContent = formatNumber(error, 2);
+    }
+
+    function render() {
+      setupCanvas();
+      drawCanvas();
+      updateInfo();
+    }
+
+    // Event listeners
+    document.getElementById('function').addEventListener('change', e => {
+      state.functionType = e.target.value;
+      render();
+    });
+
+    document.getElementById('n').addEventListener('input', e => {
+      state.n = parseInt(e.target.value);
+      document.getElementById('n-value').textContent = state.n;
+      render();
+    });
+
+    document.getElementById('method').addEventListener('change', e => {
+      state.method = e.target.value;
+      render();
+    });
+
+    document.getElementById('a').addEventListener('input', e => {
+      state.a = parseFloat(e.target.value);
+      document.getElementById('a-value').textContent = formatNumber(state.a, 1);
+      render();
+    });
+
+    document.getElementById('b').addEventListener('input', e => {
+      state.b = parseFloat(e.target.value);
+      document.getElementById('b-value').textContent = formatNumber(state.b, 1);
+      render();
+    });
+
+    document.getElementById('showExact').addEventListener('change', e => {
+      state.showExact = e.target.checked;
+      render();
+    });
+
+    window.addEventListener('resize', () => {
+      setTimeout(render, 50);
+    });
+
+    // Initial render
+    setTimeout(render, 50);
+  </script>
+</body>
+</html>

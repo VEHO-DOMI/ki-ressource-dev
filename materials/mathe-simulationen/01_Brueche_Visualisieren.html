@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brüche Visualisieren</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a103d 50%, #2d1060 100%);
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            height: 100vh;
+            gap: 16px;
+            padding: 16px;
+        }
+
+        .canvas-area {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 0;
+        }
+
+        header {
+            max-height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #00e5ff;
+            margin-bottom: 2px;
+        }
+
+        .header-subtitle {
+            font-size: 0.75em;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+        }
+
+        canvas {
+            flex: 1;
+            min-height: 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .controls {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .controls::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .controls::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .controls::-webkit-scrollbar-thumb {
+            background: rgba(0, 229, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .controls::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 229, 255, 0.5);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-label {
+            font-size: 0.75em;
+            font-weight: 600;
+            color: #00e5ff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #00e5ff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #00e5ff;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+        }
+
+        .value-display {
+            font-size: 0.7em;
+            min-width: 24px;
+            text-align: right;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .fraction-display {
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .fraction-display-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #00e5ff;
+            font-family: 'Courier New', monospace;
+        }
+
+        button {
+            background: rgba(0, 229, 255, 0.2);
+            border: 1px solid rgba(0, 229, 255, 0.4);
+            color: #00e5ff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            background: rgba(0, 229, 255, 0.3);
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        select {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            outline: none;
+        }
+
+        select:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .decimal-display {
+            background: rgba(124, 77, 255, 0.1);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.8em;
+        }
+
+        .decimal-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.65em;
+            margin-bottom: 4px;
+        }
+
+        .decimal-value {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #7c4dff;
+            font-family: 'Courier New', monospace;
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .operation-section {
+            display: none;
+        }
+
+        .operation-section.active {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .result-display {
+            background: rgba(255, 217, 61, 0.1);
+            border: 1px solid rgba(255, 217, 61, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .result-label {
+            font-size: 0.65em;
+            color: rgba(255, 217, 61, 0.8);
+            margin-bottom: 4px;
+        }
+
+        .result-value {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: #ffd93d;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="canvas-area">
+            <header>
+                <div class="header-title">Brüche Visualisieren</div>
+                <div class="header-subtitle">Bruchrechnung interaktiv</div>
+            </header>
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="controls">
+            <!-- First Fraction -->
+            <div class="control-group">
+                <div class="control-label">Zähler (1. Bruch)</div>
+                <div class="slider-container">
+                    <input type="range" id="numerator1" min="0" max="12" value="3">
+                    <span class="value-display" id="numerator1-display">3</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="control-label">Nenner (1. Bruch)</div>
+                <div class="slider-container">
+                    <input type="range" id="denominator1" min="1" max="12" value="4">
+                    <span class="value-display" id="denominator1-display">4</span>
+                </div>
+            </div>
+
+            <div class="fraction-display">
+                <div class="fraction-display-value" id="fraction1-display">3/4</div>
+            </div>
+
+            <div class="button-group">
+                <button id="expand-btn">Erweitern ×2</button>
+                <button id="simplify-btn">Kürzen</button>
+            </div>
+
+            <div class="decimal-display">
+                <div class="decimal-label">Dezimalwert</div>
+                <div class="decimal-value" id="decimal1-display">0,75</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Operation Selection -->
+            <div class="control-group">
+                <div class="control-label">Operation</div>
+                <select id="operation-select">
+                    <option value="none">Keine</option>
+                    <option value="add">Addition</option>
+                    <option value="subtract">Subtraktion</option>
+                </select>
+            </div>
+
+            <!-- Second Fraction (shown only when operation is selected) -->
+            <div class="operation-section" id="operation-section">
+                <div class="control-group">
+                    <div class="control-label">Zähler (2. Bruch)</div>
+                    <div class="slider-container">
+                        <input type="range" id="numerator2" min="0" max="12" value="1">
+                        <span class="value-display" id="numerator2-display">1</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">Nenner (2. Bruch)</div>
+                    <div class="slider-container">
+                        <input type="range" id="denominator2" min="1" max="12" value="4">
+                        <span class="value-display" id="denominator2-display">4</span>
+                    </div>
+                </div>
+
+                <div class="fraction-display">
+                    <div class="fraction-display-value" id="fraction2-display">1/4</div>
+                </div>
+
+                <div class="decimal-display">
+                    <div class="decimal-label">Dezimalwert</div>
+                    <div class="decimal-value" id="decimal2-display">0,25</div>
+                </div>
+
+                <div class="result-display">
+                    <div class="result-label" id="result-label">Ergebnis Addition</div>
+                    <div class="result-value" id="result-display">1/1</div>
+                </div>
+
+                <div class="decimal-display">
+                    <div class="decimal-label">Ergebnis Dezimal</div>
+                    <div class="decimal-value" id="decimal-result-display">1,00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            canvasPadding: 30,
+            pieChartRadius: 60,
+            barHeight: 20,
+            numberLineHeight: 30,
+            colors: {
+                primary: '#00e5ff',
+                secondary: '#ff6b6b',
+                result: '#ffd93d',
+                gridDark: 'rgba(255, 255, 255, 0.1)',
+                textLight: 'rgba(255, 255, 255, 0.8)',
+                textDim: 'rgba(255, 255, 255, 0.5)'
+            }
+        };
+
+        // Utility Functions
+        function gcd(a, b) {
+            return b === 0 ? a : gcd(b, a % b);
+        }
+
+        function formatDecimal(value) {
+            return value.toFixed(2).replace('.', ',');
+        }
+
+        function formatFraction(num, den) {
+            return `${num}/${den}`;
+        }
+
+        // State
+        let state = {
+            numerator1: 3,
+            denominator1: 4,
+            numerator2: 1,
+            denominator2: 4,
+            operation: 'none'
+        };
+
+        // Canvas Setup
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+
+        function setupCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+        }
+
+        function getCanvasSize() {
+            return {
+                width: canvas.width / dpr,
+                height: canvas.height / dpr
+            };
+        }
+
+        // Drawing Functions
+        function drawPieChart(x, y, radius, numerator, denominator, color) {
+            if (denominator === 0) return;
+
+            const sliceAngle = (2 * Math.PI) / denominator;
+            const startAngle = -Math.PI / 2;
+
+            // Draw background circle
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Draw filled slices
+            ctx.fillStyle = color;
+            for (let i = 0; i < numerator; i++) {
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.arc(x, y, radius, startAngle + i * sliceAngle, startAngle + (i + 1) * sliceAngle);
+                ctx.lineTo(x, y);
+                ctx.fill();
+            }
+
+            // Draw outline
+            ctx.strokeStyle = CONFIG.colors.gridDark;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            // Draw slice divisions
+            ctx.strokeStyle = CONFIG.colors.gridDark;
+            ctx.lineWidth = 1;
+            for (let i = 0; i < denominator; i++) {
+                const angle = startAngle + i * sliceAngle;
+                const endX = x + radius * Math.cos(angle);
+                const endY = y + radius * Math.sin(angle);
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+            }
+        }
+
+        function drawFractionBar(x, y, width, height, numerator, denominator, color) {
+            if (denominator === 0) return;
+
+            const segmentWidth = width / denominator;
+
+            // Draw background bar
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.fillRect(x, y, width, height);
+
+            // Draw filled segments
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, segmentWidth * numerator, height);
+
+            // Draw border
+            ctx.strokeStyle = CONFIG.colors.gridDark;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x, y, width, height);
+
+            // Draw segment divisions
+            ctx.strokeStyle = CONFIG.colors.gridDark;
+            ctx.lineWidth = 1;
+            for (let i = 1; i < denominator; i++) {
+                const divX = x + segmentWidth * i;
+                ctx.beginPath();
+                ctx.moveTo(divX, y);
+                ctx.lineTo(divX, y + height);
+                ctx.stroke();
+            }
+        }
+
+        function drawNumberLine(x, y, width, numerator, denominator, color) {
+            if (denominator === 0) return;
+
+            const maxValue = 2;
+            const segmentWidth = width / maxValue;
+            const fraction = numerator / denominator;
+            const markerX = x + fraction * segmentWidth;
+
+            // Draw main line
+            ctx.strokeStyle = CONFIG.colors.gridDark;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + width, y);
+            ctx.stroke();
+
+            // Draw grid lines and labels
+            ctx.strokeStyle = CONFIG.colors.gridDark;
+            ctx.lineWidth = 1;
+            ctx.fillStyle = CONFIG.colors.textDim;
+            ctx.font = `400 10px 'Inter', sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+
+            for (let i = 0; i <= maxValue; i++) {
+                const tickX = x + i * segmentWidth;
+                const tickLength = 8;
+
+                ctx.beginPath();
+                ctx.moveTo(tickX, y);
+                ctx.lineTo(tickX, y + tickLength);
+                ctx.stroke();
+
+                const label = i.toString().replace('.', ',');
+                ctx.fillText(label, tickX, y + tickLength + 6);
+            }
+
+            // Draw marker point
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(markerX, y, 6, 0, 2 * Math.PI);
+            ctx.fill();
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(markerX, y, 6, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
+
+        function draw() {
+            const size = getCanvasSize();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+            ctx.fillRect(0, 0, size.width, size.height);
+
+            const padding = CONFIG.canvasPadding;
+            let yOffset = padding;
+
+            if (state.operation === 'none') {
+                // Single fraction mode
+                const canvasCenter = size.width / 2;
+
+                // Title
+                ctx.fillStyle = CONFIG.colors.textLight;
+                ctx.font = `500 12px 'Inter', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText('Tortendiagramm', canvasCenter, yOffset);
+                yOffset += 25;
+
+                // Pie chart
+                drawPieChart(canvasCenter, yOffset + CONFIG.pieChartRadius, CONFIG.pieChartRadius, state.numerator1, state.denominator1, CONFIG.colors.primary);
+                yOffset += CONFIG.pieChartRadius * 2 + 30;
+
+                // Fraction bar
+                ctx.fillStyle = CONFIG.colors.textLight;
+                ctx.font = `500 12px 'Inter', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText('Bruchbalken', canvasCenter, yOffset);
+                yOffset += 20;
+
+                const barWidth = Math.min(300, size.width - 2 * padding);
+                const barX = canvasCenter - barWidth / 2;
+                drawFractionBar(barX, yOffset, barWidth, CONFIG.barHeight, state.numerator1, state.denominator1, CONFIG.colors.primary);
+                yOffset += CONFIG.barHeight + 30;
+
+                // Number line
+                ctx.fillStyle = CONFIG.colors.textLight;
+                ctx.font = `500 12px 'Inter', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText('Zahlenstrahl', canvasCenter, yOffset);
+                yOffset += 20;
+
+                const lineWidth = Math.min(300, size.width - 2 * padding);
+                const lineX = canvasCenter - lineWidth / 2;
+                drawNumberLine(lineX, yOffset, lineWidth, state.numerator1, state.denominator1, CONFIG.colors.primary);
+            } else {
+                // Operation mode
+                const col1X = padding + 80;
+                const col2X = size.width / 2 + padding;
+
+                // Title
+                ctx.fillStyle = CONFIG.colors.textLight;
+                ctx.font = `500 12px 'Inter', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText('1. Bruch', col1X, yOffset);
+                ctx.fillText('2. Bruch', col2X, yOffset);
+                yOffset += 20;
+
+                const chartRadius = 40;
+
+                // First fraction
+                ctx.fillStyle = CONFIG.colors.textLight;
+                ctx.font = `500 10px 'Inter', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText('Tortendiagramm', col1X, yOffset);
+                ctx.textAlign = 'center';
+                ctx.fillText('Tortendiagramm', col2X, yOffset);
+                yOffset += 18;
+
+                drawPieChart(col1X, yOffset + chartRadius, chartRadius, state.numerator1, state.denominator1, CONFIG.colors.primary);
+                drawPieChart(col2X, yOffset + chartRadius, chartRadius, state.numerator2, state.denominator2, CONFIG.colors.secondary);
+                yOffset += chartRadius * 2 + 25;
+
+                // Fraction bars
+                ctx.fillStyle = CONFIG.colors.textLight;
+                ctx.font = `500 10px 'Inter', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText('Bruchbalken', col1X, yOffset);
+                ctx.fillText('Bruchbalken', col2X, yOffset);
+                yOffset += 18;
+
+                const barWidth = 100;
+                drawFractionBar(col1X - barWidth / 2, yOffset, barWidth, 18, state.numerator1, state.denominator1, CONFIG.colors.primary);
+                drawFractionBar(col2X - barWidth / 2, yOffset, barWidth, 18, state.numerator2, state.denominator2, CONFIG.colors.secondary);
+                yOffset += 35;
+
+                // Calculate result
+                let resultNum, resultDen;
+                if (state.operation === 'add') {
+                    const lcm = (state.denominator1 * state.denominator2) / gcd(state.denominator1, state.denominator2);
+                    resultNum = (state.numerator1 * (lcm / state.denominator1)) + (state.numerator2 * (lcm / state.denominator2));
+                    resultDen = lcm;
+                } else if (state.operation === 'subtract') {
+                    const lcm = (state.denominator1 * state.denominator2) / gcd(state.denominator1, state.denominator2);
+                    resultNum = (state.numerator1 * (lcm / state.denominator1)) - (state.numerator2 * (lcm / state.denominator2));
+                    resultDen = lcm;
+                }
+
+                // Result section
+                ctx.fillStyle = CONFIG.colors.textLight;
+                ctx.font = `500 12px 'Inter', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText('Ergebnis', size.width / 2, yOffset);
+                yOffset += 20;
+
+                const resultBarX = size.width / 2 - 75;
+                drawFractionBar(resultBarX, yOffset, 150, 20, Math.abs(resultNum), resultDen, CONFIG.colors.result);
+
+                yOffset += 35;
+                ctx.fillStyle = CONFIG.colors.result;
+                ctx.font = `600 14px 'Courier New', monospace`;
+                ctx.textAlign = 'center';
+                ctx.fillText(`${resultNum}/${resultDen}`, size.width / 2, yOffset);
+            }
+        }
+
+        // Event Handlers
+        function updateDisplay() {
+            // Update first fraction display
+            document.getElementById('numerator1-display').textContent = state.numerator1;
+            document.getElementById('denominator1-display').textContent = state.denominator1;
+            document.getElementById('fraction1-display').textContent = formatFraction(state.numerator1, state.denominator1);
+            document.getElementById('decimal1-display').textContent = formatDecimal(state.numerator1 / state.denominator1);
+
+            // Update second fraction display (if operation mode)
+            if (state.operation !== 'none') {
+                document.getElementById('numerator2-display').textContent = state.numerator2;
+                document.getElementById('denominator2-display').textContent = state.denominator2;
+                document.getElementById('fraction2-display').textContent = formatFraction(state.numerator2, state.denominator2);
+                document.getElementById('decimal2-display').textContent = formatDecimal(state.numerator2 / state.denominator2);
+
+                // Calculate and display result
+                let resultNum, resultDen;
+                if (state.operation === 'add') {
+                    const lcm = (state.denominator1 * state.denominator2) / gcd(state.denominator1, state.denominator2);
+                    resultNum = (state.numerator1 * (lcm / state.denominator1)) + (state.numerator2 * (lcm / state.denominator2));
+                    resultDen = lcm;
+                    document.getElementById('result-label').textContent = 'Ergebnis Addition';
+                } else if (state.operation === 'subtract') {
+                    const lcm = (state.denominator1 * state.denominator2) / gcd(state.denominator1, state.denominator2);
+                    resultNum = (state.numerator1 * (lcm / state.denominator1)) - (state.numerator2 * (lcm / state.denominator2));
+                    resultDen = lcm;
+                    document.getElementById('result-label').textContent = 'Ergebnis Subtraktion';
+                }
+
+                document.getElementById('result-display').textContent = formatFraction(resultNum, resultDen);
+                document.getElementById('decimal-result-display').textContent = formatDecimal(resultNum / resultDen);
+            }
+
+            // Update button states
+            document.getElementById('expand-btn').disabled = state.numerator1 * 2 > 12 || state.denominator1 * 2 > 12;
+            document.getElementById('simplify-btn').disabled = gcd(state.numerator1, state.denominator1) === 1;
+
+            draw();
+        }
+
+        // Slider event listeners
+        document.getElementById('numerator1').addEventListener('input', (e) => {
+            state.numerator1 = parseInt(e.target.value);
+            updateDisplay();
+        });
+
+        document.getElementById('denominator1').addEventListener('input', (e) => {
+            state.denominator1 = parseInt(e.target.value);
+            updateDisplay();
+        });
+
+        document.getElementById('numerator2').addEventListener('input', (e) => {
+            state.numerator2 = parseInt(e.target.value);
+            updateDisplay();
+        });
+
+        document.getElementById('denominator2').addEventListener('input', (e) => {
+            state.denominator2 = parseInt(e.target.value);
+            updateDisplay();
+        });
+
+        // Button event listeners
+        document.getElementById('expand-btn').addEventListener('click', () => {
+            if (state.numerator1 * 2 <= 12 && state.denominator1 * 2 <= 12) {
+                state.numerator1 *= 2;
+                state.denominator1 *= 2;
+                document.getElementById('numerator1').value = state.numerator1;
+                document.getElementById('denominator1').value = state.denominator1;
+                updateDisplay();
+            }
+        });
+
+        document.getElementById('simplify-btn').addEventListener('click', () => {
+            const divisor = gcd(state.numerator1, state.denominator1);
+            if (divisor > 1) {
+                state.numerator1 /= divisor;
+                state.denominator1 /= divisor;
+                document.getElementById('numerator1').value = state.numerator1;
+                document.getElementById('denominator1').value = state.denominator1;
+                updateDisplay();
+            }
+        });
+
+        document.getElementById('operation-select').addEventListener('change', (e) => {
+            state.operation = e.target.value;
+            const opSection = document.getElementById('operation-section');
+            if (state.operation !== 'none') {
+                opSection.classList.add('active');
+            } else {
+                opSection.classList.remove('active');
+            }
+            updateDisplay();
+        });
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            dpr = window.devicePixelRatio || 1;
+            setupCanvas();
+            updateDisplay();
+        });
+
+        // Initialize
+        setTimeout(() => {
+            setupCanvas();
+            updateDisplay();
+        }, 50);
+    </script>
+</body>
+</html>

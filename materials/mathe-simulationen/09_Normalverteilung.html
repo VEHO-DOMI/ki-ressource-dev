@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Normalverteilung & Statistik</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a103d 50%, #2d1060 100%);
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 8px 12px;
+            gap: 6px;
+        }
+
+        .header {
+            max-height: 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4px 8px;
+        }
+
+        .header h1 {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin: 0;
+            color: #00e5ff;
+        }
+
+        .header p {
+            font-size: 0.75em;
+            color: #7c4dff;
+            font-weight: 300;
+            margin: 0;
+        }
+
+        .canvas-wrapper {
+            flex: 1;
+            min-height: 0;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .controls-panel {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 8px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 100px;
+        }
+
+        .control-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65em;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            min-width: 35px;
+            color: #00e5ff;
+        }
+
+        .control-group input[type="range"] {
+            width: 70px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255,255,255,0.1);
+            outline: none;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00e5ff;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+        }
+
+        .control-group input[type="range"]::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00e5ff;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+        }
+
+        .control-group input[type="number"] {
+            width: 50px;
+            padding: 2px 4px;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 4px;
+            color: #00e5ff;
+            font-size: 0.65em;
+            text-align: center;
+        }
+
+        .control-group select {
+            padding: 4px 6px;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 4px;
+            color: #00e5ff;
+            font-size: 0.65em;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+        }
+
+        .control-group input[type="checkbox"] {
+            cursor: pointer;
+            width: 12px;
+            height: 12px;
+            accent-color: #00e5ff;
+        }
+
+        .info-display {
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-size: 0.65em;
+            color: #00e5ff;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            max-height: 40px;
+            overflow-y: auto;
+        }
+
+        /* Scrollbar styling */
+        .info-display::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .info-display::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 2px;
+        }
+
+        .info-display::-webkit-scrollbar-thumb {
+            background: rgba(0, 229, 255, 0.4);
+            border-radius: 2px;
+        }
+
+        .info-display::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 229, 255, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Normalverteilung & Statistik</h1>
+            <p>Gaußsche Glockenkurve</p>
+        </div>
+
+        <div class="canvas-wrapper">
+            <canvas id="normalCanvas"></canvas>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-row">
+                <div class="control-group">
+                    <label for="muSlider">μ:</label>
+                    <input type="range" id="muSlider" min="-5" max="5" step="0.1" value="0">
+                    <input type="number" id="muValue" min="-5" max="5" step="0.1" value="0">
+                </div>
+
+                <div class="control-group">
+                    <label for="sigmaSlider">σ:</label>
+                    <input type="range" id="sigmaSlider" min="0.3" max="3" step="0.1" value="1">
+                    <input type="number" id="sigmaValue" min="0.3" max="3" step="0.1" value="1">
+                </div>
+
+                <div class="control-group">
+                    <label for="modeSelect">Modus:</label>
+                    <select id="modeSelect">
+                        <option value="area">Fläche berechnen</option>
+                        <option value="rule">68-95-99,7-Regel</option>
+                        <option value="zscore">z-Wert berechnen</option>
+                    </select>
+                </div>
+
+                <div class="control-group" style="margin-left: auto;">
+                    <input type="checkbox" id="stdNormalCheckbox">
+                    <label for="stdNormalCheckbox" style="min-width: auto; margin: 0;">Standardnormal</label>
+                </div>
+            </div>
+
+            <div class="control-row" id="secondRowControls">
+                <div class="control-group">
+                    <label for="z1Slider">z₁:</label>
+                    <input type="range" id="z1Slider" min="-4" max="4" step="0.05" value="-1">
+                    <input type="number" id="z1Value" min="-4" max="4" step="0.05" value="-1">
+                </div>
+
+                <div class="control-group">
+                    <label for="z2Slider">z₂:</label>
+                    <input type="range" id="z2Slider" min="-4" max="4" step="0.05" value="1">
+                    <input type="number" id="z2Value" min="-4" max="4" step="0.05" value="1">
+                </div>
+
+                <div class="info-display" id="infoDisplay">
+                    P(z₁ ≤ X ≤ z₂) = 0,6827 | μ = 0,0 | σ = 1,0
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('normalCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // State
+        const state = {
+            mu: 0,
+            sigma: 1,
+            mode: 'area',
+            z1: -1,
+            z2: 1,
+            xValue: 0,
+            showStdNormal: false,
+            dpr: window.devicePixelRatio || 1
+        };
+
+        // Elements
+        const muSlider = document.getElementById('muSlider');
+        const muValue = document.getElementById('muValue');
+        const sigmaSlider = document.getElementById('sigmaSlider');
+        const sigmaValue = document.getElementById('sigmaValue');
+        const modeSelect = document.getElementById('modeSelect');
+        const z1Slider = document.getElementById('z1Slider');
+        const z1Value = document.getElementById('z1Value');
+        const z2Slider = document.getElementById('z2Slider');
+        const z2Value = document.getElementById('z2Value');
+        const stdNormalCheckbox = document.getElementById('stdNormalCheckbox');
+        const infoDisplay = document.getElementById('infoDisplay');
+        const secondRowControls = document.getElementById('secondRowControls');
+
+        // Cumulative normal distribution function (polynomial approximation)
+        function normCDF(x) {
+            const a1 =  0.254829592;
+            const a2 = -0.284496736;
+            const a3 =  1.421413741;
+            const a4 = -1.453152027;
+            const a5 =  1.061405429;
+            const p  =  0.3275911;
+
+            const sign = x < 0 ? -1 : 1;
+            x = Math.abs(x) / Math.sqrt(2);
+
+            const t = 1.0 / (1.0 + p * x);
+            const t2 = t * t;
+            const t3 = t2 * t;
+            const t4 = t3 * t;
+            const t5 = t4 * t;
+
+            const y = 1.0 - (((((a5 * t5 + a4 * t4) + a3 * t3) + a2 * t2) + a1 * t) * t) * Math.exp(-x * x);
+
+            return 0.5 * (1.0 + sign * y);
+        }
+
+        // Normal distribution probability density
+        function phi(x, mu, sigma) {
+            const exponent = -Math.pow(x - mu, 2) / (2 * sigma * sigma);
+            return (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(exponent);
+        }
+
+        // Calculate probability between z1 and z2
+        function calculateProbability(z1, z2) {
+            if (z1 > z2) [z1, z2] = [z2, z1];
+            const p1 = normCDF(z1);
+            const p2 = normCDF(z2);
+            return p2 - p1;
+        }
+
+        // Format number with Austrian locale (comma as decimal separator)
+        function formatNumber(num, decimals = 2) {
+            return num.toFixed(decimals).replace('.', ',');
+        }
+
+        // Setup canvas size
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * state.dpr;
+            canvas.height = rect.height * state.dpr;
+            ctx.scale(state.dpr, state.dpr);
+            draw();
+        }
+
+        // Draw the simulation
+        function draw() {
+            const w = canvas.width / state.dpr;
+            const h = canvas.height / state.dpr;
+
+            // Clear canvas
+            ctx.fillStyle = 'transparent';
+            ctx.clearRect(0, 0, w, h);
+
+            // Padding
+            const pl = 50, pr = 30, pt = 20, pb = 35;
+            const graphW = w - pl - pr;
+            const graphH = h - pt - pb;
+
+            // X-axis range
+            const xMin = state.mu - 4 * state.sigma;
+            const xMax = state.mu + 4 * state.sigma;
+
+            // Y-axis range
+            const yMax = phi(state.mu, state.mu, state.sigma) * 1.1;
+
+            // Drawing helpers
+            const xToCanvas = (x) => pl + ((x - xMin) / (xMax - xMin)) * graphW;
+            const yToCanvas = (y) => pt + graphH - (y / yMax) * graphH;
+
+            // Draw background grid
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i <= 10; i++) {
+                const x = pl + (i / 10) * graphW;
+                ctx.beginPath();
+                ctx.moveTo(x, pt);
+                ctx.lineTo(x, pt + graphH);
+                ctx.stroke();
+
+                const y = pt + (i / 10) * graphH;
+                ctx.beginPath();
+                ctx.moveTo(pl, y);
+                ctx.lineTo(pl + graphW, y);
+                ctx.stroke();
+            }
+
+            // Draw axes
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(pl, pt + graphH);
+            ctx.lineTo(pl + graphW, pt + graphH);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(pl, pt);
+            ctx.lineTo(pl, pt + graphH);
+            ctx.stroke();
+
+            // Draw axis labels - X-axis
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.font = '10px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+
+            for (let i = -3; i <= 3; i++) {
+                const x = state.mu + i * state.sigma;
+                const canvasX = xToCanvas(x);
+                ctx.fillText(formatNumber(x, 1), canvasX, pt + graphH + 3);
+
+                // Tick mark
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(canvasX, pt + graphH);
+                ctx.lineTo(canvasX, pt + graphH + 3);
+                ctx.stroke();
+            }
+
+            // Draw axis labels - Y-axis
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for (let i = 0; i <= 4; i++) {
+                const y = (i / 4) * yMax;
+                const canvasY = yToCanvas(y);
+                ctx.fillText(formatNumber(y, 3), pl - 8, canvasY);
+
+                // Tick mark
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(pl - 3, canvasY);
+                ctx.lineTo(pl, canvasY);
+                ctx.stroke();
+            }
+
+            // Draw shaded regions based on mode
+            if (state.mode === 'area') {
+                drawAreaMode();
+            } else if (state.mode === 'rule') {
+                drawRuleMode();
+            } else if (state.mode === 'zscore') {
+                drawZScoreMode();
+            }
+
+            // Draw bell curve
+            drawBellCurve(state.mu, state.sigma, '#00e5ff', 2.5);
+
+            // Draw standard normal overlay if enabled
+            if (state.showStdNormal && (state.mu !== 0 || state.sigma !== 1)) {
+                drawBellCurve(0, 1, 'rgba(255, 255, 255, 0.6)', 1.5, true);
+            }
+
+            // Draw equation
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.font = '10px Inter, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.fillText('φ(x) = (1/(σ√(2π))) · e^(-(x-μ)²/(2σ²))', pl, pt - 15);
+
+            // Helper function to draw bell curve
+            function drawBellCurve(mu, sigma, color, lineWidth, dashed = false) {
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lineWidth;
+                if (dashed) {
+                    ctx.setLineDash([3, 3]);
+                }
+
+                ctx.beginPath();
+                let first = true;
+                const step = (xMax - xMin) / 200;
+                for (let x = xMin; x <= xMax; x += step) {
+                    const y = phi(x, mu, sigma);
+                    const canvasX = xToCanvas(x);
+                    const canvasY = yToCanvas(y);
+
+                    if (first) {
+                        ctx.moveTo(canvasX, canvasY);
+                        first = false;
+                    } else {
+                        ctx.lineTo(canvasX, canvasY);
+                    }
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // Helper function for area mode
+            function drawAreaMode() {
+                const z1 = state.z1;
+                const z2 = state.z2;
+                const x1 = state.mu + z1 * state.sigma;
+                const x2 = state.mu + z2 * state.sigma;
+
+                const startX = Math.max(xMin, Math.min(x1, x2));
+                const endX = Math.min(xMax, Math.max(x1, x2));
+
+                if (startX < endX) {
+                    ctx.fillStyle = 'rgba(0, 229, 255, 0.3)';
+                    ctx.beginPath();
+                    ctx.moveTo(xToCanvas(startX), yToCanvas(0));
+
+                    const step = (endX - startX) / 100;
+                    for (let x = startX; x <= endX; x += step) {
+                        const y = phi(x, state.mu, state.sigma);
+                        ctx.lineTo(xToCanvas(x), yToCanvas(y));
+                    }
+                    ctx.lineTo(xToCanvas(endX), yToCanvas(0));
+                    ctx.closePath();
+                    ctx.fill();
+                }
+            }
+
+            // Helper function for 68-95-99.7 rule
+            function drawRuleMode() {
+                const bands = [
+                    { sigma: 1, color: 'rgba(0, 229, 255, 0.3)', label: '68,27%' },
+                    { sigma: 2, color: 'rgba(124, 77, 255, 0.2)', label: '95,45%' },
+                    { sigma: 3, color: 'rgba(255, 107, 107, 0.1)', label: '99,73%' }
+                ];
+
+                for (const band of bands) {
+                    const x1 = state.mu - band.sigma * state.sigma;
+                    const x2 = state.mu + band.sigma * state.sigma;
+
+                    const startX = Math.max(xMin, x1);
+                    const endX = Math.min(xMax, x2);
+
+                    if (startX < endX) {
+                        ctx.fillStyle = band.color;
+                        ctx.beginPath();
+                        ctx.moveTo(xToCanvas(startX), yToCanvas(0));
+
+                        const step = (endX - startX) / 100;
+                        for (let x = startX; x <= endX; x += step) {
+                            const y = phi(x, state.mu, state.sigma);
+                            ctx.lineTo(xToCanvas(x), yToCanvas(y));
+                        }
+                        ctx.lineTo(xToCanvas(endX), yToCanvas(0));
+                        ctx.closePath();
+                        ctx.fill();
+
+                        // Label
+                        const centerX = (startX + endX) / 2;
+                        const centerY = phi(centerX, state.mu, state.sigma) / 2;
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                        ctx.font = '9px Inter, sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(band.label, xToCanvas(centerX), yToCanvas(centerY));
+                    }
+                }
+            }
+
+            // Helper function for z-score mode
+            function drawZScoreMode() {
+                const x = state.xValue;
+                const z = (x - state.mu) / state.sigma;
+
+                // Draw vertical line
+                const canvasX = xToCanvas(x);
+                ctx.strokeStyle = 'rgba(0, 229, 255, 0.6)';
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([2, 2]);
+                ctx.beginPath();
+                ctx.moveTo(canvasX, pt);
+                ctx.lineTo(canvasX, pt + graphH);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Draw point on curve
+                const y = phi(x, state.mu, state.sigma);
+                const canvasY = yToCanvas(y);
+                ctx.fillStyle = '#00e5ff';
+                ctx.beginPath();
+                ctx.arc(canvasX, canvasY, 4, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Label
+                ctx.fillStyle = '#00e5ff';
+                ctx.font = 'bold 11px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(`z = ${formatNumber(z, 2)}`, canvasX, canvasY - 8);
+            }
+
+            // Update info display
+            updateInfoDisplay();
+        }
+
+        // Update info display
+        function updateInfoDisplay() {
+            let info = '';
+            if (state.mode === 'area') {
+                const z1 = state.z1;
+                const z2 = state.z2;
+                const prob = calculateProbability(z1, z2);
+                const x1 = state.mu + z1 * state.sigma;
+                const x2 = state.mu + z2 * state.sigma;
+                info = `P(${formatNumber(z1, 2)} ≤ Z ≤ ${formatNumber(z2, 2)}) = ${formatNumber(prob, 4)} | μ = ${formatNumber(state.mu, 1)} | σ = ${formatNumber(state.sigma, 1)} | x₁ = ${formatNumber(x1, 2)} | x₂ = ${formatNumber(x2, 2)}`;
+            } else if (state.mode === 'rule') {
+                info = `68,27%: [${formatNumber(state.mu - state.sigma, 2)}; ${formatNumber(state.mu + state.sigma, 2)}] | 95,45%: [${formatNumber(state.mu - 2*state.sigma, 2)}; ${formatNumber(state.mu + 2*state.sigma, 2)}] | 99,73%: [${formatNumber(state.mu - 3*state.sigma, 2)}; ${formatNumber(state.mu + 3*state.sigma, 2)}]`;
+            } else if (state.mode === 'zscore') {
+                const z = (state.xValue - state.mu) / state.sigma;
+                const probLeft = normCDF(z);
+                const probRight = 1 - probLeft;
+                info = `x = ${formatNumber(state.xValue, 2)} | z = ${formatNumber(z, 3)} | P(X ≤ x) = ${formatNumber(probLeft, 4)} | P(X > x) = ${formatNumber(probRight, 4)} | μ = ${formatNumber(state.mu, 1)} | σ = ${formatNumber(state.sigma, 1)}`;
+            }
+            infoDisplay.textContent = info;
+        }
+
+        // Toggle second row controls
+        function updateSecondRow() {
+            secondRowControls.innerHTML = '';
+
+            if (state.mode === 'area') {
+                secondRowControls.innerHTML = `
+                    <div class="control-group">
+                        <label for="z1Slider">z₁:</label>
+                        <input type="range" id="z1Slider" min="-4" max="4" step="0.05" value="${state.z1}">
+                        <input type="number" id="z1Value" min="-4" max="4" step="0.05" value="${state.z1}">
+                    </div>
+                    <div class="control-group">
+                        <label for="z2Slider">z₂:</label>
+                        <input type="range" id="z2Slider" min="-4" max="4" step="0.05" value="${state.z2}">
+                        <input type="number" id="z2Value" min="-4" max="4" step="0.05" value="${state.z2}">
+                    </div>
+                    <div class="info-display" id="infoDisplay"></div>
+                `;
+
+                document.getElementById('z1Slider').addEventListener('input', (e) => {
+                    state.z1 = parseFloat(e.target.value);
+                    document.getElementById('z1Value').value = state.z1;
+                    draw();
+                });
+
+                document.getElementById('z1Value').addEventListener('change', (e) => {
+                    state.z1 = parseFloat(e.target.value);
+                    document.getElementById('z1Slider').value = state.z1;
+                    draw();
+                });
+
+                document.getElementById('z2Slider').addEventListener('input', (e) => {
+                    state.z2 = parseFloat(e.target.value);
+                    document.getElementById('z2Value').value = state.z2;
+                    draw();
+                });
+
+                document.getElementById('z2Value').addEventListener('change', (e) => {
+                    state.z2 = parseFloat(e.target.value);
+                    document.getElementById('z2Slider').value = state.z2;
+                    draw();
+                });
+            } else if (state.mode === 'rule') {
+                secondRowControls.innerHTML = `
+                    <div class="info-display" id="infoDisplay" style="flex: 1;">68-95-99,7-Regel wird angezeigt</div>
+                `;
+            } else if (state.mode === 'zscore') {
+                secondRowControls.innerHTML = `
+                    <div class="control-group">
+                        <label for="xSlider">x-Wert:</label>
+                        <input type="range" id="xSlider" min="${state.mu - 4*state.sigma}" max="${state.mu + 4*state.sigma}" step="0.05" value="${state.xValue}">
+                        <input type="number" id="xValue" min="${state.mu - 4*state.sigma}" max="${state.mu + 4*state.sigma}" step="0.05" value="${state.xValue}">
+                    </div>
+                    <div class="info-display" id="infoDisplay"></div>
+                `;
+
+                document.getElementById('xSlider').addEventListener('input', (e) => {
+                    state.xValue = parseFloat(e.target.value);
+                    document.getElementById('xValue').value = state.xValue;
+                    draw();
+                });
+
+                document.getElementById('xValue').addEventListener('change', (e) => {
+                    state.xValue = parseFloat(e.target.value);
+                    document.getElementById('xSlider').value = state.xValue;
+                    draw();
+                });
+            }
+
+            updateInfoDisplay();
+        }
+
+        // Event listeners
+        muSlider.addEventListener('input', (e) => {
+            state.mu = parseFloat(e.target.value);
+            muValue.value = state.mu;
+            draw();
+        });
+
+        muValue.addEventListener('change', (e) => {
+            state.mu = parseFloat(e.target.value);
+            muSlider.value = state.mu;
+            draw();
+        });
+
+        sigmaSlider.addEventListener('input', (e) => {
+            state.sigma = parseFloat(e.target.value);
+            sigmaValue.value = state.sigma;
+            draw();
+        });
+
+        sigmaValue.addEventListener('change', (e) => {
+            state.sigma = parseFloat(e.target.value);
+            sigmaSlider.value = state.sigma;
+            draw();
+        });
+
+        modeSelect.addEventListener('change', (e) => {
+            state.mode = e.target.value;
+            if (state.mode === 'zscore') {
+                state.xValue = state.mu;
+            }
+            updateSecondRow();
+        });
+
+        stdNormalCheckbox.addEventListener('change', (e) => {
+            state.showStdNormal = e.target.checked;
+            draw();
+        });
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            clearTimeout(window.resizeTimeout);
+            window.resizeTimeout = setTimeout(() => {
+                resizeCanvas();
+            }, 50);
+        });
+
+        // Initial setup
+        setTimeout(() => {
+            resizeCanvas();
+            updateSecondRow();
+        }, 50);
+    </script>
+</body>
+</html>

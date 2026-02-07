@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vektorrechnung 2D</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a103d 50%, #2d1060 100%);
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            height: 100vh;
+            gap: 12px;
+            padding: 12px;
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            max-height: 40px;
+            margin-bottom: 0;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #00e5ff;
+        }
+
+        .header p {
+            font-size: 0.75em;
+            color: #b0b0d0;
+            font-weight: 300;
+        }
+
+        .canvas-container {
+            grid-column: 1;
+            grid-row: 2;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        canvas {
+            flex: 1;
+            min-height: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .controls {
+            grid-column: 2;
+            grid-row: 2;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 14px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .control-section {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .control-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 0.75em;
+            font-weight: 600;
+            color: #00e5ff;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .control-group {
+            margin-bottom: 10px;
+        }
+
+        .label {
+            font-size: 0.7em;
+            color: #c0c0d0;
+            font-weight: 400;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .value-display {
+            font-size: 0.7em;
+            color: #00e5ff;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255,255,255,0.1);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00e5ff;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00e5ff;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+        }
+
+        select {
+            width: 100%;
+            padding: 6px 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 0.75em;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        select:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+        }
+
+        select:focus {
+            background: rgba(255,255,255,0.12);
+            border-color: #00e5ff;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+        }
+
+        .info-display {
+            background: rgba(124, 77, 255, 0.1);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 0.68em;
+            color: #d0d0f0;
+            line-height: 1.6;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+        }
+
+        .info-label {
+            color: #7c4dff;
+            font-weight: 600;
+        }
+
+        .scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollbar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 3px;
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 229, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 229, 255, 0.5);
+        }
+
+        .controls {
+            scrollbar-color: rgba(0, 229, 255, 0.3) rgba(255,255,255,0.05);
+            scrollbar-width: thin;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>Vektorrechnung 2D</h1>
+                <p>Addition, Subtraktion, Skalarprodukt</p>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="controls scrollbar">
+            <!-- Vektor a -->
+            <div class="control-section">
+                <div class="section-title">Vektor a⃗</div>
+                <div class="control-group">
+                    <div class="label">
+                        <span>ax</span>
+                        <span class="value-display" id="valueAx">3,0</span>
+                    </div>
+                    <input type="range" id="sliderAx" min="-8" max="8" step="0.5" value="3">
+                </div>
+                <div class="control-group">
+                    <div class="label">
+                        <span>ay</span>
+                        <span class="value-display" id="valueAy">2,0</span>
+                    </div>
+                    <input type="range" id="sliderAy" min="-8" max="8" step="0.5" value="2">
+                </div>
+            </div>
+
+            <!-- Vektor b -->
+            <div class="control-section">
+                <div class="section-title">Vektor b⃗</div>
+                <div class="control-group">
+                    <div class="label">
+                        <span>bx</span>
+                        <span class="value-display" id="valueBx">-1,0</span>
+                    </div>
+                    <input type="range" id="sliderBx" min="-8" max="8" step="0.5" value="-1">
+                </div>
+                <div class="control-group">
+                    <div class="label">
+                        <span>by</span>
+                        <span class="value-display" id="valueBy">4,0</span>
+                    </div>
+                    <input type="range" id="sliderBy" min="-8" max="8" step="0.5" value="4">
+                </div>
+            </div>
+
+            <!-- Operation -->
+            <div class="control-section">
+                <div class="section-title">Operation</div>
+                <div class="control-group">
+                    <select id="operationSelect">
+                        <option value="addition">Addition</option>
+                        <option value="subtraction">Subtraktion</option>
+                        <option value="dotproduct">Skalarprodukt</option>
+                        <option value="scalar">Skalarmultiplikation</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Scalar slider (shown conditionally) -->
+            <div class="control-section" id="scalarSection" style="display: none;">
+                <div class="section-title">Skalarmultiplikation</div>
+                <div class="control-group">
+                    <div class="label">
+                        <span>s · a⃗</span>
+                        <span class="value-display" id="valueScalar">2,0</span>
+                    </div>
+                    <input type="range" id="sliderScalar" min="-3" max="3" step="0.1" value="2">
+                </div>
+            </div>
+
+            <!-- Info Display -->
+            <div class="control-section">
+                <div class="section-title">Info</div>
+                <div class="info-display">
+                    <div><span class="info-label">|a⃗|:</span> <span id="infoMagnitudeA">3,61</span></div>
+                    <div><span class="info-label">|b⃗|:</span> <span id="infoMagnitudeB">4,12</span></div>
+                    <div style="margin-top: 6px; border-top: 1px solid rgba(124, 77, 255, 0.3); padding-top: 6px;">
+                        <div><span class="info-label">Ergebnis:</span></div>
+                        <div id="infoResult">a⃗ + b⃗ = (2|6)</div>
+                    </div>
+                    <div style="margin-top: 6px;">
+                        <div><span class="info-label">Winkel α:</span> <span id="infoAngle">117°</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Austrian number formatting
+        function formatNumber(num) {
+            return num.toFixed(2).replace('.', ',');
+        }
+
+        // Canvas and context
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // State
+        let state = {
+            ax: 3,
+            ay: 2,
+            bx: -1,
+            by: 4,
+            operation: 'addition',
+            scalar: 2
+        };
+
+        // Setup
+        function initializeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+
+            ctx.scale(dpr, dpr);
+
+            // Store actual drawing dimensions
+            canvas.drawWidth = rect.width;
+            canvas.drawHeight = rect.height;
+
+            draw();
+        }
+
+        // Vector utilities
+        function magnitude(x, y) {
+            return Math.sqrt(x * x + y * y);
+        }
+
+        function dotProduct(x1, y1, x2, y2) {
+            return x1 * x2 + y1 * y2;
+        }
+
+        function angleBetweenVectors(x1, y1, x2, y2) {
+            const mag1 = magnitude(x1, y1);
+            const mag2 = magnitude(x2, y2);
+            if (mag1 === 0 || mag2 === 0) return 0;
+
+            const dot = dotProduct(x1, y1, x2, y2);
+            const cos = dot / (mag1 * mag2);
+            const rad = Math.acos(Math.max(-1, Math.min(1, cos)));
+            return (rad * 180) / Math.PI;
+        }
+
+        // Drawing utilities
+        function drawArrow(x1, y1, x2, y2, color, lineWidth = 3) {
+            const headlen = 12;
+            const angle = Math.atan2(y2 - y1, x2 - x1);
+
+            // Line
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            // Arrow head
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - headlen * Math.cos(angle - Math.PI / 6), y2 - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - headlen * Math.cos(angle + Math.PI / 6), y2 - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function gridToPixel(gridX, gridY) {
+            const centerX = canvas.drawWidth / 2;
+            const centerY = canvas.drawHeight / 2;
+            const scale = Math.min(canvas.drawWidth, canvas.drawHeight) / 20;
+            return {
+                x: centerX + gridX * scale,
+                y: centerY - gridY * scale
+            };
+        }
+
+        function pixelToGrid(pixelX, pixelY) {
+            const centerX = canvas.drawWidth / 2;
+            const centerY = canvas.drawHeight / 2;
+            const scale = Math.min(canvas.drawWidth, canvas.drawHeight) / 20;
+            return {
+                x: (pixelX - centerX) / scale,
+                y: (centerY - pixelY) / scale
+            };
+        }
+
+        function drawGrid() {
+            const centerPos = gridToPixel(0, 0);
+            const scale = Math.min(canvas.drawWidth, canvas.drawHeight) / 20;
+
+            // Light grid lines
+            ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+            ctx.lineWidth = 1;
+
+            for (let i = -8; i <= 8; i++) {
+                if (i !== 0) {
+                    // Vertical lines
+                    const x = centerPos.x + i * scale;
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvas.drawHeight);
+                    ctx.stroke();
+
+                    // Horizontal lines
+                    const y = centerPos.y - i * scale;
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.drawWidth, y);
+                    ctx.stroke();
+                }
+            }
+
+            // Axes
+            ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+            ctx.lineWidth = 1.5;
+
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(0, centerPos.y);
+            ctx.lineTo(canvas.drawWidth, centerPos.y);
+            ctx.stroke();
+
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerPos.x, 0);
+            ctx.lineTo(centerPos.x, canvas.drawHeight);
+            ctx.stroke();
+
+            // Axis arrows
+            drawArrow(canvas.drawWidth - 30, centerPos.y, canvas.drawWidth - 15, centerPos.y, 'rgba(255,255,255,0.3)', 1.5);
+            drawArrow(centerPos.x, 25, centerPos.x, 10, 'rgba(255,255,255,0.3)', 1.5);
+
+            // Axis labels
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.font = '10px "Inter", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            for (let i = -8; i <= 8; i += 2) {
+                if (i !== 0) {
+                    const pos = gridToPixel(i, 0);
+                    ctx.fillText(i.toString(), pos.x, centerPos.y + 12);
+
+                    const posY = gridToPixel(0, i);
+                    ctx.fillText(i.toString(), centerPos.x - 12, posY.y);
+                }
+            }
+
+            ctx.font = '11px "Inter", sans-serif';
+            ctx.fillText('x', canvas.drawWidth - 20, centerPos.y - 12);
+            ctx.fillText('y', centerPos.x + 12, 20);
+        }
+
+        function drawVectors() {
+            const originPixel = gridToPixel(0, 0);
+            const aPixel = gridToPixel(state.ax, state.ay);
+            const bPixel = gridToPixel(state.bx, state.by);
+
+            // Vector a (cyan)
+            drawArrow(originPixel.x, originPixel.y, aPixel.x, aPixel.y, '#00e5ff', 3);
+
+            // Vector b (red)
+            drawArrow(originPixel.x, originPixel.y, bPixel.x, bPixel.y, '#ff6b6b', 3);
+
+            // Labels
+            ctx.fillStyle = '#00e5ff';
+            ctx.font = '11px "Inter", sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.fillText(`a⃗ (${formatNumber(state.ax)}|${formatNumber(state.ay)})`, aPixel.x + 10, aPixel.y - 5);
+
+            ctx.fillStyle = '#ff6b6b';
+            ctx.fillText(`b⃗ (${formatNumber(state.bx)}|${formatNumber(state.by)})`, bPixel.x + 10, bPixel.y - 5);
+        }
+
+        function drawAddition() {
+            const originPixel = gridToPixel(0, 0);
+            const aPixel = gridToPixel(state.ax, state.ay);
+            const bPixel = gridToPixel(state.bx, state.by);
+
+            // Parallelogram rule - dashed lines
+            ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([5, 5]);
+
+            // Line parallel to b from tip of a
+            const endX = state.ax + state.bx;
+            const endY = state.ay + state.by;
+            const resultPixel = gridToPixel(endX, endY);
+
+            ctx.beginPath();
+            ctx.moveTo(aPixel.x, aPixel.y);
+            ctx.lineTo(resultPixel.x, resultPixel.y);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(bPixel.x, bPixel.y);
+            ctx.lineTo(resultPixel.x, resultPixel.y);
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+
+            // Result vector (yellow)
+            drawArrow(originPixel.x, originPixel.y, resultPixel.x, resultPixel.y, '#ffd93d', 3.5);
+
+            // Label
+            ctx.fillStyle = '#ffd93d';
+            ctx.font = '11px "Inter", sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.fillText(`a⃗ + b⃗ (${formatNumber(endX)}|${formatNumber(endY)})`, resultPixel.x + 10, resultPixel.y - 5);
+        }
+
+        function drawSubtraction() {
+            const originPixel = gridToPixel(0, 0);
+            const bPixel = gridToPixel(state.bx, state.by);
+
+            // Result: a - b from tip of b to tip of a
+            const endX = state.ax - state.bx;
+            const endY = state.ay - state.by;
+            const resultPixel = gridToPixel(endX, endY);
+
+            // Draw from tip of b to result
+            drawArrow(bPixel.x, bPixel.y, resultPixel.x, resultPixel.y, '#6bcf7f', 3.5);
+
+            // Also show the result from origin
+            const resultFromOrigin = gridToPixel(state.ax - state.bx, state.ay - state.by);
+
+            ctx.strokeStyle = 'rgba(107, 207, 127, 0.3)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(originPixel.x, originPixel.y);
+            ctx.lineTo(resultFromOrigin.x, resultFromOrigin.y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Label
+            ctx.fillStyle = '#6bcf7f';
+            ctx.font = '11px "Inter", sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.fillText(`a⃗ - b⃗ (${formatNumber(endX)}|${formatNumber(endY)})`, resultPixel.x + 10, resultPixel.y - 5);
+        }
+
+        function drawDotProduct() {
+            const originPixel = gridToPixel(0, 0);
+            const aPixel = gridToPixel(state.ax, state.ay);
+            const bPixel = gridToPixel(state.bx, state.by);
+
+            // Angle arc
+            const angle1 = Math.atan2(state.ay, state.ax);
+            const angle2 = Math.atan2(state.by, state.bx);
+            const arcRadius = 30;
+
+            ctx.strokeStyle = 'rgba(124, 77, 255, 0.4)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(originPixel.x, originPixel.y, arcRadius, Math.min(angle1, angle2), Math.max(angle1, angle2), false);
+            ctx.stroke();
+
+            // Projection of b onto a
+            const magA = magnitude(state.ax, state.ay);
+            if (magA > 0) {
+                const projScalar = dotProduct(state.ax, state.ay, state.bx, state.by) / (magA * magA);
+                const projX = projScalar * state.ax;
+                const projY = projScalar * state.ay;
+                const projPixel = gridToPixel(projX, projY);
+
+                // Projection line (dashed)
+                ctx.strokeStyle = 'rgba(200, 150, 255, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(bPixel.x, bPixel.y);
+                ctx.lineTo(projPixel.x, projPixel.y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Projection vector (thin)
+                drawArrow(originPixel.x, originPixel.y, projPixel.x, projPixel.y, 'rgba(124, 77, 255, 0.5)', 2);
+            }
+
+            // Angle label
+            const midAngle = (angle1 + angle2) / 2;
+            const labelRadius = arcRadius + 15;
+            const labelX = originPixel.x + labelRadius * Math.cos(midAngle);
+            const labelY = originPixel.y + labelRadius * Math.sin(midAngle);
+
+            const angle = angleBetweenVectors(state.ax, state.ay, state.bx, state.by);
+            ctx.fillStyle = '#7c4dff';
+            ctx.font = '10px "Inter", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`${Math.round(angle)}°`, labelX, labelY);
+        }
+
+        function drawScalarMultiplication() {
+            const originPixel = gridToPixel(0, 0);
+            const resultX = state.scalar * state.ax;
+            const resultY = state.scalar * state.ay;
+            const resultPixel = gridToPixel(resultX, resultY);
+
+            // Result vector (purple)
+            drawArrow(originPixel.x, originPixel.y, resultPixel.x, resultPixel.y, '#7c4dff', 3.5);
+
+            // Label
+            ctx.fillStyle = '#7c4dff';
+            ctx.font = '11px "Inter", sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.fillText(`${formatNumber(state.scalar)} · a⃗ (${formatNumber(resultX)}|${formatNumber(resultY)})`, resultPixel.x + 10, resultPixel.y - 5);
+        }
+
+        function draw() {
+            // Clear
+            ctx.fillStyle = 'transparent';
+            ctx.clearRect(0, 0, canvas.drawWidth, canvas.drawHeight);
+
+            // Draw grid and axes
+            drawGrid();
+
+            // Draw vectors
+            drawVectors();
+
+            // Draw operation
+            if (state.operation === 'addition') {
+                drawAddition();
+            } else if (state.operation === 'subtraction') {
+                drawSubtraction();
+            } else if (state.operation === 'dotproduct') {
+                drawDotProduct();
+            } else if (state.operation === 'scalar') {
+                drawScalarMultiplication();
+            }
+        }
+
+        function updateInfo() {
+            const magA = magnitude(state.ax, state.ay);
+            const magB = magnitude(state.bx, state.by);
+            const angle = angleBetweenVectors(state.ax, state.ay, state.bx, state.by);
+
+            document.getElementById('infoMagnitudeA').textContent = formatNumber(magA);
+            document.getElementById('infoMagnitudeB').textContent = formatNumber(magB);
+            document.getElementById('infoAngle').textContent = `${Math.round(angle)}°`;
+
+            if (state.operation === 'addition') {
+                const resX = state.ax + state.bx;
+                const resY = state.ay + state.by;
+                document.getElementById('infoResult').innerHTML =
+                    `<span class="info-label">a⃗ + b⃗:</span> (${formatNumber(resX)}|${formatNumber(resY)})`;
+            } else if (state.operation === 'subtraction') {
+                const resX = state.ax - state.bx;
+                const resY = state.ay - state.by;
+                document.getElementById('infoResult').innerHTML =
+                    `<span class="info-label">a⃗ - b⃗:</span> (${formatNumber(resX)}|${formatNumber(resY)})`;
+            } else if (state.operation === 'dotproduct') {
+                const dot = dotProduct(state.ax, state.ay, state.bx, state.by);
+                document.getElementById('infoResult').innerHTML =
+                    `<span class="info-label">a⃗ · b⃗:</span> ${formatNumber(dot)}`;
+            } else if (state.operation === 'scalar') {
+                const resX = state.scalar * state.ax;
+                const resY = state.scalar * state.ay;
+                document.getElementById('infoResult').innerHTML =
+                    `<span class="info-label">${formatNumber(state.scalar)} · a⃗:</span> (${formatNumber(resX)}|${formatNumber(resY)})`;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('sliderAx').addEventListener('input', (e) => {
+            state.ax = parseFloat(e.target.value);
+            document.getElementById('valueAx').textContent = formatNumber(state.ax);
+            updateInfo();
+            draw();
+        });
+
+        document.getElementById('sliderAy').addEventListener('input', (e) => {
+            state.ay = parseFloat(e.target.value);
+            document.getElementById('valueAy').textContent = formatNumber(state.ay);
+            updateInfo();
+            draw();
+        });
+
+        document.getElementById('sliderBx').addEventListener('input', (e) => {
+            state.bx = parseFloat(e.target.value);
+            document.getElementById('valueBx').textContent = formatNumber(state.bx);
+            updateInfo();
+            draw();
+        });
+
+        document.getElementById('sliderBy').addEventListener('input', (e) => {
+            state.by = parseFloat(e.target.value);
+            document.getElementById('valueBy').textContent = formatNumber(state.by);
+            updateInfo();
+            draw();
+        });
+
+        document.getElementById('sliderScalar').addEventListener('input', (e) => {
+            state.scalar = parseFloat(e.target.value);
+            document.getElementById('valueScalar').textContent = formatNumber(state.scalar);
+            updateInfo();
+            draw();
+        });
+
+        document.getElementById('operationSelect').addEventListener('change', (e) => {
+            state.operation = e.target.value;
+
+            // Show/hide scalar slider
+            const scalarSection = document.getElementById('scalarSection');
+            if (state.operation === 'scalar') {
+                scalarSection.style.display = 'block';
+            } else {
+                scalarSection.style.display = 'none';
+            }
+
+            updateInfo();
+            draw();
+        });
+
+        // Resize handler
+        function handleResize() {
+            setTimeout(() => {
+                initializeCanvas();
+            }, 50);
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        // Initialize
+        initializeCanvas();
+        updateInfo();
+    </script>
+</body>
+</html>

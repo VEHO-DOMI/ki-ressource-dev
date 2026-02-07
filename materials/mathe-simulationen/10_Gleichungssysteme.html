@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lineare Gleichungssysteme – Grafische Lösung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a103d 50%, #2d1060 100%);
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 8px 12px;
+            gap: 6px;
+        }
+
+        .header {
+            max-height: 36px;
+            text-align: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #00e5ff;
+            margin-bottom: 2px;
+        }
+
+        .header p {
+            font-size: 0.7em;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .canvas-wrapper {
+            flex: 1;
+            min-height: 0;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .controls-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+            max-height: 105px;
+            overflow-y: auto;
+        }
+
+        .equation-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 6px;
+            align-items: center;
+            font-size: 0.7em;
+            flex-wrap: wrap;
+        }
+
+        .equation-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .equation-label {
+            font-weight: 600;
+            color: #00e5ff;
+            white-space: nowrap;
+            min-width: 80px;
+            font-size: 0.65em;
+        }
+
+        .equation-label.eq2 {
+            color: #ff6b6b;
+        }
+
+        .slider-group {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            min-width: fit-content;
+        }
+
+        .slider-label {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.65em;
+            min-width: 18px;
+        }
+
+        input[type="range"] {
+            width: 60px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+            accent-color: #00e5ff;
+        }
+
+        input[type="range"]:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .slider-value {
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.65em;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        .preset-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
+        .preset-label {
+            font-weight: 600;
+            color: #7c4dff;
+            font-size: 0.65em;
+            min-width: 50px;
+        }
+
+        select {
+            padding: 3px 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.65em;
+            font-family: 'Inter', sans-serif;
+        }
+
+        select:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .info-display {
+            background: rgba(124, 77, 255, 0.1);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            border-radius: 6px;
+            padding: 6px 8px;
+            font-size: 0.7em;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .info-line {
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+
+        .solution-label {
+            color: #ffd93d;
+            font-weight: 600;
+        }
+
+        .determinant-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.65em;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lineare Gleichungssysteme</h1>
+            <p>Grafische Lösung – 2×2 Systeme</p>
+        </div>
+
+        <div class="canvas-wrapper">
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="controls-section">
+            <div class="preset-row">
+                <label class="preset-label">Vorlagen:</label>
+                <select id="presetSelect">
+                    <option value="">-- Eigene Werte --</option>
+                    <option value="unique">Eindeutige Lösung</option>
+                    <option value="parallel">Parallele Geraden</option>
+                    <option value="identical">Identische Geraden</option>
+                </select>
+            </div>
+
+            <div class="equation-row">
+                <label class="equation-label">Gleichung I: a₁·x + b₁·y = c₁</label>
+                <div class="slider-group">
+                    <span class="slider-label">a₁:</span>
+                    <input type="range" id="a1" min="-5" max="5" step="0.5" value="2">
+                    <span class="slider-value" id="a1Val">2</span>
+                </div>
+                <div class="slider-group">
+                    <span class="slider-label">b₁:</span>
+                    <input type="range" id="b1" min="-5" max="5" step="0.5" value="1">
+                    <span class="slider-value" id="b1Val">1</span>
+                </div>
+                <div class="slider-group">
+                    <span class="slider-label">c₁:</span>
+                    <input type="range" id="c1" min="-10" max="10" step="0.5" value="4">
+                    <span class="slider-value" id="c1Val">4</span>
+                </div>
+            </div>
+
+            <div class="equation-row">
+                <label class="equation-label eq2">Gleichung II: a₂·x + b₂·y = c₂</label>
+                <div class="slider-group">
+                    <span class="slider-label">a₂:</span>
+                    <input type="range" id="a2" min="-5" max="5" step="0.5" value="1">
+                    <span class="slider-value" id="a2Val">1</span>
+                </div>
+                <div class="slider-group">
+                    <span class="slider-label">b₂:</span>
+                    <input type="range" id="b2" min="-5" max="5" step="0.5" value="-1">
+                    <span class="slider-value" id="b2Val">-1</span>
+                </div>
+                <div class="slider-group">
+                    <span class="slider-label">c₂:</span>
+                    <input type="range" id="c2" min="-10" max="10" step="0.5" value="1">
+                    <span class="slider-value" id="c2Val">1</span>
+                </div>
+            </div>
+
+            <div class="info-display">
+                <div class="info-line" id="eq1Display">2x + 1y = 4</div>
+                <div class="info-line" id="eq2Display">1x - 1y = 1</div>
+                <div class="info-line" id="statusDisplay">Eindeutige Lösung</div>
+                <div class="info-line" id="solutionDisplay"><span class="solution-label">Lösung: x = 1,67 | y = 0,67</span></div>
+                <div class="info-line"><span class="determinant-label" id="determinantDisplay">D = 2,5</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========================
+        // CONFIGURATION
+        // ========================
+        const config = {
+            accentCyan: '#00e5ff',
+            accentRed: '#ff6b6b',
+            accentYellow: '#ffd93d',
+            accentViolet: '#7c4dff',
+            coordMin: -10,
+            coordMax: 10,
+            gridStep: 1,
+            paddingLeft: 50,
+            paddingRight: 30,
+            paddingTop: 20,
+            paddingBottom: 35,
+            lineWidth: 2.5,
+            dotRadius: 6,
+            epsilon: 1e-6
+        };
+
+        // ========================
+        // STATE MANAGEMENT
+        // ========================
+        const state = {
+            a1: 2, b1: 1, c1: 4,
+            a2: 1, b2: -1, c2: 1,
+            canvas: null,
+            ctx: null,
+            dpr: 1
+        };
+
+        // ========================
+        // UTILITY FUNCTIONS
+        // ========================
+        function formatNumber(num, decimals = 2) {
+            // Austrian format: comma as decimal separator
+            const str = Math.abs(num) < 0.01 ? num.toFixed(2) : num.toFixed(decimals);
+            return str.replace('.', ',');
+        }
+
+        function abs(x) {
+            return x < 0 ? -x : x;
+        }
+
+        function isZero(x) {
+            return abs(x) < config.epsilon;
+        }
+
+        // ========================
+        // EQUATION SYSTEM SOLVER
+        // ========================
+        function solveSystem(a1, b1, c1, a2, b2, c2) {
+            const D = a1 * b2 - a2 * b1;
+
+            if (isZero(D)) {
+                // Lines are parallel or identical
+                if (isZero(b1) && isZero(b2)) {
+                    // Both vertical
+                    if (isZero(a1) || isZero(a2)) return { type: 'infinite' };
+                    const x1 = c1 / a1;
+                    const x2 = c2 / a2;
+                    if (isZero(x1 - x2)) return { type: 'infinite' };
+                    return { type: 'parallel' };
+                }
+
+                if (isZero(b1)) {
+                    // Line 1 vertical
+                    const x1 = c1 / a1;
+                    const y1 = (c2 - a2 * x1) / b2;
+                    return { type: 'unique', x: x1, y: y1, D };
+                }
+
+                if (isZero(b2)) {
+                    // Line 2 vertical
+                    const x2 = c2 / a2;
+                    const y2 = (c1 - a1 * x2) / b1;
+                    return { type: 'unique', x: x2, y: y2, D };
+                }
+
+                // Check if identical
+                const slope1 = -a1 / b1;
+                const slope2 = -a2 / b2;
+                const intercept1 = c1 / b1;
+                const intercept2 = c2 / b2;
+
+                if (isZero(slope1 - slope2) && isZero(intercept1 - intercept2)) {
+                    return { type: 'infinite' };
+                }
+
+                return { type: 'parallel' };
+            }
+
+            // Unique solution (Cramer's rule)
+            const x = (c1 * b2 - c2 * b1) / D;
+            const y = (a1 * c2 - a2 * c1) / D;
+            return { type: 'unique', x, y, D };
+        }
+
+        // ========================
+        // CANVAS UTILITY
+        // ========================
+        function getCanvasCoords() {
+            const canvas = state.canvas;
+            const dpr = state.dpr;
+            const w = canvas.offsetWidth * dpr;
+            const h = canvas.offsetHeight * dpr;
+
+            const left = config.paddingLeft;
+            const right = w - config.paddingRight;
+            const top = config.paddingTop;
+            const bottom = h - config.paddingBottom;
+
+            const graphWidth = right - left;
+            const graphHeight = bottom - top;
+
+            return {
+                canvas: { w, h },
+                graph: { left, right, top, bottom, width: graphWidth, height: graphHeight },
+                scale: {
+                    x: graphWidth / (config.coordMax - config.coordMin),
+                    y: graphHeight / (config.coordMax - config.coordMin)
+                }
+            };
+        }
+
+        function toCanvasX(x, coords) {
+            return coords.graph.left + (x - config.coordMin) * coords.scale.x;
+        }
+
+        function toCanvasY(y, coords) {
+            // Flip Y axis (canvas Y increases downward)
+            return coords.graph.bottom - (y - config.coordMin) * coords.scale.y;
+        }
+
+        function fromCanvasX(cx, coords) {
+            return config.coordMin + (cx - coords.graph.left) / coords.scale.x;
+        }
+
+        function fromCanvasY(cy, coords) {
+            return config.coordMax - (cy - coords.graph.top) / coords.scale.y;
+        }
+
+        // ========================
+        // DRAWING FUNCTIONS
+        // ========================
+        function drawGrid(ctx, coords) {
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+            ctx.lineWidth = 1;
+
+            for (let i = config.coordMin; i <= config.coordMax; i += config.gridStep) {
+                if (i === 0) continue;
+
+                // Vertical lines
+                const x = toCanvasX(i, coords);
+                ctx.beginPath();
+                ctx.moveTo(x, coords.graph.top);
+                ctx.lineTo(x, coords.graph.bottom);
+                ctx.stroke();
+
+                // Horizontal lines
+                const y = toCanvasY(i, coords);
+                ctx.beginPath();
+                ctx.moveTo(coords.graph.left, y);
+                ctx.lineTo(coords.graph.right, y);
+                ctx.stroke();
+            }
+
+            // Axes
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 1.5;
+
+            // X-axis
+            const yZero = toCanvasY(0, coords);
+            ctx.beginPath();
+            ctx.moveTo(coords.graph.left, yZero);
+            ctx.lineTo(coords.graph.right, yZero);
+            ctx.stroke();
+
+            // Y-axis
+            const xZero = toCanvasX(0, coords);
+            ctx.beginPath();
+            ctx.moveTo(xZero, coords.graph.top);
+            ctx.lineTo(xZero, coords.graph.bottom);
+            ctx.stroke();
+
+            // Axis labels
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.font = '10px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+
+            for (let i = -10; i <= 10; i += 2) {
+                if (i === 0) continue;
+                const x = toCanvasX(i, coords);
+                ctx.fillText(i.toString(), x, yZero + 3);
+            }
+
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for (let i = -10; i <= 10; i += 2) {
+                if (i === 0) continue;
+                const y = toCanvasY(i, coords);
+                ctx.fillText(i.toString(), xZero - 5, y);
+            }
+
+            // Origin
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.font = 'bold 10px Inter, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'top';
+            ctx.fillText('0', xZero - 4, yZero + 2);
+        }
+
+        function drawLine(ctx, a, b, c, color, coords) {
+            // a*x + b*y = c
+            ctx.strokeStyle = color;
+            ctx.lineWidth = config.lineWidth;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Apply glow effect
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 8;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
+            ctx.beginPath();
+
+            if (isZero(b)) {
+                // Vertical line: x = c/a
+                const x = c / a;
+                const cx = toCanvasX(x, coords);
+                ctx.moveTo(cx, coords.graph.top);
+                ctx.lineTo(cx, coords.graph.bottom);
+            } else {
+                // y = (c - a*x) / b
+                const x1 = config.coordMin;
+                const x2 = config.coordMax;
+                const y1 = (c - a * x1) / b;
+                const y2 = (c - a * x2) / b;
+
+                const cx1 = toCanvasX(x1, coords);
+                const cy1 = toCanvasY(y1, coords);
+                const cx2 = toCanvasX(x2, coords);
+                const cy2 = toCanvasY(y2, coords);
+
+                ctx.moveTo(cx1, cy1);
+                ctx.lineTo(cx2, cy2);
+            }
+
+            ctx.stroke();
+            ctx.shadowColor = 'transparent';
+        }
+
+        function drawEquationLabel(ctx, a, b, c, color, side, coords) {
+            ctx.fillStyle = color;
+            ctx.font = 'bold 10px Inter, sans-serif';
+            ctx.textAlign = side === 'left' ? 'left' : 'right';
+            ctx.textBaseline = 'bottom';
+
+            let labelX, labelY;
+
+            if (isZero(b)) {
+                const x = c / a;
+                const cx = toCanvasX(x, coords);
+                labelX = side === 'left' ? cx + 5 : cx - 5;
+                labelY = coords.graph.top + 15;
+            } else {
+                const y = (c - a * config.coordMax) / b;
+                const cx = toCanvasX(config.coordMax, coords);
+                const cy = toCanvasY(y, coords);
+                labelX = side === 'left' ? coords.graph.left + 8 : coords.graph.right - 8;
+                labelY = side === 'left' ? coords.graph.top + 12 : coords.graph.bottom - 8;
+            }
+
+            const eq = `${a.toFixed(1)}x + ${b.toFixed(1)}y = ${c.toFixed(1)}`;
+            ctx.fillText(eq, labelX, labelY);
+        }
+
+        function drawIntersection(ctx, x, y, coords, solution) {
+            const cx = toCanvasX(x, coords);
+            const cy = toCanvasY(y, coords);
+
+            // Yellow dot
+            ctx.fillStyle = config.accentYellow;
+            ctx.shadowColor = config.accentYellow;
+            ctx.shadowBlur = 12;
+            ctx.beginPath();
+            ctx.arc(cx, cy, config.dotRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowColor = 'transparent';
+
+            // Label
+            ctx.fillStyle = config.accentYellow;
+            ctx.font = 'bold 10px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            const label = `(${formatNumber(x)}|${formatNumber(y)})`;
+            ctx.fillText(label, cx, cy - config.dotRadius - 4);
+        }
+
+        function drawLegend(ctx, coords) {
+            const legendX = coords.graph.right - 120;
+            const legendY = coords.graph.top + 8;
+            const lineLen = 20;
+
+            ctx.font = '9px Inter, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+
+            // Equation I (cyan)
+            ctx.strokeStyle = config.accentCyan;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(legendX, legendY);
+            ctx.lineTo(legendX + lineLen, legendY);
+            ctx.stroke();
+            ctx.fillStyle = config.accentCyan;
+            ctx.fillText('Gleichung I', legendX + lineLen + 6, legendY);
+
+            // Equation II (red)
+            ctx.strokeStyle = config.accentRed;
+            ctx.beginPath();
+            ctx.moveTo(legendX, legendY + 14);
+            ctx.lineTo(legendX + lineLen, legendY + 14);
+            ctx.stroke();
+            ctx.fillStyle = config.accentRed;
+            ctx.fillText('Gleichung II', legendX + lineLen + 6, legendY + 14);
+        }
+
+        // ========================
+        // MAIN RENDER FUNCTION
+        // ========================
+        function render() {
+            const canvas = state.canvas;
+            const ctx = state.ctx;
+            const dpr = state.dpr;
+
+            const coords = getCanvasCoords();
+            const w = coords.canvas.w;
+            const h = coords.canvas.h;
+
+            // Clear canvas
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.01)';
+            ctx.fillRect(0, 0, w, h);
+
+            // Draw grid and axes
+            drawGrid(ctx, coords);
+
+            // Get solution
+            const { a1, b1, c1, a2, b2, c2 } = state;
+            const solution = solveSystem(a1, b1, c1, a2, b2, c2);
+
+            // Draw lines
+            drawLine(ctx, a1, b1, c1, config.accentCyan, coords);
+            drawLine(ctx, a2, b2, c2, config.accentRed, coords);
+
+            // Draw equation labels
+            drawEquationLabel(ctx, a1, b1, c1, config.accentCyan, 'left', coords);
+            drawEquationLabel(ctx, a2, b2, c2, config.accentRed, 'right', coords);
+
+            // Draw intersection if unique solution
+            if (solution.type === 'unique') {
+                drawIntersection(ctx, solution.x, solution.y, coords, solution);
+            }
+
+            // Draw legend
+            drawLegend(ctx, coords);
+
+            // Update info display
+            updateInfo(solution);
+        }
+
+        function updateInfo(solution) {
+            const { a1, b1, c1, a2, b2, c2 } = state;
+
+            // Equations
+            document.getElementById('eq1Display').textContent =
+                `${a1.toFixed(1)}x + ${b1.toFixed(1)}y = ${c1.toFixed(1)}`;
+            document.getElementById('eq2Display').textContent =
+                `${a2.toFixed(1)}x + ${b2.toFixed(1)}y = ${c2.toFixed(1)}`;
+
+            // Determinant
+            const D = a1 * b2 - a2 * b1;
+            document.getElementById('determinantDisplay').textContent =
+                `D = ${formatNumber(D)}`;
+
+            // Status and solution
+            const statusEl = document.getElementById('statusDisplay');
+            const solutionEl = document.getElementById('solutionDisplay');
+
+            if (solution.type === 'unique') {
+                statusEl.textContent = 'Eindeutige Lösung';
+                solutionEl.innerHTML =
+                    `<span class="solution-label">Lösung: x = ${formatNumber(solution.x)} | y = ${formatNumber(solution.y)}</span>`;
+            } else if (solution.type === 'parallel') {
+                statusEl.textContent = 'Parallele Geraden – keine Lösung';
+                solutionEl.textContent = '';
+            } else if (solution.type === 'infinite') {
+                statusEl.textContent = 'Identische Geraden – ∞ Lösungen';
+                solutionEl.textContent = '';
+            }
+        }
+
+        // ========================
+        // EVENT HANDLERS
+        // ========================
+        function setupSliders() {
+            const sliders = ['a1', 'b1', 'c1', 'a2', 'b2', 'c2'];
+
+            sliders.forEach(id => {
+                const slider = document.getElementById(id);
+                const display = document.getElementById(id + 'Val');
+
+                slider.addEventListener('input', (e) => {
+                    const value = parseFloat(e.target.value);
+                    state[id] = value;
+                    display.textContent = formatNumber(value, 1);
+                    render();
+                });
+            });
+        }
+
+        function setupPresets() {
+            const select = document.getElementById('presetSelect');
+
+            select.addEventListener('change', (e) => {
+                const value = e.target.value;
+
+                if (value === 'unique') {
+                    state.a1 = 2; state.b1 = 1; state.c1 = 4;
+                    state.a2 = 1; state.b2 = -1; state.c2 = 1;
+                } else if (value === 'parallel') {
+                    state.a1 = 2; state.b1 = 1; state.c1 = 4;
+                    state.a2 = 2; state.b2 = 1; state.c2 = 2;
+                } else if (value === 'identical') {
+                    state.a1 = 2; state.b1 = 1; state.c1 = 4;
+                    state.a2 = 4; state.b2 = 2; state.c2 = 8;
+                }
+
+                // Update sliders and displays
+                updateSliderUI();
+                render();
+            });
+        }
+
+        function updateSliderUI() {
+            const sliders = ['a1', 'b1', 'c1', 'a2', 'b2', 'c2'];
+
+            sliders.forEach(id => {
+                const slider = document.getElementById(id);
+                const display = document.getElementById(id + 'Val');
+                const value = state[id];
+                slider.value = value;
+                display.textContent = formatNumber(value, 1);
+            });
+        }
+
+        // ========================
+        // CANVAS SETUP
+        // ========================
+        function setupCanvas() {
+            const wrapper = document.querySelector('.canvas-wrapper');
+            const canvas = document.getElementById('canvas');
+            state.canvas = canvas;
+            state.ctx = canvas.getContext('2d');
+
+            state.dpr = window.devicePixelRatio || 1;
+
+            function resizeCanvas() {
+                const rect = wrapper.getBoundingClientRect();
+                canvas.width = rect.width * state.dpr;
+                canvas.height = rect.height * state.dpr;
+                state.ctx.scale(state.dpr, state.dpr);
+                render();
+            }
+
+            resizeCanvas();
+            window.addEventListener('resize', () => {
+                setTimeout(resizeCanvas, 50);
+            });
+        }
+
+        // ========================
+        // INITIALIZATION
+        // ========================
+        function init() {
+            setupCanvas();
+            setupSliders();
+            setupPresets();
+            render();
+        }
+
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

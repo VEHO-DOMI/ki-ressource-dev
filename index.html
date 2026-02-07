@@ -1415,6 +1415,20 @@
                     <a href="#sim-gw-09" class="nav-sub-subitem">Höhenstufen</a>
                     <a href="#sim-gw-10" class="nav-sub-subitem">Welthandelsströme</a>
                 </div>
+                <span class="nav-category">MATHEMATIK</span>
+                <a href="#" class="nav-subitem" data-section="suspraxis" data-subsection="4.5">4.5 Mathe-Simulationen</a>
+                <div class="nav-sub-subitems">
+                    <a href="#sim-mathe-01" class="nav-sub-subitem">Brüche Visualisieren</a>
+                    <a href="#sim-mathe-02" class="nav-sub-subitem">Koordinatensystem</a>
+                    <a href="#sim-mathe-03" class="nav-sub-subitem">Transformationen</a>
+                    <a href="#sim-mathe-04" class="nav-sub-subitem">Wahrscheinlichkeit</a>
+                    <a href="#sim-mathe-05" class="nav-sub-subitem">Funktionstypen</a>
+                    <a href="#sim-mathe-06" class="nav-sub-subitem">Vektorrechnung</a>
+                    <a href="#sim-mathe-07" class="nav-sub-subitem">Differentialrechnung</a>
+                    <a href="#sim-mathe-08" class="nav-sub-subitem">Integralrechnung</a>
+                    <a href="#sim-mathe-09" class="nav-sub-subitem">Normalverteilung</a>
+                    <a href="#sim-mathe-10" class="nav-sub-subitem">Gleichungssysteme</a>
+                </div>
             </div>
 
             <a href="#" class="nav-item placeholder" data-section="beurteilung">
@@ -10286,7 +10300,236 @@ TON: [TON: z.B. spielerisch und leicht, da Themenabschluss / ernst und wissensch
                 </div>
             </div>
 
-            <!-- 4.5 GESCHICHTE & POLITISCHE BILDUNG (hidden – HTML files kept in materials/gpb-simulationen/ for later) -->
+            <!-- 4.5 MATHEMATIK -->
+            <div class="collapsible" id="mathe-section">
+                <div class="collapsible-header">
+                    <h3>4.5 Mathematik – Interaktive Simulationen</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <!-- Ausklappbare Einführung -->
+                        <div class="intro-collapsible">
+                            <div class="intro-collapsible-header" onclick="this.parentElement.classList.toggle('open')">
+                                <span>📋 Übersicht & Verwendungshinweise (10 Simulationen)</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="intro-collapsible-content">
+                                <div class="intro-collapsible-inner">
+                                    <p>Diese Sammlung enthält <strong>10 interaktive Mathematik-Simulationen</strong>, die vollständig mit KI (Claude) erstellt wurden. Sie decken zentrale Themen des österreichischen AHS-Lehrplans für Mathematik ab – von der 1. bis zur 8. Klasse, über alle vier Kompetenzbereiche (AG, FA, AN, WS).</p>
+
+                                    <div class="info-box" style="margin: 1rem 0;">
+                                        <strong>💡 Verwendung im Unterricht:</strong>
+                                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                            <li>Jede Simulation kann direkt im Browser verwendet werden</li>
+                                            <li>Parameter können live angepasst werden, um verschiedene Szenarien zu erkunden</li>
+                                            <li>Ideal für Demonstrationen am Beamer oder selbstständiges Experimentieren</li>
+                                            <li>Alle Simulationen sind offline-fähig und benötigen keine Installation</li>
+                                            <li>Lehrplanbezug: BGBl. II Nr. 1/2023 (Unterstufe) und BGBl. II Nr. 219/2016 (Oberstufe)</li>
+                                        </ul>
+                                    </div>
+
+                                    <table class="comparison-table" style="margin: 1rem 0;">
+                                        <thead>
+                                            <tr>
+                                                <th>Nr.</th>
+                                                <th>Simulation</th>
+                                                <th>Klasse</th>
+                                                <th>Kompetenzbereich</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>1</td><td>Brüche Visualisieren</td><td>1./2. Kl.</td><td>Rechnen & Operieren</td></tr>
+                                            <tr><td>2</td><td>Koordinatensystem & Funktionen</td><td>2./3. Kl.</td><td>Darstellen & Modellbilden (FA)</td></tr>
+                                            <tr><td>3</td><td>Geometrische Transformationen</td><td>3./4. Kl.</td><td>Algebra & Geometrie (AG)</td></tr>
+                                            <tr><td>4</td><td>Wahrscheinlichkeit & Zufall</td><td>4. Kl.</td><td>Wahrscheinlichkeit & Statistik (WS)</td></tr>
+                                            <tr><td>5</td><td>Funktionstypen im Vergleich</td><td>5./6. Kl.</td><td>Funktionale Abhängigkeiten (FA)</td></tr>
+                                            <tr><td>6</td><td>Vektorrechnung 2D</td><td>5./6. Kl.</td><td>Algebra & Geometrie (AG)</td></tr>
+                                            <tr><td>7</td><td>Differentialrechnung</td><td>7. Kl.</td><td>Analysis (AN)</td></tr>
+                                            <tr><td>8</td><td>Integralrechnung</td><td>7./8. Kl.</td><td>Analysis (AN)</td></tr>
+                                            <tr><td>9</td><td>Normalverteilung & Statistik</td><td>8. Kl.</td><td>Wahrscheinlichkeit & Statistik (WS)</td></tr>
+                                            <tr><td>10</td><td>Lineare Gleichungssysteme</td><td>5./6. Kl.</td><td>Algebra & Geometrie (AG)</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 1. Brüche Visualisieren -->
+                        <div class="sub-collapsible" id="sim-mathe-01">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <h4>Brüche Visualisieren</h4>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <p><strong>Schulstufe:</strong> 1./2. Klasse | <strong>Thema:</strong> Bruchrechnung – Rechnen & Operieren</p>
+                                <p>Interaktive Bruchdarstellung mit drei gleichzeitigen Visualisierungen: Tortendiagramm, Bruchbalken und Zahlenstrahl. Brüche können erweitert, gekürzt und miteinander verrechnet (Addition, Subtraktion) werden – alle Darstellungen aktualisieren sich in Echtzeit.</p>
+                                <div class="simulation-container" style="margin-top: 1rem;">
+                                    <iframe src="materials/mathe-simulationen/01_Brueche_Visualisieren.html"
+                                            style="width: 100%; height: 700px; border: 2px solid #7c4dff; border-radius: 8px;"
+                                            loading="lazy"></iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Koordinatensystem -->
+                        <div class="sub-collapsible" id="sim-mathe-02">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <h4>Koordinatensystem & Funktionen</h4>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <p><strong>Schulstufe:</strong> 2./3. Klasse | <strong>Thema:</strong> Funktionaler Zusammenhang – Darstellen & Modellbilden</p>
+                                <p>Interaktives Koordinatensystem zum Plotten von Punkten und Erkunden linearer Funktionen. Steigung (k) und Achsenabschnitt (d) können mit Schiebereglern eingestellt werden. Das Steigungsdreieck macht den Zusammenhang zwischen Δy und Δx sichtbar.</p>
+                                <div class="simulation-container" style="margin-top: 1rem;">
+                                    <iframe src="materials/mathe-simulationen/02_Koordinatensystem.html"
+                                            style="width: 100%; height: 700px; border: 2px solid #7c4dff; border-radius: 8px;"
+                                            loading="lazy"></iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Geometrische Transformationen -->
+                        <div class="sub-collapsible" id="sim-mathe-03">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <h4>Geometrische Transformationen</h4>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <p><strong>Schulstufe:</strong> 3./4. Klasse | <strong>Thema:</strong> Geometrie – Spiegelung, Drehung, Verschiebung, Skalierung</p>
+                                <p>Verschiedene geometrische Figuren (Dreieck, Quadrat, L-Form, Pfeil) können mit vier Transformationstypen bearbeitet werden. Die Originalfigur und das transformierte Bild werden gleichzeitig angezeigt, mit optionaler Animation des Transformationsprozesses.</p>
+                                <div class="simulation-container" style="margin-top: 1rem;">
+                                    <iframe src="materials/mathe-simulationen/03_Geometrische_Transformationen.html"
+                                            style="width: 100%; height: 700px; border: 2px solid #7c4dff; border-radius: 8px;"
+                                            loading="lazy"></iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Wahrscheinlichkeit -->
+                        <div class="sub-collapsible" id="sim-mathe-04">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <h4>Wahrscheinlichkeit & Zufall</h4>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <p><strong>Schulstufe:</strong> 4. Klasse | <strong>Thema:</strong> Wahrscheinlichkeit & Statistik – Gesetz der großen Zahlen</p>
+                                <p>Würfel- und Münzwurf-Simulation mit Häufigkeitsdiagramm und Konvergenz-Darstellung. Zeigt anschaulich, wie sich die relative Häufigkeit mit zunehmender Anzahl an Versuchen der theoretischen Wahrscheinlichkeit annähert. Einzel-, Serien- und Auto-Modus verfügbar.</p>
+                                <div class="simulation-container" style="margin-top: 1rem;">
+                                    <iframe src="materials/mathe-simulationen/04_Wahrscheinlichkeit.html"
+                                            style="width: 100%; height: 700px; border: 2px solid #7c4dff; border-radius: 8px;"
+                                            loading="lazy"></iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 5. Funktionstypen -->
+                        <div class="sub-collapsible" id="sim-mathe-05">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <h4>Funktionstypen im Vergleich</h4>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <p><strong>Schulstufe:</strong> 5./6. Klasse | <strong>Thema:</strong> Funktionale Abhängigkeiten – Funktionstypen & Parameter</p>
+                                <p>Vier Funktionstypen (linear, quadratisch, exponentiell, trigonometrisch) können gleichzeitig im selben Koordinatensystem dargestellt werden. Alle Parameter sind per Schieberegler einstellbar – ideal zum Vergleich des Verhaltens verschiedener Funktionsfamilien.</p>
+                                <div class="simulation-container" style="margin-top: 1rem;">
+                                    <iframe src="materials/mathe-simulationen/05_Funktionstypen.html"
+                                            style="width: 100%; height: 700px; border: 2px solid #7c4dff; border-radius: 8px;"
+                                            loading="lazy"></iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 6. Vektorrechnung -->
+                        <div class="sub-collapsible" id="sim-mathe-06">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <h4>Vektorrechnung 2D</h4>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <p><strong>Schulstufe:</strong> 5./6. Klasse | <strong>Thema:</strong> Algebra & Geometrie – Vektoren im ℝ²</p>
+                                <p>Zwei Vektoren können frei eingestellt und mit vier Operationen verknüpft werden: Addition (Parallelogrammregel), Subtraktion, Skalarprodukt (mit Winkelberechnung und Projektion) und Skalarmultiplikation. Alle Ergebnisse werden grafisch und numerisch angezeigt.</p>
+                                <div class="simulation-container" style="margin-top: 1rem;">
+                                    <iframe src="materials/mathe-simulationen/06_Vektorrechnung.html"
+                                            style="width: 100%; height: 700px; border: 2px solid #7c4dff; border-radius: 8px;"
+                                            loading="lazy"></iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 7. Differentialrechnung -->
+                        <div class="sub-collapsible" id="sim-mathe-07">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <h4>Differentialrechnung</h4>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <p><strong>Schulstufe:</strong> 7. Klasse | <strong>Thema:</strong> Analysis – Von der Sekante zur Tangente</p>
+                                <p>Zwei verknüpfte Graphen zeigen f(x) und f'(x) gleichzeitig. Der h-Regler lässt die Sekante zur Tangente werden – der zentrale Grenzübergang der Differentialrechnung wird live erlebbar. Sechs Grundfunktionen (Parabel, kubisch, Sinus, eˣ, ln, 1/x) stehen zur Wahl.</p>
+                                <div class="simulation-container" style="margin-top: 1rem;">
+                                    <iframe src="materials/mathe-simulationen/07_Differentialrechnung.html"
+                                            style="width: 100%; height: 700px; border: 2px solid #7c4dff; border-radius: 8px;"
+                                            loading="lazy"></iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 8. Integralrechnung -->
+                        <div class="sub-collapsible" id="sim-mathe-08">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <h4>Integralrechnung</h4>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <p><strong>Schulstufe:</strong> 7./8. Klasse | <strong>Thema:</strong> Analysis – Riemannsche Summen & Flächenberechnung</p>
+                                <p>Riemannsche Summen mit einstellbarer Streifenanzahl (1–100) zeigen, wie die Approximation gegen den exakten Integralwert konvergiert. Drei Methoden (Ober-, Untersumme, Mittelpunktsregel) und fünf Funktionen stehen zur Verfügung. Der Fehler wird in Echtzeit berechnet.</p>
+                                <div class="simulation-container" style="margin-top: 1rem;">
+                                    <iframe src="materials/mathe-simulationen/08_Integralrechnung.html"
+                                            style="width: 100%; height: 700px; border: 2px solid #7c4dff; border-radius: 8px;"
+                                            loading="lazy"></iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 9. Normalverteilung -->
+                        <div class="sub-collapsible" id="sim-mathe-09">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <h4>Normalverteilung & Statistik</h4>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <p><strong>Schulstufe:</strong> 8. Klasse | <strong>Thema:</strong> Wahrscheinlichkeit & Statistik – Gaußsche Glockenkurve</p>
+                                <p>Interaktive Normalverteilung mit einstellbarem Erwartungswert (μ) und Standardabweichung (σ). Drei Modi: Fläche berechnen (P-Wert zwischen zwei Grenzen), 68-95-99,7-Regel visualisieren, und z-Wert berechnen. Optional wird die Standardnormalverteilung als Referenzkurve eingeblendet.</p>
+                                <div class="simulation-container" style="margin-top: 1rem;">
+                                    <iframe src="materials/mathe-simulationen/09_Normalverteilung.html"
+                                            style="width: 100%; height: 700px; border: 2px solid #7c4dff; border-radius: 8px;"
+                                            loading="lazy"></iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 10. Gleichungssysteme -->
+                        <div class="sub-collapsible" id="sim-mathe-10">
+                            <div class="sub-collapsible-header" onclick="toggleSubCollapsible(this)">
+                                <h4>Lineare Gleichungssysteme</h4>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="sub-collapsible-content">
+                                <p><strong>Schulstufe:</strong> 5./6. Klasse | <strong>Thema:</strong> Algebra & Geometrie – Grafische Lösung von 2×2 Systemen</p>
+                                <p>Zwei lineare Gleichungen werden als Geraden im Koordinatensystem dargestellt. Der Schnittpunkt (falls vorhanden) ist die Lösung des Systems. Alle drei Fälle – eindeutige Lösung, parallele Geraden (keine Lösung), identische Geraden (unendlich viele Lösungen) – werden automatisch erkannt und erklärt.</p>
+                                <div class="simulation-container" style="margin-top: 1rem;">
+                                    <iframe src="materials/mathe-simulationen/10_Gleichungssysteme.html"
+                                            style="width: 100%; height: 700px; border: 2px solid #7c4dff; border-radius: 8px;"
+                                            loading="lazy"></iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- GPB SECTION (hidden – HTML files kept in materials/gpb-simulationen/ for later) -->
 
         </section>
 
