@@ -10877,19 +10877,11 @@ TON: [TON: z.B. spielerisch und leicht, da Themenabschluss / ernst und wissensch
         });
     </script>
 
-<!-- ===== CARD GRID + MODAL v5 (flexbox + modal content fix) ===== -->
-<style id="card-modal-v5">
+<!-- ===== CARD GRID + MODAL v6 (inline toggle fix) ===== -->
+<style id="card-modal-v6">
 /* === Parent section: flexbox layout for 3-column grid === */
-.section {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: stretch !important;
-  gap: 10px !important;
-}
-.section > *:not(.collapsible) {
-  flex: 0 0 100% !important;
-  width: 100% !important;
-}
+.section { display: flex !important; flex-wrap: wrap !important; align-items: stretch !important; gap: 10px !important; }
+.section > *:not(.collapsible) { flex: 0 0 100% !important; width: 100% !important; }
 
 /* === Cleaner background === */
 body { background: #0c0e1a !important; background-image: none !important; }
@@ -10905,47 +10897,30 @@ body::before, body::after { display: none !important; }
 .section-title::after { background: linear-gradient(90deg,rgba(0,180,220,0.5),transparent) !important; box-shadow: none !important; }
 .info-box { border-color: rgba(0,180,220,0.18) !important; background: rgba(0,180,220,0.03) !important; box-shadow: none !important; }
 
-/* === Card tiles (collapsibles) === */
+/* === Card tiles === */
 .section .collapsible {
-  flex: 0 0 calc(33.333% - 8px) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  min-height: 110px !important;
-  max-height: 125px !important;
-  overflow: hidden !important;
-  cursor: pointer !important;
-  background: rgba(12,14,28,0.95) !important;
-  border: 1px solid rgba(0,180,220,0.13) !important;
-  border-radius: 8px !important;
+  flex: 0 0 calc(33.333% - 8px) !important; display: flex !important; flex-direction: column !important;
+  min-height: 110px !important; max-height: 125px !important; overflow: hidden !important;
+  cursor: pointer !important; background: rgba(12,14,28,0.95) !important;
+  border: 1px solid rgba(0,180,220,0.13) !important; border-radius: 8px !important;
   transition: border-color 0.25s, background 0.25s, transform 0.25s, box-shadow 0.25s !important;
-  box-shadow: none !important;
-  margin: 0 !important;
+  box-shadow: none !important; margin: 0 !important;
 }
 .section .collapsible:hover {
-  border-color: rgba(0,180,220,0.4) !important;
-  background: rgba(0,180,220,0.04) !important;
-  box-shadow: 0 2px 12px rgba(0,180,220,0.08) !important;
-  transform: translateY(-2px) !important;
+  border-color: rgba(0,180,220,0.4) !important; background: rgba(0,180,220,0.04) !important;
+  box-shadow: 0 2px 12px rgba(0,180,220,0.08) !important; transform: translateY(-2px) !important;
 }
-.section .collapsible .collapsible-header {
-  padding: 16px 18px !important;
-  display: flex !important;
-  align-items: flex-start !important;
-  min-height: 70px !important;
-}
+.section .collapsible .collapsible-header { padding: 16px 18px !important; display: flex !important; align-items: flex-start !important; min-height: 70px !important; }
 .section .collapsible .collapsible-header h3 {
-  font-size: 0.82rem !important;
-  line-height: 1.45 !important;
-  color: #5be0f0 !important;
-  text-shadow: none !important;
-  font-weight: 500 !important;
+  font-size: 0.82rem !important; line-height: 1.45 !important; color: #5be0f0 !important;
+  text-shadow: none !important; font-weight: 500 !important;
 }
 .section .collapsible .toggle-icon { display: none !important; }
 .section .collapsible .collapsible-content { display: none !important; }
 .section .collapsible.open .collapsible-content { display: none !important; }
 .section .collapsible.open { max-height: 125px !important; }
 
-/* === Modal overlay === */
+/* === Modal === */
 .card-modal-overlay {
   display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   background: rgba(8,10,22,0.95); backdrop-filter: blur(6px);
@@ -10967,109 +10942,87 @@ body::before, body::after { display: none !important; }
   display: flex; align-items: center; justify-content: center; z-index: 10001;
 }
 
-/* === CRITICAL: Override collapsible-content styles inside modal === */
-.card-modal-content .collapsible-content {
-  display: block !important;
-  max-height: none !important;
-  overflow: visible !important;
-  height: auto !important;
-  opacity: 1 !important;
-  padding: 0 !important;
-}
-.card-modal-content .collapsible-inner {
-  max-height: none !important;
-  overflow: visible !important;
-}
-
-/* === Sub-collapsibles inside modal === */
+/* === Sub-collapsible styling in modal === */
 .card-modal-content .sub-collapsible,
 .card-modal-content .intro-collapsible {
-  border: 1px solid rgba(0,180,220,0.12) !important;
-  border-radius: 6px !important;
-  margin-bottom: 6px !important;
-  background: rgba(15,17,38,0.7) !important;
-  box-shadow: none !important;
-  overflow: hidden !important;
+  border: 1px solid rgba(0,180,220,0.12) !important; border-radius: 6px !important;
+  margin-bottom: 6px !important; background: rgba(15,17,38,0.7) !important; box-shadow: none !important; overflow: hidden !important;
 }
 .card-modal-content .sub-collapsible-header,
 .card-modal-content .intro-collapsible-header {
-  padding: 12px 16px !important;
-  background: rgba(0,180,220,0.03) !important;
-  cursor: pointer;
+  padding: 12px 16px !important; background: rgba(0,180,220,0.03) !important; cursor: pointer;
 }
-.card-modal-content .sub-collapsible-header h4,
-.card-modal-content .sub-collapsible-header h3,
-.card-modal-content .intro-collapsible-header h4,
-.card-modal-content .intro-collapsible-header h3 {
-  color: #5be0f0 !important; font-size: 0.9rem !important;
-  text-shadow: none !important; font-weight: 500 !important;
-}
-/* Sub-collapsible content: collapsed by default */
-.card-modal-content .sub-collapsible-content,
-.card-modal-content .intro-collapsible-content {
-  max-height: 0 !important;
-  overflow: hidden !important;
-  transition: max-height 0.3s ease !important;
-}
-.card-modal-content .sub-collapsible.open .sub-collapsible-content,
-.card-modal-content .intro-collapsible.open .intro-collapsible-content {
-  max-height: 2000px !important;
-  overflow: visible !important;
+.card-modal-content .sub-collapsible-header h4, .card-modal-content .sub-collapsible-header h3,
+.card-modal-content .intro-collapsible-header h4, .card-modal-content .intro-collapsible-header h3 {
+  color: #5be0f0 !important; font-size: 0.9rem !important; text-shadow: none !important; font-weight: 500 !important;
 }
 
-/* Hide global controls */
 .global-controls { display: none !important; }
 
-/* === Responsive === */
 @media (max-width: 1200px) { .section .collapsible { flex: 0 0 calc(50% - 8px) !important; } }
 @media (max-width: 700px) { .section .collapsible { flex: 0 0 100% !important; } }
 </style>
 
 <script>
 (function(){
-  // Remove old styles
-  ['card-modal-v3','card-modal-v4'].forEach(id => { const el = document.getElementById(id); if(el) el.remove(); });
+  ['card-modal-v3','card-modal-v4','card-modal-v5'].forEach(function(id){ var el=document.getElementById(id); if(el) el.remove(); });
 
-  // Create modal overlay
-  let overlay = document.querySelector('.card-modal-overlay');
+  var overlay = document.querySelector('.card-modal-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.className = 'card-modal-overlay';
-    overlay.innerHTML = '<button class="card-modal-close">&times;</button><div class="card-modal-content"></div>';
+    overlay.innerHTML = '<button class="card-modal-close">\u00d7</button><div class="card-modal-content"></div>';
     document.body.appendChild(overlay);
   }
-  const modalContent = overlay.querySelector('.card-modal-content');
-  const closeBtn = overlay.querySelector('.card-modal-close');
+  var modalContent = overlay.querySelector('.card-modal-content');
+  var closeBtn = overlay.querySelector('.card-modal-close');
 
-  function openModal(collapsible) {
-    const content = collapsible.querySelector('.collapsible-content');
-    if (!content) return;
-    const clone = content.cloneNode(true);
-    clone.style.display = 'block';
-    clone.style.maxHeight = 'none';
-    clone.style.overflow = 'visible';
-    clone.style.height = 'auto';
-    // Also fix inner
-    const inner = clone.querySelector('.collapsible-inner');
-    if (inner) { inner.style.maxHeight = 'none'; inner.style.overflow = 'visible'; }
-    
-    // Re-enable sub-collapsible toggles
-    clone.querySelectorAll('.sub-collapsible-header, .intro-collapsible-header').forEach(h => {
+  function forceStyles(el, styles) {
+    for (var k in styles) el.style.setProperty(k, styles[k], 'important');
+  }
+
+  function setupSubToggles(container) {
+    var headers = container.querySelectorAll('.sub-collapsible-header, .intro-collapsible-header');
+    headers.forEach(function(h) {
+      var parent = h.closest('.sub-collapsible') || h.closest('.intro-collapsible');
+      if (!parent) return;
+      var contentEl = parent.querySelector('.sub-collapsible-content') || parent.querySelector('.intro-collapsible-content');
+      if (!contentEl) return;
+      // Start collapsed via inline styles
+      forceStyles(contentEl, {'max-height':'0px','overflow':'hidden','transition':'max-height 0.3s ease'});
       h.addEventListener('click', function(e) {
         e.stopPropagation();
-        const parent = this.closest('.sub-collapsible') || this.closest('.intro-collapsible');
-        if (parent) parent.classList.toggle('open');
+        var isOpen = parent.classList.contains('open');
+        if (isOpen) {
+          parent.classList.remove('open');
+          forceStyles(contentEl, {'max-height':'0px','overflow':'hidden'});
+        } else {
+          parent.classList.add('open');
+          forceStyles(contentEl, {'max-height':'5000px','overflow':'visible'});
+        }
       });
     });
+  }
+
+  function openModal(collapsible) {
+    var content = collapsible.querySelector('.collapsible-content');
+    if (!content) return;
+    var clone = content.cloneNode(true);
+    // Force content visible via inline styles
+    forceStyles(clone, {'display':'block','max-height':'none','overflow':'visible','height':'auto','opacity':'1','padding':'0'});
+    var inner = clone.querySelector('.collapsible-inner');
+    if (inner) forceStyles(inner, {'max-height':'none','overflow':'visible'});
+
     modalContent.innerHTML = '';
-    const title = collapsible.querySelector('.collapsible-header h3');
+    var title = collapsible.querySelector('.collapsible-header h3');
     if (title) {
-      const h2 = document.createElement('h2');
+      var h2 = document.createElement('h2');
       h2.style.cssText = 'color:#5be0f0;margin-bottom:20px;font-size:1.25rem;font-weight:600;';
       h2.textContent = title.textContent;
       modalContent.appendChild(h2);
     }
     modalContent.appendChild(clone);
+    setupSubToggles(clone);
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -11083,16 +11036,14 @@ body::before, body::after { display: none !important; }
   overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
 
-  // Intercept clicks on collapsible headers
-  document.querySelectorAll('.section .collapsible .collapsible-header').forEach(header => {
+  document.querySelectorAll('.section .collapsible .collapsible-header').forEach(function(header) {
     header.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
+      e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
       openModal(this.closest('.collapsible'));
     }, true);
   });
 })();
-</script>
-<!-- ===== END CARD GRID + MODAL v5 ===== -->\n</body>
+<\/script>
+<!-- ===== END CARD GRID + MODAL v6 ===== -->
+</body>
 </html>
