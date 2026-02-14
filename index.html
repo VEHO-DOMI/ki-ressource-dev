@@ -10877,27 +10877,18 @@ TON: [TON: z.B. spielerisch und leicht, da Themenabschluss / ernst und wissensch
         });
     </script>
 
-<!-- ===== CARD GRID + MODAL v6 (inline toggle fix) ===== -->
-<style id="card-modal-v6">
-/* === Parent section: flexbox layout for 3-column grid === */
+<!-- ===== CARD GRID + MODAL v7 ===== -->
+<style id="card-modal-v7">
 .section { display: flex !important; flex-wrap: wrap !important; align-items: stretch !important; gap: 10px !important; }
 .section > *:not(.collapsible) { flex: 0 0 100% !important; width: 100% !important; }
-
-/* === Cleaner background === */
 body { background: #0c0e1a !important; background-image: none !important; }
 body::before, body::after { display: none !important; }
-
-/* === Sidebar: cleaner === */
 .sidebar { background: #0f1123 !important; border-right: 1px solid rgba(0,180,220,0.15) !important; box-shadow: none !important; }
 .sidebar .nav-item { border: 1px solid rgba(0,180,220,0.12) !important; background: rgba(15,17,35,0.6) !important; }
 .sidebar .nav-item:hover, .sidebar .nav-item.active { border-color: rgba(0,180,220,0.35) !important; background: rgba(0,180,220,0.08) !important; box-shadow: none !important; }
-
-/* === Section titles: cleaner === */
 .section-title { text-shadow: none !important; }
 .section-title::after { background: linear-gradient(90deg,rgba(0,180,220,0.5),transparent) !important; box-shadow: none !important; }
 .info-box { border-color: rgba(0,180,220,0.18) !important; background: rgba(0,180,220,0.03) !important; box-shadow: none !important; }
-
-/* === Card tiles === */
 .section .collapsible {
   flex: 0 0 calc(33.333% - 8px) !important; display: flex !important; flex-direction: column !important;
   min-height: 110px !important; max-height: 125px !important; overflow: hidden !important;
@@ -10911,76 +10902,36 @@ body::before, body::after { display: none !important; }
   box-shadow: 0 2px 12px rgba(0,180,220,0.08) !important; transform: translateY(-2px) !important;
 }
 .section .collapsible .collapsible-header { padding: 16px 18px !important; display: flex !important; align-items: flex-start !important; min-height: 70px !important; }
-.section .collapsible .collapsible-header h3 {
-  font-size: 0.82rem !important; line-height: 1.45 !important; color: #5be0f0 !important;
-  text-shadow: none !important; font-weight: 500 !important;
-}
+.section .collapsible .collapsible-header h3 { font-size: 0.82rem !important; line-height: 1.45 !important; color: #5be0f0 !important; text-shadow: none !important; font-weight: 500 !important; }
 .section .collapsible .toggle-icon { display: none !important; }
 .section .collapsible .collapsible-content { display: none !important; }
 .section .collapsible.open .collapsible-content { display: none !important; }
 .section .collapsible.open { max-height: 125px !important; }
-
-/* === Modal === */
-.card-modal-overlay {
-  display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(8,10,22,0.95); backdrop-filter: blur(6px);
-  z-index: 10000; justify-content: center; align-items: flex-start;
-  padding: 36px; overflow-y: auto;
-}
+.card-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(8,10,22,0.95); backdrop-filter: blur(6px); z-index: 10000; justify-content: center; align-items: flex-start; padding: 36px; overflow-y: auto; }
 .card-modal-overlay.active { display: flex; }
-.card-modal-content {
-  background: #0f1128; border: 1px solid rgba(0,180,220,0.18);
-  border-radius: 10px; width: 100%; max-width: 860px;
-  padding: 40px 44px; box-shadow: 0 4px 30px rgba(0,0,0,0.6);
-  animation: modalIn 0.28s ease-out; margin: auto;
-}
+.card-modal-content { background: #0f1128; border: 1px solid rgba(0,180,220,0.18); border-radius: 10px; width: 100%; max-width: 860px; padding: 40px 44px; box-shadow: 0 4px 30px rgba(0,0,0,0.6); animation: modalIn 0.28s ease-out; margin: auto; }
 @keyframes modalIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-.card-modal-close {
-  position: fixed; top: 16px; right: 24px; width: 38px; height: 38px;
-  border: 1px solid rgba(0,180,220,0.2); background: rgba(12,14,28,0.95);
-  border-radius: 50%; color: #5be0f0; font-size: 20px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; z-index: 10001;
-}
-
-/* === Sub-collapsible styling in modal === */
-.card-modal-content .sub-collapsible,
-.card-modal-content .intro-collapsible {
-  border: 1px solid rgba(0,180,220,0.12) !important; border-radius: 6px !important;
-  margin-bottom: 6px !important; background: rgba(15,17,38,0.7) !important; box-shadow: none !important; overflow: hidden !important;
-}
-.card-modal-content .sub-collapsible-header,
-.card-modal-content .intro-collapsible-header {
-  padding: 12px 16px !important; background: rgba(0,180,220,0.03) !important; cursor: pointer;
-}
-.card-modal-content .sub-collapsible-header h4, .card-modal-content .sub-collapsible-header h3,
-.card-modal-content .intro-collapsible-header h4, .card-modal-content .intro-collapsible-header h3 {
-  color: #5be0f0 !important; font-size: 0.9rem !important; text-shadow: none !important; font-weight: 500 !important;
-}
-
+.card-modal-close { position: fixed; top: 16px; right: 24px; width: 38px; height: 38px; border: 1px solid rgba(0,180,220,0.2); background: rgba(12,14,28,0.95); border-radius: 50%; color: #5be0f0; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10001; }
+.card-modal-content .sub-collapsible, .card-modal-content .intro-collapsible { border: 1px solid rgba(0,180,220,0.12) !important; border-radius: 6px !important; margin-bottom: 6px !important; background: rgba(15,17,38,0.7) !important; box-shadow: none !important; overflow: hidden !important; }
+.card-modal-content .sub-collapsible-header, .card-modal-content .intro-collapsible-header { padding: 12px 16px !important; background: rgba(0,180,220,0.03) !important; cursor: pointer; }
+.card-modal-content .sub-collapsible-header h4, .card-modal-content .sub-collapsible-header h3, .card-modal-content .intro-collapsible-header h4, .card-modal-content .intro-collapsible-header h3 { color: #5be0f0 !important; font-size: 0.9rem !important; text-shadow: none !important; font-weight: 500 !important; }
 .global-controls { display: none !important; }
-
 @media (max-width: 1200px) { .section .collapsible { flex: 0 0 calc(50% - 8px) !important; } }
 @media (max-width: 700px) { .section .collapsible { flex: 0 0 100% !important; } }
 </style>
-
 <script>
 (function(){
-  ['card-modal-v3','card-modal-v4','card-modal-v5'].forEach(function(id){ var el=document.getElementById(id); if(el) el.remove(); });
-
+  ['card-modal-v3','card-modal-v4','card-modal-v5','card-modal-v6'].forEach(function(id){ var el=document.getElementById(id); if(el) el.remove(); });
   var overlay = document.querySelector('.card-modal-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.className = 'card-modal-overlay';
-    overlay.innerHTML = '<button class="card-modal-close">\u00d7</button><div class="card-modal-content"></div>';
+    overlay.innerHTML = '<button class="card-modal-close">×</button><div class="card-modal-content"></div>';
     document.body.appendChild(overlay);
   }
   var modalContent = overlay.querySelector('.card-modal-content');
   var closeBtn = overlay.querySelector('.card-modal-close');
-
-  function forceStyles(el, styles) {
-    for (var k in styles) el.style.setProperty(k, styles[k], 'important');
-  }
-
+  function forceStyles(el, styles) { for (var k in styles) el.style.setProperty(k, styles[k], 'important'); }
   function setupSubToggles(container) {
     var headers = container.querySelectorAll('.sub-collapsible-header, .intro-collapsible-header');
     headers.forEach(function(h) {
@@ -10988,62 +10939,39 @@ body::before, body::after { display: none !important; }
       if (!parent) return;
       var contentEl = parent.querySelector('.sub-collapsible-content') || parent.querySelector('.intro-collapsible-content');
       if (!contentEl) return;
-      // Start collapsed via inline styles
       forceStyles(contentEl, {'max-height':'0px','overflow':'hidden','transition':'max-height 0.3s ease'});
       h.addEventListener('click', function(e) {
         e.stopPropagation();
         var isOpen = parent.classList.contains('open');
-        if (isOpen) {
-          parent.classList.remove('open');
-          forceStyles(contentEl, {'max-height':'0px','overflow':'hidden'});
-        } else {
-          parent.classList.add('open');
-          forceStyles(contentEl, {'max-height':'5000px','overflow':'visible'});
-        }
+        if (isOpen) { parent.classList.remove('open'); forceStyles(contentEl, {'max-height':'0px','overflow':'hidden'}); }
+        else { parent.classList.add('open'); forceStyles(contentEl, {'max-height':'5000px','overflow':'visible'}); }
       });
     });
   }
-
   function openModal(collapsible) {
     var content = collapsible.querySelector('.collapsible-content');
     if (!content) return;
     var clone = content.cloneNode(true);
-    // Force content visible via inline styles
     forceStyles(clone, {'display':'block','max-height':'none','overflow':'visible','height':'auto','opacity':'1','padding':'0'});
     var inner = clone.querySelector('.collapsible-inner');
     if (inner) forceStyles(inner, {'max-height':'none','overflow':'visible'});
-
     modalContent.innerHTML = '';
     var title = collapsible.querySelector('.collapsible-header h3');
-    if (title) {
-      var h2 = document.createElement('h2');
-      h2.style.cssText = 'color:#5be0f0;margin-bottom:20px;font-size:1.25rem;font-weight:600;';
-      h2.textContent = title.textContent;
-      modalContent.appendChild(h2);
-    }
+    if (title) { var h2 = document.createElement('h2'); h2.style.cssText = 'color:#5be0f0;margin-bottom:20px;font-size:1.25rem;font-weight:600;'; h2.textContent = title.textContent; modalContent.appendChild(h2); }
     modalContent.appendChild(clone);
     setupSubToggles(clone);
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
-
-  function closeModal() {
-    overlay.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
+  function closeModal() { overlay.classList.remove('active'); document.body.style.overflow = ''; }
   closeBtn.addEventListener('click', closeModal);
   overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
-
   document.querySelectorAll('.section .collapsible .collapsible-header').forEach(function(header) {
-    header.addEventListener('click', function(e) {
-      e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
-      openModal(this.closest('.collapsible'));
-    }, true);
+    header.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); openModal(this.closest('.collapsible')); }, true);
   });
 })();
-<\/script>
-<!-- ===== END CARD GRID + MODAL v6 ===== -->
+</script>
+<!-- ===== END CARD GRID + MODAL v7 ===== -->
 </body>
 </html>
