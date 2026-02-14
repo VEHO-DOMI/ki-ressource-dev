@@ -10877,8 +10877,8 @@ TON: [TON: z.B. spielerisch und leicht, da Themenabschluss / ernst und wissensch
         });
     </script>
 
-<!-- ===== CARD GRID + MODAL v7 ===== -->
-<style id="card-modal-v7">
+<!-- ===== CARD GRID + MODAL v8 ===== -->
+<style id="card-modal-v8">
 .section { display: flex !important; flex-wrap: wrap !important; align-items: stretch !important; gap: 10px !important; }
 .section > *:not(.collapsible) { flex: 0 0 100% !important; width: 100% !important; }
 body { background: #0c0e1a !important; background-image: none !important; }
@@ -10920,46 +10920,39 @@ body::before, body::after { display: none !important; }
 @media (max-width: 700px) { .section .collapsible { flex: 0 0 100% !important; } }
 </style>
 <script>
+
 (function(){
-  ['card-modal-v3','card-modal-v4','card-modal-v5','card-modal-v6'].forEach(function(id){ var el=document.getElementById(id); if(el) el.remove(); });
+  ['card-modal-v3','card-modal-v4','card-modal-v5','card-modal-v6','card-modal-v7'].forEach(function(id){ var el=document.getElementById(id); if(el) el.remove(); });
   var overlay = document.querySelector('.card-modal-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.className = 'card-modal-overlay';
-    overlay.innerHTML = '<button class="card-modal-close">×</button><div class="card-modal-content"></div>';
+    var btn = document.createElement('button');
+    btn.className = 'card-modal-close';
+    btn.textContent = '\u00d7';
+    var mc = document.createElement('div');
+    mc.className = 'card-modal-content';
+    overlay.appendChild(btn);
+    overlay.appendChild(mc);
     document.body.appendChild(overlay);
   }
   var modalContent = overlay.querySelector('.card-modal-content');
   var closeBtn = overlay.querySelector('.card-modal-close');
-  function forceStyles(el, styles) { for (var k in styles) el.style.setProperty(k, styles[k], 'important'); }
-  function setupSubToggles(container) {
-    var headers = container.querySelectorAll('.sub-collapsible-header, .intro-collapsible-header');
-    headers.forEach(function(h) {
-      var parent = h.closest('.sub-collapsible') || h.closest('.intro-collapsible');
-      if (!parent) return;
-      var contentEl = parent.querySelector('.sub-collapsible-content') || parent.querySelector('.intro-collapsible-content');
-      if (!contentEl) return;
-      forceStyles(contentEl, {'max-height':'0px','overflow':'hidden','transition':'max-height 0.3s ease'});
-      h.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var isOpen = parent.classList.contains('open');
-        if (isOpen) { parent.classList.remove('open'); forceStyles(contentEl, {'max-height':'0px','overflow':'hidden'}); }
-        else { parent.classList.add('open'); forceStyles(contentEl, {'max-height':'5000px','overflow':'visible'}); }
-      });
-    });
-  }
+  function fs(el, styles) { for (var k in styles) el.style.setProperty(k, styles[k], 'important'); }
   function openModal(collapsible) {
     var content = collapsible.querySelector('.collapsible-content');
     if (!content) return;
     var clone = content.cloneNode(true);
-    forceStyles(clone, {'display':'block','max-height':'none','overflow':'visible','height':'auto','opacity':'1','padding':'0'});
+    fs(clone, {'display':'block','max-height':'none','overflow':'visible','height':'auto','opacity':'1','padding':'0'});
     var inner = clone.querySelector('.collapsible-inner');
-    if (inner) forceStyles(inner, {'max-height':'none','overflow':'visible'});
+    if (inner) fs(inner, {'max-height':'none','overflow':'visible'});
+    clone.querySelectorAll('.sub-collapsible-content, .intro-collapsible-content').forEach(function(c){
+      fs(c, {'max-height':'0px','overflow':'hidden','transition':'max-height 0.3s ease'});
+    });
     modalContent.innerHTML = '';
     var title = collapsible.querySelector('.collapsible-header h3');
     if (title) { var h2 = document.createElement('h2'); h2.style.cssText = 'color:#5be0f0;margin-bottom:20px;font-size:1.25rem;font-weight:600;'; h2.textContent = title.textContent; modalContent.appendChild(h2); }
     modalContent.appendChild(clone);
-    setupSubToggles(clone);
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -10967,11 +10960,24 @@ body::before, body::after { display: none !important; }
   closeBtn.addEventListener('click', closeModal);
   overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+  overlay.addEventListener('click', function(e) {
+    var header = e.target.closest('.sub-collapsible-header') || e.target.closest('.intro-collapsible-header');
+    if (!header) return;
+    e.stopPropagation(); e.preventDefault();
+    var parent = header.closest('.sub-collapsible') || header.closest('.intro-collapsible');
+    if (!parent) return;
+    var contentEl = parent.querySelector('.sub-collapsible-content') || parent.querySelector('.intro-collapsible-content');
+    if (!contentEl) return;
+    var isOpen = parent.classList.contains('open');
+    if (isOpen) { parent.classList.remove('open'); fs(contentEl, {'max-height':'0px','overflow':'hidden'}); }
+    else { parent.classList.add('open'); fs(contentEl, {'max-height':'5000px','overflow':'visible'}); }
+  }, true);
   document.querySelectorAll('.section .collapsible .collapsible-header').forEach(function(header) {
     header.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); openModal(this.closest('.collapsible')); }, true);
   });
 })();
+
 </script>
-<!-- ===== END CARD GRID + MODAL v7 ===== -->
+<!-- ===== END CARD GRID + MODAL v8 ===== -->
 </body>
 </html>
