@@ -10882,7 +10882,7 @@ TON: [TON: z.B. spielerisch und leicht, da Themenabschluss / ernst und wissensch
 
 
 
-<style id="card-modal-v12">
+<style id="card-modal-v12b">
 .section{display:flex!important;flex-wrap:wrap!important;align-items:stretch!important;gap:10px!important}
 .section>*:not(.collapsible){flex:0 0 100%!important;width:100%!important}
 body{background:#0c0e1a!important;background-image:none!important}
@@ -10942,16 +10942,14 @@ var closeBtn=overlay.querySelector('.card-modal-close');
 
 function closeModal(){
   if(document.fullscreenElement){document.exitFullscreen().catch(function(){});}
-  overlay.classList.remove('active','fullscreen');
-  content.innerHTML='';
+  overlay.classList.remove('active','fullscreen');content.innerHTML='';
 }
 closeBtn.addEventListener('click',closeModal);
 overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('active')&&!document.fullscreenElement)closeModal();});
 document.addEventListener('fullscreenchange',function(){
   if(!document.fullscreenElement&&overlay.classList.contains('fullscreen')){
-    var bb=content.querySelector('.s4-back-btn');
-    if(bb)bb.click();
+    var bb=content.querySelector('.s4-back-btn');if(bb)bb.click();
   }
 });
 
@@ -10960,6 +10958,10 @@ function forceVisible(root){
   root.querySelectorAll('.collapsible-content,.collapsible-inner,.sub-collapsible-content').forEach(function(el){
     fs(el,{display:'block','max-height':'none',overflow:'visible',height:'auto',opacity:'1',visibility:'visible'});
   });
+  // Also force the root itself if it matches
+  if(root.classList.contains('sub-collapsible-content')){
+    fs(root,{display:'block','max-height':'none',overflow:'visible',height:'auto',opacity:'1',visibility:'visible'});
+  }
 }
 
 var subjectMap={'4.1':'physik','4.2':'chemie','4.3':'biologie','4.4':'geografie','4.5':'mathematik'};
@@ -10975,8 +10977,7 @@ function isSection4(c){return c.closest('#suspraxis')&&c.hasAttribute('data-subj
 function openSection4Modal(coll){
   var subject=coll.getAttribute('data-subject');
   var color=subjectColors[subject]||'#5be0f0';
-  var h=coll.querySelector('.collapsible-header h3');
-  var title=h?h.textContent.trim():'';
+  var h=coll.querySelector('.collapsible-header h3');var title=h?h.textContent.trim():'';
   var subs=coll.querySelectorAll('.sub-collapsible');
   var html='<h2 style="color:'+color+';font-size:1.3rem;margin:0 0 8px;font-weight:600">'+title+'</h2><div class="s4-subcard-grid">';
   subs.forEach(function(sub,i){
@@ -10998,26 +10999,20 @@ function openSection4Modal(coll){
 }
 
 function openSubContent(subColl,subject,parentColl){
-  var color=subjectColors[subject]||'#5be0f0';
-  var sc=subColl.querySelector('.sub-collapsible-content');
-  if(!sc)return;
+  var sc=subColl.querySelector('.sub-collapsible-content');if(!sc)return;
   var clone=sc.cloneNode(true);
-  forceVisible(clone);
   content.innerHTML='<div class="s4-toolbar"><div class="s4-back-btn">&#8592; Zuruck</div><div class="s4-enter-fs">&#9974; Vollbild</div></div>';
   content.appendChild(clone);
+  forceVisible(clone);
   overlay.classList.add('fullscreen');
-
   clone.querySelectorAll('script').forEach(function(old){
-    var ns=document.createElement('script');
-    if(old.src)ns.src=old.src;else ns.textContent=old.textContent;
+    var ns=document.createElement('script');if(old.src)ns.src=old.src;else ns.textContent=old.textContent;
     old.parentNode.replaceChild(ns,old);
   });
-
   content.querySelector('.s4-enter-fs').addEventListener('click',function(e){
     e.stopPropagation();
-    var el=overlay;
-    if(el.requestFullscreen)el.requestFullscreen();
-    else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();
+    if(overlay.requestFullscreen)overlay.requestFullscreen();
+    else if(overlay.webkitRequestFullscreen)overlay.webkitRequestFullscreen();
   });
   content.querySelector('.s4-back-btn').addEventListener('click',function(){
     if(document.fullscreenElement){document.exitFullscreen().then(function(){openSection4Modal(parentColl);}).catch(function(){openSection4Modal(parentColl);});}
@@ -11026,13 +11021,12 @@ function openSubContent(subColl,subject,parentColl){
 }
 
 function openStandardModal(coll){
-  var h=coll.querySelector('.collapsible-header h3');
-  var title=h?h.textContent.trim():'';
-  var cc=coll.querySelector('.collapsible-content');
-  if(!cc)return;
-  var clone=cc.cloneNode(true);forceVisible(clone);
+  var h=coll.querySelector('.collapsible-header h3');var title=h?h.textContent.trim():'';
+  var cc=coll.querySelector('.collapsible-content');if(!cc)return;
+  var clone=cc.cloneNode(true);
   content.innerHTML='<h2 style="color:#5be0f0;font-size:1.2rem;margin:0 0 20px;font-weight:600">'+title+'</h2>';
   content.appendChild(clone);
+  forceVisible(clone);
   overlay.classList.add('active');overlay.classList.remove('fullscreen');
   clone.querySelectorAll('script').forEach(function(old){
     var ns=document.createElement('script');if(old.src)ns.src=old.src;else ns.textContent=old.textContent;
