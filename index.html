@@ -10882,7 +10882,7 @@ TON: [TON: z.B. spielerisch und leicht, da Themenabschluss / ernst und wissensch
 
 
 
-<style id="card-modal-v11b">
+<style id="card-modal-v12">
 .section{display:flex!important;flex-wrap:wrap!important;align-items:stretch!important;gap:10px!important}
 .section>*:not(.collapsible){flex:0 0 100%!important;width:100%!important}
 body{background:#0c0e1a!important;background-image:none!important}
@@ -10920,13 +10920,11 @@ body::before,body::after{display:none!important}
 .s4-subcard.biologie{border:1px solid rgba(123,198,126,0.2)}.s4-subcard.biologie:hover{border-color:rgba(123,198,126,0.5)}.s4-subcard.biologie h4{color:#7bc67e}
 .s4-subcard.geografie{border:1px solid rgba(240,160,64,0.2)}.s4-subcard.geografie:hover{border-color:rgba(240,160,64,0.5)}.s4-subcard.geografie h4{color:#f0a040}
 .s4-subcard.mathematik{border:1px solid rgba(192,132,252,0.2)}.s4-subcard.mathematik:hover{border-color:rgba(192,132,252,0.5)}.s4-subcard.mathematik h4{color:#c084fc}
-.card-modal-overlay.fullscreen .card-modal-content{max-width:100vw!important;width:100vw!important;height:100vh!important;margin:0!important;border-radius:0!important;padding:0!important;overflow:hidden!important;box-sizing:border-box!important;display:flex!important;flex-direction:column!important}
-.card-modal-overlay.fullscreen{padding:0!important;overflow:hidden!important}
-.card-modal-overlay.fullscreen .sim-container{flex:1!important;overflow:hidden!important;display:flex!important;flex-direction:column!important}
-.card-modal-overlay.fullscreen .sim-container>*{flex:1!important;width:100%!important;height:100%!important}
-.s4-fs-toolbar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;z-index:10002;flex-shrink:0}
-.s4-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:rgba(0,180,220,0.08);border:1px solid rgba(0,180,220,0.2);border-radius:6px;color:#5be0f0;font-size:.85rem;cursor:pointer;transition:background .2s}
+.card-modal-overlay.fullscreen .card-modal-content{max-width:100vw!important;width:100vw!important;height:100vh!important;margin:0!important;border-radius:0!important;padding:20px 28px!important;overflow-y:auto!important;box-sizing:border-box!important}
+.card-modal-overlay.fullscreen{padding:0!important}
+.s4-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:rgba(0,180,220,0.08);border:1px solid rgba(0,180,220,0.2);border-radius:6px;color:#5be0f0;font-size:.85rem;cursor:pointer;margin-bottom:16px;transition:background .2s;width:fit-content}
 .s4-back-btn:hover{background:rgba(0,180,220,0.15)}
+.s4-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .s4-enter-fs{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:rgba(0,200,120,0.12);border:1px solid rgba(0,200,120,0.35);border-radius:6px;color:#4ade80;font-size:.9rem;font-weight:600;cursor:pointer;transition:background .2s,transform .15s}
 .s4-enter-fs:hover{background:rgba(0,200,120,0.25);transform:scale(1.03)}
 .global-controls{display:none!important}
@@ -10943,28 +10941,21 @@ var content=overlay.querySelector('.card-modal-content');
 var closeBtn=overlay.querySelector('.card-modal-close');
 
 function closeModal(){
-  if(document.fullscreenElement){
-    document.exitFullscreen().then(function(){
-      overlay.classList.remove('active','fullscreen');
-      content.innerHTML='';
-    });
-  } else {
-    overlay.classList.remove('active','fullscreen');
-    content.innerHTML='';
-  }
+  if(document.fullscreenElement){document.exitFullscreen().catch(function(){});}
+  overlay.classList.remove('active','fullscreen');
+  content.innerHTML='';
 }
 closeBtn.addEventListener('click',closeModal);
 overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('active')&&!document.fullscreenElement){closeModal();}});
-
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('active')&&!document.fullscreenElement)closeModal();});
 document.addEventListener('fullscreenchange',function(){
-  if(!document.fullscreenElement && overlay.classList.contains('fullscreen')){
-    var backBtn=content.querySelector('.s4-back-btn');
-    if(backBtn) backBtn.click();
+  if(!document.fullscreenElement&&overlay.classList.contains('fullscreen')){
+    var bb=content.querySelector('.s4-back-btn');
+    if(bb)bb.click();
   }
 });
 
-function fs(el,styles){for(var k in styles)el.style.setProperty(k,styles[k],'important');}
+function fs(el,s){for(var k in s)el.style.setProperty(k,s[k],'important');}
 function forceVisible(root){
   root.querySelectorAll('.collapsible-content,.collapsible-inner,.sub-collapsible-content').forEach(function(el){
     fs(el,{display:'block','max-height':'none',overflow:'visible',height:'auto',opacity:'1',visibility:'visible'});
@@ -10974,120 +10965,95 @@ function forceVisible(root){
 var subjectMap={'4.1':'physik','4.2':'chemie','4.3':'biologie','4.4':'geografie','4.5':'mathematik'};
 var subjectColors={physik:'#00d4ff',chemie:'#4ecdc4',biologie:'#7bc67e',geografie:'#f0a040',mathematik:'#c084fc'};
 var sec4=document.getElementById('suspraxis');
-if(sec4){
-  sec4.querySelectorAll(':scope > .collapsible').forEach(function(c){
-    var h=c.querySelector('.collapsible-header h3');
-    if(!h)return;
-    var t=h.textContent.trim();
-    for(var num in subjectMap){
-      if(t.indexOf(num)===0){c.setAttribute('data-subject',subjectMap[num]);break;}
-    }
-  });
-}
+if(sec4){sec4.querySelectorAll(':scope > .collapsible').forEach(function(c){
+  var h=c.querySelector('.collapsible-header h3');if(!h)return;var t=h.textContent.trim();
+  for(var num in subjectMap){if(t.indexOf(num)===0){c.setAttribute('data-subject',subjectMap[num]);break;}}
+});}
 
 function isSection4(c){return c.closest('#suspraxis')&&c.hasAttribute('data-subject');}
 
-function openSection4Modal(collapsible){
-  var subject=collapsible.getAttribute('data-subject');
+function openSection4Modal(coll){
+  var subject=coll.getAttribute('data-subject');
   var color=subjectColors[subject]||'#5be0f0';
-  var h=collapsible.querySelector('.collapsible-header h3');
+  var h=coll.querySelector('.collapsible-header h3');
   var title=h?h.textContent.trim():'';
-  var subs=collapsible.querySelectorAll('.sub-collapsible');
-  var html='<h2 style="color:'+color+';font-size:1.3rem;margin:0 0 8px 0;font-weight:600;">'+title+'</h2>';
-  html+='<div class="s4-subcard-grid">';
+  var subs=coll.querySelectorAll('.sub-collapsible');
+  var html='<h2 style="color:'+color+';font-size:1.3rem;margin:0 0 8px;font-weight:600">'+title+'</h2><div class="s4-subcard-grid">';
   subs.forEach(function(sub,i){
     if(sub.classList.contains('intro-collapsible'))return;
     var sh=sub.querySelector('.sub-collapsible-header');
-    var st=sh?sh.textContent.trim().replace(/^[\u25B6\u25BC]\s*/,''):'Item '+(i+1);
+    var st=sh?sh.textContent.trim().replace(/^[\u25B6\u25BC]\s*/,'').replace(/\s*[\u25B6\u25BC]\s*$/,''):'Item '+(i+1);
     html+='<div class="s4-subcard '+subject+'" data-sub-index="'+i+'"><h4>'+st+'</h4></div>';
   });
   html+='</div>';
   content.innerHTML=html;
-  overlay.classList.add('active');
-  overlay.classList.remove('fullscreen');
+  overlay.classList.add('active');overlay.classList.remove('fullscreen');
   content.querySelectorAll('.s4-subcard').forEach(function(card){
     card.addEventListener('click',function(){
       var idx=parseInt(card.getAttribute('data-sub-index'));
-      var allSubs=collapsible.querySelectorAll('.sub-collapsible');
-      if(allSubs[idx]) openSubContent(allSubs[idx],subject,collapsible);
+      var allSubs=coll.querySelectorAll('.sub-collapsible');
+      if(allSubs[idx])openSubContent(allSubs[idx],subject,coll);
     });
   });
 }
 
-function openSubContent(subCollapsible,subject,parentCollapsible){
+function openSubContent(subColl,subject,parentColl){
   var color=subjectColors[subject]||'#5be0f0';
-  var sc=subCollapsible.querySelector('.sub-collapsible-content');
+  var sc=subColl.querySelector('.sub-collapsible-content');
   if(!sc)return;
   var clone=sc.cloneNode(true);
   forceVisible(clone);
-  content.innerHTML='<div class="s4-fs-toolbar"><div class="s4-back-btn">&#8592; Zuruck</div><div class="s4-enter-fs">&#x26F6; Vollbild</div></div><div class="sim-container"></div>';
-  content.querySelector('.sim-container').appendChild(clone);
+  content.innerHTML='<div class="s4-toolbar"><div class="s4-back-btn">&#8592; Zuruck</div><div class="s4-enter-fs">&#9974; Vollbild</div></div>';
+  content.appendChild(clone);
   overlay.classList.add('fullscreen');
 
-  clone.querySelectorAll('script').forEach(function(oldScript){
-    var newScript=document.createElement('script');
-    if(oldScript.src){newScript.src=oldScript.src;}
-    else{newScript.textContent=oldScript.textContent;}
-    oldScript.parentNode.replaceChild(newScript,oldScript);
+  clone.querySelectorAll('script').forEach(function(old){
+    var ns=document.createElement('script');
+    if(old.src)ns.src=old.src;else ns.textContent=old.textContent;
+    old.parentNode.replaceChild(ns,old);
   });
 
-  // Vollbild button - direct user click triggers requestFullscreen
   content.querySelector('.s4-enter-fs').addEventListener('click',function(e){
     e.stopPropagation();
     var el=overlay;
-    if(el.requestFullscreen) el.requestFullscreen();
-    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    if(el.requestFullscreen)el.requestFullscreen();
+    else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();
   });
-
   content.querySelector('.s4-back-btn').addEventListener('click',function(){
-    if(document.fullscreenElement){
-      document.exitFullscreen().then(function(){openSection4Modal(parentCollapsible);});
-    } else {
-      openSection4Modal(parentCollapsible);
-    }
+    if(document.fullscreenElement){document.exitFullscreen().then(function(){openSection4Modal(parentColl);}).catch(function(){openSection4Modal(parentColl);});}
+    else openSection4Modal(parentColl);
   });
 }
 
-function openStandardModal(collapsible){
-  var h=collapsible.querySelector('.collapsible-header h3');
+function openStandardModal(coll){
+  var h=coll.querySelector('.collapsible-header h3');
   var title=h?h.textContent.trim():'';
-  var cc=collapsible.querySelector('.collapsible-content');
+  var cc=coll.querySelector('.collapsible-content');
   if(!cc)return;
-  var clone=cc.cloneNode(true);
-  forceVisible(clone);
-  content.innerHTML='<h2 style="color:#5be0f0;font-size:1.2rem;margin:0 0 20px 0;font-weight:600;">'+title+'</h2>';
+  var clone=cc.cloneNode(true);forceVisible(clone);
+  content.innerHTML='<h2 style="color:#5be0f0;font-size:1.2rem;margin:0 0 20px;font-weight:600">'+title+'</h2>';
   content.appendChild(clone);
-  overlay.classList.add('active');
-  overlay.classList.remove('fullscreen');
-  clone.querySelectorAll('script').forEach(function(oldScript){
-    var newScript=document.createElement('script');
-    if(oldScript.src){newScript.src=oldScript.src;}
-    else{newScript.textContent=oldScript.textContent;}
-    oldScript.parentNode.replaceChild(newScript,oldScript);
+  overlay.classList.add('active');overlay.classList.remove('fullscreen');
+  clone.querySelectorAll('script').forEach(function(old){
+    var ns=document.createElement('script');if(old.src)ns.src=old.src;else ns.textContent=old.textContent;
+    old.parentNode.replaceChild(ns,old);
   });
   clone.querySelectorAll('.sub-collapsible-header').forEach(function(sh){
     sh.addEventListener('click',function(e){
-      e.stopPropagation();
-      var parent=sh.closest('.sub-collapsible');
-      if(!parent)return;
-      var isOpen=parent.classList.contains('open');
-      var scc=parent.querySelector('.sub-collapsible-content');
-      if(!scc)return;
-      if(isOpen){parent.classList.remove('open');fs(scc,{display:'none'});}
-      else{parent.classList.add('open');fs(scc,{display:'block','max-height':'none',overflow:'visible',height:'auto'});}
+      e.stopPropagation();var p=sh.closest('.sub-collapsible');if(!p)return;
+      var open=p.classList.contains('open');var scc=p.querySelector('.sub-collapsible-content');if(!scc)return;
+      if(open){p.classList.remove('open');fs(scc,{display:'none'});}
+      else{p.classList.add('open');fs(scc,{display:'block','max-height':'none',overflow:'visible',height:'auto'});}
     });
   });
 }
 
 document.addEventListener('click',function(e){
-  var collapsible=e.target.closest('.section .collapsible');
-  if(!collapsible)return;
-  if(overlay.classList.contains('active'))return;
+  var coll=e.target.closest('.section .collapsible');
+  if(!coll||overlay.classList.contains('active'))return;
   e.preventDefault();e.stopPropagation();
-  if(isSection4(collapsible)){openSection4Modal(collapsible);}
-  else{openStandardModal(collapsible);}
+  if(isSection4(coll))openSection4Modal(coll);else openStandardModal(coll);
 },true);
-
 })();
 </script>
 </body>
