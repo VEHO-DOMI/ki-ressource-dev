@@ -10882,60 +10882,219 @@ TON: [TON: z.B. spielerisch und leicht, da Themenabschluss / ernst und wissensch
 
 
 
-<style id="card-modal-v13">
-.section{display:flex!important;flex-wrap:wrap!important;align-items:stretch!important;gap:10px!important}
-.section>*:not(.collapsible){flex:0 0 100%!important;width:100%!important}
-body{background:#0c0e1a!important;background-image:none!important}
-body::before,body::after{display:none!important}
-.sidebar{background:#0f1123!important;border-right:1px solid rgba(0,180,220,0.15)!important;box-shadow:none!important}
-.sidebar .nav-item{border:1px solid rgba(0,180,220,0.12)!important;background:rgba(15,17,35,0.6)!important}
-.sidebar .nav-item:hover,.sidebar .nav-item.active{border-color:rgba(0,180,220,0.35)!important;background:rgba(0,180,220,0.08)!important;box-shadow:none!important}
-.section-title{text-shadow:none!important}
-.section-title::after{background:linear-gradient(90deg,rgba(0,180,220,0.5),transparent)!important;box-shadow:none!important}
-.info-box{border-color:rgba(0,180,220,0.18)!important;background:rgba(0,180,220,0.03)!important;box-shadow:none!important}
-.section .collapsible{flex:0 0 calc(33.333% - 8px)!important;display:flex!important;flex-direction:column!important;min-height:110px!important;max-height:125px!important;overflow:hidden!important;cursor:pointer!important;background:rgba(12,14,28,0.95)!important;border:1px solid rgba(0,180,220,0.13)!important;border-radius:8px!important;transition:border-color .25s,background .25s,transform .25s,box-shadow .25s!important;box-shadow:none!important;margin:0!important}
-.section .collapsible:hover{border-color:rgba(0,180,220,0.4)!important;background:rgba(0,180,220,0.04)!important;box-shadow:0 2px 12px rgba(0,180,220,0.08)!important;transform:translateY(-2px)!important}
-.section .collapsible .collapsible-header{padding:16px 18px!important;display:flex!important;align-items:flex-start!important;min-height:70px!important}
-.section .collapsible .collapsible-header h3{font-size:.82rem!important;line-height:1.45!important;color:#5be0f0!important;text-shadow:none!important;font-weight:500!important}
-.section .collapsible .toggle-icon{display:none!important}
-.section .collapsible .collapsible-content{display:none!important}
-.section .collapsible.open .collapsible-content{display:none!important}
-.section .collapsible.open{max-height:125px!important}
-#suspraxis .collapsible[data-subject="physik"]{border-left:3px solid #00b4dc!important}
-#suspraxis .collapsible[data-subject="chemie"]{border-left:3px solid #4ecdc4!important}
-#suspraxis .collapsible[data-subject="biologie"]{border-left:3px solid #7bc67e!important}
-#suspraxis .collapsible[data-subject="geografie"]{border-left:3px solid #f0a040!important}
-#suspraxis .collapsible[data-subject="mathematik"]{border-left:3px solid #c084fc!important}
+<style id="card-modal-v14">
+/* ===== v14 NYT EDITORIAL THEME ===== */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* === OVERRIDE ORIGINAL STYLES === */
+body { background: #fafafa !important; }
+.main-header { background: #fff !important; border-bottom: 3px solid #1a1a1a !important; }
+.main-header h1 { font-family: 'Playfair Display', Georgia, serif !important; color: #1a1a1a !important; }
+.main-header p { color: #666 !important; }
+
+/* Sidebar override */
+.sidebar { background: #fff !important; border-right: 1px solid #e0e0e0 !important; }
+.sidebar nav a, .sidebar .nav-link { color: #555 !important; border-radius: 4px !important; }
+.sidebar nav a:hover, .sidebar .nav-link:hover { background: #f5f5f5 !important; color: #1a1a1a !important; }
+.sidebar nav a.active, .sidebar .nav-link.active { background: #1a1a1a !important; color: #fff !important; }
+
+/* Section headings */
+.section h2, .section-header h2 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  color: #1a1a1a !important; font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Collapsible headers — card style */
+.collapsible-header {
+  background: #fff !important; border: none !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+  border-radius: 0 !important; padding: 20px 22px !important;
+  transition: background 0.15s !important;
+}
+.collapsible-header:hover { background: #f8f6f4 !important; }
+.collapsible-header h3 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  color: #1a1a1a !important; font-weight: 700 !important;
+  font-size: 0.95rem !important; letter-spacing: -0.01em !important;
+}
+
+/* === MODAL OVERLAY — NYT style === */
+.card-modal-overlay {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4); z-index: 10000;
+  justify-content: center; align-items: flex-start;
+  padding: 64px 40px; overflow-y: auto;
+}
+.card-modal-overlay.active { display: flex; }
+
+.card-modal-content {
+  background: #fff; border-radius: 2px; width: 100%; max-width: 720px;
+  padding: 48px 52px; position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  animation: nytModalIn 0.2s ease-out;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+@keyframes nytModalIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+.card-modal-content::before {
+  content: ''; display: block; height: 3px; background: #1a1a1a;
+  margin: -48px -52px 24px -52px; width: calc(100% + 104px);
+}
+
+.card-modal-close {
+  position: fixed; top: 28px; right: 36px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: #1a1a1a; border: none; font-size: 14px;
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: center; color: #fff; z-index: 10001;
+  transition: background 0.15s;
+}
+.card-modal-close:hover { background: #c8102e; }
+
 /* CRITICAL: Force visibility for ALL content inside the modal */
 .card-modal-content .collapsible-content,
 .card-modal-content .collapsible-inner,
-.card-modal-content .sub-collapsible-content{display:block!important;max-height:none!important;overflow:visible!important;height:auto!important;opacity:1!important;visibility:visible!important;padding:0!important}
-.card-modal-overlay{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(8,10,22,0.95);backdrop-filter:blur(6px);z-index:10000;justify-content:center;align-items:flex-start;padding:36px;overflow-y:auto}
-.card-modal-overlay.active{display:flex}
-.card-modal-content{background:#0f1128;border:1px solid rgba(0,180,220,0.18);border-radius:10px;width:100%;max-width:860px;padding:40px 44px;box-shadow:0 4px 30px rgba(0,0,0,0.6);animation:modalIn .28s ease-out;margin:auto}
-@keyframes modalIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.card-modal-close{position:fixed;top:16px;right:24px;width:38px;height:38px;border:1px solid rgba(0,180,220,0.2);background:rgba(12,14,28,0.95);border-radius:50%;color:#5be0f0;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10001}
-.s4-subcard-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-.s4-subcard{flex:0 0 calc(33.333% - 8px);min-height:80px;max-height:95px;overflow:hidden;padding:14px 16px;border-radius:8px;cursor:pointer;background:rgba(12,14,28,0.9);transition:transform .2s,box-shadow .2s,border-color .2s;display:flex;align-items:flex-start}
-.s4-subcard:hover{transform:translateY(-2px);box-shadow:0 3px 14px rgba(0,0,0,0.3)}
-.s4-subcard h4{font-size:.8rem;line-height:1.4;font-weight:500;margin:0}
-.s4-subcard.physik{border:1px solid rgba(0,180,220,0.2)}.s4-subcard.physik:hover{border-color:rgba(0,180,220,0.5)}.s4-subcard.physik h4{color:#00d4ff}
-.s4-subcard.chemie{border:1px solid rgba(78,205,196,0.2)}.s4-subcard.chemie:hover{border-color:rgba(78,205,196,0.5)}.s4-subcard.chemie h4{color:#4ecdc4}
-.s4-subcard.biologie{border:1px solid rgba(123,198,126,0.2)}.s4-subcard.biologie:hover{border-color:rgba(123,198,126,0.5)}.s4-subcard.biologie h4{color:#7bc67e}
-.s4-subcard.geografie{border:1px solid rgba(240,160,64,0.2)}.s4-subcard.geografie:hover{border-color:rgba(240,160,64,0.5)}.s4-subcard.geografie h4{color:#f0a040}
-.s4-subcard.mathematik{border:1px solid rgba(192,132,252,0.2)}.s4-subcard.mathematik:hover{border-color:rgba(192,132,252,0.5)}.s4-subcard.mathematik h4{color:#c084fc}
-.card-modal-overlay.fullscreen .card-modal-content{max-width:100vw!important;width:100vw!important;height:100vh!important;margin:0!important;border-radius:0!important;padding:20px 28px!important;overflow-y:auto!important;box-sizing:border-box!important}
-.card-modal-overlay.fullscreen{padding:0!important}
-.s4-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:rgba(0,180,220,0.08);border:1px solid rgba(0,180,220,0.2);border-radius:6px;color:#5be0f0;font-size:.85rem;cursor:pointer;margin-bottom:16px;transition:background .2s;width:fit-content}
-.s4-back-btn:hover{background:rgba(0,180,220,0.15)}
-.s4-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.s4-enter-fs{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:rgba(0,200,120,0.12);border:1px solid rgba(0,200,120,0.35);border-radius:6px;color:#4ade80;font-size:.9rem;font-weight:600;cursor:pointer;transition:background .2s,transform .15s}
-.s4-enter-fs:hover{background:rgba(0,200,120,0.25);transform:scale(1.03)}
-.global-controls{display:none!important}
-@media(max-width:1200px){.section .collapsible{flex:0 0 calc(50% - 8px)!important}.s4-subcard{flex:0 0 calc(50% - 8px)}}
-@media(max-width:700px){.section .collapsible{flex:0 0 100%!important}.s4-subcard{flex:0 0 100%}}
+.card-modal-content .sub-collapsible-content {
+  display: block !important; max-height: none !important;
+  overflow: visible !important; height: auto !important;
+  opacity: 1 !important; visibility: visible !important;
+  padding: 0 !important;
+}
+
+/* Modal typography — NYT editorial */
+.card-modal-content h3 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  color: #1a1a1a !important; font-size: 1.5rem !important;
+  font-weight: 800 !important; margin-bottom: 20px !important;
+  letter-spacing: -0.02em !important; line-height: 1.15 !important;
+}
+.card-modal-content h4 {
+  font-size: 0.78rem !important; font-weight: 700 !important;
+  color: #c8102e !important; text-transform: uppercase !important;
+  letter-spacing: 0.06em !important; margin: 24px 0 10px 0 !important;
+}
+.card-modal-content p {
+  font-size: 0.92rem !important; color: #333 !important;
+  line-height: 1.85 !important; margin-bottom: 12px !important;
+}
+.card-modal-content ul, .card-modal-content ol {
+  color: #333 !important; margin: 8px 0 16px 20px !important;
+  font-size: 0.88rem !important; line-height: 1.8 !important;
+}
+.card-modal-content a { color: #c8102e !important; }
+.card-modal-content strong { color: #1a1a1a !important; }
+.card-modal-content table {
+  border-collapse: collapse !important; width: 100% !important;
+  margin: 16px 0 !important; font-size: 0.85rem !important;
+}
+.card-modal-content th {
+  background: #1a1a1a !important; color: #fff !important;
+  padding: 10px 14px !important; text-align: left !important;
+  font-weight: 600 !important;
+}
+.card-modal-content td {
+  padding: 10px 14px !important; border-bottom: 1px solid #e0e0e0 !important;
+  color: #333 !important;
+}
+.card-modal-content tr:hover td { background: #f8f6f4 !important; }
+
+/* Collapsible toggles inside modal */
+.card-modal-content .collapsible-header {
+  background: transparent !important; border: none !important;
+  border-bottom: 1px solid #e0e0e0 !important; padding: 14px 0 !important;
+}
+.card-modal-content .sub-collapsible-header {
+  background: transparent !important; border: none !important;
+  border-bottom: 1px solid #eee !important; padding: 10px 0 !important;
+}
+
+/* === SECTION 4 — Subject grid in modal === */
+.s4-modal-title {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.6rem !important; font-weight: 800 !important;
+  color: #1a1a1a !important; margin-bottom: 24px !important;
+  letter-spacing: -0.02em !important;
+}
+.s4-sub-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: #d0d0d0; border: 1px solid #d0d0d0;
+}
+.s4-sub-card {
+  background: #fff; padding: 20px 18px; cursor: pointer;
+  transition: background 0.15s;
+}
+.s4-sub-card:hover { background: #f8f6f4; }
+.s4-sub-card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.88rem; font-weight: 700; color: #1a1a1a;
+  line-height: 1.25; margin-bottom: 4px;
+}
+.s4-sub-card-num {
+  font-size: 0.56rem; font-weight: 700; color: #c8102e;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  display: block; margin-bottom: 6px;
+}
+
+/* Subject color accents — top bar */
+.s4-sub-card[data-subject="physik"] { border-top: 3px solid #c8102e; }
+.s4-sub-card[data-subject="chemie"] { border-top: 3px solid #1a1a1a; }
+.s4-sub-card[data-subject="biologie"] { border-top: 3px solid #2a7a3a; }
+.s4-sub-card[data-subject="geografie"] { border-top: 3px solid #c87a10; }
+.s4-sub-card[data-subject="mathematik"] { border-top: 3px solid #4a4a4a; }
+
+/* Back and Vollbild toolbar */
+.s4-toolbar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px; padding-bottom: 16px;
+  border-bottom: 3px solid #1a1a1a;
+}
+.s4-back-btn {
+  background: #1a1a1a; color: #fff; border: none; padding: 8px 18px;
+  font-size: 0.78rem; font-weight: 600; cursor: pointer;
+  border-radius: 2px; transition: background 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+.s4-back-btn:hover { background: #c8102e; }
+.s4-enter-fs {
+  background: transparent; color: #1a1a1a; border: 1px solid #1a1a1a;
+  padding: 8px 18px; font-size: 0.78rem; font-weight: 600;
+  cursor: pointer; border-radius: 2px; transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+.s4-enter-fs:hover { background: #1a1a1a; color: #fff; }
+.s4-exit-fs {
+  position: fixed; top: 16px; right: 16px; z-index: 10002;
+  background: #c8102e; color: #fff; border: none; padding: 8px 18px;
+  font-size: 0.78rem; font-weight: 600; cursor: pointer;
+  border-radius: 2px; font-family: 'Inter', sans-serif;
+}
+
+/* Fullscreen mode */
+.card-modal-overlay.fullscreen .card-modal-content {
+  max-width: 100%; border-radius: 0; padding: 20px 28px;
+  overflow-y: auto;
+}
+.card-modal-overlay.fullscreen .card-modal-close { display: none; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .s4-sub-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .s4-sub-grid { grid-template-columns: 1fr; }
+  .card-modal-content { padding: 28px 20px; }
+}
+
+/* Simulation iframe styling */
+.card-modal-content iframe {
+  border-radius: 2px !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
 </style>
 <script>
+
 (function(){
 var overlay=document.createElement('div');
 overlay.className='card-modal-overlay';
