@@ -10877,9 +10877,8 @@ TON: [TON: z.B. spielerisch und leicht, da Themenabschluss / ernst und wissensch
         });
     </script>
 
-<!-- ===== CARD GRID + MODAL v9 ===== -->
-<style id="card-modal-v9">
-/* === Base layout === */
+<!-- ===== CARD GRID + MODAL v10 ===== -->
+<style id="card-modal-v10">
 .section { display: flex !important; flex-wrap: wrap !important; align-items: stretch !important; gap: 10px !important; }
 .section > *:not(.collapsible) { flex: 0 0 100% !important; width: 100% !important; }
 body { background: #0c0e1a !important; background-image: none !important; }
@@ -10890,8 +10889,6 @@ body::before, body::after { display: none !important; }
 .section-title { text-shadow: none !important; }
 .section-title::after { background: linear-gradient(90deg,rgba(0,180,220,0.5),transparent) !important; box-shadow: none !important; }
 .info-box { border-color: rgba(0,180,220,0.18) !important; background: rgba(0,180,220,0.03) !important; box-shadow: none !important; }
-
-/* === Card tiles === */
 .section .collapsible {
   flex: 0 0 calc(33.333% - 8px) !important; display: flex !important; flex-direction: column !important;
   min-height: 110px !important; max-height: 125px !important; overflow: hidden !important;
@@ -10910,84 +10907,30 @@ body::before, body::after { display: none !important; }
 .section .collapsible .collapsible-content { display: none !important; }
 .section .collapsible.open .collapsible-content { display: none !important; }
 .section .collapsible.open { max-height: 125px !important; }
-
-/* === Subject color classes for section 4 cards === */
 #suspraxis .collapsible[data-subject="physik"] { border-left: 3px solid #00b4dc !important; }
 #suspraxis .collapsible[data-subject="chemie"] { border-left: 3px solid #4ecdc4 !important; }
 #suspraxis .collapsible[data-subject="biologie"] { border-left: 3px solid #7bc67e !important; }
 #suspraxis .collapsible[data-subject="geografie"] { border-left: 3px solid #f0a040 !important; }
 #suspraxis .collapsible[data-subject="mathematik"] { border-left: 3px solid #c084fc !important; }
-
-/* === Modal overlay (standard content) === */
-.card-modal-overlay {
-  display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(8,10,22,0.95); backdrop-filter: blur(6px);
-  z-index: 10000; justify-content: center; align-items: flex-start;
-  padding: 36px; overflow-y: auto;
-}
+.card-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(8,10,22,0.95); backdrop-filter: blur(6px); z-index: 10000; justify-content: center; align-items: flex-start; padding: 36px; overflow-y: auto; }
 .card-modal-overlay.active { display: flex; }
-.card-modal-content {
-  background: #0f1128; border: 1px solid rgba(0,180,220,0.18);
-  border-radius: 10px; width: 100%; max-width: 860px;
-  padding: 40px 44px; box-shadow: 0 4px 30px rgba(0,0,0,0.6);
-  animation: modalIn 0.28s ease-out; margin: auto;
-}
+.card-modal-content { background: #0f1128; border: 1px solid rgba(0,180,220,0.18); border-radius: 10px; width: 100%; max-width: 860px; padding: 40px 44px; box-shadow: 0 4px 30px rgba(0,0,0,0.6); animation: modalIn 0.28s ease-out; margin: auto; }
 @keyframes modalIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-.card-modal-close {
-  position: fixed; top: 16px; right: 24px; width: 38px; height: 38px;
-  border: 1px solid rgba(0,180,220,0.2); background: rgba(12,14,28,0.95);
-  border-radius: 50%; color: #5be0f0; font-size: 20px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; z-index: 10001;
-  transition: border-color 0.2s;
-}
+.card-modal-close { position: fixed; top: 16px; right: 24px; width: 38px; height: 38px; border: 1px solid rgba(0,180,220,0.2); background: rgba(12,14,28,0.95); border-radius: 50%; color: #5be0f0; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10001; transition: border-color 0.2s; }
 .card-modal-close:hover { border-color: rgba(0,180,220,0.5); }
-
-/* === Section 4 sub-card grid inside modal === */
 .s4-subcard-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-.s4-subcard {
-  flex: 0 0 calc(33.333% - 8px); min-height: 80px; max-height: 95px; overflow: hidden;
-  padding: 14px 16px; border-radius: 8px; cursor: pointer;
-  background: rgba(12,14,28,0.9); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-  display: flex; align-items: flex-start;
-}
+.s4-subcard { flex: 0 0 calc(33.333% - 8px); min-height: 80px; max-height: 95px; overflow: hidden; padding: 14px 16px; border-radius: 8px; cursor: pointer; background: rgba(12,14,28,0.9); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; display: flex; align-items: flex-start; }
 .s4-subcard:hover { transform: translateY(-2px); box-shadow: 0 3px 14px rgba(0,0,0,0.3); }
 .s4-subcard h4 { font-size: 0.8rem; line-height: 1.4; font-weight: 500; margin: 0; }
-
-/* Subject colors for sub-cards */
-.s4-subcard.physik { border: 1px solid rgba(0,180,220,0.2); }
-.s4-subcard.physik:hover { border-color: rgba(0,180,220,0.5); }
-.s4-subcard.physik h4 { color: #00d4ff; }
-.s4-subcard.chemie { border: 1px solid rgba(78,205,196,0.2); }
-.s4-subcard.chemie:hover { border-color: rgba(78,205,196,0.5); }
-.s4-subcard.chemie h4 { color: #4ecdc4; }
-.s4-subcard.biologie { border: 1px solid rgba(123,198,126,0.2); }
-.s4-subcard.biologie:hover { border-color: rgba(123,198,126,0.5); }
-.s4-subcard.biologie h4 { color: #7bc67e; }
-.s4-subcard.geografie { border: 1px solid rgba(240,160,64,0.2); }
-.s4-subcard.geografie:hover { border-color: rgba(240,160,64,0.5); }
-.s4-subcard.geografie h4 { color: #f0a040; }
-.s4-subcard.mathematik { border: 1px solid rgba(192,132,252,0.2); }
-.s4-subcard.mathematik:hover { border-color: rgba(192,132,252,0.5); }
-.s4-subcard.mathematik h4 { color: #c084fc; }
-
-/* === Fullscreen modal for simulations === */
-.card-modal-overlay.fullscreen .card-modal-content {
-  max-width: 100vw !important; width: 100vw !important; height: 100vh !important;
-  margin: 0 !important; border-radius: 0 !important; padding: 20px 28px !important;
-  overflow-y: auto !important; box-sizing: border-box !important;
-  display: flex !important; flex-direction: column !important;
-}
+.s4-subcard.physik { border: 1px solid rgba(0,180,220,0.2); } .s4-subcard.physik:hover { border-color: rgba(0,180,220,0.5); } .s4-subcard.physik h4 { color: #00d4ff; }
+.s4-subcard.chemie { border: 1px solid rgba(78,205,196,0.2); } .s4-subcard.chemie:hover { border-color: rgba(78,205,196,0.5); } .s4-subcard.chemie h4 { color: #4ecdc4; }
+.s4-subcard.biologie { border: 1px solid rgba(123,198,126,0.2); } .s4-subcard.biologie:hover { border-color: rgba(123,198,126,0.5); } .s4-subcard.biologie h4 { color: #7bc67e; }
+.s4-subcard.geografie { border: 1px solid rgba(240,160,64,0.2); } .s4-subcard.geografie:hover { border-color: rgba(240,160,64,0.5); } .s4-subcard.geografie h4 { color: #f0a040; }
+.s4-subcard.mathematik { border: 1px solid rgba(192,132,252,0.2); } .s4-subcard.mathematik:hover { border-color: rgba(192,132,252,0.5); } .s4-subcard.mathematik h4 { color: #c084fc; }
+.card-modal-overlay.fullscreen .card-modal-content { max-width: 100vw !important; width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; padding: 20px 28px !important; overflow-y: auto !important; box-sizing: border-box !important; display: flex !important; flex-direction: column !important; }
 .card-modal-overlay.fullscreen { padding: 0 !important; }
-
-/* Back button in fullscreen */
-.s4-back-btn {
-  display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;
-  background: rgba(0,180,220,0.08); border: 1px solid rgba(0,180,220,0.2);
-  border-radius: 6px; color: #5be0f0; font-size: 0.85rem; cursor: pointer;
-  margin-bottom: 16px; transition: background 0.2s; width: fit-content;
-}
+.s4-back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(0,180,220,0.08); border: 1px solid rgba(0,180,220,0.2); border-radius: 6px; color: #5be0f0; font-size: 0.85rem; cursor: pointer; margin-bottom: 16px; transition: background 0.2s; width: fit-content; }
 .s4-back-btn:hover { background: rgba(0,180,220,0.15); }
-
 .global-controls { display: none !important; }
 @media (max-width: 1200px) { .section .collapsible { flex: 0 0 calc(50% - 8px) !important; } .s4-subcard { flex: 0 0 calc(50% - 8px); } }
 @media (max-width: 700px) { .section .collapsible { flex: 0 0 100% !important; } .s4-subcard { flex: 0 0 100%; } }
@@ -10995,25 +10938,18 @@ body::before, body::after { display: none !important; }
 <script>
 
 (function(){
-  ['card-modal-v3','card-modal-v4','card-modal-v5','card-modal-v6','card-modal-v7','card-modal-v8'].forEach(function(id){ var el=document.getElementById(id); if(el) el.remove(); });
-
+  ['card-modal-v3','card-modal-v4','card-modal-v5','card-modal-v6','card-modal-v7','card-modal-v8','card-modal-v9'].forEach(function(id){ var el=document.getElementById(id); if(el) el.remove(); });
   var subjectMap = {'4.1':'physik','4.2':'chemie','4.3':'biologie','4.4':'geografie','4.5':'mathematik'};
   var subjectColors = {physik:'#00d4ff',chemie:'#4ecdc4',biologie:'#7bc67e',geografie:'#f0a040',mathematik:'#c084fc'};
-
-  // Tag section 4 collapsibles with subject data
   var sec4 = document.getElementById('suspraxis');
   if (sec4) {
     sec4.querySelectorAll(':scope > .collapsible').forEach(function(c) {
       var h3 = c.querySelector('.collapsible-header h3');
       if (!h3) return;
       var txt = h3.textContent.trim();
-      for (var key in subjectMap) {
-        if (txt.indexOf(key) === 0) { c.setAttribute('data-subject', subjectMap[key]); break; }
-      }
+      for (var key in subjectMap) { if (txt.indexOf(key) === 0) { c.setAttribute('data-subject', subjectMap[key]); break; } }
     });
   }
-
-  // Create modal overlay
   var overlay = document.querySelector('.card-modal-overlay');
   if (overlay) overlay.remove();
   overlay = document.createElement('div');
@@ -11028,88 +10964,43 @@ body::before, body::after { display: none !important; }
   document.body.appendChild(overlay);
   var modalContent = mc;
   var closeBtn = btn;
-
   function fs(el, styles) { for (var k in styles) el.style.setProperty(k, styles[k], 'important'); }
-
   function closeModal() { overlay.classList.remove('active','fullscreen'); document.body.style.overflow = ''; }
   closeBtn.addEventListener('click', closeModal);
   overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
-
-  function isSection4(collapsible) {
-    return collapsible.closest('#suspraxis') !== null && collapsible.hasAttribute('data-subject');
-  }
-
+  function isSection4(collapsible) { return collapsible.closest('#suspraxis') !== null && collapsible.hasAttribute('data-subject'); }
   function openSubContent(subCollapsible, subject, parentCollapsible) {
     var contentEl = subCollapsible.querySelector('.sub-collapsible-content');
     if (!contentEl) return;
     var clone = contentEl.cloneNode(true);
     fs(clone, {'display':'block','max-height':'none','overflow':'visible','height':'auto','opacity':'1'});
-
     overlay.classList.add('fullscreen');
     modalContent.innerHTML = '';
-
-    // Back button
     var backBtn = document.createElement('button');
     backBtn.className = 's4-back-btn';
     backBtn.innerHTML = '\u2190 Zur\u00fcck zur \u00dcbersicht';
-    backBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      openSection4Modal(parentCollapsible);
-    });
+    backBtn.addEventListener('click', function(e) { e.stopPropagation(); openSection4Modal(parentCollapsible); });
     modalContent.appendChild(backBtn);
-
-    // Title
     var subTitle = subCollapsible.querySelector('.sub-collapsible-header h4, .sub-collapsible-header h3');
-    if (subTitle) {
-      var h2 = document.createElement('h2');
-      h2.style.cssText = 'color:' + (subjectColors[subject] || '#5be0f0') + ';margin-bottom:16px;font-size:1.3rem;font-weight:600;';
-      h2.textContent = subTitle.textContent;
-      modalContent.appendChild(h2);
-    }
-
-    // Content wrapper that takes remaining space
+    if (subTitle) { var h2 = document.createElement('h2'); h2.style.cssText = 'color:' + (subjectColors[subject] || '#5be0f0') + ';margin-bottom:16px;font-size:1.3rem;font-weight:600;'; h2.textContent = subTitle.textContent; modalContent.appendChild(h2); }
     var wrapper = document.createElement('div');
     wrapper.style.cssText = 'flex:1;overflow-y:auto;';
     wrapper.appendChild(clone);
     modalContent.appendChild(wrapper);
-
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
     overlay.scrollTop = 0;
   }
-
   function openSection4Modal(collapsible) {
     var subject = collapsible.getAttribute('data-subject');
     var color = subjectColors[subject] || '#5be0f0';
-
     overlay.classList.remove('fullscreen');
     modalContent.innerHTML = '';
-
-    // Title
     var title = collapsible.querySelector('.collapsible-header h3');
-    if (title) {
-      var h2 = document.createElement('h2');
-      h2.style.cssText = 'color:' + color + ';margin-bottom:8px;font-size:1.25rem;font-weight:600;';
-      h2.textContent = title.textContent;
-      modalContent.appendChild(h2);
-    }
-
-    // Intro text if exists
-    var introEl = collapsible.querySelector('.intro-collapsible');
-    if (introEl) {
-      var introContent = introEl.querySelector('.intro-collapsible-content');
-      if (introContent) {
-        var introClone = introContent.cloneNode(true);
-        fs(introClone, {'display':'block','max-height':'none','overflow':'visible','margin-bottom':'16px','font-size':'0.88rem','opacity':'0.8'});
-        modalContent.appendChild(introClone);
-      }
-    }
-
-    // Sub-card grid
+    if (title) { var h2 = document.createElement('h2'); h2.style.cssText = 'color:' + color + ';margin-bottom:16px;font-size:1.25rem;font-weight:600;'; h2.textContent = title.textContent; modalContent.appendChild(h2); }
     var grid = document.createElement('div');
     grid.className = 's4-subcard-grid';
-
     collapsible.querySelectorAll('.sub-collapsible').forEach(function(sub) {
       var subTitle = sub.querySelector('.sub-collapsible-header h4, .sub-collapsible-header h3');
       if (!subTitle) return;
@@ -11118,18 +11009,13 @@ body::before, body::after { display: none !important; }
       var h4 = document.createElement('h4');
       h4.textContent = subTitle.textContent;
       card.appendChild(h4);
-      card.addEventListener('click', function(e) {
-        e.stopPropagation();
-        openSubContent(sub, subject, collapsible);
-      });
+      card.addEventListener('click', function(e) { e.stopPropagation(); openSubContent(sub, subject, collapsible); });
       grid.appendChild(card);
     });
-
     modalContent.appendChild(grid);
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
-
   function openStandardModal(collapsible) {
     overlay.classList.remove('fullscreen');
     var content = collapsible.querySelector('.collapsible-content');
@@ -11140,32 +11026,17 @@ body::before, body::after { display: none !important; }
     if (inner) fs(inner, {'max-height':'none','overflow':'visible'});
     modalContent.innerHTML = '';
     var title = collapsible.querySelector('.collapsible-header h3');
-    if (title) {
-      var h2 = document.createElement('h2');
-      h2.style.cssText = 'color:#5be0f0;margin-bottom:20px;font-size:1.25rem;font-weight:600;';
-      h2.textContent = title.textContent;
-      modalContent.appendChild(h2);
-    }
+    if (title) { var h2 = document.createElement('h2'); h2.style.cssText = 'color:#5be0f0;margin-bottom:20px;font-size:1.25rem;font-weight:600;'; h2.textContent = title.textContent; modalContent.appendChild(h2); }
     modalContent.appendChild(clone);
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
-
-  // Attach click handlers
   document.querySelectorAll('.section .collapsible .collapsible-header').forEach(function(header) {
-    header.addEventListener('click', function(e) {
-      e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
-      var collapsible = this.closest('.collapsible');
-      if (isSection4(collapsible)) {
-        openSection4Modal(collapsible);
-      } else {
-        openStandardModal(collapsible);
-      }
-    }, true);
+    header.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); var collapsible = this.closest('.collapsible'); if (isSection4(collapsible)) { openSection4Modal(collapsible); } else { openStandardModal(collapsible); } }, true);
   });
 })();
 
 </script>
-<!-- ===== END CARD GRID + MODAL v9 ===== -->
+<!-- ===== END CARD GRID + MODAL v10 ===== -->
 </body>
 </html>
