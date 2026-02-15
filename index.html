@@ -10886,211 +10886,142 @@ TON: [TON: z.B. spielerisch und leicht, da Themenabschluss / ernst und wissensch
 /* ===== v14 NYT EDITORIAL THEME ===== */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-/* === OVERRIDE ORIGINAL STYLES === */
-body { background: #fafafa !important; }
-.main-header { background: #fff !important; border-bottom: 3px solid #1a1a1a !important; }
-.main-header h1 { font-family: 'Playfair Display', Georgia, serif !important; color: #1a1a1a !important; }
-.main-header p { color: #666 !important; }
+/* === GLOBAL === */
+body, .main-content { background: #fafafa !important; color: #1a1a1a !important; }
 
-/* Sidebar override */
+/* === SIDEBAR === */
 .sidebar { background: #fff !important; border-right: 1px solid #e0e0e0 !important; }
-.sidebar nav a, .sidebar .nav-link { color: #555 !important; border-radius: 4px !important; }
-.sidebar nav a:hover, .sidebar .nav-link:hover { background: #f5f5f5 !important; color: #1a1a1a !important; }
-.sidebar nav a.active, .sidebar .nav-link.active { background: #1a1a1a !important; color: #fff !important; }
+.sidebar, .sidebar * { color: #555 !important; -webkit-text-fill-color: #555 !important; }
+.sidebar-header, .sidebar-header * { color: #1a1a1a !important; -webkit-text-fill-color: #1a1a1a !important; }
+.sidebar .subtitle { color: #888 !important; -webkit-text-fill-color: #888 !important; }
+.sidebar-hamburger, .sidebar-hamburger * { color: #1a1a1a !important; -webkit-text-fill-color: #1a1a1a !important; }
 
-/* Section headings */
-.section h2, .section-header h2 {
+.nav-item { color: #555 !important; -webkit-text-fill-color: #555 !important; border-radius: 4px !important; padding: 8px 10px !important; }
+.nav-item:hover { background: #f5f5f5 !important; color: #1a1a1a !important; }
+.nav-item.active { background: #1a1a1a !important; color: #fff !important; -webkit-text-fill-color: #fff !important; }
+.nav-item.active *, .nav-item.active * { color: #fff !important; -webkit-text-fill-color: #fff !important; }
+.nav-number { background: #f0f0f0 !important; background-image: none !important; color: #555 !important; -webkit-text-fill-color: #555 !important; border-radius: 4px !important; }
+.nav-item.active .nav-number { background: #c8102e !important; background-image: none !important; color: #fff !important; -webkit-text-fill-color: #fff !important; }
+.nav-subitems, .nav-subitems * { color: #777 !important; -webkit-text-fill-color: #777 !important; }
+
+/* === SECTION TITLES === */
+.section-title {
   font-family: 'Playfair Display', Georgia, serif !important;
-  color: #1a1a1a !important; font-weight: 800 !important;
-  letter-spacing: -0.02em !important;
+  color: #1a1a1a !important; -webkit-text-fill-color: #1a1a1a !important;
+  font-weight: 800 !important; background-image: none !important;
+  background-clip: unset !important; -webkit-background-clip: unset !important;
+  border-image: none !important; border-bottom: 3px solid #1a1a1a !important;
+  padding-bottom: 12px !important; margin-bottom: 12px !important;
 }
+.section-subtitle { color: #666 !important; -webkit-text-fill-color: #666 !important; }
 
-/* Collapsible headers — card style */
-.collapsible-header {
-  background: #fff !important; border: none !important;
-  border-bottom: 1px solid #e0e0e0 !important;
-  border-radius: 0 !important; padding: 20px 22px !important;
-  transition: background 0.15s !important;
-}
+/* === GLOBAL CONTROLS BAR === */
+.global-controls { background: #1a1a1a !important; background-image: none !important; border-radius: 2px !important; padding: 8px 16px !important; }
+.global-controls .control-btn { background: transparent !important; color: #fff !important; -webkit-text-fill-color: #fff !important; border: 1px solid rgba(255,255,255,0.3) !important; border-radius: 2px !important; }
+.global-controls .control-btn:hover { background: #c8102e !important; border-color: #c8102e !important; }
+.section-controls { background: #1a1a1a !important; border-radius: 2px !important; }
+.section-controls .control-btn { background: transparent !important; color: #fff !important; -webkit-text-fill-color: #fff !important; border: 1px solid rgba(255,255,255,0.3) !important; }
+
+/* === COLLAPSIBLES === */
+.collapsible { border: none !important; border-radius: 0 !important; background: transparent !important; }
+.collapsible-header { background: #fff !important; border: none !important; border-bottom: 1px solid #e0e0e0 !important; border-radius: 0 !important; }
 .collapsible-header:hover { background: #f8f6f4 !important; }
-.collapsible-header h3 {
+.collapsible.open .collapsible-header { background: #f8f6f4 !important; }
+.collapsible-header h3, .collapsible-header h2 {
   font-family: 'Playfair Display', Georgia, serif !important;
-  color: #1a1a1a !important; font-weight: 700 !important;
-  font-size: 0.95rem !important; letter-spacing: -0.01em !important;
+  color: #1a1a1a !important; -webkit-text-fill-color: #1a1a1a !important;
+  font-weight: 700 !important; background-image: none !important;
+  background-clip: unset !important; -webkit-background-clip: unset !important;
+}
+.toggle-icon, .collapsible-header .arrow, .collapsible-header svg { color: #c8102e !important; -webkit-text-fill-color: #c8102e !important; }
+.collapsible-content { background: transparent !important; border: none !important; }
+.collapsible-content, .collapsible-content * { color: #333 !important; }
+.collapsible-content h4, .collapsible-content h3 { color: #1a1a1a !important; }
+.collapsible-inner p, .collapsible-inner li { color: #333 !important; }
+.collapsible-inner h4 { color: #c8102e !important; }
+.collapsible-inner a { color: #c8102e !important; }
+.collapsible-inner strong { color: #1a1a1a !important; }
+
+.sub-collapsible-header { background: #fafafa !important; border: none !important; border-bottom: 1px solid #eee !important; }
+.sub-collapsible-header h4 { color: #1a1a1a !important; font-weight: 600 !important; }
+
+/* === SECTIONS === */
+.section { border-top: 3px solid #1a1a1a !important; padding-top: 20px !important; margin-top: 32px !important; }
+.section:first-child { border-top: none !important; }
+.floating-toggle { display: none !important; }
+
+/* === TABLES === */
+table { border-collapse: collapse !important; }
+th { background: #1a1a1a !important; color: #fff !important; }
+td { border-bottom: 1px solid #e0e0e0 !important; color: #333 !important; }
+
+/* === SUMMARY BOXES === */
+.zusammenfassung, .summary, [class*=summary], [class*=zusammen] {
+  background: #f8f6f4 !important; border: 1px solid #e0e0e0 !important;
+  border-left: 3px solid #c8102e !important; border-radius: 0 !important; color: #333 !important;
 }
 
-/* === MODAL OVERLAY — NYT style === */
-.card-modal-overlay {
-  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4); z-index: 10000;
-  justify-content: center; align-items: flex-start;
-  padding: 64px 40px; overflow-y: auto;
-}
-.card-modal-overlay.active { display: flex; }
+/* === MODAL OVERLAY === */
+.card-modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:10000; justify-content:center; align-items:flex-start; padding:64px 40px; overflow-y:auto; }
+.card-modal-overlay.active { display:flex; }
+.card-modal-content { background:#fff; border-radius:2px; width:100%; max-width:720px; padding:48px 52px; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.2); animation:nytModalIn 0.2s ease-out; font-family:'Inter',-apple-system,sans-serif; }
+@keyframes nytModalIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+.card-modal-content::before { content:''; display:block; height:3px; background:#1a1a1a; margin:-48px -52px 24px -52px; width:calc(100% + 104px); }
+.card-modal-close { position:fixed; top:28px; right:36px; width:36px; height:36px; border-radius:50%; background:#1a1a1a; border:none; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#fff; z-index:10001; transition:background 0.15s; }
+.card-modal-close:hover { background:#c8102e; }
 
-.card-modal-content {
-  background: #fff; border-radius: 2px; width: 100%; max-width: 720px;
-  padding: 48px 52px; position: relative;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  animation: nytModalIn 0.2s ease-out;
-  font-family: 'Inter', -apple-system, sans-serif;
-}
-@keyframes nytModalIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-
-.card-modal-content::before {
-  content: ''; display: block; height: 3px; background: #1a1a1a;
-  margin: -48px -52px 24px -52px; width: calc(100% + 104px);
+/* CRITICAL: Force visibility */
+.card-modal-content .collapsible-content, .card-modal-content .collapsible-inner, .card-modal-content .sub-collapsible-content {
+  display:block !important; max-height:none !important; overflow:visible !important; height:auto !important; opacity:1 !important; visibility:visible !important; padding:0 !important;
 }
 
-.card-modal-close {
-  position: fixed; top: 28px; right: 36px;
-  width: 36px; height: 36px; border-radius: 50%;
-  background: #1a1a1a; border: none; font-size: 14px;
-  cursor: pointer; display: flex; align-items: center;
-  justify-content: center; color: #fff; z-index: 10001;
-  transition: background 0.15s;
+/* Modal typography */
+.card-modal-content h2, .card-modal-content h3 {
+  font-family:'Playfair Display',Georgia,serif !important; color:#1a1a1a !important; -webkit-text-fill-color:#1a1a1a !important;
+  font-weight:800 !important; background-image:none !important; background-clip:unset !important; -webkit-background-clip:unset !important;
 }
-.card-modal-close:hover { background: #c8102e; }
+.card-modal-content h4 { font-size:0.78rem !important; font-weight:700 !important; color:#c8102e !important; text-transform:uppercase !important; letter-spacing:0.06em !important; }
+.card-modal-content p { font-size:0.92rem !important; color:#333 !important; line-height:1.85 !important; }
+.card-modal-content ul, .card-modal-content ol { color:#333 !important; font-size:0.88rem !important; line-height:1.8 !important; }
+.card-modal-content a { color:#c8102e !important; }
+.card-modal-content strong { color:#1a1a1a !important; }
+.card-modal-content table { border-collapse:collapse !important; width:100% !important; }
+.card-modal-content th { background:#1a1a1a !important; color:#fff !important; padding:10px 14px !important; }
+.card-modal-content td { padding:10px 14px !important; border-bottom:1px solid #e0e0e0 !important; color:#333 !important; }
+.card-modal-content .collapsible-header { background:transparent !important; border:none !important; border-bottom:1px solid #e0e0e0 !important; padding:14px 0 !important; }
+.card-modal-content .sub-collapsible-header { background:transparent !important; border:none !important; border-bottom:1px solid #eee !important; padding:10px 0 !important; }
+.card-modal-content iframe { border-radius:2px !important; border:1px solid #e0e0e0 !important; }
 
-/* CRITICAL: Force visibility for ALL content inside the modal */
-.card-modal-content .collapsible-content,
-.card-modal-content .collapsible-inner,
-.card-modal-content .sub-collapsible-content {
-  display: block !important; max-height: none !important;
-  overflow: visible !important; height: auto !important;
-  opacity: 1 !important; visibility: visible !important;
-  padding: 0 !important;
-}
+/* === SECTION 4 SUBJECT GRID === */
+.s4-modal-title { font-family:'Playfair Display',Georgia,serif !important; font-size:1.6rem !important; font-weight:800 !important; color:#1a1a1a !important; margin-bottom:24px !important; -webkit-text-fill-color:#1a1a1a !important; }
+.s4-sub-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:#d0d0d0; border:1px solid #d0d0d0; }
+.s4-sub-card { background:#fff; padding:20px 18px; cursor:pointer; transition:background 0.15s; }
+.s4-sub-card:hover { background:#f8f6f4; }
+.s4-sub-card-title { font-family:'Playfair Display',Georgia,serif; font-size:0.88rem; font-weight:700; color:#1a1a1a; line-height:1.25; margin-bottom:4px; }
+.s4-sub-card-num { font-size:0.56rem; font-weight:700; color:#c8102e; text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:6px; }
+.s4-sub-card[data-subject="physik"] { border-top:3px solid #c8102e; }
+.s4-sub-card[data-subject="chemie"] { border-top:3px solid #1a1a1a; }
+.s4-sub-card[data-subject="biologie"] { border-top:3px solid #2a7a3a; }
+.s4-sub-card[data-subject="geografie"] { border-top:3px solid #c87a10; }
+.s4-sub-card[data-subject="mathematik"] { border-top:3px solid #4a4a4a; }
 
-/* Modal typography — NYT editorial */
-.card-modal-content h3 {
-  font-family: 'Playfair Display', Georgia, serif !important;
-  color: #1a1a1a !important; font-size: 1.5rem !important;
-  font-weight: 800 !important; margin-bottom: 20px !important;
-  letter-spacing: -0.02em !important; line-height: 1.15 !important;
-}
-.card-modal-content h4 {
-  font-size: 0.78rem !important; font-weight: 700 !important;
-  color: #c8102e !important; text-transform: uppercase !important;
-  letter-spacing: 0.06em !important; margin: 24px 0 10px 0 !important;
-}
-.card-modal-content p {
-  font-size: 0.92rem !important; color: #333 !important;
-  line-height: 1.85 !important; margin-bottom: 12px !important;
-}
-.card-modal-content ul, .card-modal-content ol {
-  color: #333 !important; margin: 8px 0 16px 20px !important;
-  font-size: 0.88rem !important; line-height: 1.8 !important;
-}
-.card-modal-content a { color: #c8102e !important; }
-.card-modal-content strong { color: #1a1a1a !important; }
-.card-modal-content table {
-  border-collapse: collapse !important; width: 100% !important;
-  margin: 16px 0 !important; font-size: 0.85rem !important;
-}
-.card-modal-content th {
-  background: #1a1a1a !important; color: #fff !important;
-  padding: 10px 14px !important; text-align: left !important;
-  font-weight: 600 !important;
-}
-.card-modal-content td {
-  padding: 10px 14px !important; border-bottom: 1px solid #e0e0e0 !important;
-  color: #333 !important;
-}
-.card-modal-content tr:hover td { background: #f8f6f4 !important; }
+.s4-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-bottom:16px; border-bottom:3px solid #1a1a1a; }
+.s4-back-btn { background:#1a1a1a; color:#fff; border:none; padding:8px 18px; font-size:0.78rem; font-weight:600; cursor:pointer; border-radius:2px; font-family:'Inter',sans-serif; }
+.s4-back-btn:hover { background:#c8102e; }
+.s4-enter-fs { background:transparent; color:#1a1a1a; border:1px solid #1a1a1a; padding:8px 18px; font-size:0.78rem; font-weight:600; cursor:pointer; border-radius:2px; font-family:'Inter',sans-serif; }
+.s4-enter-fs:hover { background:#1a1a1a; color:#fff; }
+.s4-exit-fs { position:fixed; top:16px; right:16px; z-index:10002; background:#c8102e; color:#fff; border:none; padding:8px 18px; font-size:0.78rem; font-weight:600; cursor:pointer; border-radius:2px; font-family:'Inter',sans-serif; }
 
-/* Collapsible toggles inside modal */
-.card-modal-content .collapsible-header {
-  background: transparent !important; border: none !important;
-  border-bottom: 1px solid #e0e0e0 !important; padding: 14px 0 !important;
-}
-.card-modal-content .sub-collapsible-header {
-  background: transparent !important; border: none !important;
-  border-bottom: 1px solid #eee !important; padding: 10px 0 !important;
-}
+.card-modal-overlay.fullscreen .card-modal-content { max-width:100%; border-radius:0; padding:20px 28px; overflow-y:auto; }
+.card-modal-overlay.fullscreen .card-modal-close { display:none; }
 
-/* === SECTION 4 — Subject grid in modal === */
-.s4-modal-title {
-  font-family: 'Playfair Display', Georgia, serif !important;
-  font-size: 1.6rem !important; font-weight: 800 !important;
-  color: #1a1a1a !important; margin-bottom: 24px !important;
-  letter-spacing: -0.02em !important;
-}
-.s4-sub-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1px; background: #d0d0d0; border: 1px solid #d0d0d0;
-}
-.s4-sub-card {
-  background: #fff; padding: 20px 18px; cursor: pointer;
-  transition: background 0.15s;
-}
-.s4-sub-card:hover { background: #f8f6f4; }
-.s4-sub-card-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 0.88rem; font-weight: 700; color: #1a1a1a;
-  line-height: 1.25; margin-bottom: 4px;
-}
-.s4-sub-card-num {
-  font-size: 0.56rem; font-weight: 700; color: #c8102e;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  display: block; margin-bottom: 6px;
-}
+/* Scrollbar */
+::-webkit-scrollbar { width:8px; }
+::-webkit-scrollbar-track { background:#fafafa; }
+::-webkit-scrollbar-thumb { background:#ccc; border-radius:4px; }
 
-/* Subject color accents — top bar */
-.s4-sub-card[data-subject="physik"] { border-top: 3px solid #c8102e; }
-.s4-sub-card[data-subject="chemie"] { border-top: 3px solid #1a1a1a; }
-.s4-sub-card[data-subject="biologie"] { border-top: 3px solid #2a7a3a; }
-.s4-sub-card[data-subject="geografie"] { border-top: 3px solid #c87a10; }
-.s4-sub-card[data-subject="mathematik"] { border-top: 3px solid #4a4a4a; }
-
-/* Back and Vollbild toolbar */
-.s4-toolbar {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 20px; padding-bottom: 16px;
-  border-bottom: 3px solid #1a1a1a;
-}
-.s4-back-btn {
-  background: #1a1a1a; color: #fff; border: none; padding: 8px 18px;
-  font-size: 0.78rem; font-weight: 600; cursor: pointer;
-  border-radius: 2px; transition: background 0.15s;
-  font-family: 'Inter', sans-serif;
-}
-.s4-back-btn:hover { background: #c8102e; }
-.s4-enter-fs {
-  background: transparent; color: #1a1a1a; border: 1px solid #1a1a1a;
-  padding: 8px 18px; font-size: 0.78rem; font-weight: 600;
-  cursor: pointer; border-radius: 2px; transition: all 0.15s;
-  font-family: 'Inter', sans-serif;
-}
-.s4-enter-fs:hover { background: #1a1a1a; color: #fff; }
-.s4-exit-fs {
-  position: fixed; top: 16px; right: 16px; z-index: 10002;
-  background: #c8102e; color: #fff; border: none; padding: 8px 18px;
-  font-size: 0.78rem; font-weight: 600; cursor: pointer;
-  border-radius: 2px; font-family: 'Inter', sans-serif;
-}
-
-/* Fullscreen mode */
-.card-modal-overlay.fullscreen .card-modal-content {
-  max-width: 100%; border-radius: 0; padding: 20px 28px;
-  overflow-y: auto;
-}
-.card-modal-overlay.fullscreen .card-modal-close { display: none; }
-
-/* Responsive */
-@media (max-width: 900px) {
-  .s4-sub-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 600px) {
-  .s4-sub-grid { grid-template-columns: 1fr; }
-  .card-modal-content { padding: 28px 20px; }
-}
-
-/* Simulation iframe styling */
-.card-modal-content iframe {
-  border-radius: 2px !important;
-  border: 1px solid #e0e0e0 !important;
-}
+@media (max-width:900px) { .s4-sub-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:600px) { .s4-sub-grid { grid-template-columns:1fr; } .card-modal-content { padding:28px 20px; } }
 
 </style>
 <script>
