@@ -11016,6 +11016,17 @@ table td{background:#fff!important;border:1px solid #e0e0e0!important}
 .collapsible-inner{background:transparent!important;color:#333!important}
 .collapsible-inner *{-webkit-text-fill-color:inherit!important}
 
+
+/* V14G SIDEBAR FIXES */
+.sidebar-hamburger{background:none!important;background-image:none!important}
+.hamburger-icon{color:#1a1a1a!important}
+.hamburger-icon span{background:#1a1a1a!important}
+.hamburger-label{color:#1a1a1a!important;-webkit-text-fill-color:#1a1a1a!important}
+.sidebar-header{background:none!important;background-image:none!important}
+.nav-number{border:1px solid #d0d0d0!important}
+.nav-item.active .nav-number{border-color:#c8102e!important}
+.sidebar{border-image:none!important}
+.sidebar>div{background-image:none!important}
 </style>
 <script>
 (function(){
@@ -11056,6 +11067,54 @@ if(!hasActiveNav){
   var firstNav=document.querySelector(".nav-item");
   if(firstNav)firstNav.classList.add("active");
 }
+})();
+
+/* V14G: Sidebar click->modal + Arrow key nav */
+(function(){
+document.querySelectorAll('.nav-subitem').forEach(function(link){
+link.addEventListener('click',function(e){
+e.preventDefault();e.stopPropagation();
+var subsec=this.dataset.subsection;var secId=this.dataset.section;
+if(!subsec)return;
+var ts=document.getElementById(secId);
+if(ts&&!ts.classList.contains('active')){
+document.querySelectorAll('.section.active').forEach(function(s){s.classList.remove('active');});
+ts.classList.add('active');
+document.querySelectorAll('.nav-item.active').forEach(function(n){n.classList.remove('active');});
+var ni=document.querySelector('.nav-item[data-section="'+secId+'"]');
+if(ni)ni.classList.add('active');
+}
+var as=document.querySelector('.section.active');if(!as)return;
+var colls=as.querySelectorAll('.collapsible');
+for(var i=0;i<colls.length;i++){
+var h3=colls[i].querySelector('h3');
+if(h3&&h3.textContent.trim().indexOf(subsec)===0){
+var ov=document.querySelector('.card-modal-overlay');
+var mc=document.querySelector('.card-modal-content');
+if(ov&&mc){mc.innerHTML='<h2>'+h3.textContent+'</h2>'+colls[i].querySelector('.collapsible-content').innerHTML;
+ov.classList.add('active');ov.style.display='flex';document.body.style.overflow='hidden';ov.dataset.currentIndex=i;}
+break;}
+}},true);});
+document.addEventListener('keydown',function(e){
+var ov=document.querySelector('.card-modal-overlay');
+if(!ov||!ov.classList.contains('active'))return;
+if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+var as=document.querySelector('.section.active');if(!as)return;
+var colls=as.querySelectorAll('.collapsible');if(colls.length===0)return;
+var idx=parseInt(ov.dataset.currentIndex||'0');
+if(e.key==='ArrowRight')idx++;if(e.key==='ArrowLeft')idx--;
+if(idx<0)idx=colls.length-1;if(idx>=colls.length)idx=0;
+var coll=colls[idx];var h3=coll.querySelector('.collapsible-header h3');
+var ct=coll.querySelector('.collapsible-content');if(!h3||!ct)return;
+var mc=document.querySelector('.card-modal-content');
+mc.innerHTML='<h2>'+h3.textContent+'</h2>'+ct.innerHTML;
+ov.dataset.currentIndex=idx;mc.scrollTop=0;e.preventDefault();});
+document.addEventListener('click',function(e){
+var cl=e.target.closest('.collapsible');if(!cl)return;
+var sec=cl.closest('.section');if(!sec)return;
+var colls=sec.querySelectorAll('.collapsible');
+for(var i=0;i<colls.length;i++){if(colls[i]===cl){
+setTimeout(function(){var ov=document.querySelector('.card-modal-overlay');if(ov)ov.dataset.currentIndex=i;},50);break;}}},false);
 })();
 </script>
 </body>
